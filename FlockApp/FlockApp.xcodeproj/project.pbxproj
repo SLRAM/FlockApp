@@ -14,6 +14,7 @@
 		97025F9B2257EA1200273C91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97025F9A2257EA1200273C91 /* Assets.xcassets */; };
 		97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F9C2257EA1200273C91 /* LaunchScreen.storyboard */; };
 		97025FA62257EB6E00273C91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97025FA52257EB6D00273C91 /* GoogleService-Info.plist */; };
+		97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025FA82257F16E00273C91 /* IBADesignablesViews.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		97025F9D2257EA1200273C91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97025F9F2257EA1200273C91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		97025FA52257EB6D00273C91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		97025FA82257F16E00273C91 /* IBADesignablesViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBADesignablesViews.swift; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -48,7 +50,6 @@
 				682BF4BA13CA0D365D3D99CE /* Pods-FlockApp.debug.xcconfig */,
 				CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -73,6 +74,7 @@
 		97025F922257EA1100273C91 /* FlockApp */ = {
 			isa = PBXGroup;
 			children = (
+				97025FA72257F15500273C91 /* Utilities */,
 				97025F932257EA1100273C91 /* AppDelegate.swift */,
 				97025F952257EA1100273C91 /* ViewController.swift */,
 				97025F972257EA1100273C91 /* Main.storyboard */,
@@ -82,6 +84,14 @@
 				97025FA52257EB6D00273C91 /* GoogleService-Info.plist */,
 			);
 			path = FlockApp;
+			sourceTree = "<group>";
+		};
+		97025FA72257F15500273C91 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				97025FA82257F16E00273C91 /* IBADesignablesViews.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		BAA7EF280003BEA21B99454E /* Frameworks */ = {
@@ -231,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				97025F962257EA1100273C91 /* ViewController.swift in Sources */,
+				97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
