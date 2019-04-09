@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import MapKit
+import GoogleMaps
 
 class CreateEditViewController: UIViewController {
     
-    private let createView = CreateEditView()
+    private let createEditView = CreateEditView()
     var quiz: UserModel?
     let titlePlaceholder = "Enter the quiz title"
     let firstPlaceholder = "Enter first quiz fact"
@@ -17,12 +19,12 @@ class CreateEditViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(createView)
-        createView.titleTextView.delegate = self
-        createView.firstQuizTextView.delegate = self
-        createView.secondQuizTextView.delegate = self
-        createView.delegate = self
-        navigationItem.rightBarButtonItem = createView.createButton
+        self.view.addSubview(createEditView)
+        createEditView.titleTextView.delegate = self
+        createEditView.firstQuizTextView.delegate = self
+        createEditView.secondQuizTextView.delegate = self
+        createEditView.delegate = self
+        navigationItem.rightBarButtonItem = createEditView.createButton
         checkLoggedIn()
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -32,9 +34,9 @@ class CreateEditViewController: UIViewController {
         let username = "username"
         if username == "@username" {
             navigationItem.rightBarButtonItem?.isEnabled = false
-            createView.titleTextView.isEditable = false
-            createView.firstQuizTextView.isEditable = false
-            createView.secondQuizTextView.isEditable = false
+            createEditView.titleTextView.isEditable = false
+            createEditView.firstQuizTextView.isEditable = false
+            createEditView.secondQuizTextView.isEditable = false
             
             let alertController = UIAlertController(title: "No user logged in.", message: "To access this feature you need to login on the profile tab.", preferredStyle: .alert)
             
@@ -44,16 +46,16 @@ class CreateEditViewController: UIViewController {
             present(alertController, animated: true)
         } else {
             navigationItem.rightBarButtonItem?.isEnabled = true
-            createView.titleTextView.isEditable = true
-            createView.firstQuizTextView.isEditable = true
-            createView.secondQuizTextView.isEditable = true
+            createEditView.titleTextView.isEditable = true
+            createEditView.firstQuizTextView.isEditable = true
+            createEditView.secondQuizTextView.isEditable = true
         }
     }
     
     private func saveQuiz()-> UserModel? {
-        guard let quizTitle = createView.titleTextView.text,
-            let firstFact = createView.firstQuizTextView.text,
-            let secondFact = createView.secondQuizTextView.text else {return nil}
+        guard let quizTitle = createEditView.titleTextView.text,
+            let firstFact = createEditView.firstQuizTextView.text,
+            let secondFact = createEditView.secondQuizTextView.text else {return nil}
         let facts = [firstFact,secondFact]
 //        guard let username = UserDefaults.standard.string(forKey: UserDefaultsKeys.usernameKey) else {return nil}
         let username = "username"
@@ -83,22 +85,22 @@ extension CreateEditViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         switch textView.tag {
         case 0:
-            createView.titleTextView.becomeFirstResponder()
-            if createView.titleTextView.text == titlePlaceholder {
-                createView.titleTextView.text = ""
-                createView.titleTextView.textColor = .black
+            createEditView.titleTextView.becomeFirstResponder()
+            if createEditView.titleTextView.text == titlePlaceholder {
+                createEditView.titleTextView.text = ""
+                createEditView.titleTextView.textColor = .black
             }
         case 1:
-            createView.firstQuizTextView.becomeFirstResponder()
-            if createView.firstQuizTextView.text == firstPlaceholder {
-                createView.firstQuizTextView.text = ""
-                createView.firstQuizTextView.textColor = .black
+            createEditView.firstQuizTextView.becomeFirstResponder()
+            if createEditView.firstQuizTextView.text == firstPlaceholder {
+                createEditView.firstQuizTextView.text = ""
+                createEditView.firstQuizTextView.textColor = .black
             }
         case 2:
-            createView.secondQuizTextView.becomeFirstResponder()
-            if createView.secondQuizTextView.text == secondPlaceholder {
-                createView.secondQuizTextView.text = ""
-                createView.secondQuizTextView.textColor = .black
+            createEditView.secondQuizTextView.becomeFirstResponder()
+            if createEditView.secondQuizTextView.text == secondPlaceholder {
+                createEditView.secondQuizTextView.text = ""
+                createEditView.secondQuizTextView.textColor = .black
             }
         default:
             print("error selecting create text views")
@@ -107,26 +109,33 @@ extension CreateEditViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         switch textView.tag {
         case 0:
-            createView.titleTextView.resignFirstResponder()
+            createEditView.titleTextView.resignFirstResponder()
         case 1:
-            createView.titleTextView.resignFirstResponder()
+            createEditView.titleTextView.resignFirstResponder()
         case 2:
-            createView.titleTextView.resignFirstResponder()
+            createEditView.titleTextView.resignFirstResponder()
         default:
             print("error leaving create text views")
         }
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
+    func createsPressed() {
+        let detailVC = LocationSearchViewController()
+        detailVC.delegate = self
+        detailVC.tag = 0
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     func createPressed() {
-        if createView.titleTextView.text == titlePlaceholder || createView.firstQuizTextView.text == firstPlaceholder || createView.secondQuizTextView.text == secondPlaceholder {
+        if createEditView.titleTextView.text == titlePlaceholder || createEditView.firstQuizTextView.text == firstPlaceholder || createEditView.secondQuizTextView.text == secondPlaceholder {
             let alertController = UIAlertController(title: "Please enter in some information other than the placeholder", message: nil, preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) -> Void in
             })
             alertController.addAction(okAction)
             present(alertController, animated: true)
-        } else if createView.titleTextView.text == "" || createView.firstQuizTextView.text == "" || createView.secondQuizTextView.text == ""{
+        } else if createEditView.titleTextView.text == "" || createEditView.firstQuizTextView.text == "" || createEditView.secondQuizTextView.text == ""{
             let alertController = UIAlertController(title: "Please do not leave any sections blank", message: nil, preferredStyle: .alert)
             
             let okAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) -> Void in
@@ -150,6 +159,25 @@ extension CreateEditViewController: CreateViewDelegate {
 //                self.createView.secondQuizTextView.text = secondPlaceholder
 //                self.createView.resignFirstResponder()
 //            }
+        }
+    }
+}
+extension CreateEditViewController: LocationSearchViewControllerDelegate {
+    func getLocation(buttonTag: Int, locationTuple: (String, CLLocationCoordinate2D)) {
+        if buttonTag == 0 {
+            print("tuple printout of string: \(locationTuple.0)")
+            print("tuple printout of coordinates: \(locationTuple.1)")
+//            startingCoordinate = locationTuple.1
+            createEditView.createsButton.setTitle(locationTuple.0, for: .normal)
+            createEditView.createsButton.titleLabel?.text = locationTuple.0
+//            startingAddressButton.setTitle(locationTuple.0, for: .normal)
+//            startingAddressButton.titleLabel?.text = locationTuple.0
+        } else {
+            print("tuple printout of string: \(locationTuple.0)")
+            print("tuple printout of coordinates: \(locationTuple.1)")
+//            endingCoordinate = locationTuple.1
+//            endingAddressButton.setTitle(locationTuple.0, for: .normal)
+//            endingAddressButton.titleLabel?.text = locationTuple.0
         }
     }
 }

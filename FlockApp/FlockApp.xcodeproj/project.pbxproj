@@ -45,6 +45,10 @@
 		97802CFD225D021A007D480D /* EventDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802CFC225D021A007D480D /* EventDetailsView.swift */; };
 		97802CFF225D035E007D480D /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802CFE225D035E007D480D /* MapViewController.swift */; };
 		97802D01225D0373007D480D /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D00225D0373007D480D /* MapView.swift */; };
+		97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D02225D3010007D480D /* LocationSearchViewController.swift */; };
+		97802D05225D3088007D480D /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D04225D3088007D480D /* LocationSearchView.swift */; };
+		97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */; };
+		97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D08225D3A2B007D480D /* SecretKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +92,10 @@
 		97802CFC225D021A007D480D /* EventDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsView.swift; sourceTree = "<group>"; };
 		97802CFE225D035E007D480D /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		97802D00225D0373007D480D /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		97802D02225D3010007D480D /* LocationSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewController.swift; sourceTree = "<group>"; };
+		97802D04225D3088007D480D /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
+		97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewCell.swift; sourceTree = "<group>"; };
+		97802D08225D3A2B007D480D /* SecretKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretKeys.swift; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -153,6 +161,7 @@
 			isa = PBXGroup;
 			children = (
 				97025FA82257F16E00273C91 /* IBADesignablesViews.swift */,
+				97802D08225D3A2B007D480D /* SecretKeys.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -258,6 +267,9 @@
 				97802CE3225CFF0D007D480D /* CreateEditViewController.swift */,
 				97802CE9225CFF33007D480D /* CreateEditView.swift */,
 				97802CEF225CFFDB007D480D /* CreateEditTableViewCell.swift */,
+				97802D02225D3010007D480D /* LocationSearchViewController.swift */,
+				97802D04225D3088007D480D /* LocationSearchView.swift */,
+				97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */,
 			);
 			path = "Create Edit";
 			sourceTree = "<group>";
@@ -332,6 +344,7 @@
 				97025F8D2257EA1100273C91 /* Frameworks */,
 				97025F8E2257EA1100273C91 /* Resources */,
 				54574E69679FF09DCCDD251D /* [CP] Embed Pods Frameworks */,
+				5C777DB73364490E1CC045DB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -454,6 +467,28 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlockApp/Pods-FlockApp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		5C777DB73364490E1CC045DB /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FlockApp/Pods-FlockApp-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FlockApp/Pods-FlockApp-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -466,6 +501,7 @@
 				97802CEE225CFF90007D480D /* EventPeopleTableViewCell.swift in Sources */,
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802CF2225CFFF1007D480D /* HomeTableViewCell.swift in Sources */,
+				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
 				97802CE4225CFF0D007D480D /* CreateEditViewController.swift in Sources */,
 				97802CE0225CFEB3007D480D /* InviteTableViewCell.swift in Sources */,
@@ -477,6 +513,7 @@
 				97802CBF225CF5E6007D480D /* CreateAccountViewController.swift in Sources */,
 				97802CDE225CFE99007D480D /* InviteView.swift in Sources */,
 				97802CF9225D01F9007D480D /* EventPeopleViewController.swift in Sources */,
+				97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */,
 				97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */,
 				97025F962257EA1100273C91 /* ViewController.swift in Sources */,
 				97802CF0225CFFDB007D480D /* CreateEditTableViewCell.swift in Sources */,
@@ -485,8 +522,10 @@
 				97802CD4225CF7E3007D480D /* UserModel.swift in Sources */,
 				97802CDC225CFE88007D480D /* InviteViewController.swift in Sources */,
 				97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */,
+				97802D05225D3088007D480D /* LocationSearchView.swift in Sources */,
 				97802CE8225CFF27007D480D /* HomeView.swift in Sources */,
 				97802CE6225CFF16007D480D /* HomeViewController.swift in Sources */,
+				97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */,
 				97802CC9225CF658007D480D /* StorageService.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
