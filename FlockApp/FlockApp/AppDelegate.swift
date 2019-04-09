@@ -21,7 +21,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
+            //Use ViewController() when pushing!
+            
+//            //push root
             window?.rootViewController = ViewController()
+//
+//
+//            //Biron root
+//            window?.rootViewController = ViewController()
+//            //Nathalie root
+//            window?.rootViewController = ViewController()
+//            //Stephanie root
+//            window?.rootViewController = ViewController()
+//            //Yaz root
+//            window?.rootViewController = ViewController()
+
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
