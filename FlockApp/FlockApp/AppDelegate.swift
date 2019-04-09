@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import GoogleMaps
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -32,7 +35,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            //Nathalie root
 //            window?.rootViewController = ViewController()
 //            //Stephanie root
-            window?.rootViewController = CreateEditViewController()
+            let createVC = CreateEditViewController()
+            let createNav = UINavigationController.init(rootViewController: createVC)
+            window?.rootViewController = createNav
+            
 //            //Yaz root
 //            window?.rootViewController = ViewController()
 

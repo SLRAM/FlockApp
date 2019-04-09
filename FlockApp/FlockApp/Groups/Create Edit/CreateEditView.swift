@@ -8,11 +8,28 @@
 import UIKit
 protocol CreateViewDelegate: AnyObject {
     func createPressed()
+    func createsPressed()
 }
 class CreateEditView: UIView {
     
     weak var delegate: CreateViewDelegate?
     
+    
+    lazy var createsButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Event Address", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        button.addTarget(self, action: #selector(createsPressed), for: .touchUpInside)
+        button.backgroundColor = .yellow
+        button.layer.cornerRadius = 10.0
+        return button
+    }()
+    @objc func createsPressed() {
+        delegate?.createsPressed()
+        print("event address pressed")
+        
+    }
     
     public lazy var createButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(createPressed))
@@ -29,7 +46,9 @@ class CreateEditView: UIView {
         textView.layer.borderWidth = 2.0
         textView.layer.borderColor = #colorLiteral(red: 0.8529050946, green: 0.8478356004, blue: 0.8568023443, alpha: 0.4653253425).cgColor
         textView.textColor = .gray
-        textView.text = "Enter the quiz title"
+        textView.textAlignment = .center
+//        textView.font = textView.font?.withSize(20)
+        textView.text = "Enter the Event Title"
         textView.tag = 0
         
         return textView
@@ -72,8 +91,9 @@ class CreateEditView: UIView {
 extension CreateEditView {
     func setupCollectionView() {
         setupTitleTextField()
-        setupFirstQuizTextField()
-        setupSecondTextField()
+        setupAddressButton()
+//        setupFirstQuizTextField()
+//        setupSecondTextField()
     }
     func setupTitleTextField() {
         addSubview(titleTextView)
@@ -82,6 +102,14 @@ extension CreateEditView {
         titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+    }
+    func setupAddressButton() {
+        addSubview(createsButton)
+        createsButton.translatesAutoresizingMaskIntoConstraints = false
+        createsButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
+        createsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        createsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        createsButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
     }
     func setupFirstQuizTextField() {
         addSubview(firstQuizTextView)
