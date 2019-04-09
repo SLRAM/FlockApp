@@ -32,7 +32,6 @@
 
 namespace util = firebase::firestore::util;
 using firebase::firestore::model::DatabaseId;
-using firebase::firestore::model::FieldMask;
 using firebase::firestore::model::FieldPath;
 using firebase::firestore::util::Comparator;
 using firebase::firestore::util::CompareMixedNumber;
@@ -48,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation FSTFieldValueOptions
 
-- (instancetype)initWithServerTimestampBehavior:(ServerTimestampBehavior)serverTimestampBehavior
+- (instancetype)initWithServerTimestampBehavior:(FSTServerTimestampBehavior)serverTimestampBehavior
                    timestampsInSnapshotsEnabled:(BOOL)timestampsInSnapshotsEnabled {
   self = [super init];
 
@@ -495,11 +494,11 @@ struct Comparator<NSString *> {
 
 - (id)valueWithOptions:(FSTFieldValueOptions *)options {
   switch (options.serverTimestampBehavior) {
-    case ServerTimestampBehavior::None:
+    case FSTServerTimestampBehaviorNone:
       return [NSNull null];
-    case ServerTimestampBehavior::Estimate:
+    case FSTServerTimestampBehaviorEstimate:
       return [[FSTTimestampValue timestampValue:self.localWriteTime] valueWithOptions:options];
-    case ServerTimestampBehavior::Previous:
+    case FSTServerTimestampBehaviorPrevious:
       return self.previousValue ? [self.previousValue valueWithOptions:options] : [NSNull null];
     default:
       HARD_FAIL("Unexpected server timestamp option: %s", options.serverTimestampBehavior);
@@ -872,21 +871,6 @@ static const NSComparator StringComparator = ^NSComparisonResult(NSString *left,
 - (FSTObjectValue *)objectBySettingValue:(FSTFieldValue *)value forField:(NSString *)field {
   return [[FSTObjectValue alloc]
       initWithImmutableDictionary:[_internalValue dictionaryBySettingObject:value forKey:field]];
-}
-
-- (FSTObjectValue *)objectByApplyingFieldMask:(const FieldMask &)fieldMask {
-  FSTObjectValue *filteredObject = self;
-  for (const FieldPath &path : fieldMask) {
-    if (path.empty()) {
-      return self;
-    } else {
-      FSTFieldValue *newValue = [self valueForPath:path];
-      if (newValue) {
-        filteredObject = [filteredObject objectBySettingValue:newValue forPath:path];
-      }
-    }
-  }
-  return filteredObject;
 }
 
 @end
