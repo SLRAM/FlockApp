@@ -109,6 +109,7 @@ PODS:
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
   - Protobuf (3.7.0)
+  - SnapKit (4.2.0)
   - Toucan (1.1.0)
 
 DEPENDENCIES:
@@ -117,6 +118,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - Kingfisher
+  - SnapKit
   - Toucan
 
 SPEC REPOS:
@@ -139,6 +141,7 @@ SPEC REPOS:
     - leveldb-library
     - nanopb
     - Protobuf
+    - SnapKit
     - Toucan
 
 SPEC CHECKSUMS:
@@ -160,8 +163,9 @@ SPEC CHECKSUMS:
   leveldb-library: 08cba283675b7ed2d99629a4bc5fd052cd2bb6a5
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
   Protobuf: 7a877b7f3e5964e3fce995e2eb323dbc6831bb5a
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   Toucan: 8f228fabb21521b9658692df9325fe76e71d74b2
 
-PODFILE CHECKSUM: 2a09c76bbd2baca632747e67b577ae18dbb7b02a
+PODFILE CHECKSUM: 59f867f68f27cd0d8bffd8cfb77ffe2f24b829cd
 
 COCOAPODS: 1.6.1
