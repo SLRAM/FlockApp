@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //Use ViewController() when pushing!
             
 //            //push root
-            window?.rootViewController = ViewController()
+//            window?.rootViewController = ViewController()
 //
 //
 //            //Biron root
@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            //Nathalie root
 //            window?.rootViewController = ViewController()
 //            //Stephanie root
-//            window?.rootViewController = ViewController()
+            window?.rootViewController = CreateEditViewController()
 //            //Yaz root
 //            window?.rootViewController = ViewController()
 
