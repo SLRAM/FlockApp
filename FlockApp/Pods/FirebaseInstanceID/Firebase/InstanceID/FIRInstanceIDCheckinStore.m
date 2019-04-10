@@ -51,10 +51,10 @@ static const NSInteger kOldCheckinPlistCount = 6;
 @implementation FIRInstanceIDCheckinStore
 
 - (instancetype)initWithCheckinPlistFileName:(NSString *)checkinFilename
-                            subDirectoryName:(NSString *)subDirectoryName {
+              applicationSupportSubDirectory:(NSString *)applicationSupportSubDirectory {
   FIRInstanceIDBackupExcludedPlist *plist =
       [[FIRInstanceIDBackupExcludedPlist alloc] initWithFileName:checkinFilename
-                                                    subDirectory:subDirectoryName];
+                                  applicationSupportSubDirectory:applicationSupportSubDirectory];
 
   FIRInstanceIDAuthKeychain *keychain =
       [[FIRInstanceIDAuthKeychain alloc] initWithIdentifier:kFIRInstanceIDCheckinKeychainGeneric];

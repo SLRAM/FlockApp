@@ -22,9 +22,7 @@
 #include <vector>
 
 #include "Firestore/core/src/firebase/firestore/auth/user.h"
-#include "Firestore/core/src/firebase/firestore/local/index_manager.h"
 #include "Firestore/core/src/firebase/firestore/local/listen_sequence.h"
-#include "Firestore/core/src/firebase/firestore/local/memory_index_manager.h"
 #include "Firestore/core/src/firebase/firestore/local/memory_mutation_queue.h"
 #include "Firestore/core/src/firebase/firestore/local/memory_query_cache.h"
 #include "Firestore/core/src/firebase/firestore/local/memory_remote_document_cache.h"
@@ -37,7 +35,6 @@ using firebase::firestore::auth::HashUser;
 using firebase::firestore::auth::User;
 using firebase::firestore::local::ListenSequence;
 using firebase::firestore::local::LruParams;
-using firebase::firestore::local::MemoryIndexManager;
 using firebase::firestore::local::MemoryMutationQueue;
 using firebase::firestore::local::MemoryQueryCache;
 using firebase::firestore::local::MemoryRemoteDocumentCache;
@@ -57,8 +54,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (MemoryQueryCache *)queryCache;
 
 - (MemoryRemoteDocumentCache *)remoteDocumentCache;
-
-- (MemoryIndexManager *)indexManager;
 
 - (MemoryMutationQueue *)mutationQueueForUser:(const User &)user;
 
@@ -83,9 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
   std::unique_ptr<MemoryQueryCache> _queryCache;
 
   /** The RemoteDocumentCache representing the persisted cache of remote documents. */
-  std::unique_ptr<MemoryRemoteDocumentCache> _remoteDocumentCache;
-
-  MemoryIndexManager _indexManager;
+  MemoryRemoteDocumentCache _remoteDocumentCache;
 
   FSTTransactionRunner _transactionRunner;
 
@@ -112,7 +105,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init {
   if (self = [super init]) {
     _queryCache = absl::make_unique<MemoryQueryCache>(self);
-    _remoteDocumentCache = absl::make_unique<MemoryRemoteDocumentCache>(self);
     self.started = YES;
   }
   return self;
@@ -159,11 +151,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (MemoryRemoteDocumentCache *)remoteDocumentCache {
-  return _remoteDocumentCache.get();
-}
-
-- (MemoryIndexManager *)indexManager {
-  return &_indexManager;
+  return &_remoteDocumentCache;
 }
 
 @end

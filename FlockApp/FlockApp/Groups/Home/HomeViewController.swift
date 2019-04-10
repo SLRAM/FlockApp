@@ -6,24 +6,27 @@
 //
 
 import UIKit
+import SnapKit
 
 class HomeViewController: UIViewController {
+    
+    var homeView = HomeView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.addSubview(homeView)
+        view.backgroundColor = .white
+        homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @objc func showCreateEditEvent() {
+        let createEditVC = CreateEditViewController()
+        present(createEditVC, animated: true) 
+        print("hello")
     }
-    */
+
+ 
+    
 
 }

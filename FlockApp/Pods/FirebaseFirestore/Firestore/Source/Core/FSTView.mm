@@ -21,6 +21,7 @@
 #include <vector>
 
 #import "Firestore/Source/Core/FSTQuery.h"
+#import "Firestore/Source/Core/FSTViewSnapshot.h"
 #import "Firestore/Source/Model/FSTDocument.h"
 #import "Firestore/Source/Model/FSTDocumentSet.h"
 #import "Firestore/Source/Model/FSTFieldValue.h"
@@ -33,7 +34,6 @@
 using firebase::firestore::core::DocumentViewChange;
 using firebase::firestore::core::DocumentViewChangeSet;
 using firebase::firestore::core::SyncState;
-using firebase::firestore::core::ViewSnapshot;
 using firebase::firestore::model::DocumentKey;
 using firebase::firestore::model::DocumentKeySet;
 using firebase::firestore::model::MaybeDocumentMap;
@@ -159,36 +159,30 @@ int GetDocumentViewChangeTypePosition(DocumentViewChange::Type changeType) {
 
 @interface FSTViewChange ()
 
-+ (FSTViewChange *)changeWithSnapshot:(absl::optional<ViewSnapshot> &&)snapshot
++ (FSTViewChange *)changeWithSnapshot:(nullable FSTViewSnapshot *)snapshot
                          limboChanges:(NSArray<FSTLimboDocumentChange *> *)limboChanges;
 
-- (instancetype)initWithSnapshot:(absl::optional<ViewSnapshot> &&)snapshot
+- (instancetype)initWithSnapshot:(nullable FSTViewSnapshot *)snapshot
                     limboChanges:(NSArray<FSTLimboDocumentChange *> *)limboChanges
     NS_DESIGNATED_INITIALIZER;
 
 @end
 
-@implementation FSTViewChange {
-  absl::optional<ViewSnapshot> _snapshot;
-}
+@implementation FSTViewChange
 
-+ (FSTViewChange *)changeWithSnapshot:(absl::optional<ViewSnapshot> &&)snapshot
++ (FSTViewChange *)changeWithSnapshot:(nullable FSTViewSnapshot *)snapshot
                          limboChanges:(NSArray<FSTLimboDocumentChange *> *)limboChanges {
-  return [[self alloc] initWithSnapshot:std::move(snapshot) limboChanges:limboChanges];
+  return [[self alloc] initWithSnapshot:snapshot limboChanges:limboChanges];
 }
 
-- (instancetype)initWithSnapshot:(absl::optional<ViewSnapshot> &&)snapshot
+- (instancetype)initWithSnapshot:(nullable FSTViewSnapshot *)snapshot
                     limboChanges:(NSArray<FSTLimboDocumentChange *> *)limboChanges {
   self = [super init];
   if (self) {
-    _snapshot = std::move(snapshot);
+    _snapshot = snapshot;
     _limboChanges = limboChanges;
   }
   return self;
-}
-
-- (absl::optional<ViewSnapshot> &)snapshot {
-  return _snapshot;
 }
 
 @end
@@ -397,23 +391,24 @@ int GetDocumentViewChangeTypePosition(DocumentViewChange::Type changeType) {
   NSArray<FSTLimboDocumentChange *> *limboChanges = [self updateLimboDocuments];
   BOOL synced = _limboDocuments.empty() && self.isCurrent;
   SyncState newSyncState = synced ? SyncState::Synced : SyncState::Local;
-  bool syncStateChanged = newSyncState != self.syncState;
+  BOOL syncStateChanged = newSyncState != self.syncState;
   self.syncState = newSyncState;
 
   if (changes.empty() && !syncStateChanged) {
     // No changes.
-    return [FSTViewChange changeWithSnapshot:absl::nullopt limboChanges:limboChanges];
+    return [FSTViewChange changeWithSnapshot:nil limboChanges:limboChanges];
   } else {
-    ViewSnapshot snapshot{self.query,
-                          docChanges.documentSet,
-                          oldDocuments,
-                          std::move(changes),
-                          docChanges.mutatedKeys,
-                          /*from_cache=*/newSyncState == SyncState::Local,
-                          syncStateChanged,
-                          /*excludes_metadata_changes=*/false};
+    FSTViewSnapshot *snapshot =
+        [[FSTViewSnapshot alloc] initWithQuery:self.query
+                                     documents:docChanges.documentSet
+                                  oldDocuments:oldDocuments
+                               documentChanges:std::move(changes)
+                                     fromCache:newSyncState == SyncState::Local
+                                   mutatedKeys:docChanges.mutatedKeys
+                              syncStateChanged:syncStateChanged
+                       excludesMetadataChanges:NO];
 
-    return [FSTViewChange changeWithSnapshot:std::move(snapshot) limboChanges:limboChanges];
+    return [FSTViewChange changeWithSnapshot:snapshot limboChanges:limboChanges];
   }
 }
 
@@ -430,7 +425,7 @@ int GetDocumentViewChangeTypePosition(DocumentViewChange::Type changeType) {
                                                      mutatedKeys:_mutatedKeys]];
   } else {
     // No effect, just return a no-op FSTViewChange.
-    return [[FSTViewChange alloc] initWithSnapshot:absl::nullopt limboChanges:@[]];
+    return [[FSTViewChange alloc] initWithSnapshot:nil limboChanges:@[]];
   }
 }
 

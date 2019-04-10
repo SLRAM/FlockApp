@@ -66,7 +66,6 @@ using firebase::firestore::model::DocumentKey;
 using firebase::firestore::model::FieldMask;
 using firebase::firestore::model::FieldPath;
 using firebase::firestore::model::FieldTransform;
-using firebase::firestore::model::NumericIncrementTransform;
 using firebase::firestore::model::Precondition;
 using firebase::firestore::model::ResourcePath;
 using firebase::firestore::model::ServerTimestampTransform;
@@ -478,7 +477,7 @@ NS_ASSUME_NONNULL_BEGIN
   } else if (mutationClass == [FSTPatchMutation class]) {
     FSTPatchMutation *patch = (FSTPatchMutation *)mutation;
     proto.update = [self encodedDocumentWithFields:patch.value key:patch.key];
-    proto.updateMask = [self encodedFieldMask:*(patch.fieldMask)];
+    proto.updateMask = [self encodedFieldMask:patch.fieldMask];
 
   } else if (mutationClass == [FSTTransformMutation class]) {
     FSTTransformMutation *transform = (FSTTransformMutation *)mutation;
@@ -612,10 +611,7 @@ NS_ASSUME_NONNULL_BEGIN
   } else if (fieldTransform.transformation().type() == TransformOperation::Type::ArrayRemove) {
     proto.removeAllFromArray_p = [self
         encodedArrayTransformElements:ArrayTransform::Elements(fieldTransform.transformation())];
-  } else if (fieldTransform.transformation().type() == TransformOperation::Type::Increment) {
-    const NumericIncrementTransform &incrementTransform =
-        static_cast<const NumericIncrementTransform &>(fieldTransform.transformation());
-    proto.increment = [self encodedFieldValue:incrementTransform.operand()];
+
   } else {
     HARD_FAIL("Unknown transform: %s type", fieldTransform.transformation().type());
   }
@@ -667,14 +663,6 @@ NS_ASSUME_NONNULL_BEGIN
             FieldPath::FromServerFormat(util::MakeString(proto.fieldPath)),
             absl::make_unique<ArrayTransform>(TransformOperation::Type::ArrayRemove,
                                               std::move(elements)));
-        break;
-      }
-
-      case GCFSDocumentTransform_FieldTransform_TransformType_OneOfCase_Increment: {
-        FSTNumberValue *operand =
-            static_cast<FSTNumberValue *>([self decodedFieldValue:proto.increment]);
-        fieldTransforms.emplace_back(FieldPath::FromServerFormat(util::MakeString(proto.fieldPath)),
-                                     absl::make_unique<NumericIncrementTransform>(operand));
         break;
       }
 
@@ -777,16 +765,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (GCFSTarget_QueryTarget *)encodedQueryTarget:(FSTQuery *)query {
   // Dissect the path into parent, collectionId, and optional key filter.
   GCFSTarget_QueryTarget *queryTarget = [GCFSTarget_QueryTarget message];
-  const ResourcePath &path = query.path;
-  if (query.collectionGroup) {
-    HARD_ASSERT(path.size() % 2 == 0,
-                "Collection group queries should be within a document path or root.");
-    queryTarget.parent = [self encodedQueryPath:path];
-    GCFSStructuredQuery_CollectionSelector *from = [GCFSStructuredQuery_CollectionSelector message];
-    from.collectionId = query.collectionGroup;
-    from.allDescendants = YES;
-    [queryTarget.structuredQuery.fromArray addObject:from];
+  if (query.path.size() == 0) {
+    queryTarget.parent = [self encodedQueryPath:query.path];
   } else {
+    const ResourcePath &path = query.path;
     HARD_ASSERT(path.size() % 2 != 0, "Document queries with filters are not supported.");
     queryTarget.parent = [self encodedQueryPath:path.PopLast()];
     GCFSStructuredQuery_CollectionSelector *from = [GCFSStructuredQuery_CollectionSelector message];
@@ -824,18 +806,13 @@ NS_ASSUME_NONNULL_BEGIN
   ResourcePath path = [self decodedQueryPath:target.parent];
 
   GCFSStructuredQuery *query = target.structuredQuery;
-  NSString *collectionGroup;
   NSUInteger fromCount = query.fromArray_Count;
   if (fromCount > 0) {
     HARD_ASSERT(fromCount == 1,
                 "StructuredQuery.from with more than one collection is not supported.");
 
     GCFSStructuredQuery_CollectionSelector *from = query.fromArray[0];
-    if (from.allDescendants) {
-      collectionGroup = from.collectionId;
-    } else {
-      path = path.Append(util::MakeString(from.collectionId));
-    }
+    path = path.Append(util::MakeString(from.collectionId));
   }
 
   NSArray<FSTFilter *> *filterBy;
@@ -868,7 +845,6 @@ NS_ASSUME_NONNULL_BEGIN
   }
 
   return [[FSTQuery alloc] initWithPath:path
-                        collectionGroup:collectionGroup
                                filterBy:filterBy
                                 orderBy:orderBy
                                   limit:limit

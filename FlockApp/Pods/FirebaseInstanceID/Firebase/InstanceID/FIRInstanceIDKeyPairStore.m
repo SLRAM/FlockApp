@@ -130,9 +130,9 @@ NSString *FIRInstanceIDCreationTimeKeyWithSubtype(NSString *subtype) {
   self = [super init];
   if (self) {
     NSString *fileName = [[self class] keyStoreFileName];
-    _plist =
-        [[FIRInstanceIDBackupExcludedPlist alloc] initWithFileName:fileName
-                                                      subDirectory:kFIRInstanceIDSubDirectoryName];
+    _plist = [[FIRInstanceIDBackupExcludedPlist alloc]
+                      initWithFileName:fileName
+        applicationSupportSubDirectory:kFIRInstanceIDApplicationSupportSubDirectory];
   }
   return self;
 }
