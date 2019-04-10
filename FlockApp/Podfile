@@ -14,5 +14,8 @@ pod 'Firebase/Storage'
 pod 'Kingfisher'
 pod 'Toucan'
 pod 'SnapKit'
+pod 'GoogleMaps'
+#pod 'Google-Maps-iOS-Utils'
+
 
 end
