@@ -20,11 +20,10 @@
 #include <vector>
 
 #import "Firestore/Source/Core/FSTTypes.h"
+#import "Firestore/Source/Core/FSTViewSnapshot.h"
 
-#include "Firestore/core/src/firebase/firestore/api/document_reference.h"
 #include "Firestore/core/src/firebase/firestore/auth/credentials_provider.h"
 #include "Firestore/core/src/firebase/firestore/core/database_info.h"
-#include "Firestore/core/src/firebase/firestore/core/view_snapshot.h"
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
 #include "Firestore/core/src/firebase/firestore/util/async_queue.h"
 #include "Firestore/core/src/firebase/firestore/util/executor.h"
@@ -79,8 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** Starts listening to a query. */
 - (FSTQueryListener *)listenToQuery:(FSTQuery *)query
                             options:(FSTListenOptions *)options
-                viewSnapshotHandler:
-                    (firebase::firestore::core::ViewSnapshotHandler &&)viewSnapshotHandler;
+                viewSnapshotHandler:(FSTViewSnapshotHandler)viewSnapshotHandler;
 
 /** Stops listening to a query previously listened to. */
 - (void)removeListener:(FSTQueryListener *)listener;
@@ -89,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
  * Retrieves a document from the cache via the indicated completion. If the doc
  * doesn't exist, an error will be sent to the completion.
  */
-- (void)getDocumentFromLocalCache:(const firebase::firestore::api::DocumentReference &)doc
+- (void)getDocumentFromLocalCache:(FIRDocumentReference *)doc
                        completion:(void (^)(FIRDocumentSnapshot *_Nullable document,
                                             NSError *_Nullable error))completion;
 

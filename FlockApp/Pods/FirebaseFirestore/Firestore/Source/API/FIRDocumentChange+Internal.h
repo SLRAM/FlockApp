@@ -16,9 +16,8 @@
 
 #import "FIRDocumentChange.h"
 
-#include "Firestore/core/src/firebase/firestore/core/view_snapshot.h"
-
 @class FIRFirestore;
+@class FSTViewSnapshot;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -26,8 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface FIRDocumentChange (Internal)
 
 /** Calculates the array of FIRDocumentChange's based on the given FSTViewSnapshot. */
-+ (NSArray<FIRDocumentChange *> *)documentChangesForSnapshot:
-                                      (const firebase::firestore::core::ViewSnapshot &)snapshot
++ (NSArray<FIRDocumentChange *> *)documentChangesForSnapshot:(FSTViewSnapshot *)snapshot
                                       includeMetadataChanges:(BOOL)includeMetadataChanges
                                                    firestore:(FIRFirestore *)firestore;
 

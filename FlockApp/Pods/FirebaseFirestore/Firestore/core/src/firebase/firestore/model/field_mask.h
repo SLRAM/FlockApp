@@ -51,9 +51,6 @@ class FieldMask {
   explicit FieldMask(std::set<FieldPath> fields) : fields_{std::move(fields)} {
   }
 
-  FieldMask(const FieldMask& f) : fields_{f.begin(), f.end()} {
-  }
-
   const_iterator begin() const {
     return fields_.begin();
   }

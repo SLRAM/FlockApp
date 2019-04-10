@@ -139,8 +139,7 @@ ObjectValue::Map DecodeFields(
     const google_firestore_v1_Document_FieldsEntry* fields) {
   ObjectValue::Map result;
   for (size_t i = 0; i < count; i++) {
-    ObjectValue::Map::value_type kv = DecodeFieldsEntry(reader, fields[i]);
-    result = result.insert(std::move(kv.first), std::move(kv.second));
+    result.emplace(DecodeFieldsEntry(reader, fields[i]));
   }
 
   return result;
@@ -174,7 +173,7 @@ ObjectValue::Map DecodeMapValue(Reader* reader,
     FieldValue value =
         Serializer::DecodeFieldValue(reader, map_value.fields[i].value);
 
-    result = result.insert(key, value);
+    result[key] = value;
   }
 
   return result;
@@ -701,7 +700,6 @@ google_firestore_v1_Target_QueryTarget Serializer::EncodeQueryTarget(
 
   // Dissect the path into parent, collection_id and optional key filter.
   std::string collection_id;
-  // TODO(rsgowman): Port Collection Group Queries logic.
   if (query.path().empty()) {
     result.parent = EncodeString(EncodeQueryPath(ResourcePath::Empty()));
   } else {

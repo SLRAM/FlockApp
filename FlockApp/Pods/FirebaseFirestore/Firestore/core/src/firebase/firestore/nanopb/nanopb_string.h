@@ -72,7 +72,9 @@ class String : public util::Comparable<String> {
     swap(*this, other);
   }
 
-  ~String();
+  ~String() {
+    delete bytes_;
+  }
 
   String& operator=(String other) {
     swap(*this, other);

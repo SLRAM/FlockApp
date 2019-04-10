@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "Firestore/core/src/firebase/firestore/util/warnings.h"
-
 #import "FIRFirestoreSettings.h"
 
 #import "Firestore/Source/Util/FSTUsageValidation.h"
@@ -51,14 +49,15 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = YES;
   }
 
   FIRFirestoreSettings *otherSettings = (FIRFirestoreSettings *)other;
-  SUPPRESS_DEPRECATED_DECLARATIONS_BEGIN()
   return [self.host isEqual:otherSettings.host] &&
          self.isSSLEnabled == otherSettings.isSSLEnabled &&
          self.dispatchQueue == otherSettings.dispatchQueue &&
          self.isPersistenceEnabled == otherSettings.isPersistenceEnabled &&
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
          self.timestampsInSnapshotsEnabled == otherSettings.timestampsInSnapshotsEnabled &&
+#pragma clang diagnostic pop
          self.cacheSizeBytes == otherSettings.cacheSizeBytes;
-  SUPPRESS_END()
 }
 
 - (NSUInteger)hash {
@@ -66,9 +65,10 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = YES;
   result = 31 * result + (self.isSSLEnabled ? 1231 : 1237);
   // Ignore the dispatchQueue to avoid having to deal with sizeof(dispatch_queue_t).
   result = 31 * result + (self.isPersistenceEnabled ? 1231 : 1237);
-  SUPPRESS_DEPRECATED_DECLARATIONS_BEGIN()
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   result = 31 * result + (self.timestampsInSnapshotsEnabled ? 1231 : 1237);
-  SUPPRESS_END()
+#pragma clang diagnostic pop
   result = 31 * result + (NSUInteger)self.cacheSizeBytes;
   return result;
 }
@@ -79,9 +79,10 @@ static const BOOL kDefaultTimestampsInSnapshotsEnabled = YES;
   copy.sslEnabled = _sslEnabled;
   copy.dispatchQueue = _dispatchQueue;
   copy.persistenceEnabled = _persistenceEnabled;
-  SUPPRESS_DEPRECATED_DECLARATIONS_BEGIN()
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
   copy.timestampsInSnapshotsEnabled = _timestampsInSnapshotsEnabled;
-  SUPPRESS_END()
+#pragma clang diagnostic pop
   copy.cacheSizeBytes = _cacheSizeBytes;
   return copy;
 }

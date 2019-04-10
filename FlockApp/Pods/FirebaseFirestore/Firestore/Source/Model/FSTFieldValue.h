@@ -19,7 +19,6 @@
 #import "Firestore/third_party/Immutable/FSTImmutableSortedDictionary.h"
 
 #include "Firestore/core/src/firebase/firestore/model/database_id.h"
-#include "Firestore/core/src/firebase/firestore/model/field_mask.h"
 #include "Firestore/core/src/firebase/firestore/model/field_path.h"
 
 @class FSTDocumentKey;
@@ -44,12 +43,16 @@ typedef NS_ENUM(NSInteger, FSTTypeOrder) {
 };
 
 /** Defines the return value for pending server timestamps. */
-enum class ServerTimestampBehavior { None, Estimate, Previous };
+typedef NS_ENUM(NSInteger, FSTServerTimestampBehavior) {
+  FSTServerTimestampBehaviorNone,
+  FSTServerTimestampBehaviorEstimate,
+  FSTServerTimestampBehaviorPrevious
+};
 
 /** Holds properties that define field value deserialization options. */
 @interface FSTFieldValueOptions : NSObject
 
-@property(nonatomic, readonly, assign) ServerTimestampBehavior serverTimestampBehavior;
+@property(nonatomic, readonly, assign) FSTServerTimestampBehavior serverTimestampBehavior;
 
 @property(nonatomic) BOOL timestampsInSnapshotsEnabled;
 
@@ -59,7 +62,7 @@ enum class ServerTimestampBehavior { None, Estimate, Previous };
  * Creates an FSTFieldValueOptions instance that specifies deserialization behavior for pending
  * server timestamps.
  */
-- (instancetype)initWithServerTimestampBehavior:(ServerTimestampBehavior)serverTimestampBehavior
+- (instancetype)initWithServerTimestampBehavior:(FSTServerTimestampBehavior)serverTimestampBehavior
                    timestampsInSnapshotsEnabled:(BOOL)timestampsInSnapshotsEnabled
     NS_DESIGNATED_INITIALIZER;
 
@@ -248,14 +251,6 @@ enum class ServerTimestampBehavior { None, Estimate, Previous };
  * path does not exist within this object's structure, no change is performed.
  */
 - (FSTObjectValue *)objectByDeletingPath:(const firebase::firestore::model::FieldPath &)fieldPath;
-
-/**
- * Applies this field mask to the provided object value and returns an object that only contains
- * fields that are specified in both the input object and this field mask.
- */
-// TODO(mrschmidt): Once FieldValues are C++, move this to FieldMask to match other platforms.
-- (FSTObjectValue *)objectByApplyingFieldMask:
-    (const firebase::firestore::model::FieldMask &)fieldMask;
 @end
 
 /**
