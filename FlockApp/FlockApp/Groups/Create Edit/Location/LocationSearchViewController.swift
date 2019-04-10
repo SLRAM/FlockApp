@@ -12,7 +12,7 @@ import GoogleMaps
 
 protocol LocationSearchViewControllerDelegate: AnyObject {
     //    func getLocation(location: Dictionary<String,CLLocationCoordinate2D>)
-    func getLocation(buttonTag: Int, locationTuple: (String, CLLocationCoordinate2D))
+    func getLocation(locationTuple: (String, CLLocationCoordinate2D))
     
 }
 class LocationSearchViewController: UIViewController {
@@ -24,8 +24,6 @@ class LocationSearchViewController: UIViewController {
     var searchCompleter = MKLocalSearchCompleter()
     var searchResults = [MKLocalSearchCompletion]()
     var locationCoordinate: CLLocationCoordinate2D?
-    var tag: Int?
-    
     var query : String?
     var near = String()
     var locationString = String()
@@ -77,9 +75,7 @@ class LocationSearchViewController: UIViewController {
             alertController.addAction(okAction)
             present(alertController, animated: true)
         } else {
-//            guard let buttonTag = tag else {return}
-            let buttonTag = 0
-            delegate?.getLocation(buttonTag: buttonTag, locationTuple: locationTuple)
+            delegate?.getLocation(locationTuple: locationTuple)
             print("saved")
             let alertController = UIAlertController(title: "This location has been added to your route.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
@@ -105,6 +101,7 @@ extension LocationSearchViewController: UITableViewDataSource, UITableViewDelega
         //        guard let cell = homeView.myTableView.dequeueReusableCell(withIdentifier: "LocationSearchTableViewCell", for: indexPath) as? LocationSearchTableViewCell else {return UITableViewCell()}
         let searchResult = searchResults[indexPath.row]
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+//        let cell = LocationSearchTableViewCell(style: .default, reuseIdentifier: nil)
         cell.textLabel?.text = searchResult.title
         cell.detailTextLabel?.text = searchResult.subtitle
         cell.backgroundColor = .clear
