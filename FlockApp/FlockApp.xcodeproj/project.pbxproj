@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		90855BA8CE7044DD1F1F9A01 /* Pods_FlockApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */; };
+		9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291A225E4D5A00E4568F /* BaseViewController.swift */; };
+		9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291C225E4D6200E4568F /* MenuLauncher.swift */; };
+		9383291F225E4D7C00E4568F /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */; };
 		97025F942257EA1100273C91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F932257EA1100273C91 /* AppDelegate.swift */; };
 		97025F962257EA1100273C91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F952257EA1100273C91 /* ViewController.swift */; };
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
@@ -53,6 +56,9 @@
 
 /* Begin PBXFileReference section */
 		682BF4BA13CA0D365D3D99CE /* Pods-FlockApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.debug.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.debug.xcconfig"; sourceTree = "<group>"; };
+		9383291A225E4D5A00E4568F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		9383291C225E4D6200E4568F /* MenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLauncher.swift; sourceTree = "<group>"; };
+		9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
 		97025F902257EA1100273C91 /* FlockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97025F932257EA1100273C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97025F952257EA1100273C91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +127,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		93832919225E4D3800E4568F /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				9383291A225E4D5A00E4568F /* BaseViewController.swift */,
+				9383291C225E4D6200E4568F /* MenuLauncher.swift */,
+				9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		97025F872257EA1100273C91 = {
 			isa = PBXGroup;
 			children = (
@@ -175,6 +191,7 @@
 				97802CD8225CFD98007D480D /* Create Edit */,
 				97802CD9225CFDC2007D480D /* Event */,
 				97802CDA225CFE37007D480D /* Invite */,
+				93832919225E4D3800E4568F /* Menu */,
 			);
 			path = Groups;
 			sourceTree = "<group>";
@@ -502,15 +519,18 @@
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802CF2225CFFF1007D480D /* HomeTableViewCell.swift in Sources */,
 				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
+				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
 				97802CE4225CFF0D007D480D /* CreateEditViewController.swift in Sources */,
 				97802CE0225CFEB3007D480D /* InviteTableViewCell.swift in Sources */,
 				97802CCD225CF756007D480D /* String+Date.swift in Sources */,
 				97802CFB225D020D007D480D /* EventPeopleView.swift in Sources */,
+				9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */,
 				97802CCE225CF756007D480D /* Date+Extensions.swift in Sources */,
 				97802CD2225CF774007D480D /* UIViewController+Alert.swift in Sources */,
 				97802CE2225CFEF4007D480D /* EventViewController.swift in Sources */,
 				97802CBF225CF5E6007D480D /* CreateAccountViewController.swift in Sources */,
+				9383291F225E4D7C00E4568F /* MenuCollectionViewCell.swift in Sources */,
 				97802CDE225CFE99007D480D /* InviteView.swift in Sources */,
 				97802CF9225D01F9007D480D /* EventPeopleViewController.swift in Sources */,
 				97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */,
