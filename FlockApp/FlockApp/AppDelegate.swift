@@ -38,12 +38,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let nav = UINavigationController.init(rootViewController: detailevent)
             window?.rootViewController = nav
 //            //Stephanie root
+
+//           window?.rootViewController = CreateEditViewController()
 //            let createVC = CreateEditViewController()
-//            let createNav = UINavigationController.init(rootViewController: createVC)
+//            let createNav =       UINavigationController.init(rootViewController: createVC)
 //            window?.rootViewController = createNav
             
 //            //Yaz root
-//            window?.rootViewController = ViewController()
+           window?.rootViewController = HomeViewController()
 
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
