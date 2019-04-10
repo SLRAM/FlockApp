@@ -8,25 +8,25 @@
 import UIKit
 protocol CreateViewDelegate: AnyObject {
     func createPressed()
-    func createsPressed()
+    func addressPressed()
 }
 class CreateEditView: UIView {
     
     weak var delegate: CreateViewDelegate?
     
     
-    lazy var createsButton: UIButton = {
+    lazy var addressButton: UIButton = {
         let button = UIButton()
         button.setTitle("Event Address", for: .normal)
         button.setTitleColor(.blue, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(createsPressed), for: .touchUpInside)
+        button.addTarget(self, action: #selector(addressPressed), for: .touchUpInside)
         button.backgroundColor = .yellow
         button.layer.cornerRadius = 10.0
         return button
     }()
-    @objc func createsPressed() {
-        delegate?.createsPressed()
+    @objc func addressPressed() {
+        delegate?.addressPressed()
         print("event address pressed")
         
     }
@@ -104,12 +104,12 @@ extension CreateEditView {
         titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
     }
     func setupAddressButton() {
-        addSubview(createsButton)
-        createsButton.translatesAutoresizingMaskIntoConstraints = false
-        createsButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
-        createsButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        createsButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        createsButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        addSubview(addressButton)
+        addressButton.translatesAutoresizingMaskIntoConstraints = false
+        addressButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
+        addressButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        addressButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
     }
     func setupFirstQuizTextField() {
         addSubview(firstQuizTextView)

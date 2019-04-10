@@ -38,7 +38,7 @@ class LocationSearchView: UIView {
     lazy var myTableView: UITableView = {
         let tv = UITableView()
         tv.register(LocationSearchTableViewCell.self, forCellReuseIdentifier: "LocationSearchTableViewCell")
-        tv.rowHeight = (UIScreen.main.bounds.width)/2
+        tv.rowHeight = (UIScreen.main.bounds.width)/4
         tv.backgroundColor = .clear
         return tv
     }()

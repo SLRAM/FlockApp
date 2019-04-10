@@ -8,11 +8,11 @@
 import UIKit
 import MapKit
 import GoogleMaps
+import Firebase
 
 class CreateEditViewController: UIViewController {
     
     private let createEditView = CreateEditView()
-    var quiz: UserModel?
     let titlePlaceholder = "Enter the quiz title"
     let firstPlaceholder = "Enter first quiz fact"
     let secondPlaceholder = "Enter second quiz fact"
@@ -49,35 +49,6 @@ class CreateEditViewController: UIViewController {
             createEditView.titleTextView.isEditable = true
             createEditView.firstQuizTextView.isEditable = true
             createEditView.secondQuizTextView.isEditable = true
-        }
-    }
-    
-    private func saveQuiz()-> UserModel? {
-        guard let quizTitle = createEditView.titleTextView.text,
-            let firstFact = createEditView.firstQuizTextView.text,
-            let secondFact = createEditView.secondQuizTextView.text else {return nil}
-        let facts = [firstFact,secondFact]
-//        guard let username = UserDefaults.standard.string(forKey: UserDefaultsKeys.usernameKey) else {return nil}
-        let username = "username"
-        let date = Date()
-        let formatter = DateFormatter()
-        formatter.dateStyle = DateFormatter.Style.long
-        formatter.timeStyle = .medium
-        let timestamp = formatter.string(from: date)
-        let quiz = UserModel.init(userId: "One", displayName: "one", email: "one@email.com", photoURL: nil, coverImageURL: nil, joinedDate: Date.getISOTimestamp(), firstName: nil, lastName: nil, bio: nil)
-        
-        return quiz
-    }
-    
-    private func setQuizMessage(bool: Bool) {
-        if bool {
-            let alert = UIAlertController(title: "Your Quiz has been saved!", message: nil, preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertController(title: "Sorry that quiz exists already!", message: nil, preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
         }
     }
 }
@@ -120,10 +91,9 @@ extension CreateEditViewController: UITextViewDelegate {
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
-    func createsPressed() {
+    func addressPressed() {
         let detailVC = LocationSearchViewController()
         detailVC.delegate = self
-        detailVC.tag = 0
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -163,21 +133,10 @@ extension CreateEditViewController: CreateViewDelegate {
     }
 }
 extension CreateEditViewController: LocationSearchViewControllerDelegate {
-    func getLocation(buttonTag: Int, locationTuple: (String, CLLocationCoordinate2D)) {
-        if buttonTag == 0 {
+    func getLocation(locationTuple: (String, CLLocationCoordinate2D)) {
             print("tuple printout of string: \(locationTuple.0)")
             print("tuple printout of coordinates: \(locationTuple.1)")
-//            startingCoordinate = locationTuple.1
-            createEditView.createsButton.setTitle(locationTuple.0, for: .normal)
-            createEditView.createsButton.titleLabel?.text = locationTuple.0
-//            startingAddressButton.setTitle(locationTuple.0, for: .normal)
-//            startingAddressButton.titleLabel?.text = locationTuple.0
-        } else {
-            print("tuple printout of string: \(locationTuple.0)")
-            print("tuple printout of coordinates: \(locationTuple.1)")
-//            endingCoordinate = locationTuple.1
-//            endingAddressButton.setTitle(locationTuple.0, for: .normal)
-//            endingAddressButton.titleLabel?.text = locationTuple.0
-        }
+            createEditView.addressButton.setTitle(locationTuple.0, for: .normal)
+            createEditView.addressButton.titleLabel?.text = locationTuple.0
     }
 }
