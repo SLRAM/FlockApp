@@ -33,11 +33,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            //Biron root
 //            window?.rootViewController = ViewController()
 //            //Nathalie root
-//            window?.rootViewController = ViewController()
+            let detailevent = EventViewController()
+            window?.rootViewController = ViewController()
+            let nav = UINavigationController.init(rootViewController: detailevent)
+            window?.rootViewController = nav
 //            //Stephanie root
-            let createVC = CreateEditViewController()
-            let createNav = UINavigationController.init(rootViewController: createVC)
-            window?.rootViewController = createNav
+//            let createVC = CreateEditViewController()
+//            let createNav = UINavigationController.init(rootViewController: createVC)
+//            window?.rootViewController = createNav
             
 //            //Yaz root
 //            window?.rootViewController = ViewController()
