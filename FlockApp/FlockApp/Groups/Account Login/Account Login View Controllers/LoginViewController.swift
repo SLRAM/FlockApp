@@ -38,8 +38,9 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
     }
     
     func didSignInToExistingAccount(_ authservice: AuthService, user: User) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let homeViewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let homeViewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+        let homeViewController = HomeViewController()
         homeViewController.modalTransitionStyle = .crossDissolve
         homeViewController.modalPresentationStyle = .overFullScreen
         present(homeViewController, animated: true)
