@@ -23,9 +23,6 @@ class BaseViewController: UIViewController {
         case "Events":
             let homeVC = HomeViewController()
             present(homeVC, animated: false, completion: nil)
-        case "Profile":
-            let create = CreateEditViewController()
-            present(create, animated: false, completion: nil)
         case "Sign Out":
             authservice.signOutAccount()
             showLoginView()
