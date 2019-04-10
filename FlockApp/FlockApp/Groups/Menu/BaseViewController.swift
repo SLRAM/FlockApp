@@ -23,6 +23,10 @@ class BaseViewController: UIViewController {
         case "Events":
             let homeVC = HomeViewController()
             present(homeVC, animated: false, completion: nil)
+        case "Profile":
+            let dateVC = DateViewController()
+            let dateNav = UINavigationController.init(rootViewController: dateVC)
+            present(dateNav, animated: false)
         case "Sign Out":
             authservice.signOutAccount()
             showLoginView()

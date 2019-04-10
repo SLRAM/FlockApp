@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 import GoogleMaps
-
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,7 +31,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //
 //            //Biron root
-//            window?.rootViewController = ViewController()
+//            let dateVC = DateViewController()
+//            let dateNav = UINavigationController.init(rootViewController: dateVC)
+//            window?.rootViewController = dateNav
 //            //Nathalie root
 //            window?.rootViewController = ViewController()
 //            //Stephanie root
@@ -51,6 +53,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         window?.makeKeyAndVisible()
         
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if let error = error {
+                print("Request Authorization Error: \(error)")
+            } else if granted{
+                print("Authorization Granted")
+            } else{
+                print("User Denied")
+            }
+        }
         return true
     }
 

@@ -22,8 +22,8 @@ class HomeViewController: BaseViewController {
     
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
-        present(createEditVC, animated: true) 
-        print("hello")
+        let createNav = UINavigationController.init(rootViewController: createEditVC)
+        present(createNav, animated: true) 
     }
 
  
