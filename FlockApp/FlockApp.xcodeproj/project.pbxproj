@@ -552,11 +552,8 @@
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802CF2225CFFF1007D480D /* HomeTableViewCell.swift in Sources */,
 				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
-<<<<<<< HEAD
 				97802D0E225E4993007D480D /* FriendsTableViewCell.swift in Sources */,
-=======
 				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
->>>>>>> QA
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
 				97802CE4225CFF0D007D480D /* CreateEditViewController.swift in Sources */,
 				97802CE0225CFEB3007D480D /* InviteTableViewCell.swift in Sources */,
