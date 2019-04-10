@@ -9,6 +9,7 @@ import UIKit
 
 class BaseViewController: UIViewController {
     let menuLauncher = MenuLauncher()
+    let authservice = AuthService()
     override func viewDidLoad() {
         super.viewDidLoad()
         let swipeRight = UISwipeGestureRecognizer(target: menuLauncher, action: #selector(MenuLauncher.respondToSwipeGesture(gesture:)))
@@ -21,10 +22,13 @@ class BaseViewController: UIViewController {
         switch keyword {
         case "Events":
             let homeVC = HomeViewController()
-            present(homeVC, animated: true, completion: nil)
+            present(homeVC, animated: false, completion: nil)
         case "Profile":
             let create = CreateEditViewController()
-            present(create, animated: true, completion: nil)
+            present(create, animated: false, completion: nil)
+        case "Sign Out":
+            authservice.signOutAccount()
+            showLoginView()
         default:
             return
         }
