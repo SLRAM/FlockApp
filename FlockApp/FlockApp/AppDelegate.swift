@@ -32,9 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            //Nathalie root
 //            window?.rootViewController = ViewController()
 //            //Stephanie root
-            window?.rootViewController = CreateEditViewController()
+//           window?.rootViewController = CreateEditViewController()
 //            //Yaz root
-//            window?.rootViewController = ViewController()
+           window?.rootViewController = HomeViewController()
 
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)

@@ -6,47 +6,82 @@
 //
 
 import UIKit
-import SnapKit
+
 
 class HomeView: UIView {
 
-    var createButton: UIButton!
+        public lazy var createButton: UIButton = {
+            let button = UIButton()
+            button.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            button.titleLabel?.text = "Create"
+            button.setTitle("Create", for: .normal)
+            return button
+        }()
     
-    var joinButton: UIButton!
+        public lazy var joinButton: UIButton = {
+            let button = UIButton()
+            button.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            button.setTitle("join", for: .normal)
+            return button
+        }()
     
-    var homePageBackground = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        public lazy var collectionView: UICollectionView = {
+            let cellLayout = UICollectionViewFlowLayout()
+            cellLayout.scrollDirection = .vertical
+            cellLayout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+            cellLayout.itemSize = CGSize.init(width: 400, height: 400)
+            let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
+            collectionView.backgroundColor = .white
+            collectionView.layer.isOpaque = true
+            collectionView.layer.cornerRadius = 15.0
+            return collectionView
+        }()
     
-    var collectionView: UICollectionView!
-    
-    var collectionViewCell: UICollectionViewCell!
     
     
-    func setUpCollectionView(){
-        collectionView = UICollectionView()
-        collectionViewCell = UICollectionViewCell()
-        self.addSubview(collectionView)
-        self.addSubview(collectionViewCell)
-        
-        collectionView.snp.makeConstraints { (make) in
-            make.left.equalTo(self).offset(10).priority(750)
-            make.right.equalTo(self).offset(-10).priority(750)
-            make.bottom.equalTo(self).offset(20)
-            
-            make.width.lessThanOrEqualTo(500)
-            
-            
+        override init(frame: CGRect) {
+            super.init(frame: UIScreen.main.bounds)
+            commonInit()
+            self.collectionView.register(EventHomeCollectionViewCell.self, forCellWithReuseIdentifier: "EventHomeCollectionViewCell")
         }
-        
-    }
     
-    func setUpCreateButton() {
-        
-    }
+        required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+            commonInit()
     
-    func setUpJoinButton() {
-        
-    }
+        }
     
+        private func commonInit() {
+            setConstraints()
+        }
+    
+        func setConstraints() {
+            addSubview(createButton)
+            addSubview(joinButton)
+            addSubview(collectionView)
+    
+            createButton.translatesAutoresizingMaskIntoConstraints = false
+            joinButton.translatesAutoresizingMaskIntoConstraints = false
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+            
+            createButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 230).isActive = true
+            createButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+            createButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+            createButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -580).isActive = true
+            
+            joinButton.topAnchor.constraint(equalTo: createButton.bottomAnchor , constant: 16).isActive = true
+            joinButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+            joinButton.trailingAnchor.constraint(equalToSystemSpacingAfter: trailingAnchor, multiplier: -16).isActive = true
+            joinButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -525).isActive = true
+            
+//            collectionView.topAnchor.constraint(equalTo: joinButton.bottomAnchor, constant: 100).isActive = true
+//            collectionView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
+//            collectionView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
+//            collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -100).isActive = true
+            
+    
+        }
+
 
 
     
@@ -64,47 +99,3 @@ class HomeView: UIView {
 
 
 
-//    public lazy var createButton: UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-//        button.titleLabel?.text = "Create"
-//        return button
-//    }()
-//
-//    public lazy var joinButton: UIButton = {
-//        let button = UIButton()
-//        button.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-//        button.titleLabel?.text = "Join"
-//        return button
-//    }()
-//
-//    public lazy var collectionView: UICollectionView = {
-//        let cellLayout = UICollectionViewFlowLayout()
-//        cellLayout.scrollDirection = .vertical
-//        cellLayout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
-//        cellLayout.itemSize = CGSize.init(width: 400, height: 400)
-//        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
-//        collectionView.backgroundColor = .white
-//        collectionView.layer.isOpaque = true
-//        collectionView.layer.cornerRadius = 15.0
-//        return collectionView
-//    }()
-//
-//    override init(frame: CGRect) {
-//        super.init(frame: UIScreen.main.bounds)
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//
-//    }
-//
-//    private func commonInit() {
-//        setConstraints()
-//    }
-//
-//    func setConstraints() {
-//        addSubview(createButton)
-//        addSubview(joinButton)
-//        addSubview(collectionView)
-//    }
