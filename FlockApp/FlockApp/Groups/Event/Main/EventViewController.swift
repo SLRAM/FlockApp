@@ -22,7 +22,9 @@ class EventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
             navigationItem.leftBarButtonItem = eventView.cancelButton
+        
         self.view.addSubview(eventView)
+        eventView.delegate = self
         eventView.peopleTableView.dataSource = self
         eventView.peopleTableView.delegate = self
         eventView.peopleTableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "peopleCell")
