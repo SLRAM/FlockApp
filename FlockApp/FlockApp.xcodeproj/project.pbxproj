@@ -12,6 +12,10 @@
 		9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291A225E4D5A00E4568F /* BaseViewController.swift */; };
 		9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291C225E4D6200E4568F /* MenuLauncher.swift */; };
 		9383291F225E4D7C00E4568F /* MenuCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */; };
+		939C62DA225E6BC900F93D76 /* EventModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62D9225E6BC900F93D76 /* EventModel.swift */; };
+		939C62DC225E6C4000F93D76 /* DBService+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62DB225E6C4000F93D76 /* DBService+Event.swift */; };
+		939C62DF225E6D9100F93D76 /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62DE225E6D9100F93D76 /* DateViewController.swift */; };
+		939C62E1225E6D9C00F93D76 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62E0225E6D9C00F93D76 /* DateView.swift */; };
 		97025F942257EA1100273C91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F932257EA1100273C91 /* AppDelegate.swift */; };
 		97025F962257EA1100273C91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F952257EA1100273C91 /* ViewController.swift */; };
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
@@ -63,6 +67,10 @@
 		9383291A225E4D5A00E4568F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		9383291C225E4D6200E4568F /* MenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLauncher.swift; sourceTree = "<group>"; };
 		9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCollectionViewCell.swift; sourceTree = "<group>"; };
+		939C62D9225E6BC900F93D76 /* EventModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventModel.swift; sourceTree = "<group>"; };
+		939C62DB225E6C4000F93D76 /* DBService+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBService+Event.swift"; sourceTree = "<group>"; };
+		939C62DE225E6D9100F93D76 /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
+		939C62E0225E6D9C00F93D76 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
 		97025F902257EA1100273C91 /* FlockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97025F932257EA1100273C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97025F952257EA1100273C91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -141,6 +149,15 @@
 				9383291E225E4D7C00E4568F /* MenuCollectionViewCell.swift */,
 			);
 			path = Menu;
+			sourceTree = "<group>";
+		};
+		939C62DD225E6D6C00F93D76 /* Date */ = {
+			isa = PBXGroup;
+			children = (
+				939C62DE225E6D9100F93D76 /* DateViewController.swift */,
+				939C62E0225E6D9C00F93D76 /* DateView.swift */,
+			);
+			path = Date;
 			sourceTree = "<group>";
 		};
 		97025F872257EA1100273C91 = {
@@ -223,6 +240,7 @@
 			isa = PBXGroup;
 			children = (
 				97802CD3225CF7E3007D480D /* UserModel.swift */,
+				939C62D9225E6BC900F93D76 /* EventModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -233,6 +251,7 @@
 				97802CC3225CF658007D480D /* AuthService.swift */,
 				97802CC6225CF658007D480D /* DBService.swift */,
 				97802CC4225CF658007D480D /* DBService+User.swift */,
+				939C62DB225E6C4000F93D76 /* DBService+Event.swift */,
 				97802CC5225CF658007D480D /* StorageService.swift */,
 			);
 			path = "FireBase Helpers";
@@ -290,6 +309,7 @@
 				97802D0A225E492E007D480D /* Main */,
 				97802D0B225E4946007D480D /* Location */,
 				97802D0C225E4957007D480D /* Friends */,
+				939C62DD225E6D6C00F93D76 /* Date */,
 			);
 			path = "Create Edit";
 			sourceTree = "<group>";
@@ -570,10 +590,13 @@
 				97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */,
 				97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */,
 				97025F962257EA1100273C91 /* ViewController.swift in Sources */,
+				939C62E1225E6D9C00F93D76 /* DateView.swift in Sources */,
 				97802CF0225CFFDB007D480D /* CreateEditTableViewCell.swift in Sources */,
+				939C62DF225E6D9100F93D76 /* DateViewController.swift in Sources */,
 				97802CF7225D01EE007D480D /* EventDetailsViewController.swift in Sources */,
 				97802CC7225CF658007D480D /* AuthService.swift in Sources */,
 				97802CD4225CF7E3007D480D /* UserModel.swift in Sources */,
+				939C62DA225E6BC900F93D76 /* EventModel.swift in Sources */,
 				97802CDC225CFE88007D480D /* InviteViewController.swift in Sources */,
 				97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */,
 				97802D05225D3088007D480D /* LocationSearchView.swift in Sources */,
@@ -581,6 +604,7 @@
 				97802CE8225CFF27007D480D /* HomeView.swift in Sources */,
 				97802CE6225CFF16007D480D /* HomeViewController.swift in Sources */,
 				97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */,
+				939C62DC225E6C4000F93D76 /* DBService+Event.swift in Sources */,
 				97802CC9225CF658007D480D /* StorageService.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
