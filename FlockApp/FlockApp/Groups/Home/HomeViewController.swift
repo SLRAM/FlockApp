@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import SnapKit
+
 
 class HomeViewController: BaseViewController {
     
@@ -22,6 +22,7 @@ class HomeViewController: BaseViewController {
         homeView.collectionView.dataSource = self
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+        
     
     }
     
@@ -37,21 +38,21 @@ class HomeViewController: BaseViewController {
     }
  
     
-
 }
 
 extension HomeViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return 7
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        _ = [indexPath.row]
+       _ = [indexPath.row]
         collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
-      //  collectionViewCell.eventLabel.text = "Text"
+        collectionViewCell.layer.cornerRadius = 15
+      //collectionViewCell.eventLabel.text = "Text"
         return collectionViewCell
     }
     

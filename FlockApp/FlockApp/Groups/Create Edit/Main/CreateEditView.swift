@@ -12,6 +12,7 @@ protocol CreateViewDelegate: AnyObject {
     func datePressed()
     func trackingPressed()
     func friendsPressed()
+    func cancelPressed()
 }
 class CreateEditView: UIView {
     
@@ -88,8 +89,13 @@ class CreateEditView: UIView {
         tv.separatorStyle = .none
         return tv
     }()
-    
-    
+    public lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
+        return button
+    }()
+    @objc func cancelButtonPressed() {
+        delegate?.cancelPressed()
+    }
     
     
     
