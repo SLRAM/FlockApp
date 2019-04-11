@@ -10,13 +10,20 @@ import UIKit
 protocol EventViewDelegate: AnyObject {
     func segmentedDetailsPressed()
     func segmentedPeoplePressed()
+    func cancelPressed()
 }
 
 class EventView: UIView {
     
     weak var delegate: EventViewDelegate?
     
-    //address, date, tracking
+    public lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
+        return button
+    }()
+    @objc func cancelButtonPressed() {
+        delegate?.cancelPressed()
+    }
     
     lazy var eventAddress: UILabel = {
        let label = UILabel()
@@ -72,7 +79,9 @@ class EventView: UIView {
         addEventTitle()
         addSegmentedControl()
         addDetailView()
-        
+        addEventAddress()
+        addEventDate()
+        addEventTracking()
         addTableView()
     }
 
@@ -91,7 +100,7 @@ class EventView: UIView {
             ])
     }
     
-    private func makeEventDate() {
+    private func addEventDate() {
         addSubview(eventDate)
         eventDate.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -102,7 +111,7 @@ class EventView: UIView {
             ])
     }
     
-    private func makeEventTracking() {
+    private func addEventTracking() {
         addSubview(eventTracking)
         eventTracking.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([

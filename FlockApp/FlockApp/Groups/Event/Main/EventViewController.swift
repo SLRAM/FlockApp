@@ -21,6 +21,7 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+            navigationItem.leftBarButtonItem = eventView.cancelButton
         self.view.addSubview(eventView)
         eventView.peopleTableView.dataSource = self
         eventView.peopleTableView.delegate = self
@@ -29,6 +30,20 @@ class EventViewController: UIViewController {
         eventView.peopleTableView.isUserInteractionEnabled = false
     }
 
+}
+
+extension EventViewController: EventViewDelegate {
+    func segmentedDetailsPressed() {
+        
+    }
+    
+    func segmentedPeoplePressed() {
+        
+    }
+    
+    func cancelPressed() {
+        dismiss(animated: true)
+    }
 }
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
