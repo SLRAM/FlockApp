@@ -21,26 +21,36 @@ struct EventsCollectionKeys {
     static let EndDateKey = "endDate"
     static let DocumentIdKey = "documentId"
     static let ImageURLKey = "imageURL"
+    static let LocationStringKey = "locationString"
+    static let LocationLatKey = "locationLat"
+    static let LocationLongKey = "locationLong"
+    static let InvitedKey = "invited"
 }
 
 extension DBService {
-    static public func postEvent(event: Event) {
+    static public func postEvent(event: Event, completion: @escaping (Error?) -> Void)  {
         firestoreDB.collection(EventsCollectionKeys.CollectionKey)
             .document(event.documentId).setData([
                 EventsCollectionKeys.EventNameKey       : event.eventName,
                 EventsCollectionKeys.CreatedDateKey     : event.createdDate,
                 EventsCollectionKeys.StartDateKey       : event.startDate,
-                EventsCollectionKeys.EndDateKey     : event.endDate,
-                EventsCollectionKeys.UserIDKey       : event.userID,
-                EventsCollectionKeys.EventDescriptionKey  : event.eventDescription,
+                EventsCollectionKeys.EndDateKey         : event.endDate,
+                EventsCollectionKeys.UserIDKey          : event.userID,
+                EventsCollectionKeys.EventDescriptionKey: event.eventDescription,
                 EventsCollectionKeys.ImageURLKey        : event.imageURL,
-                EventsCollectionKeys.DocumentIdKey      : event.documentId
+                EventsCollectionKeys.DocumentIdKey      : event.documentId,
+                EventsCollectionKeys.LocationStringKey  : event.locationString,
+                EventsCollectionKeys.LocationLatKey     : event.locationLat,
+                EventsCollectionKeys.LocationLongKey    : event.locationLong,
+                EventsCollectionKeys.InvitedKey         : event.invited
                 ])
             { (error) in
                 if let error = error {
                     print("posting event error: \(error)")
+                    completion(error)
                 } else {
                     print("event posted successfully to ref: \(event.documentId)")
+                    completion(nil)
                 }
         }
     }
