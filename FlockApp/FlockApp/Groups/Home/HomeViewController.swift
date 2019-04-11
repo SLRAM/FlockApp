@@ -13,7 +13,6 @@ class HomeViewController: BaseViewController {
     var homeView = HomeView()
     var cellView = EventHomeCollectionViewCell()
     var dummyEvent = "This is a test event"
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +27,8 @@ class HomeViewController: BaseViewController {
     
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
-        present(createEditVC, animated: true) 
-        print("hello")
+        let createNav = UINavigationController.init(rootViewController: createEditVC)
+        present(createNav, animated: true) 
     }
     @objc func showJoinEvent(){
         let joinVC = EventDetailsViewController()

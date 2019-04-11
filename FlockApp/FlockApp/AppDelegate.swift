@@ -8,7 +8,7 @@
 import UIKit
 import Firebase
 import GoogleMaps
-
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
-        
+        UNUserNotificationCenter.current().delegate = self
+
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
             //Use ViewController() when pushing!
@@ -31,7 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //
 //
 //            //Biron root
-//            window?.rootViewController = ViewController()
+//            let dateVC = DateViewController()
+//            let dateNav = UINavigationController.init(rootViewController: dateVC)
+//            window?.rootViewController = dateNav
 //            //Nathalie root
 //            window?.rootViewController = ViewController()
 //            //Stephanie root
@@ -43,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
 //            //Yaz root
            window?.rootViewController = HomeViewController()
-
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
@@ -51,6 +53,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         window?.makeKeyAndVisible()
         
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if let error = error {
+                print("Request Authorization Error: \(error)")
+            } else if granted{
+                print("Authorization Granted")
+            } else{
+                print("User Denied")
+            }
+        }
         return true
     }
 
@@ -79,3 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.userInfo)
+        return completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        return completionHandler([.alert, .badge, .sound])
+    }
+}
