@@ -13,9 +13,11 @@ class HomeViewController: BaseViewController {
     var homeView = HomeView()
     var cellView = EventHomeCollectionViewCell()
     var dummyEvent = "This is a test event"
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Flock"
         view.addSubview(homeView)
         view.backgroundColor = .white
         homeView.collectionView.dataSource = self
@@ -29,10 +31,10 @@ class HomeViewController: BaseViewController {
         present(createEditVC, animated: true) 
         print("hello")
     }
-    
     @objc func showJoinEvent(){
         let joinVC = EventDetailsViewController()
         present (joinVC, animated: true)
+        print("whaddup")
     }
  
     
@@ -50,7 +52,7 @@ extension HomeViewController: UICollectionViewDataSource {
         }
         _ = [indexPath.row]
         collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
-        collectionViewCell.eventLabel.text = cellView.eventLabel.text
+      //  collectionViewCell.eventLabel.text = "Text"
         return collectionViewCell
     }
     

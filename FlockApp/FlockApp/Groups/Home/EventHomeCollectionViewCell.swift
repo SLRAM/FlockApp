@@ -29,6 +29,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
         
+        
     }
     
     func setupImage(){
