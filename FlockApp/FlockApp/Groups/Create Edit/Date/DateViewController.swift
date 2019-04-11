@@ -8,7 +8,13 @@
 import UIKit
 import UserNotifications
 
+protocol DateViewControllerDelegate: AnyObject {
+    func selectedDate(startDate: Date, endDate: Date)
+}
+
 class DateViewController: UIViewController {
+    
+    weak var delegate: DateViewControllerDelegate?
     let dateView = DateView()
     var event: Event?
     override func viewDidLoad() {
@@ -79,6 +85,8 @@ extension DateViewController: ReminderButtonsDelegates {
         }
         let alertController = UIAlertController(title: "This date has been added to your event.", message: nil, preferredStyle: .alert)
         let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+           
+            self.delegate?.selectedDate(startDate: startDate, endDate: endDate)
             self.navigationController?.popViewController(animated: true)
         }
         alertController.addAction(okAction)

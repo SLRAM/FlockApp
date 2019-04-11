@@ -16,6 +16,10 @@
 		939C62DC225E6C4000F93D76 /* DBService+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62DB225E6C4000F93D76 /* DBService+Event.swift */; };
 		939C62DF225E6D9100F93D76 /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62DE225E6D9100F93D76 /* DateViewController.swift */; };
 		939C62E1225E6D9C00F93D76 /* DateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939C62E0225E6D9C00F93D76 /* DateView.swift */; };
+		93D103F4225FD5F80038C6AA /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F3225FD5F80038C6AA /* ProfileViewController.swift */; };
+		93D103F6225FD6060038C6AA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F5225FD6060038C6AA /* ProfileView.swift */; };
+		93D103F8225FD6210038C6AA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F7225FD6210038C6AA /* SettingsViewController.swift */; };
+		93D103FA225FD62F0038C6AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F9225FD62F0038C6AA /* SettingsView.swift */; };
 		97025F942257EA1100273C91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F932257EA1100273C91 /* AppDelegate.swift */; };
 		97025F962257EA1100273C91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F952257EA1100273C91 /* ViewController.swift */; };
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
@@ -71,6 +75,10 @@
 		939C62DB225E6C4000F93D76 /* DBService+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBService+Event.swift"; sourceTree = "<group>"; };
 		939C62DE225E6D9100F93D76 /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
 		939C62E0225E6D9C00F93D76 /* DateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateView.swift; sourceTree = "<group>"; };
+		93D103F3225FD5F80038C6AA /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		93D103F5225FD6060038C6AA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		93D103F7225FD6210038C6AA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		93D103F9225FD62F0038C6AA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		97025F902257EA1100273C91 /* FlockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97025F932257EA1100273C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97025F952257EA1100273C91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -160,6 +168,24 @@
 			path = Date;
 			sourceTree = "<group>";
 		};
+		93D103F1225FD59D0038C6AA /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				93D103F3225FD5F80038C6AA /* ProfileViewController.swift */,
+				93D103F5225FD6060038C6AA /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		93D103F2225FD5C30038C6AA /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				93D103F7225FD6210038C6AA /* SettingsViewController.swift */,
+				93D103F9225FD62F0038C6AA /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
 		97025F872257EA1100273C91 = {
 			isa = PBXGroup;
 			children = (
@@ -214,6 +240,8 @@
 				97802CD8225CFD98007D480D /* Create Edit */,
 				97802CD9225CFDC2007D480D /* Event */,
 				97802CDA225CFE37007D480D /* Invite */,
+				93D103F1225FD59D0038C6AA /* Profile */,
+				93D103F2225FD5C30038C6AA /* Settings */,
 				93832919225E4D3800E4568F /* Menu */,
 			);
 			path = Groups;
@@ -574,12 +602,14 @@
 				97802D0E225E4993007D480D /* FriendsTableViewCell.swift in Sources */,
 				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
+				93D103F4225FD5F80038C6AA /* ProfileViewController.swift in Sources */,
 				97802CE4225CFF0D007D480D /* CreateEditViewController.swift in Sources */,
 				97802CE0225CFEB3007D480D /* InviteTableViewCell.swift in Sources */,
 				91DF714C225E4A4700707F72 /* EventHomeCollectionViewCell.swift in Sources */,
 				97802CCD225CF756007D480D /* String+Date.swift in Sources */,
 				97802CFB225D020D007D480D /* EventPeopleView.swift in Sources */,
 				9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */,
+				93D103FA225FD62F0038C6AA /* SettingsView.swift in Sources */,
 				97802CCE225CF756007D480D /* Date+Extensions.swift in Sources */,
 				97802CD2225CF774007D480D /* UIViewController+Alert.swift in Sources */,
 				97802CE2225CFEF4007D480D /* EventViewController.swift in Sources */,
@@ -595,6 +625,7 @@
 				939C62DF225E6D9100F93D76 /* DateViewController.swift in Sources */,
 				97802CF7225D01EE007D480D /* EventDetailsViewController.swift in Sources */,
 				97802CC7225CF658007D480D /* AuthService.swift in Sources */,
+				93D103F8225FD6210038C6AA /* SettingsViewController.swift in Sources */,
 				97802CD4225CF7E3007D480D /* UserModel.swift in Sources */,
 				939C62DA225E6BC900F93D76 /* EventModel.swift in Sources */,
 				97802CDC225CFE88007D480D /* InviteViewController.swift in Sources */,
@@ -605,6 +636,7 @@
 				97802CE6225CFF16007D480D /* HomeViewController.swift in Sources */,
 				97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */,
 				939C62DC225E6C4000F93D76 /* DBService+Event.swift in Sources */,
+				93D103F6225FD6060038C6AA /* ProfileView.swift in Sources */,
 				97802CC9225CF658007D480D /* StorageService.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
@@ -759,7 +791,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VH9A32XL3Y;
+				DEVELOPMENT_TEAM = PLXRGQY243;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -779,7 +811,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = VH9A32XL3Y;
+				DEVELOPMENT_TEAM = PLXRGQY243;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (

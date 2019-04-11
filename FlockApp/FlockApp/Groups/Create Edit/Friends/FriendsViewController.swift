@@ -14,7 +14,7 @@ protocol FriendsViewControllerDelegate: AnyObject {
 //    func selectedFriends(friends: [UserModel])
 }
 
-class FriendsViewController: UIViewController {
+class FriendsViewController: BaseViewController {
 
     weak var delegate: FriendsViewControllerDelegate?
     private let friendsView = FriendsView()

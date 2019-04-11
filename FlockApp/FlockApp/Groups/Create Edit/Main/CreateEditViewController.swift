@@ -20,6 +20,8 @@ class CreateEditViewController: UIViewController {
     var friendsArray = [UserModel]()
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
+    var selectedStartDate = Date()
+    var selectedEndDate = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,7 @@ class CreateEditViewController: UIViewController {
         createEditView.myTableView.dataSource = self
         createEditView.myTableView.delegate = self
         navigationItem.rightBarButtonItem = createEditView.createButton
+        navigationItem.leftBarButtonItem = createEditView.cancelButton
     }
     override func viewDidAppear(_ animated: Bool) {
     }
@@ -46,6 +49,10 @@ extension CreateEditViewController: UITextViewDelegate {
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
+    func cancelPressed() {
+        dismiss(animated: true)
+    }
+    
     func friendsPressed() {
         print("friends pressed")
         let detailVC = FriendsViewController()
@@ -61,7 +68,7 @@ extension CreateEditViewController: CreateViewDelegate {
         print("date pressed")
 
         let detailVC = DateViewController()
-//        detailVC.delegate = self
+        detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -140,4 +147,12 @@ extension CreateEditViewController: FriendsViewControllerDelegate {
     }
     
     
+}
+extension CreateEditViewController: DateViewControllerDelegate {
+    func selectedDate(startDate: Date, endDate: Date) {
+        selectedStartDate = startDate
+        selectedEndDate = endDate
+
+    }
+
 }
