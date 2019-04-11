@@ -13,15 +13,17 @@ import Firebase
 class CreateEditViewController: UIViewController {
     
     private let createEditView = CreateEditView()
-    let titlePlaceholder = "Enter the quiz title"
-    let firstPlaceholder = "Enter first quiz fact"
-    let secondPlaceholder = "Enter second quiz fact"
+    let titlePlaceholder = "Enter the event title"
+
     
     var friendsArray = [UserModel]()
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
     var selectedStartDate = Date()
     var selectedEndDate = Date()
+    
+    private var authservice = AppDelegate.authservice
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,38 +81,44 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
-        if createEditView.titleTextView.text == titlePlaceholder {
-            let alertController = UIAlertController(title: "Please enter in some information other than the placeholder", message: nil, preferredStyle: .alert)
-            
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) -> Void in
-            })
+        if createEditView.addressButton.titleLabel?.text == "Event Address" {
+            let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
             present(alertController, animated: true)
-        } else if createEditView.titleTextView.text == ""{
-            let alertController = UIAlertController(title: "Please do not leave any sections blank", message: nil, preferredStyle: .alert)
-            
-            let okAction = UIAlertAction(title: "Ok", style: .default, handler: { (action) -> Void in
-            })
+            return}
+        guard let user = authservice.getCurrentUser() else {
+            let alertController = UIAlertController(title: "Unable to post. Please login to post.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
+            
             present(alertController, animated: true)
-        } else {
-//            guard let username = UserDefaults.standard.string(forKey: UserDefaultsKeys.usernameKey) else {return}
-//            let username = "username"
-//            if QuizModel.quizAlreadyCreated(newTitle: createView.titleTextView.text, username: username) {
-//                self.setQuizMessage(bool: false)
-//            } else {
-//                guard let quiz = self.saveQuiz() else {
-//                    print("Failed to save quiz")
-//                    return
-//                }
-//                QuizModel.appendQuiz(quiz: quiz)
-//                self.setQuizMessage(bool: true)
-//                self.createView.titleTextView.text = titlePlaceholder
-//                self.createView.firstQuizTextView.text = firstPlaceholder
-//                self.createView.secondQuizTextView.text = secondPlaceholder
-//                self.createView.resignFirstResponder()
-//            }
+            return}
+
+        let docRef = DBService.firestoreDB
+            .collection(EventsCollectionKeys.CollectionKey)
+            .document()
+        
+        guard let eventName = createEditView.titleTextView.text else {return}
+        var friendIds = [String]()
+        for friends in friendsArray {
+            friendIds.append(friends.userId)
         }
+        let event = Event(eventName: eventName, createdDate: Date.getISOTimestamp(), userID: user.uid, imageURL: nil, eventDescription: "Event Description", documentId: docRef.documentID, startDate: selectedStartDate, endDate: selectedEndDate, locationString: selectedLocation, locationLat: selectedCoordinates.latitude, locationLong: selectedCoordinates.longitude, invited: friendIds)
+        
+        
+        DBService.postEvent(event: event, completion: { [weak self] error in
+            if let error = error {
+                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+            } else {
+                self?.showAlert(title: "Event Posted", message: nil) { action in
+//                    self?.dismiss(animated: true)//code here to segue to detail
+                    let detailVC = EventViewController()
+//                    detailVC.delegate = self
+                    self?.navigationController?.pushViewController(detailVC, animated: true)
+                }
+            }
+        })
     }
 }
 
