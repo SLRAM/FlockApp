@@ -26,15 +26,15 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var eventImage: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "flock"))
-        //image.contentMode = .scaleAspectFill
+        let image = UIImageView()
+       // image.alpha = 
         return image
     }()
     
     func setupEventLabel(){
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
-        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 50).isActive = true
+        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25).isActive = true
         eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
@@ -43,8 +43,11 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     func setupEventDay(){
         addSubview(dayLabel)
-        translatesAutoresizingMaskIntoConstraints = false
-        
+        dayLabel.translatesAutoresizingMaskIntoConstraints = false
+        dayLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60).isActive = true
+        dayLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
     }
     
     func setupImage(){
@@ -70,8 +73,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-        setupEventLabel()
-       // setupImage()
+       setupEventLabel()
+       setupEventDay()
+        setupImage()
         
     }
     

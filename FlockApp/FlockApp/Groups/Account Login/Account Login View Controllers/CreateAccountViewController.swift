@@ -47,8 +47,7 @@ extension CreateAccountViewController: AuthServiceCreateNewAccountDelegate {
     }
     
     func didCreateNewAccount(_ authservice: AuthService, user userModel: UserModel) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let homeViewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! UIViewController
+        let homeViewController = HomeViewController()
         homeViewController.modalTransitionStyle = .crossDissolve
         homeViewController.modalPresentationStyle = .overFullScreen
         present(homeViewController, animated: true)
