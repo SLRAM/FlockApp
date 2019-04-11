@@ -11,12 +11,22 @@ import SnapKit
 class HomeViewController: BaseViewController {
     
     var homeView = HomeView()
+<<<<<<< HEAD
+=======
+    var cellView = EventHomeCollectionViewCell()
+    var dummyEvent = "This is a test event"
+    
+
+>>>>>>> 979f5c7909f164c90baf66a0a1b84d4c7a7df628
     override func viewDidLoad() {
         super.viewDidLoad()
+        title = "Flock"
         view.addSubview(homeView)
         view.backgroundColor = .white
+        homeView.collectionView.dataSource = self
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        
+        homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+    
     }
     
     @objc func showCreateEditEvent() {
@@ -24,8 +34,30 @@ class HomeViewController: BaseViewController {
         let createNav = UINavigationController.init(rootViewController: createEditVC)
         present(createNav, animated: true) 
     }
-
+    @objc func showJoinEvent(){
+        let joinVC = EventDetailsViewController()
+        present (joinVC, animated: true)
+        print("whaddup")
+    }
  
     
 
+}
+
+extension HomeViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+        _ = [indexPath.row]
+        collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
+      //  collectionViewCell.eventLabel.text = "Text"
+        return collectionViewCell
+    }
+    
+    
 }
