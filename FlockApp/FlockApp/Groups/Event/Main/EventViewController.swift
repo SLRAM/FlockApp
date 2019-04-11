@@ -18,12 +18,16 @@ class EventViewController: UIViewController {
     }
     
     let eventView = EventView()
+    
+    public var event: Event?
 
     override func viewDidLoad() {
         super.viewDidLoad()
             navigationItem.leftBarButtonItem = eventView.cancelButton
         
         self.view.addSubview(eventView)
+        guard let eventTitle = event?.eventName else {return}
+        eventView.eventTitle.text = eventTitle
         eventView.delegate = self
         eventView.peopleTableView.dataSource = self
         eventView.peopleTableView.delegate = self
