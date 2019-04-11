@@ -17,7 +17,7 @@ class CreateEditViewController: UIViewController {
     let firstPlaceholder = "Enter first quiz fact"
     let secondPlaceholder = "Enter second quiz fact"
     
-    var friendsArray = [String]()
+    var friendsArray = [UserModel]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,9 +58,9 @@ extension CreateEditViewController: CreateViewDelegate {
     func datePressed() {
         print("date pressed")
 
-//        let detailVC = LocationSearchViewController() change to dateviewcontroller
+        let detailVC = DateViewController()
 //        detailVC.delegate = self
-//        navigationController?.pushViewController(detailVC, animated: true)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func addressPressed() {
@@ -113,7 +113,7 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
         let friend = friendsArray[indexPath.row]
-        cell.textLabel?.text = friend
+        cell.textLabel?.text = friend.displayName
         return cell
     }
     
@@ -129,7 +129,7 @@ extension CreateEditViewController: LocationSearchViewControllerDelegate {
     }
 }
 extension CreateEditViewController: FriendsViewControllerDelegate {
-    func selectedFriends(friends: [String]) {
+    func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
         createEditView.myTableView.reloadData()

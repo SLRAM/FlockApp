@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
+import Firebase
 
 protocol FriendsViewControllerDelegate: AnyObject {
-    func selectedFriends(friends: [String])
+    func selectedFriends(friends: [UserModel])
 //    func selectedFriends(friends: [UserModel])
 }
 
@@ -18,12 +20,31 @@ class FriendsViewController: UIViewController {
     private let friendsView = FriendsView()
     var isSearching = false
 
-    var savedFriends = [String]()
+    var savedFriends = [UserModel]()
 
     
-    let friends = ["test 1", "test 2"]
-    
-    var filteredFriends = [String]()
+    private var friends = [UserModel]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.friendsView.myTableView.reloadData()
+            }
+        }
+    }
+    private var filteredFriends = [UserModel]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.friendsView.myTableView.reloadData()
+            }
+        }
+    }
+    private var listener: ListenerRegistration!
+    private var authservice = AppDelegate.authservice
+    private lazy var refreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        friendsView.myTableView.refreshControl = rc
+        rc.addTarget(self, action: #selector(fetchFriends), for: .valueChanged)
+        return rc
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,8 +57,30 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
+        fetchFriends()
 
 
+
+
+    }
+    
+    @objc private func fetchFriends() {
+        refreshControl.beginRefreshing()
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .addSnapshotListener { [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    self?.friends = snapshot.documents.map { UserModel(dict: $0.data()) }
+                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
+                    
+                    //do filtered here
+                }
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+        }
     }
     
     func friendListButton() {
@@ -86,53 +129,74 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
 //        cell.textLabel?.text = friend.description
 //        return cell
         
-        var friend = String()
         if isSearching {
-            friend = filteredFriends[indexPath.row]
+            let friend = filteredFriends[indexPath.row]
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = friend.displayName
+            cell.backgroundColor = .clear
+            
+//            if savedFriends.contains(where: friend)
+            if savedFriends.contains(where: { $0.displayName == friend.displayName}){
+                cell.accessoryType = .checkmark
+            }
+            
+            return cell
+            
         } else {
-            friend = friends[indexPath.row]
+            let friend = friends[indexPath.row]
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = friend.displayName
+            cell.backgroundColor = .clear
+            
+            if savedFriends.contains(where: { $0.displayName == friend.displayName}) {
+                cell.accessoryType = .checkmark
+            }
+            
+            return cell
+            
         }
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = friend
-        cell.backgroundColor = .clear
 
-        if savedFriends.contains(friend) {
-            cell.accessoryType = .checkmark
-        }
-        
-        return cell
-        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        var friend = String()
         if isSearching {
-            friend = filteredFriends[indexPath.row]
-            
-        } else {
-            friend = friends[indexPath.row]
-        }
-        //        print(bus)
-        if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .none
-            var counter = 0
-            for savedFriend in savedFriends {
-                if savedFriend != friend {
-                    counter += 1
-                } else {
-                    //                    print(counter)
-                    savedFriends.remove(at: counter)
+            let friend = filteredFriends[indexPath.row]
+            if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+                tableView.cellForRow(at: indexPath)?.accessoryType = .none
+                var counter = 0
+                for savedFriend in savedFriends {
+                    if savedFriend.userId != friend.userId {
+                        counter += 1
+                    } else {
+                        //                    print(counter)
+                        savedFriends.remove(at: counter)
+                    }
                 }
+                
+            } else {
+                tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                savedFriends.append(friend)
             }
-            
         } else {
-            tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            savedFriends.append(friend)
+            let friend = friends[indexPath.row]
+            if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
+                tableView.cellForRow(at: indexPath)?.accessoryType = .none
+                var counter = 0
+                for savedFriend in savedFriends {
+                    if savedFriend.userId != friend.userId {
+                        counter += 1
+                    } else {
+                        //                    print(counter)
+                        savedFriends.remove(at: counter)
+                    }
+                }
+                
+            } else {
+                tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+                savedFriends.append(friend)
+            }
         }
-        
     }
-    
-    
 }
 
 extension FriendsViewController: UISearchBarDelegate {
@@ -142,7 +206,7 @@ extension FriendsViewController: UISearchBarDelegate {
             view.endEditing(true)
         } else {
             isSearching = true
-            filteredFriends = friends.filter({$0.lowercased().contains(searchText.lowercased())})
+            filteredFriends = friends.filter({$0.displayName.lowercased().contains(searchText.lowercased())})
         }
         friendsView.myTableView.reloadData()
     }
