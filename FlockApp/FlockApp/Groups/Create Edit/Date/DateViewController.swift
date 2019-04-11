@@ -15,7 +15,7 @@ class DateViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(dateView)
         navigationItem.rightBarButtonItem = dateView.okayButton
-        navigationItem.leftBarButtonItem = dateView.cancelButton
+//        navigationItem.leftBarButtonItem = dateView.cancelButton
         dateView.delegate = self
         dateView.startDatePicker.addTarget(self, action: #selector(startDatePickerValue), for: .valueChanged)
         dateView.endDatePicker.addTarget(self, action: #selector(endDatePickerValue), for: .valueChanged)

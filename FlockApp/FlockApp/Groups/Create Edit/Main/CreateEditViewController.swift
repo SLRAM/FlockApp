@@ -18,6 +18,8 @@ class CreateEditViewController: UIViewController {
     let secondPlaceholder = "Enter second quiz fact"
     
     var friendsArray = [UserModel]()
+    var selectedLocation = String()
+    var selectedCoordinates = CLLocationCoordinate2D()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,6 +128,8 @@ extension CreateEditViewController: LocationSearchViewControllerDelegate {
             print("tuple printout of coordinates: \(locationTuple.1)")
             createEditView.addressButton.setTitle(locationTuple.0, for: .normal)
             createEditView.addressButton.titleLabel?.text = locationTuple.0
+        selectedLocation = locationTuple.0
+        selectedCoordinates = locationTuple.1
     }
 }
 extension CreateEditViewController: FriendsViewControllerDelegate {
