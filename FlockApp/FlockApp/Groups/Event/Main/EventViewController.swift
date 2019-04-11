@@ -16,6 +16,9 @@ class EventViewController: UIViewController {
         self.view.addSubview(eventView)
         eventView.peopleTableView.dataSource = self
         eventView.peopleTableView.delegate = self
+        eventView.peopleTableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "peopleCell")
+        eventView.peopleTableView.isHidden = true
+        eventView.peopleTableView.isUserInteractionEnabled = false
     }
     
 
@@ -24,14 +27,15 @@ class EventViewController: UIViewController {
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return
+        return 3
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        <#code#>
+        guard let cell = eventView.peopleTableView.dequeueReusableCell(withIdentifier: "peopleCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+        return cell
     }
-    
-    
+
+
 }
 
 //height for view around 75%
