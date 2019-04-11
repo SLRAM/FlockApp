@@ -9,6 +9,13 @@ import UIKit
 
 class EventViewController: UIViewController {
     
+    private var friends = [UserModel]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.eventView.peopleTableView.reloadData()
+            }
+        }
+    }
     
     let eventView = EventView()
 

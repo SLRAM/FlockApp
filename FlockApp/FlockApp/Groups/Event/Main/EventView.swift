@@ -16,6 +16,26 @@ class EventView: UIView {
     
     weak var delegate: EventViewDelegate?
     
+    //address, date, tracking
+    
+    lazy var eventAddress: UILabel = {
+       let label = UILabel()
+        label.text = "47-10 Austell Pl. 11111"
+        return label
+    }()
+    
+    lazy var eventDate: UILabel = {
+        let label = UILabel()
+        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+        return label
+    }()
+    
+    lazy var eventTracking: UILabel = {
+        let label = UILabel()
+        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+        return label
+    }()
+    
     lazy var eventTitle: UILabel = {
         let label = UILabel()
         label.backgroundColor = .yellow
@@ -23,6 +43,8 @@ class EventView: UIView {
         label.textAlignment = .center
         return label
     }()
+    
+    
     
     lazy var detailView: UIView = {
         let view = UIView()
@@ -50,11 +72,45 @@ class EventView: UIView {
         addEventTitle()
         addSegmentedControl()
         addDetailView()
+        
         addTableView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addEventAddress() {
+        addSubview(eventAddress)
+        eventAddress.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+        eventAddress.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 10),
+        eventAddress.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+        eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventAddress.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
+    }
+    
+    private func makeEventDate() {
+        addSubview(eventDate)
+        eventDate.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+        eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 10),
+        eventDate.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+        eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventDate.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
+    }
+    
+    private func makeEventTracking() {
+        addSubview(eventTracking)
+        eventTracking.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            eventTracking.topAnchor.constraint(equalTo: eventDate.topAnchor, constant: 10),
+            eventTracking.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            eventTracking.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+            eventTracking.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
     }
     
     private func addEventTitle() {
@@ -74,7 +130,7 @@ class EventView: UIView {
         NSLayoutConstraint.activate([
         segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
         segmentedControl.topAnchor.constraint(equalTo: eventTitle.bottomAnchor, constant: 40),
-        segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08),
+        segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07),
         segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
         ])
     }

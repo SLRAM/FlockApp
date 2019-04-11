@@ -36,19 +36,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            let dateNav = UINavigationController.init(rootViewController: dateVC)
 //            window?.rootViewController = dateNav
 //            //Nathalie root
-            let detailevent = EventViewController()
-            window?.rootViewController = ViewController()
-            let nav = UINavigationController.init(rootViewController: detailevent)
-            window?.rootViewController = nav
+//            let detailevent = EventViewController()
+//            window?.rootViewController = ViewController()
+//            let nav = UINavigationController.init(rootViewController: detailevent)
+//            window?.rootViewController = nav
 //            //Stephanie root
-
-           window?.rootViewController = CreateEditViewController()
-            let createVC = CreateEditViewController()
-            let createNav =       UINavigationController.init(rootViewController: createVC)
-            window?.rootViewController = createNav
+//
+//           window?.rootViewController = CreateEditViewController()
+//            let createVC = CreateEditViewController()
+//            let createNav =       UINavigationController.init(rootViewController: createVC)
+//            window?.rootViewController = createNav
             
 //            //Yaz root
-//           window?.rootViewController = HomeViewController()
+           window?.rootViewController = HomeViewController()
 
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
