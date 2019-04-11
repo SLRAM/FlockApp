@@ -9,6 +9,7 @@ import UIKit
 
 class EventViewController: UIViewController {
     
+    
     let eventView = EventView()
 
     override func viewDidLoad() {
@@ -20,14 +21,12 @@ class EventViewController: UIViewController {
         eventView.peopleTableView.isHidden = true
         eventView.peopleTableView.isUserInteractionEnabled = false
     }
-    
-
 
 }
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return 4
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -37,5 +36,3 @@ extension EventViewController: UITableViewDataSource, UITableViewDelegate {
 
 
 }
-
-//height for view around 75%

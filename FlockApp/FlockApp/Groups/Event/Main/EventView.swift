@@ -46,6 +46,7 @@ class EventView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
+        self.backgroundColor = .white
         addEventTitle()
         addSegmentedControl()
         addDetailView()
@@ -121,6 +122,3 @@ class EventView: UIView {
 
 
 }
-
-//make a new view that's just used for dimensions (no need to make a new file)
-//add people view, add detail view - in that order
