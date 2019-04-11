@@ -21,12 +21,16 @@ class BaseViewController: UIViewController {
         switch keyword {
         case "Events":
             let homeVC = HomeViewController()
-            present(homeVC, animated: false, completion: nil)
-            // Enable for testing purposes
-//        case "Profile":
-//            let dateVC = DateViewController()
-//            let dateNav = UINavigationController.init(rootViewController: dateVC)
-//            present(dateNav, animated: false)
+            present(homeVC, animated: false)
+        case "Profile":
+            let profileVC = ProfileViewController()
+            present(profileVC, animated: false)
+        case "Friends":
+            let friendsVC = FriendsViewController()
+            present(friendsVC, animated: false)
+        case "Settings":
+            let settingsVC = SettingsViewController()
+            present(settingsVC, animated: false)
         case "Sign Out":
             AppDelegate.authservice.signOutAccount()
             showLoginView()
