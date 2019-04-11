@@ -9,7 +9,6 @@ import UIKit
 
 class BaseViewController: UIViewController {
     let menuLauncher = MenuLauncher()
-    let authservice = AuthService()
     override func viewDidLoad() {
         super.viewDidLoad()
         let swipeRight = UISwipeGestureRecognizer(target: menuLauncher, action: #selector(MenuLauncher.respondToSwipeGesture(gesture:)))
@@ -28,7 +27,7 @@ class BaseViewController: UIViewController {
             let dateNav = UINavigationController.init(rootViewController: dateVC)
             present(dateNav, animated: false)
         case "Sign Out":
-            authservice.signOutAccount()
+            AppDelegate.authservice.signOutAccount()
             showLoginView()
         default:
             return

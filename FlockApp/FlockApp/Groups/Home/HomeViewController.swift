@@ -11,7 +11,6 @@ import SnapKit
 class HomeViewController: BaseViewController {
     
     var homeView = HomeView()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)

@@ -21,7 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
-        
+        UNUserNotificationCenter.current().delegate = self
+
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
             //Use ViewController() when pushing!
@@ -45,7 +46,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
 //            //Yaz root
            window?.rootViewController = HomeViewController()
-
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
@@ -90,3 +90,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.userInfo)
+        return completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        return completionHandler([.alert, .badge, .sound])
+    }
+}

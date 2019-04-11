@@ -16,7 +16,6 @@ class DateViewController: UIViewController {
         view.addSubview(dateView)
         navigationItem.rightBarButtonItem = dateView.okayButton
         navigationItem.leftBarButtonItem = dateView.cancelButton
-        UNUserNotificationCenter.current().delegate = self
         dateView.delegate = self
         dateView.startDatePicker.addTarget(self, action: #selector(startDatePickerValue), for: .valueChanged)
         dateView.endDatePicker.addTarget(self, action: #selector(endDatePickerValue), for: .valueChanged)
@@ -41,14 +40,14 @@ extension DateViewController: ReminderButtonsDelegates {
         endContent.sound = UNNotificationSound.default
         
         let startDate = startDatePicker.date
-        let calendar = Calendar.current //gregorian calendar
+        let calendar = Calendar.current
         let startHour = calendar.component(.hour, from: startDate)
         let startMinutes = calendar.component(.minute, from: startDate)
         
         let endDate = endDatePicker.date
         let endHour = calendar.component(.hour, from: endDate)
         let endMinutes = calendar.component(.minute, from: endDate)
-        // create a date component
+
         var startDateComponent = DateComponents()
         startDateComponent.hour = startHour
         startDateComponent.minute = startMinutes
@@ -57,10 +56,10 @@ extension DateViewController: ReminderButtonsDelegates {
         endDateComponent.hour = endHour
         endDateComponent.minute = endMinutes
         endDateComponent.timeZone = TimeZone.current
-        //create notification trigger
+
         let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
         let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
-        //create notification request
+
         let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
         let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
         
@@ -82,11 +81,5 @@ extension DateViewController: ReminderButtonsDelegates {
     }
     func cancelPressed() {
         dismiss(animated: true)
-    }
-}
-
-extension DateViewController: UNUserNotificationCenterDelegate{
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-        completionHandler([.alert, .sound])
     }
 }
