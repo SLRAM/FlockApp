@@ -114,6 +114,7 @@ extension CreateEditViewController: CreateViewDelegate {
                 self?.showAlert(title: "Event Posted", message: nil) { action in
 //                    self?.dismiss(animated: true)//code here to segue to detail
                     let detailVC = EventViewController()
+                    detailVC.event = event
 //                    detailVC.delegate = self
                     self?.navigationController?.pushViewController(detailVC, animated: true)
                 }
