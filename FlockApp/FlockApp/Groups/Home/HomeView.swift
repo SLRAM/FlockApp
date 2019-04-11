@@ -28,9 +28,7 @@ class HomeView: UIView {
             let cellLayout = UICollectionViewFlowLayout()
             cellLayout.scrollDirection = .vertical
             cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 5)
-            let cellWidth = (UIScreen.main.bounds.width) - 16
-            let cellHeight = (UIScreen.main.bounds.height)/3
-            cellLayout.itemSize = CGSize.init(width: cellWidth, height: cellHeight)
+            cellLayout.itemSize = CGSize.init(width: 375, height:225)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             collectionView.layer.cornerRadius = 15.0
@@ -47,7 +45,7 @@ class HomeView: UIView {
     
         required init?(coder aDecoder: NSCoder) {
             super.init(coder: aDecoder)
-           // commonInit()
+          
     
         }
     
@@ -76,7 +74,6 @@ class HomeView: UIView {
     func setupJoinButton() {
         addSubview(joinButton)
         joinButton.translatesAutoresizingMaskIntoConstraints = false
-        
         joinButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -150).isActive = true
         joinButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         joinButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
