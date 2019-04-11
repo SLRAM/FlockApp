@@ -52,6 +52,9 @@
 		97802D05225D3088007D480D /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D04225D3088007D480D /* LocationSearchView.swift */; };
 		97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */; };
 		97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D08225D3A2B007D480D /* SecretKeys.swift */; };
+		97802D0E225E4993007D480D /* FriendsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D0D225E4993007D480D /* FriendsTableViewCell.swift */; };
+		97802D10225E49AD007D480D /* FriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D0F225E49AD007D480D /* FriendsView.swift */; };
+		97802D12225E49BA007D480D /* FriendsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D11225E49BA007D480D /* FriendsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +105,9 @@
 		97802D04225D3088007D480D /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
 		97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchTableViewCell.swift; sourceTree = "<group>"; };
 		97802D08225D3A2B007D480D /* SecretKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecretKeys.swift; sourceTree = "<group>"; };
+		97802D0D225E4993007D480D /* FriendsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsTableViewCell.swift; sourceTree = "<group>"; };
+		97802D0F225E49AD007D480D /* FriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsView.swift; sourceTree = "<group>"; };
+		97802D11225E49BA007D480D /* FriendsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsViewController.swift; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -281,12 +287,9 @@
 		97802CD8225CFD98007D480D /* Create Edit */ = {
 			isa = PBXGroup;
 			children = (
-				97802CE3225CFF0D007D480D /* CreateEditViewController.swift */,
-				97802CE9225CFF33007D480D /* CreateEditView.swift */,
-				97802CEF225CFFDB007D480D /* CreateEditTableViewCell.swift */,
-				97802D02225D3010007D480D /* LocationSearchViewController.swift */,
-				97802D04225D3088007D480D /* LocationSearchView.swift */,
-				97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */,
+				97802D0A225E492E007D480D /* Main */,
+				97802D0B225E4946007D480D /* Location */,
+				97802D0C225E4957007D480D /* Friends */,
 			);
 			path = "Create Edit";
 			sourceTree = "<group>";
@@ -339,6 +342,36 @@
 				97802CED225CFF90007D480D /* EventPeopleTableViewCell.swift */,
 			);
 			path = People;
+			sourceTree = "<group>";
+		};
+		97802D0A225E492E007D480D /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				97802CE3225CFF0D007D480D /* CreateEditViewController.swift */,
+				97802CE9225CFF33007D480D /* CreateEditView.swift */,
+				97802CEF225CFFDB007D480D /* CreateEditTableViewCell.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		97802D0B225E4946007D480D /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				97802D02225D3010007D480D /* LocationSearchViewController.swift */,
+				97802D04225D3088007D480D /* LocationSearchView.swift */,
+				97802D06225D395C007D480D /* LocationSearchTableViewCell.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		97802D0C225E4957007D480D /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				97802D11225E49BA007D480D /* FriendsViewController.swift */,
+				97802D0F225E49AD007D480D /* FriendsView.swift */,
+				97802D0D225E4993007D480D /* FriendsTableViewCell.swift */,
+			);
+			path = Friends;
 			sourceTree = "<group>";
 		};
 		BAA7EF280003BEA21B99454E /* Frameworks */ = {
@@ -519,6 +552,7 @@
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802CF2225CFFF1007D480D /* HomeTableViewCell.swift in Sources */,
 				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
+				97802D0E225E4993007D480D /* FriendsTableViewCell.swift in Sources */,
 				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
 				97802CE4225CFF0D007D480D /* CreateEditViewController.swift in Sources */,
@@ -544,12 +578,14 @@
 				97802CDC225CFE88007D480D /* InviteViewController.swift in Sources */,
 				97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */,
 				97802D05225D3088007D480D /* LocationSearchView.swift in Sources */,
+				97802D12225E49BA007D480D /* FriendsViewController.swift in Sources */,
 				97802CE8225CFF27007D480D /* HomeView.swift in Sources */,
 				97802CE6225CFF16007D480D /* HomeViewController.swift in Sources */,
 				97802D07225D395C007D480D /* LocationSearchTableViewCell.swift in Sources */,
 				97802CC9225CF658007D480D /* StorageService.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
+				97802D10225E49AD007D480D /* FriendsView.swift in Sources */,
 				97802CC8225CF658007D480D /* DBService+User.swift in Sources */,
 				97802CFD225D021A007D480D /* EventDetailsView.swift in Sources */,
 				97802CCA225CF658007D480D /* DBService.swift in Sources */,
