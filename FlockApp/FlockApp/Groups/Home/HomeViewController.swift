@@ -27,6 +27,7 @@ class HomeViewController: BaseViewController {
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.collectionView.dataSource = self
+        homeView.collectionView.delegate = self
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
@@ -72,7 +73,7 @@ class HomeViewController: BaseViewController {
     
 }
 
-extension HomeViewController: UICollectionViewDataSource {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return events.count
     }
@@ -82,6 +83,7 @@ extension HomeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         let eventToSet = events[indexPath.row]
+        
         collectionViewCell.eventLabel.text = eventToSet.eventName
         print(eventToSet.startDate)
         //No start date populating
@@ -89,6 +91,15 @@ extension HomeViewController: UICollectionViewDataSource {
         collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
         collectionViewCell.layer.cornerRadius = 15
         return collectionViewCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = EventViewController()
+        let event = events[indexPath.row]
+//        detailVC.event = event
+        let detailNav = UINavigationController.init(rootViewController: detailVC)
+
+        present(detailNav, animated: true)
     }
     
     
