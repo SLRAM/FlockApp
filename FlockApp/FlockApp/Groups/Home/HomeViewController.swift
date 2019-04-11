@@ -11,13 +11,9 @@ import SnapKit
 class HomeViewController: BaseViewController {
     
     var homeView = HomeView()
-<<<<<<< HEAD
-=======
     var cellView = EventHomeCollectionViewCell()
     var dummyEvent = "This is a test event"
-    
 
->>>>>>> 979f5c7909f164c90baf66a0a1b84d4c7a7df628
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Flock"
