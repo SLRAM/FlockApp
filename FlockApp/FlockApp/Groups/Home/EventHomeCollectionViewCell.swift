@@ -26,8 +26,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var eventImage: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "flock"))
-        //image.contentMode = .scaleAspectFill
+        let image = UIImageView()
+       // image.alpha = 
         return image
     }()
     
@@ -73,8 +73,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-        setupEventLabel()
+       setupEventLabel()
        setupEventDay()
+        setupImage()
         
     }
     

@@ -28,7 +28,6 @@ class HomeView: UIView {
             let cellLayout = UICollectionViewFlowLayout()
             cellLayout.scrollDirection = .vertical
             cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 5)
-            
             cellLayout.itemSize = CGSize.init(width: 375, height:225)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
