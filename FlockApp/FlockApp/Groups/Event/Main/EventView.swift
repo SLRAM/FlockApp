@@ -10,11 +10,38 @@ import UIKit
 protocol EventViewDelegate: AnyObject {
     func segmentedDetailsPressed()
     func segmentedPeoplePressed()
+    func cancelPressed()
 }
 
 class EventView: UIView {
     
     weak var delegate: EventViewDelegate?
+    
+    public lazy var cancelButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
+        return button
+    }()
+    @objc func cancelButtonPressed() {
+        delegate?.cancelPressed()
+    }
+    
+    lazy var eventAddress: UILabel = {
+       let label = UILabel()
+        label.text = "47-10 Austell Pl. 11111"
+        return label
+    }()
+    
+    lazy var eventDate: UILabel = {
+        let label = UILabel()
+        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+        return label
+    }()
+    
+    lazy var eventTracking: UILabel = {
+        let label = UILabel()
+        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+        return label
+    }()
     
     lazy var eventTitle: UILabel = {
         let label = UILabel()
@@ -23,6 +50,8 @@ class EventView: UIView {
         label.textAlignment = .center
         return label
     }()
+    
+    
     
     lazy var detailView: UIView = {
         let view = UIView()
@@ -46,14 +75,51 @@ class EventView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
+        self.backgroundColor = .white
         addEventTitle()
         addSegmentedControl()
         addDetailView()
+        addEventAddress()
+        addEventDate()
+        addEventTracking()
         addTableView()
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func addEventAddress() {
+        addSubview(eventAddress)
+        eventAddress.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+        eventAddress.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 10),
+        eventAddress.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+        eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventAddress.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
+    }
+    
+    private func addEventDate() {
+        addSubview(eventDate)
+        eventDate.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+        eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 10),
+        eventDate.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+        eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventDate.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
+    }
+    
+    private func addEventTracking() {
+        addSubview(eventTracking)
+        eventTracking.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            eventTracking.topAnchor.constraint(equalTo: eventDate.topAnchor, constant: 10),
+            eventTracking.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            eventTracking.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+            eventTracking.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            ])
     }
     
     private func addEventTitle() {
@@ -73,7 +139,7 @@ class EventView: UIView {
         NSLayoutConstraint.activate([
         segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
         segmentedControl.topAnchor.constraint(equalTo: eventTitle.bottomAnchor, constant: 40),
-        segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08),
+        segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07),
         segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
         ])
     }
@@ -121,6 +187,3 @@ class EventView: UIView {
 
 
 }
-
-//make a new view that's just used for dimensions (no need to make a new file)
-//add people view, add detail view - in that order

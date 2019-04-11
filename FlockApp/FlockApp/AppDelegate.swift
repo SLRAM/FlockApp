@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            window?.rootViewController = createNav
             
 //            //Yaz root
-          window?.rootViewController = HomeViewController()
+           window?.rootViewController = HomeViewController()
 
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
