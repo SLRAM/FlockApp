@@ -15,7 +15,7 @@ class DateViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(dateView)
         navigationItem.rightBarButtonItem = dateView.okayButton
-        navigationItem.leftBarButtonItem = dateView.cancelButton
+//        navigationItem.leftBarButtonItem = dateView.cancelButton
         dateView.delegate = self
         dateView.startDatePicker.addTarget(self, action: #selector(startDatePickerValue), for: .valueChanged)
         dateView.endDatePicker.addTarget(self, action: #selector(endDatePickerValue), for: .valueChanged)
@@ -77,9 +77,15 @@ extension DateViewController: ReminderButtonsDelegates {
                 print("successfully added end notification")
             }
         }
-        showAlert(title: "Reminder set", message: nil)
+        let alertController = UIAlertController(title: "This date has been added to your event.", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            self.navigationController?.popViewController(animated: true)
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+//        showAlert(title: "Reminder set", message: nil)
+        
+
     }
-    func cancelPressed() {
-        dismiss(animated: true)
-    }
+
 }
