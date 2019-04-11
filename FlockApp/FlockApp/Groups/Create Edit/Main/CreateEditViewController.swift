@@ -17,11 +17,15 @@ class CreateEditViewController: UIViewController {
     let firstPlaceholder = "Enter first quiz fact"
     let secondPlaceholder = "Enter second quiz fact"
     
+    var friendsArray = [String]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
+        createEditView.myTableView.dataSource = self
+        createEditView.myTableView.delegate = self
         navigationItem.rightBarButtonItem = createEditView.createButton
     }
     override func viewDidAppear(_ animated: Bool) {
@@ -43,7 +47,7 @@ extension CreateEditViewController: CreateViewDelegate {
     func friendsPressed() {
         print("friends pressed")
         let detailVC = FriendsViewController()
-//        detailVC.delegate = self
+        detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
@@ -52,9 +56,11 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func datePressed() {
-        let detailVC = LocationSearchViewController()
-        detailVC.delegate = self
-        navigationController?.pushViewController(detailVC, animated: true)
+        print("date pressed")
+
+//        let detailVC = LocationSearchViewController() change to dateviewcontroller
+//        detailVC.delegate = self
+//        navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func addressPressed() {
@@ -98,6 +104,22 @@ extension CreateEditViewController: CreateViewDelegate {
         }
     }
 }
+
+extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return friendsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        let friend = friendsArray[indexPath.row]
+        cell.textLabel?.text = friend
+        return cell
+    }
+    
+    
+}
+
 extension CreateEditViewController: LocationSearchViewControllerDelegate {
     func getLocation(locationTuple: (String, CLLocationCoordinate2D)) {
             print("tuple printout of string: \(locationTuple.0)")
@@ -109,6 +131,8 @@ extension CreateEditViewController: LocationSearchViewControllerDelegate {
 extension CreateEditViewController: FriendsViewControllerDelegate {
     func selectedFriends(friends: [String]) {
         print("Friends selected")
+        friendsArray = friends
+        createEditView.myTableView.reloadData()
     }
     
     
