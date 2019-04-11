@@ -70,14 +70,14 @@ class LocationSearchViewController: UIViewController {
     @objc func addButton() {
         guard let noLocation = locationSearchView.locationSearch.text?.isEmpty else {return}
         if noLocation {
-            let alertController = UIAlertController(title: "Please provide a location to add to your route.", message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Please provide a location to add to your event.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
             present(alertController, animated: true)
         } else {
             delegate?.getLocation(locationTuple: locationTuple)
             print("saved")
-            let alertController = UIAlertController(title: "This location has been added to your route.", message: nil, preferredStyle: .alert)
+            let alertController = UIAlertController(title: "This location has been added to your event.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
                 self.navigationController?.popViewController(animated: true)
 
