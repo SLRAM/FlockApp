@@ -31,6 +31,7 @@ class CreateEditViewController: UIViewController {
         createEditView.myTableView.dataSource = self
         createEditView.myTableView.delegate = self
         navigationItem.rightBarButtonItem = createEditView.createButton
+        navigationItem.leftBarButtonItem = createEditView.cancelButton
     }
     override func viewDidAppear(_ animated: Bool) {
     }
@@ -48,6 +49,10 @@ extension CreateEditViewController: UITextViewDelegate {
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
+    func cancelPressed() {
+        dismiss(animated: true)
+    }
+    
     func friendsPressed() {
         print("friends pressed")
         let detailVC = FriendsViewController()
@@ -149,6 +154,5 @@ extension CreateEditViewController: DateViewControllerDelegate {
         selectedEndDate = endDate
 
     }
-    
-    
+
 }
