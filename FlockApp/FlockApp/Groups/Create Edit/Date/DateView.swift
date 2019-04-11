@@ -9,7 +9,7 @@ import UIKit
 
 protocol ReminderButtonsDelegates: AnyObject {
     func okayPressed(startDatePicker: UIDatePicker, endDatePicker: UIDatePicker)
-    func cancelPressed()
+//    func cancelPressed()
 }
 
 class DateView: UIView {
@@ -52,7 +52,7 @@ class DateView: UIView {
         return label
     }()
     public lazy var okayButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Okay", style: UIBarButtonItem.Style.plain, target: self, action: #selector(okayButtonPressed))
+        let button = UIBarButtonItem(title: "Add", style: UIBarButtonItem.Style.plain, target: self, action: #selector(okayButtonPressed))
         return button
     }()
     
@@ -132,6 +132,6 @@ class DateView: UIView {
     }
     
     @objc func cancelButtonPressed() {
-        delegate?.cancelPressed()
+//        delegate?.cancelPressed()
     }
 }
