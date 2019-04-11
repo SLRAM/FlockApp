@@ -50,7 +50,9 @@ extension HomeViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
        _ = [indexPath.row]
-        collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
+       collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
+        collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
+        collectionViewCell.eventImage.layer.cornerRadius = 15
         collectionViewCell.layer.cornerRadius = 15
       //collectionViewCell.eventLabel.text = "Text"
         return collectionViewCell
