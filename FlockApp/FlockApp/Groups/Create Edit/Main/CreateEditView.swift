@@ -62,7 +62,6 @@ class CreateEditView: UIView {
     }()
     @objc func trackingPressed() {
         delegate?.trackingPressed()
-        print("event date pressed")
         
     }
     lazy var friendButton: UIButton = {
@@ -81,6 +80,14 @@ class CreateEditView: UIView {
         
     }
     
+    lazy var myTableView: UITableView = {
+        let tv = UITableView()
+        tv.register(CreateEditTableViewCell.self, forCellReuseIdentifier: "CreateEditTableViewCell")
+        tv.rowHeight = (UIScreen.main.bounds.width)/10
+        tv.backgroundColor = .clear
+        tv.separatorStyle = .none
+        return tv
+    }()
     
     
     
@@ -133,6 +140,7 @@ extension CreateEditView {
         setupDateButton()
         setupTrackingButton()
         setupFriendButton()
+        setupTableView()
 
     }
     func setupTitleTextField() {
@@ -175,5 +183,15 @@ extension CreateEditView {
         friendButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         friendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+    }
+    
+    func setupTableView() {
+        addSubview(myTableView)
+        myTableView.translatesAutoresizingMaskIntoConstraints = false
+        myTableView.topAnchor.constraint(equalTo: friendButton.bottomAnchor, constant: 10).isActive = true
+        myTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        myTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+//        myTableView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        myTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
     }
 }

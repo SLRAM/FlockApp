@@ -27,7 +27,7 @@ class LocationSearchView: UIView {
     lazy var locationSearch: UISearchBar = {
         let tf = UISearchBar()
         tf.placeholder = "Search Locations"
-        tf.barTintColor = #colorLiteral(red: 0.5249566436, green: 0.8283091784, blue: 0.7542427182, alpha: 1)
+//        tf.barTintColor = #colorLiteral(red: 0.5249566436, green: 0.8283091784, blue: 0.7542427182, alpha: 1)
         //        tf.layer.cornerRadius = 10
         //        tf.layer.borderWidth = 2
         //        tf.layer.borderColor = UIColor.gray.cgColor
