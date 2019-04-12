@@ -21,6 +21,12 @@ struct UsersCollectionKeys {
     static let BioKey = "bio"
     static let CoverImageURLKey = "coverImageURL"
     static let PhoneNumberKey = "phoneNumber"
+    
+    static let FullnameIsVisibleKey = "fullnameIsVisibleKey"
+    static let EmailIsVisibleKey = "emailIsVisible"
+    static let PhoneIsVisibleKey = "phoneIsVisible"
+
+    
 }
 extension DBService {
     static public func createUser(user: UserModel, completion: @escaping (Error?) -> Void) {

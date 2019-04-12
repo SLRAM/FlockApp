@@ -18,6 +18,11 @@ struct UserModel {
     let lastName: String?
     let bio: String?
     let phoneNumber: String?
+    let fullnameIsVisible: Bool
+    let emailIsVisible: Bool
+    let phoneIsVisible: Bool
+    //add friend array: [FriendModel]
+    
     // add array event id?
     // add array friend/users id?
     // add location
@@ -33,7 +38,7 @@ struct UserModel {
          joinedDate: String,
          firstName: String?,
          lastName: String?,
-         bio: String?, phoneNumber: String?) {
+         bio: String?, phoneNumber: String?, fullnameIsVisible: Bool, emailIsVisible: Bool, phoneIsVisible: Bool) {
         self.userId = userId
         self.displayName = displayName
         self.email = email
@@ -44,6 +49,10 @@ struct UserModel {
         self.lastName = lastName
         self.bio = bio
         self.phoneNumber = phoneNumber
+        
+        self.fullnameIsVisible = fullnameIsVisible
+        self.emailIsVisible = emailIsVisible
+        self.phoneIsVisible = phoneIsVisible
     }
     
     init(dict: [String: Any]) {
@@ -57,5 +66,9 @@ struct UserModel {
         self.lastName = dict[UsersCollectionKeys.LastNameKey] as? String ?? "LastName"
         self.bio = dict[UsersCollectionKeys.BioKey] as? String ?? "Bio"
         self.phoneNumber = dict[UsersCollectionKeys.PhoneNumberKey] as? String ?? "000-000-0000"
+        self.fullnameIsVisible = dict[UsersCollectionKeys.FullnameIsVisibleKey] as? Bool ?? false
+        self.emailIsVisible = dict[UsersCollectionKeys.EmailIsVisibleKey] as? Bool ?? false
+        self.phoneIsVisible = dict[UsersCollectionKeys.PhoneIsVisibleKey] as? Bool ?? false
+        
     }
 }
