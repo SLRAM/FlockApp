@@ -14,6 +14,8 @@ class CreateEditViewController: UIViewController {
     
     private let createEditView = CreateEditView()
     let titlePlaceholder = "Enter the event title"
+    let trackingPlaceholder = "Event Tracking Time"
+    var number = 0
 
     
     var friendsArray = [UserModel]()
@@ -36,7 +38,23 @@ class CreateEditViewController: UIViewController {
         navigationItem.leftBarButtonItem = createEditView.cancelButton
     }
     override func viewDidAppear(_ animated: Bool) {
+        
     }
+//    func editNumber(number: Int, increase: Bool)-> String {
+//        if number != 0 {
+////            number -= 1
+//            
+//        }
+//        if number == 1 {
+//            createEditView.myLabel.text = "Start \(number) hour before event"
+//            
+//        } else if number == 0{
+//            createEditView.myLabel.text = trackingPlaceholder
+//        } else {
+//            createEditView.myLabel.text = "Start \(number) hours before event"
+//        }
+//        
+//    }
 }
 extension CreateEditViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -51,20 +69,53 @@ extension CreateEditViewController: UITextViewDelegate {
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
+    func trackingDecreasePressed() {
+        print("tracking decrease pressed")
+        if number != 0 {
+            number -= 1
+
+        }
+        if number == 1 {
+            createEditView.myLabel.text = "Start \(number) hour before event"
+            
+        } else if number == 0{
+            createEditView.myLabel.text = trackingPlaceholder
+        } else {
+            createEditView.myLabel.text = "Start \(number) hours before event"
+        }
+
+    }
+    
+    func trackingIncreasePressed() {
+        print("tracking increase pressed")
+ 
+        
+        number += 1
+        if number == 1 {
+            createEditView.myLabel.text = "Start \(number) hour before event"
+
+        } else {
+            createEditView.myLabel.text = "Start \(number) hours before event"
+        }
+    }
+    
+    
+    func imagePressed() {
+        print("image pressed")
+    }
+    
     func cancelPressed() {
         dismiss(animated: true)
     }
     
     func friendsPressed() {
         print("friends pressed")
-        let detailVC = FriendsViewController()
+        let detailVC = InvitedViewController()
         detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    func trackingPressed() {
-        print("tracking pressed")
-    }
+
     
     func datePressed() {
         print("date pressed")
@@ -155,7 +206,7 @@ extension CreateEditViewController: LocationSearchViewControllerDelegate {
         selectedCoordinates = locationTuple.1
     }
 }
-extension CreateEditViewController: FriendsViewControllerDelegate {
+extension CreateEditViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
