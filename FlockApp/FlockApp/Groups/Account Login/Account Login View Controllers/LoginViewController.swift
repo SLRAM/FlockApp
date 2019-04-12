@@ -18,6 +18,8 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         navigationController?.isNavigationBarHidden = true
         authservice.authserviceExistingAccountDelegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
     @IBAction func loginButtonPressed(_ sender: UIButton) {
         guard let email = emailTextField.text,
@@ -42,5 +44,12 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
         homeViewController.modalTransitionStyle = .crossDissolve
         homeViewController.modalPresentationStyle = .overFullScreen
         present(homeViewController, animated: true)
+    }
+}
+extension LoginViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+
+        return true
     }
 }
