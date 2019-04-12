@@ -20,6 +20,7 @@
 		93D103F6225FD6060038C6AA /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F5225FD6060038C6AA /* ProfileView.swift */; };
 		93D103F8225FD6210038C6AA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F7225FD6210038C6AA /* SettingsViewController.swift */; };
 		93D103FA225FD62F0038C6AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F9225FD62F0038C6AA /* SettingsView.swift */; };
+		93D103FC22611E900038C6AA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103FB22611E900038C6AA /* Constants.swift */; };
 		97025F942257EA1100273C91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F932257EA1100273C91 /* AppDelegate.swift */; };
 		97025F962257EA1100273C91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F952257EA1100273C91 /* ViewController.swift */; };
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
@@ -79,6 +80,7 @@
 		93D103F5225FD6060038C6AA /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		93D103F7225FD6210038C6AA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		93D103F9225FD62F0038C6AA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		93D103FB22611E900038C6AA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		97025F902257EA1100273C91 /* FlockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97025F932257EA1100273C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97025F952257EA1100273C91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				97802CC4225CF658007D480D /* DBService+User.swift */,
 				939C62DB225E6C4000F93D76 /* DBService+Event.swift */,
 				97802CC5225CF658007D480D /* StorageService.swift */,
+				93D103FB22611E900038C6AA /* Constants.swift */,
 			);
 			path = "FireBase Helpers";
 			sourceTree = "<group>";
@@ -629,6 +632,8 @@
 				97802CD4225CF7E3007D480D /* UserModel.swift in Sources */,
 				939C62DA225E6BC900F93D76 /* EventModel.swift in Sources */,
 				97802CDC225CFE88007D480D /* FriendsViewController.swift in Sources */,
+				97802CDC225CFE88007D480D /* InviteViewController.swift in Sources */,
+				93D103FC22611E900038C6AA /* Constants.swift in Sources */,
 				97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */,
 				97802D05225D3088007D480D /* LocationSearchView.swift in Sources */,
 				97802D12225E49BA007D480D /* InvitedViewController.swift in Sources */,

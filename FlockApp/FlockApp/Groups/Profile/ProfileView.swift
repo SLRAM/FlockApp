@@ -9,15 +9,16 @@ import UIKit
 
 class ProfileView: UIView {
 
-    lazy var displayNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "DisplayName"
-        label.textAlignment = .center
-        label.layer.cornerRadius = 10.0
-        label.layer.borderWidth = 1.0
-        label.backgroundColor = UIColor(white: 1, alpha: 0.5)
+    lazy var displayNameTextView: UITextView = {
+        let textView = UITextView()
+        textView.isEditable = false
+        textView.text = "DisplayName"
+        textView.textAlignment = .center
+        textView.layer.cornerRadius = 10.0
+        textView.layer.borderWidth = 1.0
+        textView.backgroundColor = UIColor(white: 1, alpha: 0.5)
 
-        return label
+        return textView
     }()
     lazy var fullNameTextView: UITextView = {
         let textView = UITextView()
@@ -93,7 +94,7 @@ class ProfileView: UIView {
         backgroundColor = .white
         setupEditButton()
         setupImageButton()
-        setupDisplayNameLabel()
+        setupDisplayNameTextView()
         setupFullNameTextView()
         setupEmailTextView()
         setupPhoneTextView()
@@ -120,14 +121,14 @@ class ProfileView: UIView {
             imageButton.widthAnchor.constraint(equalToConstant: 100)
             ])
     }
-    private func setupDisplayNameLabel() {
-        addSubview(displayNameLabel)
-        displayNameLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func setupDisplayNameTextView() {
+        addSubview(displayNameTextView)
+        displayNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            displayNameLabel.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: -10),
-            displayNameLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            displayNameLabel.widthAnchor.constraint(equalToConstant: 300),
-            displayNameLabel.heightAnchor.constraint(equalToConstant: 30)
+            displayNameTextView.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: -10),
+            displayNameTextView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            displayNameTextView.widthAnchor.constraint(equalToConstant: 300),
+            displayNameTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     private func setupFullNameTextView() {
@@ -136,11 +137,11 @@ class ProfileView: UIView {
         firstNameTextView.translatesAutoresizingMaskIntoConstraints = false
         lastNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            firstNameTextView.topAnchor.constraint(equalTo: displayNameLabel.bottomAnchor, constant: 30),
+            firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 30),
             firstNameTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             firstNameTextView.widthAnchor.constraint(equalToConstant: 150),
             firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
-            lastNameTextView.topAnchor.constraint(equalTo: displayNameLabel.bottomAnchor, constant: 30),
+            lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 30),
             lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
             lastNameTextView.widthAnchor.constraint(equalToConstant: 150),
             lastNameTextView.heightAnchor.constraint(equalToConstant: 30)
