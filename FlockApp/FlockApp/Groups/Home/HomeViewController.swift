@@ -63,7 +63,7 @@ class HomeViewController: BaseViewController {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
                     self?.events = snapshot.documents.map{Event(dict:                $0.data()) }
-                    .sorted { $0.createdDate.date() > $1.createdDate.date() }
+                    .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
