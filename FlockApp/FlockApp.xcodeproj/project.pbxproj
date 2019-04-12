@@ -239,7 +239,7 @@
 				97802CD6225CFD74007D480D /* Home */,
 				97802CD8225CFD98007D480D /* Create Edit */,
 				97802CD9225CFDC2007D480D /* Event */,
-				97802CDA225CFE37007D480D /* Invite */,
+				97802CDA225CFE37007D480D /* Friends */,
 				93D103F1225FD59D0038C6AA /* Profile */,
 				93D103F2225FD5C30038C6AA /* Settings */,
 				93832919225E4D3800E4568F /* Menu */,
@@ -352,14 +352,14 @@
 			path = Event;
 			sourceTree = "<group>";
 		};
-		97802CDA225CFE37007D480D /* Invite */ = {
+		97802CDA225CFE37007D480D /* Friends */ = {
 			isa = PBXGroup;
 			children = (
 				97802CDB225CFE88007D480D /* FriendsViewController.swift */,
 				97802CDD225CFE99007D480D /* FriendsView.swift */,
 				97802CDF225CFEB3007D480D /* FriendsTableViewCell.swift */,
 			);
-			path = Invite;
+			path = Friends;
 			sourceTree = "<group>";
 		};
 		97802CF3225D0117007D480D /* Main */ = {
