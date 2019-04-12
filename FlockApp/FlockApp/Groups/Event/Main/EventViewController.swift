@@ -23,11 +23,16 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        print(event?.invited)
             navigationItem.leftBarButtonItem = eventView.cancelButton
         
         self.view.addSubview(eventView)
-        guard let eventTitle = event?.eventName else {return}
+        guard let unwrappedEvent = event else {return}
+        let eventTitle = unwrappedEvent.eventName
+        let eventAddress = unwrappedEvent.locationString
+        let eventTracking = unwrappedEvent.startDate
         eventView.eventTitle.text = eventTitle
+        eventView.eventAddress.text = eventAddress
         eventView.delegate = self
         eventView.peopleTableView.dataSource = self
         eventView.peopleTableView.delegate = self
@@ -54,11 +59,12 @@ extension EventViewController: EventViewDelegate {
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return (event?.invited.count)!
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = eventView.peopleTableView.dequeueReusableCell(withIdentifier: "peopleCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+        cell.textLabel?.text = event?.invited[indexPath.row]
         return cell
     }
 
