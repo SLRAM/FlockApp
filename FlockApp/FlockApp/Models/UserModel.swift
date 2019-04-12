@@ -17,6 +17,7 @@ struct UserModel {
     let firstName: String?
     let lastName: String?
     let bio: String?
+    let phoneNumber: String?
     // add array event id?
     // add array friend/users id?
     // add location
@@ -32,7 +33,7 @@ struct UserModel {
          joinedDate: String,
          firstName: String?,
          lastName: String?,
-         bio: String?) {
+         bio: String?, phoneNumber: String?) {
         self.userId = userId
         self.displayName = displayName
         self.email = email
@@ -42,6 +43,7 @@ struct UserModel {
         self.firstName = firstName
         self.lastName = lastName
         self.bio = bio
+        self.phoneNumber = phoneNumber
     }
     
     init(dict: [String: Any]) {
@@ -54,5 +56,6 @@ struct UserModel {
         self.firstName = dict[UsersCollectionKeys.FirstNameKey] as? String ?? "FirstName"
         self.lastName = dict[UsersCollectionKeys.LastNameKey] as? String ?? "LastName"
         self.bio = dict[UsersCollectionKeys.BioKey] as? String ?? "Bio"
+        self.phoneNumber = dict[UsersCollectionKeys.PhoneNumberKey] as? String ?? "000-000-0000"
     }
 }

@@ -117,7 +117,7 @@ class CreateEditView: UIView {
         textView.textColor = .gray
         textView.textAlignment = .center
 //        textView.font = textView.font?.withSize(20)
-        textView.text = "Enter the Event Title"
+//        textView.text = "Enter the Event Title"
         textView.tag = 0
         
         return textView

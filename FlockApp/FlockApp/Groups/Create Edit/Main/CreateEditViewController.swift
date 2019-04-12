@@ -81,6 +81,13 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+        
+        if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
+            let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
         if createEditView.addressButton.titleLabel?.text == "Event Address" {
             let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
