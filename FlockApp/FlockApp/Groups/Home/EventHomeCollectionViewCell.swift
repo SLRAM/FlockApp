@@ -75,7 +75,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     private func commonInit(){
        setupEventLabel()
        setupEventDay()
-        setupImage()
+        //setupImage()
         
     }
     
