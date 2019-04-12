@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 
 protocol InvitedViewControllerDelegate: AnyObject {
     func selectedFriends(friends: [UserModel])
