@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 
 
 class HomeViewController: BaseViewController {
