@@ -40,21 +40,23 @@ class CreateEditViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
     }
-//    func editNumber(number: Int, increase: Bool)-> String {
-//        if number != 0 {
-////            number -= 1
-//            
-//        }
-//        if number == 1 {
-//            createEditView.myLabel.text = "Start \(number) hour before event"
-//            
-//        } else if number == 0{
-//            createEditView.myLabel.text = trackingPlaceholder
-//        } else {
-//            createEditView.myLabel.text = "Start \(number) hours before event"
-//        }
-//        
-//    }
+    func editNumber(increase: Bool)-> String {
+        if number != 0 && increase == false{
+            number -= 1
+            
+        } else if increase == true {
+            number += 1
+        }
+        if number == 1{
+            return "Start \(number) hour before event"
+            
+        } else if number == 0{
+            return trackingPlaceholder
+        } else {
+            return "Start \(number) hours before event"
+        }
+        
+    }
 }
 extension CreateEditViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
@@ -71,32 +73,37 @@ extension CreateEditViewController: UITextViewDelegate {
 extension CreateEditViewController: CreateViewDelegate {
     func trackingDecreasePressed() {
         print("tracking decrease pressed")
-        if number != 0 {
-            number -= 1
-
-        }
-        if number == 1 {
-            createEditView.myLabel.text = "Start \(number) hour before event"
-            
-        } else if number == 0{
-            createEditView.myLabel.text = trackingPlaceholder
-        } else {
-            createEditView.myLabel.text = "Start \(number) hours before event"
-        }
+        let trackingLabel = editNumber(increase: false)
+        createEditView.myLabel.text = trackingLabel
+//        if number != 0 {
+//            number -= 1
+//
+//        }
+//        if number == 1 {
+//            createEditView.myLabel.text = "Start \(number) hour before event"
+//
+//        } else if number == 0{
+//            createEditView.myLabel.text = trackingPlaceholder
+//        } else {
+//            createEditView.myLabel.text = "Start \(number) hours before event"
+//        }
 
     }
     
     func trackingIncreasePressed() {
         print("tracking increase pressed")
  
-        
-        number += 1
-        if number == 1 {
-            createEditView.myLabel.text = "Start \(number) hour before event"
+        let trackingLabel = editNumber(increase: true)
+        createEditView.myLabel.text = trackingLabel
 
-        } else {
-            createEditView.myLabel.text = "Start \(number) hours before event"
-        }
+        
+//        number += 1
+//        if number == 1 {
+//            createEditView.myLabel.text = "Start \(number) hour before event"
+//
+//        } else {
+//            createEditView.myLabel.text = "Start \(number) hours before event"
+//        }
     }
     
     
