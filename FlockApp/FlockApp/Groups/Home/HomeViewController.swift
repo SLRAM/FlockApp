@@ -6,13 +6,20 @@
 //
 
 import UIKit
+import Kingfisher
+import Firebase
 
 
 class HomeViewController: BaseViewController {
     
     var homeView = HomeView()
-    var cellView = EventHomeCollectionViewCell()
-    var dummyEvent = "This is a test event"
+    var events = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.collectionView.reloadData()
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,10 +27,14 @@ class HomeViewController: BaseViewController {
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.collectionView.dataSource = self
+        homeView.collectionView.delegate = self
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+        fetchEvents()
         
-    
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        homeView.collectionView.reloadData()
     }
     
     @objc func showCreateEditEvent() {
@@ -36,24 +47,64 @@ class HomeViewController: BaseViewController {
         present (joinVC, animated: true)
         print("whaddup")
     }
- 
+    
+    private var listener: ListenerRegistration!
+    private var authService = AppDelegate.authservice
+    private lazy var refreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        homeView.collectionView.refreshControl = rc
+        rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
+        return rc
+    }()
+    
+    @objc func fetchEvents(){
+        refreshControl.beginRefreshing()
+        listener = DBService.firestoreDB
+        .collection(EventsCollectionKeys.CollectionKey)
+            .addSnapshotListener({ [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch events with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot{
+                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
+                    .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                }
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+            })
+    }
     
 }
 
-extension HomeViewController: UICollectionViewDataSource {
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 7
+        return events.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
         }
-       _ = [indexPath.row]
-        //collectionViewCell.backgroundColor = #colorLiteral(red: 0.755648911, green: 0.06676873565, blue: 0.9596711993, alpha: 1)
+        let eventToSet = events[indexPath.row]
+        
+        collectionViewCell.eventLabel.text = eventToSet.eventName
+        print(eventToSet.startDate)
+        //No start date populating
+        collectionViewCell.dayLabel.text = eventToSet.startDate.description
         collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
         collectionViewCell.layer.cornerRadius = 15
         return collectionViewCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailVC = EventViewController()
+        let event = events[indexPath.row]
+//        detailVC.event = event
+        detailVC.event = event
+        let detailNav = UINavigationController.init(rootViewController: detailVC)
+
+        present(detailNav, animated: true)
     }
     
     
