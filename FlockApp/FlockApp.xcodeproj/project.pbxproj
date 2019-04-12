@@ -21,6 +21,8 @@
 		93D103F8225FD6210038C6AA /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F7225FD6210038C6AA /* SettingsViewController.swift */; };
 		93D103FA225FD62F0038C6AA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103F9225FD62F0038C6AA /* SettingsView.swift */; };
 		93D103FC22611E900038C6AA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103FB22611E900038C6AA /* Constants.swift */; };
+		93D103FF226132840038C6AA /* JoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D103FE226132840038C6AA /* JoinViewController.swift */; };
+		93D104012261329D0038C6AA /* JoinView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D104002261329D0038C6AA /* JoinView.swift */; };
 		97025F942257EA1100273C91 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F932257EA1100273C91 /* AppDelegate.swift */; };
 		97025F962257EA1100273C91 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025F952257EA1100273C91 /* ViewController.swift */; };
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
@@ -81,6 +83,8 @@
 		93D103F7225FD6210038C6AA /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		93D103F9225FD62F0038C6AA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		93D103FB22611E900038C6AA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		93D103FE226132840038C6AA /* JoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinViewController.swift; sourceTree = "<group>"; };
+		93D104002261329D0038C6AA /* JoinView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinView.swift; sourceTree = "<group>"; };
 		97025F902257EA1100273C91 /* FlockApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlockApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		97025F932257EA1100273C91 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		97025F952257EA1100273C91 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -188,6 +192,15 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		93D103FD2261324D0038C6AA /* Join */ = {
+			isa = PBXGroup;
+			children = (
+				93D103FE226132840038C6AA /* JoinViewController.swift */,
+				93D104002261329D0038C6AA /* JoinView.swift */,
+			);
+			path = Join;
+			sourceTree = "<group>";
+		};
 		97025F872257EA1100273C91 = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +253,7 @@
 				97802CB2225CEB98007D480D /* Account Login */,
 				97802CD6225CFD74007D480D /* Home */,
 				97802CD8225CFD98007D480D /* Create Edit */,
+				93D103FD2261324D0038C6AA /* Join */,
 				97802CD9225CFDC2007D480D /* Event */,
 				97802CDA225CFE37007D480D /* Invite */,
 				93D103F1225FD59D0038C6AA /* Profile */,
@@ -600,9 +614,11 @@
 				97802CFF225D035E007D480D /* MapViewController.swift in Sources */,
 				97802D01225D0373007D480D /* MapView.swift in Sources */,
 				97802CEE225CFF90007D480D /* EventPeopleTableViewCell.swift in Sources */,
+				93D104012261329D0038C6AA /* JoinView.swift in Sources */,
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
 				97802D0E225E4993007D480D /* FriendsTableViewCell.swift in Sources */,
+				93D103FF226132840038C6AA /* JoinViewController.swift in Sources */,
 				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,
 				93D103F4225FD5F80038C6AA /* ProfileViewController.swift in Sources */,
