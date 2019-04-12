@@ -8,7 +8,20 @@
 import UIKit
 
 class SettingsView: UIView {
+    
+    //display email, number, full name between public and friends
 
+    lazy var displayEmail: UILabel = {
+       let label = UILabel()
+        label.text = "Display Email"
+        return label
+    }()
+    
+    
+    
+    
+    
+    
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         setupConstraints()

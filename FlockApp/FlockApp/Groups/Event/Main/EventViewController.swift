@@ -33,6 +33,15 @@ class EventViewController: UIViewController {
         
         let eventAddress = unwrappedEvent.locationString
         let eventTracking = unwrappedEvent.startDate
+        let date = unwrappedEvent.startDate
+        let formatter = ISO8601DateFormatter()
+//        formatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime]
+        let str = formatter.string(from: date)
+        
+        
+       
+        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
+        eventView.eventDate.text = formattedDate
         eventView.eventTitle.text = eventTitle
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
