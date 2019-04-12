@@ -10,14 +10,38 @@ protocol CreateViewDelegate: AnyObject {
     func createPressed()
     func addressPressed()
     func datePressed()
-    func trackingPressed()
     func friendsPressed()
     func cancelPressed()
+    func imagePressed()
+    func trackingIncreasePressed()
+    func trackingDecreasePressed()
 }
 class CreateEditView: UIView {
     
     weak var delegate: CreateViewDelegate?
     
+    lazy var imageButton: UIButton = {
+        let button = UIButton()
+//        button.titleLabel?.numberOfLines = 0
+//        button.titleLabel?.textAlignment = .center
+//        button.setTitle("Event Image" + "\n" + "Event Time", for: .normal)
+        
+        
+
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        button.addTarget(self, action: #selector(imagePressed), for: .touchUpInside)
+        button.backgroundColor = .yellow
+//        button.setImage(UIImage(named: "pitons"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "pitons"), for: .normal)
+        button.layer.cornerRadius = 10.0
+        
+        return button
+    }()
+    @objc func imagePressed() {
+        delegate?.imagePressed()
+        print("event image pressed")
+        
+    }
     
     lazy var addressButton: UIButton = {
         let button = UIButton()
@@ -50,19 +74,46 @@ class CreateEditView: UIView {
         print("event date pressed")
         
     }
+//    lazy var trackingStepper: UIStepper = {
+//        let stepper = UIStepper()
+//        return stepper
+//    }()
     
-    lazy var trackingButton: UIButton = {
+    lazy var myLabel: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = .yellow
+        label.text = "Event Tracking Time"
+        label.textAlignment = .center
+        label.textColor = .blue
+        return label
+    }()
+    
+    lazy var trackingIncreaseButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Event Tracking Time", for: .normal)
+        button.setTitle("+", for: .normal)
         button.setTitleColor(.blue, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
-        button.addTarget(self, action: #selector(trackingPressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.addTarget(self, action: #selector(trackingIncreasePressed), for: .touchUpInside)
+        button.backgroundColor = #colorLiteral(red: 0.8901717663, green: 0.8789022565, blue: 0, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
-    @objc func trackingPressed() {
-        delegate?.trackingPressed()
+    @objc func trackingIncreasePressed() {
+        delegate?.trackingIncreasePressed()
+        
+    }
+    lazy var trackingDecreaseButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("-", for: .normal)
+        button.setTitleColor(.blue, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
+        button.addTarget(self, action: #selector(trackingDecreasePressed), for: .touchUpInside)
+        button.backgroundColor = #colorLiteral(red: 0.8881237507, green: 0.8798579574, blue: 0, alpha: 1)
+        button.layer.cornerRadius = 10.0
+        return button
+    }()
+    @objc func trackingDecreasePressed() {
+        delegate?.trackingDecreasePressed()
         
     }
     lazy var friendButton: UIButton = {
@@ -142,9 +193,10 @@ class CreateEditView: UIView {
 extension CreateEditView {
     func setupView() {
         setupTitleTextField()
+        setupImageButton()
         setupAddressButton()
         setupDateButton()
-        setupTrackingButton()
+        setupTracking()
         setupFriendButton()
         setupTableView()
 
@@ -157,10 +209,18 @@ extension CreateEditView {
         titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
     }
+    func setupImageButton() {
+        addSubview(imageButton)
+        imageButton.translatesAutoresizingMaskIntoConstraints = false
+        imageButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
+        imageButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        imageButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.30).isActive = true
+    }
     func setupAddressButton() {
         addSubview(addressButton)
         addressButton.translatesAutoresizingMaskIntoConstraints = false
-        addressButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
+        addressButton.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 10).isActive = true
         addressButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         addressButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
@@ -174,18 +234,37 @@ extension CreateEditView {
         dateButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         dateButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
     }
-    func setupTrackingButton() {
-        addSubview(trackingButton)
-        trackingButton.translatesAutoresizingMaskIntoConstraints = false
-        trackingButton.topAnchor.constraint(equalTo: dateButton.bottomAnchor, constant: 10).isActive = true
-        trackingButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        trackingButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        trackingButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+    func setupTracking() {
+        addSubview(myLabel)
+        myLabel.translatesAutoresizingMaskIntoConstraints = false
+        myLabel.topAnchor.constraint(equalTo: dateButton.bottomAnchor, constant: 10).isActive = true
+        myLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+        myLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+
+        setupTrackingIncrease()
+        setupTrackingDecrease()
+    }
+    func setupTrackingIncrease() {
+        addSubview(trackingIncreaseButton)
+        trackingIncreaseButton.translatesAutoresizingMaskIntoConstraints = false
+        trackingIncreaseButton.topAnchor.constraint(equalTo: myLabel.topAnchor).isActive = true
+        trackingIncreaseButton.trailingAnchor.constraint(equalTo: myLabel.trailingAnchor).isActive = true
+        trackingIncreaseButton.heightAnchor.constraint(equalTo: myLabel.heightAnchor, multiplier: 1).isActive = true
+        trackingIncreaseButton.widthAnchor.constraint(equalTo: myLabel.widthAnchor, multiplier: 0.2).isActive = true
+    }
+    func setupTrackingDecrease() {
+        addSubview(trackingDecreaseButton)
+        trackingDecreaseButton.translatesAutoresizingMaskIntoConstraints = false
+        trackingDecreaseButton.topAnchor.constraint(equalTo: myLabel.topAnchor).isActive = true
+        trackingDecreaseButton.leadingAnchor.constraint(equalTo: myLabel.leadingAnchor).isActive = true
+        trackingDecreaseButton.heightAnchor.constraint(equalTo: myLabel.heightAnchor, multiplier: 1).isActive = true
+        trackingDecreaseButton.widthAnchor.constraint(equalTo: myLabel.widthAnchor, multiplier: 0.2).isActive = true
     }
     func setupFriendButton() {
         addSubview(friendButton)
         friendButton.translatesAutoresizingMaskIntoConstraints = false
-        friendButton.topAnchor.constraint(equalTo: trackingButton.bottomAnchor, constant: 10).isActive = true
+        friendButton.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 10).isActive = true
         friendButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         friendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
