@@ -88,7 +88,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         print(eventToSet.startDate)
         //No start date populating
         collectionViewCell.dayLabel.text = eventToSet.startDate.description
-        collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
+        //collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
         collectionViewCell.layer.cornerRadius = 15
         return collectionViewCell
     }
@@ -96,7 +96,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventViewController()
         let event = events[indexPath.row]
-//        detailVC.event = event
+        //detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
 
         present(detailNav, animated: true)

@@ -26,8 +26,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var eventImage: UIImageView = {
-        let image = UIImageView()
-       // image.alpha = 
+        let image = UIImageView(image: UIImage(named: "pitons"))
         return image
     }()
     
@@ -53,11 +52,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupImage(){
         addSubview(eventImage)
         eventImage.translatesAutoresizingMaskIntoConstraints = false
-        eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
-        eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor).isActive = true
-        eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
-    
+        //eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
+        //eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
+        eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
+        eventImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        eventImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
     }
     
     
@@ -73,9 +73,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-       setupEventLabel()
-       setupEventDay()
-        //setupImage()
+        setupImage()
+        setupEventLabel()
+        setupEventDay()
+        
         
     }
     
