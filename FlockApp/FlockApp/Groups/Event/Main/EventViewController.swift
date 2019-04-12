@@ -30,6 +30,7 @@ class EventViewController: UIViewController {
         self.view.addSubview(eventView)
         guard let unwrappedEvent = event else {return}
         let eventTitle = unwrappedEvent.eventName
+        
         let eventAddress = unwrappedEvent.locationString
         let eventTracking = unwrappedEvent.startDate
         eventView.eventTitle.text = eventTitle
