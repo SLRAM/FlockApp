@@ -1,5 +1,5 @@
 //
-//  FriendsView.swift
+//  InvitedView.swift
 //  FlockApp
 //
 //  Created by Stephanie Ramirez on 4/10/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FriendsView: UIView {
+class InvitedView: UIView {
 
     lazy var friendSearch: UISearchBar = {
         let tf = UISearchBar()
@@ -22,7 +22,7 @@ class FriendsView: UIView {
     
     lazy var myTableView: UITableView = {
         let tv = UITableView()
-        tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
+        tv.register(InvitedTableViewCell.self, forCellReuseIdentifier: "InvitedTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/4
         tv.backgroundColor = .clear
         return tv
@@ -47,7 +47,7 @@ class FriendsView: UIView {
     }
 
 }
-extension FriendsView {
+extension InvitedView {
     func setupViews() {
         backgroundColor = .white
         
