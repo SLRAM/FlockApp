@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseFirestore
 
 class EventViewController: UIViewController {
     
@@ -19,12 +20,14 @@ class EventViewController: UIViewController {
     }
     
     let eventView = EventView()
+
     private var listener: ListenerRegistration!
     
     public var event: Event?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.leftBarButtonItem = eventView.cancelButton
         getInvitees()
         self.view.addSubview(eventView)
@@ -33,13 +36,11 @@ class EventViewController: UIViewController {
         
         let eventAddress = unwrappedEvent.locationString
         let eventTracking = unwrappedEvent.startDate
+
         let date = unwrappedEvent.startDate
         let formatter = ISO8601DateFormatter()
 //        formatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime]
         let str = formatter.string(from: date)
-        
-        
-       
         let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
         eventView.eventDate.text = formattedDate
         eventView.eventTitle.text = eventTitle
@@ -51,7 +52,6 @@ class EventViewController: UIViewController {
         eventView.peopleTableView.isHidden = true
         eventView.peopleTableView.isUserInteractionEnabled = false
     }
-    
 
 }
 
@@ -67,7 +67,7 @@ extension EventViewController: EventViewDelegate {
     func cancelPressed() {
         dismiss(animated: true)
     }
-    
+
     private func getInvitees() {
         if event != nil {
             for i in event!.invited {
@@ -93,6 +93,4 @@ extension EventViewController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.text = friends[indexPath.row].displayName
         return cell
     }
-
-
 }

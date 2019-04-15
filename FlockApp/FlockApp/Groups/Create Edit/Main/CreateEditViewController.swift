@@ -9,11 +9,14 @@ import UIKit
 import MapKit
 import GoogleMaps
 import Firebase
+import Toucan
 
 class CreateEditViewController: UIViewController {
     
     private let createEditView = CreateEditView()
     let titlePlaceholder = "Enter the event title"
+    let trackingPlaceholder = "Event Tracking Time"
+    var number = 0
 
     
     var friendsArray = [UserModel]()
@@ -21,6 +24,16 @@ class CreateEditViewController: UIViewController {
     var selectedCoordinates = CLLocationCoordinate2D()
     var selectedStartDate = Date()
     var selectedEndDate = Date()
+    var trackingTime = 0
+    private var selectedImage: UIImage?
+    
+
+    
+    private lazy var imagePickerController: UIImagePickerController = {
+        let ip = UIImagePickerController()
+        ip.delegate = self
+        return ip
+    }()
     
     private var authservice = AppDelegate.authservice
 
@@ -36,6 +49,24 @@ class CreateEditViewController: UIViewController {
         navigationItem.leftBarButtonItem = createEditView.cancelButton
     }
     override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    func editNumber(increase: Bool)-> String {
+        if number != 0 && increase == false{
+            number -= 1
+            
+        } else if increase == true {
+            number += 1
+        }
+        if number == 1{
+            return "Start \(number) hour before event"
+            
+        } else if number == 0{
+            return trackingPlaceholder
+        } else {
+            return "Start \(number) hours before event"
+        }
+        
     }
 }
 extension CreateEditViewController: UITextViewDelegate {
@@ -51,20 +82,58 @@ extension CreateEditViewController: UITextViewDelegate {
     }
 }
 extension CreateEditViewController: CreateViewDelegate {
+    func trackingDecreasePressed() {
+        let trackingLabel = editNumber(increase: false)
+        createEditView.myLabel.text = trackingLabel
+        trackingTime -= 1
+
+    }
+    
+    func trackingIncreasePressed() {
+        print("tracking increase pressed")
+ 
+        let trackingLabel = editNumber(increase: true)
+        createEditView.myLabel.text = trackingLabel
+        trackingTime += 1
+    }
+    
+    
+    func imagePressed() {
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let libraryAction = UIAlertAction(title: "Library", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true)
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(libraryAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            cameraAction.isEnabled = false
+        }
+        present(alertController, animated: true)
+        
+    }
+    
     func cancelPressed() {
         dismiss(animated: true)
     }
     
     func friendsPressed() {
         print("friends pressed")
-        let detailVC = FriendsViewController()
+        let detailVC = InvitedViewController()
         detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    func trackingPressed() {
-        print("tracking pressed")
-    }
+
     
     func datePressed() {
         print("date pressed")
@@ -94,6 +163,15 @@ extension CreateEditViewController: CreateViewDelegate {
             alertController.addAction(okAction)
             present(alertController, animated: true)
             return}
+        
+
+        
+        guard let eventName = createEditView.titleTextView.text else {return}
+        var friendIds = [String]()
+        for friends in friendsArray {
+            friendIds.append(friends.userId)
+        }
+        
         guard let user = authservice.getCurrentUser() else {
             let alertController = UIAlertController(title: "Unable to post. Please login to post.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -101,32 +179,68 @@ extension CreateEditViewController: CreateViewDelegate {
             
             present(alertController, animated: true)
             return}
+        
+        guard let imageData = selectedImage?.jpegData(compressionQuality: 1.0) else {
+            let alertController = UIAlertController(title: "Unable to post. Please fill in the required fields.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            alertController.addAction(okAction)
+            self.present(alertController, animated: true)
+            return}
+        
 
         let docRef = DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document()
-        
-        guard let eventName = createEditView.titleTextView.text else {return}
-        var friendIds = [String]()
-        for friends in friendsArray {
-            friendIds.append(friends.userId)
-        }
-        let event = Event(eventName: eventName, createdDate: Date.getISOTimestamp(), userID: user.uid, imageURL: nil, eventDescription: "Event Description", documentId: docRef.documentID, startDate: selectedStartDate, endDate: selectedEndDate, locationString: selectedLocation, locationLat: selectedCoordinates.latitude, locationLong: selectedCoordinates.longitude, invited: friendIds)
-        
-        
-        DBService.postEvent(event: event, completion: { [weak self] error in
+        StorageService.postImage(imageData: imageData, imageName: Constants.EventImagePath + "\(user.uid)/\(docRef.documentID)") { [weak self] (error, imageURL) in
             if let error = error {
-                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
-            } else {
-                self?.showAlert(title: "Event Posted", message: nil) { action in
-//                    self?.dismiss(animated: true)//code here to segue to detail
-                    let detailVC = EventViewController()
-                    detailVC.event = event
-//                    detailVC.delegate = self
-                    self?.navigationController?.pushViewController(detailVC, animated: true)
-                }
+                print("failed to post image with error: \(error.localizedDescription)")
+            } else if let imageURL = imageURL {
+                print("image posted and recieved imageURL - post blog to database: \(imageURL)")
+                        let event = Event(eventName: eventName,
+                                          createdDate: Date.getISOTimestamp(),
+                                          userID: user.uid,
+                                          imageURL: imageURL.absoluteString,
+                                          eventDescription: "Event Description",
+                                          documentId: docRef.documentID,
+                                          startDate: self!.selectedStartDate,
+                                          endDate: self!.selectedEndDate,
+                                          locationString: self!.selectedLocation,
+                                          locationLat: self!.selectedCoordinates.latitude,
+                                          locationLong: self!.selectedCoordinates.longitude,
+                                          invited: friendIds,
+                                          trackingTime: self!.trackingTime)
+                
+                
+                
+                DBService.postEvent(event: event, completion: { [weak self] error in
+                    if let error = error {
+                        self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                    } else {
+                        self?.showAlert(title: "Event Posted", message: nil) { action in
+                            //                    self?.dismiss(animated: true)//code here to segue to detail
+                            let detailVC = EventViewController()
+                            detailVC.event = event
+                            //                    detailVC.delegate = self
+                            self?.navigationController?.pushViewController(detailVC, animated: true)
+                        }
+                    }
+                })
+
             }
-        })
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+
+
+        
+        
+
     }
 }
 
@@ -155,7 +269,7 @@ extension CreateEditViewController: LocationSearchViewControllerDelegate {
         selectedCoordinates = locationTuple.1
     }
 }
-extension CreateEditViewController: FriendsViewControllerDelegate {
+extension CreateEditViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
@@ -168,7 +282,27 @@ extension CreateEditViewController: DateViewControllerDelegate {
     func selectedDate(startDate: Date, endDate: Date) {
         selectedStartDate = startDate
         selectedEndDate = endDate
+        print(startDate)
+        let startString = selectedStartDate.toString(dateFormat: "MMMM dd hh:mm a")
+        createEditView.dateButton.setTitle(startString, for: .normal)
 
     }
 
+}
+
+extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
+    }
+    func imagePickerController(_ picker: UIImagePickerController,
+                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+            print("original image is nil")
+            return
+        }
+        let resizedImage = Toucan.init(image: originalImage).resize(CGSize(width: 500, height: 500))
+        selectedImage = resizedImage.image
+        createEditView.imageButton.setImage(selectedImage, for: .normal)
+        dismiss(animated: true)
+    }
 }

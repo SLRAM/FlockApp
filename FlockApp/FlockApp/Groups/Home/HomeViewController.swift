@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 
 
 class HomeViewController: BaseViewController {
@@ -43,9 +44,9 @@ class HomeViewController: BaseViewController {
         present(createNav, animated: true) 
     }
     @objc func showJoinEvent(){
-        let joinVC = EventDetailsViewController()
+        let joinVC = JoinViewController()
+        joinVC.modalPresentationStyle = .overFullScreen
         present (joinVC, animated: true)
-        print("whaddup")
     }
     
     private var listener: ListenerRegistration!
