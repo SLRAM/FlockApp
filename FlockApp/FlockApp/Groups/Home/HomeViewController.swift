@@ -93,15 +93,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         print(eventToSet.startDate)
         collectionViewCell.startDateLabel.text = eventToSet.startDate.description
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
     }
-//    private func postedEvent(eventID: Event){
-//        DBService.postEvent(event: eventID) { (event) in
-//            if let event = event {
-//
-//            }
-//        }
-//    }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventViewController()

@@ -26,9 +26,9 @@ class HomeView: UIView {
     
         public lazy var collectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
-            cellLayout.scrollDirection = .vertical
+            cellLayout.scrollDirection = .horizontal
             cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 5)
-            cellLayout.itemSize = CGSize.init(width: 375, height:225)
+            cellLayout.itemSize = CGSize.init(width: 375, height:200)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             collectionView.layer.cornerRadius = 15.0
@@ -37,12 +37,12 @@ class HomeView: UIView {
     
     lazy var myView: UIView = {
         let view = UIView()
-        view.backgroundColor = .magenta
+        view.backgroundColor = .white
         return view
     }()
     lazy var myViewTwo: UIView = {
         let view = UIView()
-        view.backgroundColor = .magenta
+        view.backgroundColor = .white
         return view
     }()
     
