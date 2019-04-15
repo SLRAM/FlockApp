@@ -1,5 +1,5 @@
 //
-//  InviteTableViewCell.swift
+//  FriendsTableViewCell.swift
 //  FlockApp
 //
 //  Created by Stephanie Ramirez on 4/9/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InviteTableViewCell: UITableViewCell {
+class FriendsTableViewCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()

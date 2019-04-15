@@ -25,6 +25,7 @@ struct EventsCollectionKeys {
     static let LocationLatKey = "locationLat"
     static let LocationLongKey = "locationLong"
     static let InvitedKey = "invited"
+    static let TrackingTimeKey = "trackingTime"
 }
 
 extension DBService {
@@ -42,7 +43,8 @@ extension DBService {
                 EventsCollectionKeys.LocationStringKey  : event.locationString,
                 EventsCollectionKeys.LocationLatKey     : event.locationLat,
                 EventsCollectionKeys.LocationLongKey    : event.locationLong,
-                EventsCollectionKeys.InvitedKey         : event.invited
+                EventsCollectionKeys.InvitedKey         : event.invited,
+                EventsCollectionKeys.TrackingTimeKey    : event.trackingTime
                 ])
             { (error) in
                 if let error = error {

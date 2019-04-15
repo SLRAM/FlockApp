@@ -20,20 +20,28 @@ struct UsersCollectionKeys {
     static let JoinedDateKey = "joinedDate"
     static let BioKey = "bio"
     static let CoverImageURLKey = "coverImageURL"
+    static let PhoneNumberKey = "phoneNumber"
+    
+    static let FullnameIsVisibleKey = "fullnameIsVisibleKey"
+    static let EmailIsVisibleKey = "emailIsVisible"
+    static let PhoneIsVisibleKey = "phoneIsVisible"
+
+    
 }
 extension DBService {
     static public func createUser(user: UserModel, completion: @escaping (Error?) -> Void) {
         firestoreDB.collection(UsersCollectionKeys.CollectionKey)
             .document(user.userId)
-            .setData([ UsersCollectionKeys.UserIdKey : user.userId,
-                       UsersCollectionKeys.DisplayNameKey : user.displayName,
-                       UsersCollectionKeys.EmailKey       : user.email,
-                       UsersCollectionKeys.PhotoURLKey    : user.photoURL ?? "",
-                       UsersCollectionKeys.JoinedDateKey  : user.joinedDate,
-                       UsersCollectionKeys.BioKey         : user.bio ?? "",
-                       UsersCollectionKeys.FirstNameKey   : user.firstName,
-                       UsersCollectionKeys.LastNameKey    : user.lastName,
-                       UsersCollectionKeys.CoverImageURLKey: user.coverImageURL ?? "",
+            .setData([ UsersCollectionKeys.UserIdKey        : user.userId,
+                       UsersCollectionKeys.DisplayNameKey   : user.displayName,
+                       UsersCollectionKeys.EmailKey         : user.email,
+                       UsersCollectionKeys.PhotoURLKey      : user.photoURL ?? "",
+                       UsersCollectionKeys.JoinedDateKey    : user.joinedDate,
+                       UsersCollectionKeys.BioKey           : user.bio ?? "",
+                       UsersCollectionKeys.FirstNameKey     : user.firstName,
+                       UsersCollectionKeys.LastNameKey      : user.lastName,
+                       UsersCollectionKeys.CoverImageURLKey : user.coverImageURL ?? "",
+                       UsersCollectionKeys.PhoneNumberKey   : user.phoneNumber ?? ""
             ]) { (error) in
                 if let error = error {
                     completion(error)

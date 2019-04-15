@@ -1,5 +1,5 @@
 //
-//  InviteViewController.swift
+//  FriendsViewController.swift
 //  FlockApp
 //
 //  Created by Stephanie Ramirez on 4/9/19.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class InviteViewController: UIViewController {
+class FriendsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

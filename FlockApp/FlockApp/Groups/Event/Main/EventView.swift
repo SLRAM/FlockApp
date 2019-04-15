@@ -27,6 +27,8 @@ class EventView: UIView {
     
     lazy var eventAddress: UILabel = {
        let label = UILabel()
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 4
         label.text = "47-10 Austell Pl. 11111"
         return label
     }()
@@ -45,17 +47,15 @@ class EventView: UIView {
     
     lazy var eventTitle: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yellow
+        label.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         label.text = "MY EVENT HERE"
         label.textAlignment = .center
         return label
     }()
     
-    
-    
     lazy var detailView: UIView = {
         let view = UIView()
-        view.backgroundColor = .magenta
+        view.backgroundColor = .white
         return view
     }()
     
@@ -69,7 +69,9 @@ class EventView: UIView {
     lazy var segmentedControl: UISegmentedControl = {
         let items = ["Details", "People"]
         let segmentedControl = UISegmentedControl(items: items)
+        segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
+//        segmentedControl.
         return segmentedControl
     }()
     
@@ -95,7 +97,7 @@ class EventView: UIView {
         NSLayoutConstraint.activate([
         eventAddress.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 10),
         eventAddress.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-        eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
         eventAddress.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
             ])
     }
@@ -104,9 +106,9 @@ class EventView: UIView {
         addSubview(eventDate)
         eventDate.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 10),
+        eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 50),
         eventDate.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-        eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+        eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
         eventDate.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
             ])
     }
@@ -115,9 +117,9 @@ class EventView: UIView {
         addSubview(eventTracking)
         eventTracking.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventTracking.topAnchor.constraint(equalTo: eventDate.topAnchor, constant: 10),
+            eventTracking.topAnchor.constraint(equalTo: eventDate.topAnchor, constant: 30),
             eventTracking.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-            eventTracking.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.70),
+            eventTracking.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
             eventTracking.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
             ])
     }
@@ -150,7 +152,7 @@ class EventView: UIView {
         NSLayoutConstraint.activate([
         detailView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
         detailView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
-        detailView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.60),
+        detailView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40),
         detailView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
         ])
     }
@@ -171,12 +173,18 @@ class EventView: UIView {
         case 0:
             print("Details")
             detailView.isHidden = false
+            eventTracking.isHidden = false
+            eventAddress.isHidden = false
+            eventDate.isHidden = false
             detailView.isUserInteractionEnabled = true
             peopleTableView.isHidden = true
             peopleTableView.isUserInteractionEnabled = false
         case 1:
             print("People")
             detailView.isHidden = true
+            eventTracking.isHidden = true
+            eventAddress.isHidden = true
+            eventDate.isHidden = true
             detailView.isUserInteractionEnabled = false
             peopleTableView.isHidden = false
             peopleTableView.isUserInteractionEnabled = true

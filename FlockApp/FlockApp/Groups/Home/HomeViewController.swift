@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 
 
 class HomeViewController: BaseViewController {
@@ -33,6 +34,9 @@ class HomeViewController: BaseViewController {
         fetchEvents()
         
     }
+    override func viewDidAppear(_ animated: Bool) {
+        homeView.collectionView.reloadData()
+    }
     
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
@@ -40,9 +44,9 @@ class HomeViewController: BaseViewController {
         present(createNav, animated: true) 
     }
     @objc func showJoinEvent(){
-        let joinVC = EventDetailsViewController()
+        let joinVC = JoinViewController()
+        joinVC.modalPresentationStyle = .overFullScreen
         present (joinVC, animated: true)
-        print("whaddup")
     }
     
     private var listener: ListenerRegistration!
@@ -62,7 +66,7 @@ class HomeViewController: BaseViewController {
                 if let error = error {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
-                    self?.events = snapshot.documents.map{Event(dict:                $0.data()) }
+                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
                     .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
@@ -76,6 +80,7 @@ class HomeViewController: BaseViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return events.count
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -96,7 +101,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventViewController()
         let event = events[indexPath.row]
-        //detailVC.event = event
+        detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
 
         present(detailNav, animated: true)

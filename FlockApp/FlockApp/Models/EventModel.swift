@@ -20,13 +20,13 @@ struct Event {
     let locationLat: Double
     let locationLong: Double
     let invited: [String]
-//    let trackingTime: Date
+    let trackingTime: Int
     // add user id for attendees
     // add tasks?
     // add time/date
     // add location
     
-    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String, documentId: String, startDate: Date, endDate: Date, locationString: String, locationLat: Double, locationLong: Double, invited: [String]) {
+    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String, documentId: String, startDate: Date, endDate: Date, locationString: String, locationLat: Double, locationLong: Double, invited: [String], trackingTime: Int) {
         self.eventName = eventName
         self.createdDate = createdDate
         self.userID = userID
@@ -39,7 +39,7 @@ struct Event {
         self.locationLat = locationLat
         self.locationLong = locationLong
         self.invited = invited
-//        self.trackingTime = trackingTime
+        self.trackingTime = trackingTime
     }
     
     init(dict: [String: Any]) {
@@ -55,5 +55,6 @@ struct Event {
         self.locationLat = dict[EventsCollectionKeys.LocationLatKey] as? Double ?? 0
         self.locationLong = dict[EventsCollectionKeys.LocationLongKey] as? Double ?? 0
         self.invited = dict[EventsCollectionKeys.InvitedKey] as? [String] ?? []
+        self.trackingTime = dict[EventsCollectionKeys.TrackingTimeKey] as? Int ?? 0
     }
 }

@@ -1,5 +1,5 @@
 //
-//  FriendsViewController.swift
+//  InvitedViewController.swift
 //  FlockApp
 //
 //  Created by Stephanie Ramirez on 4/10/19.
@@ -8,16 +8,17 @@
 import UIKit
 import Kingfisher
 import Firebase
+import FirebaseFirestore
 
-protocol FriendsViewControllerDelegate: AnyObject {
+protocol InvitedViewControllerDelegate: AnyObject {
     func selectedFriends(friends: [UserModel])
 //    func selectedFriends(friends: [UserModel])
 }
 
-class FriendsViewController: BaseViewController {
+class InvitedViewController: BaseViewController {
 
-    weak var delegate: FriendsViewControllerDelegate?
-    private let friendsView = FriendsView()
+    weak var delegate: InvitedViewControllerDelegate?
+    private let invitedView = InvitedView()
     var isSearching = false
 
     var savedFriends = [UserModel]()
@@ -26,14 +27,14 @@ class FriendsViewController: BaseViewController {
     private var friends = [UserModel]() {
         didSet {
             DispatchQueue.main.async {
-                self.friendsView.myTableView.reloadData()
+                self.invitedView.myTableView.reloadData()
             }
         }
     }
     private var filteredFriends = [UserModel]() {
         didSet {
             DispatchQueue.main.async {
-                self.friendsView.myTableView.reloadData()
+                self.invitedView.myTableView.reloadData()
             }
         }
     }
@@ -41,7 +42,7 @@ class FriendsViewController: BaseViewController {
     private var authservice = AppDelegate.authservice
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        friendsView.myTableView.refreshControl = rc
+        invitedView.myTableView.refreshControl = rc
         rc.addTarget(self, action: #selector(fetchFriends), for: .valueChanged)
         return rc
     }()
@@ -49,14 +50,14 @@ class FriendsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        friendsView.delegate = self
-        view.addSubview(friendsView)
+        view.addSubview(invitedView)
         
         friendListButton()
-        friendsView.friendSearch.delegate = self
+        invitedView.friendSearch.delegate = self
 
-        friendsView.myTableView.delegate = self
-        friendsView.myTableView.dataSource = self
-        friendsView.myTableView.tableFooterView = UIView()
+        invitedView.myTableView.delegate = self
+        invitedView.myTableView.dataSource = self
+        invitedView.myTableView.tableFooterView = UIView()
         fetchFriends()
 
 
@@ -113,7 +114,7 @@ class FriendsViewController: BaseViewController {
     
 
 }
-extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
+extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if isSearching {
             return filteredFriends.count
@@ -199,7 +200,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-extension FriendsViewController: UISearchBarDelegate {
+extension InvitedViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText == "" {
             isSearching = false
@@ -208,6 +209,6 @@ extension FriendsViewController: UISearchBarDelegate {
             isSearching = true
             filteredFriends = friends.filter({$0.displayName.lowercased().contains(searchText.lowercased())})
         }
-        friendsView.myTableView.reloadData()
+        invitedView.myTableView.reloadData()
     }
 }
