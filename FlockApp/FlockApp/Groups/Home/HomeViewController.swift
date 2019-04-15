@@ -91,17 +91,16 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
         collectionViewCell.eventLabel.text = eventToSet.eventName
         print(eventToSet.startDate)
-        //No start date populating
-        collectionViewCell.dayLabel.text = eventToSet.startDate.description
-        collectionViewCell.backgroundView = UIImageView(image: UIImage(named: "pitons"))
-        collectionViewCell.layer.cornerRadius = 15
+        collectionViewCell.startDateLabel.text = eventToSet.startDate.description
+        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventViewController()
         let event = events[indexPath.row]
-//        detailVC.event = event
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
 
