@@ -21,6 +21,8 @@ struct UserModel {
     let fullnameIsVisible: Bool
     let emailIsVisible: Bool
     let phoneIsVisible: Bool
+    //pendingEvents: [EventModel]
+    //acceptedEvents: [EventModel]
     //add friend array: [FriendModel]
     
     // add array event id?

@@ -207,22 +207,29 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          invited: friendIds,
+                                          invited: friendIds, //remove
                                           trackingTime: self!.trackingTime)
-                
-                
-                
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
                     } else {
-                        self?.showAlert(title: "Event Posted", message: nil) { action in
-                            //                    self?.dismiss(animated: true)//code here to segue to detail
-                            let detailVC = EventViewController()
-                            detailVC.event = event
-                            //                    detailVC.delegate = self
-                            self?.navigationController?.pushViewController(detailVC, animated: true)
-                        }
+                        //create function that goes through friends array
+                        //function that takes array and turns to dictionary
+                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
+                            } else {
+                                
+                                self?.showAlert(title: "Event Posted", message: nil) { action in
+                                    print(docRef.documentID)
+                                    //                    self?.dismiss(animated: true)//code here to segue to detail
+                                    let detailVC = EventViewController()
+                                    detailVC.event = event
+                                    //                    detailVC.delegate = self
+                                    self?.navigationController?.pushViewController(detailVC, animated: true)
+                                }
+                            }
+                        })
                     }
                 })
 
