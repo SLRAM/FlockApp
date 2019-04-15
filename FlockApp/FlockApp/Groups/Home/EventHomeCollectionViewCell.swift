@@ -17,7 +17,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    public lazy var dayLabel: UILabel = {
+    public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
         label.backgroundColor = .white
@@ -41,12 +41,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     func setupEventDay(){
-        addSubview(dayLabel)
-        dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        dayLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60).isActive = true
-        dayLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
-        dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
+        addSubview(startDateLabel)
+        startDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60).isActive = true
+        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
     }
     
     func setupImage(){
