@@ -24,19 +24,23 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
+        self.profileView.editButton.isEnabled = false
+        self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
         setupProfile()
     }
 
     private func setupProfile(){
-        if let currentUser = AppDelegate.authservice.getCurrentUser() {
-            DBService.fetchUser(userId: currentUser.uid) { (error, userModel) in
+        if let loggedUser = AppDelegate.authservice.getCurrentUser() {
+            DBService.fetchUser(userId: loggedUser.uid) { (error, userModel) in
                 if let error = error {
                     print(error)
-                } else if let userModel = userModel{
-                    self.user = userModel
-                    if currentUser.uid == self.user!.userId {
+                } else if let userModel = userModel {
+                    if self.user == nil {
+                        self.user = userModel
+                    }
+                    if userModel.userId == self.user!.userId {
                         self.profileView.editButton.isEnabled = true
                         self.profileView.editButton.isHidden = false
                     } else {
