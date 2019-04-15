@@ -26,8 +26,9 @@ class BaseViewController: UIViewController {
             let profileVC = ProfileViewController()
             present(profileVC, animated: false)
         case "Friends":
-            let friendsVC = InvitedViewController()
-            present(friendsVC, animated: false)
+            let friendsVC = FriendsViewController()
+            let friendsNav = UINavigationController.init(rootViewController: friendsVC)
+            present(friendsNav, animated: false)
         case "Settings":
             let settingsVC = SettingsViewController()
             present(settingsVC, animated: false)
