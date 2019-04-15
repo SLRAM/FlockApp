@@ -14,4 +14,11 @@ extension Date {
         let timestamp = isoDateFormatter.string(from: Date())
         return timestamp
     }
+    
+    func toString( dateFormat format  : String ) -> String
+    {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.string(from: self)
+    }
 }
