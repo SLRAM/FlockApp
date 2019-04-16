@@ -26,8 +26,8 @@ class HomeView: UIView {
     
         public lazy var collectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
-            cellLayout.scrollDirection = .horizontal
-            cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 5)
+            cellLayout.scrollDirection = .vertical
+            cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 20)
             cellLayout.itemSize = CGSize.init(width: 375, height:200)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -64,10 +64,10 @@ class HomeView: UIView {
         }
     
         func setConstraints() {
-            setupMyViewTwo()
-            setupMyView()
-            setupCreateButton()
-            setupJoinButton()
+           // setupMyViewTwo()
+           // setupMyView()
+           // setupCreateButton()
+           // setupJoinButton()
             setupCollectionView()
     
         }
@@ -109,7 +109,7 @@ class HomeView: UIView {
         addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
-         collectionView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.5).isActive = true
+         collectionView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.8).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         collectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
 
