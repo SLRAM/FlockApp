@@ -207,7 +207,6 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          invited: friendIds, //remove
                                           trackingTime: self!.trackingTime)
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {

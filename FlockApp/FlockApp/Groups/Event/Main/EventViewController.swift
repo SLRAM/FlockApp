@@ -69,17 +69,17 @@ extension EventViewController: EventViewDelegate {
     }
 
     private func getInvitees() {
-        if event != nil {
-            for i in event!.invited {
-                DBService.fetchUser(userId: i) { (error, user) in
-                    if let error = error {
-                        print(error)
-                    } else if let user = user {
-                        self.friends.append(user)
-                    }
-                }
-            }
-        }
+//        if event != nil {
+//            for i in event!.invited {
+//                DBService.fetchUser(userId: i) { (error, user) in
+//                    if let error = error {
+//                        print(error)
+//                    } else if let user = user {
+//                        self.friends.append(user)
+//                    }
+//                }
+//            }
+//        }
     }
 }
 
