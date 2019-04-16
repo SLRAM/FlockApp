@@ -15,21 +15,29 @@ struct InvitedCollectionKeys {
 
 extension DBService {
     static public func addInvited(docRef: String, friends: [UserModel], completion: @escaping (Error?) -> Void)  {
-        var dictionaryFriends : Dictionary<String,Any> = [:]
         
         for friend in friends {
-            dictionaryFriends["\(friend.userId)"] = "\(friend.displayName)"
-        }
-        firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(docRef).setData(dictionaryFriends)
+            var dictionaryFriends : Dictionary<String,Any> = [:]
+            dictionaryFriends["userId"] = "\(friend.userId)"
+            dictionaryFriends["displayName"] = "\(friend.displayName)"
+            dictionaryFriends["firstName"] = "\(friend.firstName)"
+            dictionaryFriends["lastName"] = "\(friend.lastName)"
+            dictionaryFriends["coverImageURL"] = "\(friend.coverImageURL)"
+            
+            firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData(dictionaryFriends)
             { (error) in
                 if let error = error {
                     print("adding friends error: \(error)")
                     completion(error)
                 } else {
-                    print("friends added successfully to ref: \(docRef)")
+                    print("friends added successfully to ref: \(friend.userId)")
                     completion(nil)
                 }
+            }
+            
+            
         }
+
     }
 //    static public func deleteEvent(event: Event, completion: @escaping (Error?) -> Void) {
 //        DBService.firestoreDB

@@ -18,6 +18,14 @@ class EventViewController: UIViewController {
             }
         }
     }
+    private var invited: [String]  = [String]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.eventView.peopleTableView.reloadData()
+            }
+        }
+    }
+
     
     let eventView = EventView()
 
@@ -29,7 +37,7 @@ class EventViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = eventView.cancelButton
-        getInvitees()
+        fetchInvites()
         self.view.addSubview(eventView)
         guard let unwrappedEvent = event else {return}
         let eventTitle = unwrappedEvent.eventName
@@ -51,6 +59,34 @@ class EventViewController: UIViewController {
         eventView.peopleTableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "peopleCell")
         eventView.peopleTableView.isHidden = true
         eventView.peopleTableView.isUserInteractionEnabled = false
+        
+    }
+    
+    // 1. invites = ["userId", "userId"]
+    // 2. event has a collection
+    func fetchInvites() {
+        guard let event = event else {
+            print("event is nil")
+            return
+        }
+        DBService.firestoreDB
+            .collection(EventsCollectionKeys.CollectionKey)
+            .document(event.documentId)
+            .collection(InvitedCollectionKeys.CollectionKey)
+            .getDocuments { (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch invites: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    print("found \(snapshot.documents.count) invites")
+                     self.invited = snapshot.documents.map {
+                        let dictionary = $0.data() as? [String: String]
+                        guard let value = dictionary?.values.first else {return ""}
+                        return value
+                        
+                    }
+                }
+
+        }
     }
 
 }
@@ -85,12 +121,15 @@ extension EventViewController: EventViewDelegate {
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+//        return friends.count
+        return invited.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = eventView.peopleTableView.dequeueReusableCell(withIdentifier: "peopleCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-        cell.textLabel?.text = friends[indexPath.row].displayName
+        let friend = invited[indexPath.row]
+        cell.textLabel?.text = friend
+//        cell.textLabel?.text = friends[indexPath.row].displayName
         return cell
     }
 }
