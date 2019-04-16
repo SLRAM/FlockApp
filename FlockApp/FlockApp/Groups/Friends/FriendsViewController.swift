@@ -42,23 +42,43 @@ class FriendsViewController: BaseViewController {
     }
     
     @objc private func fetchFriends(keyword: String) {
+        guard let user = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(FriendsCollectionKey.CollectionKey)
             .addSnapshotListener { [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     if keyword == "" {
-                        self?.friends = snapshot.documents.map { UserModel(dict: $0.data()) }
-                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
+                        let friends: [String] = snapshot.documents.map {
+                          let dictionary =  $0.data() as? [String:String]
+                            guard let key = dictionary?.keys.first else { return "" }
+                            return key
+                        }
+                        self!.fetchFriendInfo(list: friends)
+//                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
                     } else {
                         self?.friends = snapshot.documents.map { UserModel(dict: $0.data()) }
-                            .filter({$0.displayName.lowercased().contains(keyword.lowercased())})
-                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
+//                            .filter({$0.displayName.lowercased().contains(keyword.lowercased())})
+//                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
                     }
-                    
-                    //do filtered here
+            }
+        }
+    }
+    private func fetchFriendInfo(list: [String]) {
+        for friend in list {
+            DBService.fetchUser(userId: friend) { (error, user) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let user = user {
+                    self.friends.append(user)
                 }
+            }
         }
     }
 }
@@ -88,6 +108,5 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         profileVC.user = user
         let profileNav = UINavigationController.init(rootViewController: profileVC)
         navigationController?.pushViewController(profileVC, animated: false)
-//        present(profileNav, animated: true, completion: nil)
     }
 }
