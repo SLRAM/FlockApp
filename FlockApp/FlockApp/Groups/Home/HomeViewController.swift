@@ -29,8 +29,8 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.collectionView.dataSource = self
         homeView.collectionView.delegate = self
-        homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+        homeView.currentEventsButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
+        homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
         
     }
