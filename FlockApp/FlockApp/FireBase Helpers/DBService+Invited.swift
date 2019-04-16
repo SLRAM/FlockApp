@@ -20,7 +20,11 @@ extension DBService {
         for friend in friends {
             dictionaryFriends["\(friend.userId)"] = "\(friend.displayName)"
         }
-        firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(docRef).setData(dictionaryFriends)
+        firestoreDB.collection(EventsCollectionKeys.CollectionKey)
+            .document(docRef)
+            .collection(InvitedCollectionKeys.CollectionKey)
+            .document(docRef)
+            .setData(dictionaryFriends)
             { (error) in
                 if let error = error {
                     print("adding friends error: \(error)")
