@@ -67,17 +67,11 @@ class ProfileView: UIView {
         button.setTitleColor(.black, for: .normal)
         return button
     }()
-    lazy var bioTextView: UITextView = {
-        let textView = UITextView()
-        textView.isEditable = false
-        textView.text = """
-        This is a Bio\n
-        I like potato\n
-        they go well with everything\n
-        maybe except poptarts\n
-        maybe... haven't tried.
-        """
-        return textView
+    lazy var addFriend: UIButton = {
+        let button = UIButton()
+        button.setTitle("Add Friend", for: .normal)
+        button.backgroundColor = .lightGray
+        return button
     }()
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -168,14 +162,12 @@ class ProfileView: UIView {
             ])
     }
     private func setupBioTextView() {
-        addSubview(bioTextView)
-        bioTextView.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(addFriend)
+        addFriend.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            bioTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0),
-            bioTextView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            bioTextView.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
-            bioTextView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            bioTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
+            addFriend.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            addFriend.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+            addFriend.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
 }
