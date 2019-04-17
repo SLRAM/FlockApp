@@ -18,6 +18,7 @@ class HomeView: UIView {
     weak var delegate: UserEventCollectionViewDelegate?
     
     var homeViewController: HomeViewController?
+
     
     lazy var dateLabel: UILabel = {
         let label = UILabel()
@@ -190,17 +191,26 @@ class HomeView: UIView {
 
 
        @objc func indexChanged(_ sender: UISegmentedControl){
-//        switch sender.selectedSegmentIndex {
-//        case 0:
-//            print("Current Events")
-//
-//
-//        }
-//    }
+        switch sender.selectedSegmentIndex {
+        case 0:
+            print("Current Events")
+            dateLabel.isHidden = false
+            dayLabel.isHidden = false
+            createButton.isHidden = false
+            segmentedControl.isHidden = false
+        case 1:
+            print("Past Event")
+            dateLabel.isHidden = true
+            dayLabel.isHidden = true
+            segmentedControl.isHidden = false
+        default:
+            break
+        }
+    }
     
     }
 
-}
+
 
 
 
