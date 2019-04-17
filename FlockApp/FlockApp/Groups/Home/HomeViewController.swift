@@ -13,30 +13,37 @@ import FirebaseFirestore
 
 class HomeViewController: BaseViewController {
     
+    
     var homeView = HomeView()
     var events = [Event](){
         didSet{
             DispatchQueue.main.async {
-                self.homeView.collectionView.reloadData()
+                self.homeView.usersCollectionView.reloadData()
             }
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Flock"
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
-        homeView.collectionView.dataSource = self
-        homeView.collectionView.delegate = self
-        homeView.currentEventsButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+        homeView.usersCollectionView.dataSource = self
+        homeView.usersCollectionView.delegate = self
+        
+        homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
+        //homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
         
+        
+        
     }
+    
+   
     override func viewDidAppear(_ animated: Bool) {
-        homeView.collectionView.reloadData()
+        homeView.usersCollectionView.reloadData()
     }
+    
+
     
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
@@ -53,7 +60,7 @@ class HomeViewController: BaseViewController {
     private var authService = AppDelegate.authservice
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        homeView.collectionView.refreshControl = rc
+        homeView.usersCollectionView.refreshControl = rc
         rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
         return rc
     }()
