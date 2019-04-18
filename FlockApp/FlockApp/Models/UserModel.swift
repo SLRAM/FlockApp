@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserModel {
+struct UserModel: Equatable {
     let userId: String
     let displayName: String
     let email: String
@@ -21,6 +21,8 @@ struct UserModel {
     let fullnameIsVisible: Bool
     let emailIsVisible: Bool
     let phoneIsVisible: Bool
+    //pendingEvents: [EventModel]
+    //acceptedEvents: [EventModel]
     //add friend array: [FriendModel]
     
     // add array event id?
@@ -69,6 +71,6 @@ struct UserModel {
         self.fullnameIsVisible = dict[UsersCollectionKeys.FullnameIsVisibleKey] as? Bool ?? false
         self.emailIsVisible = dict[UsersCollectionKeys.EmailIsVisibleKey] as? Bool ?? false
         self.phoneIsVisible = dict[UsersCollectionKeys.PhoneIsVisibleKey] as? Bool ?? false
-        
+
     }
 }

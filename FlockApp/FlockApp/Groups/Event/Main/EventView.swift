@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleMaps
 
 protocol EventViewDelegate: AnyObject {
     func segmentedDetailsPressed()
@@ -71,8 +72,22 @@ class EventView: UIView {
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
-//        segmentedControl.
         return segmentedControl
+    }()
+    
+    lazy var myMapView: GMSMapView = {
+        var view = GMSMapView()
+        
+        let camera = GMSCameraPosition.camera(withLatitude: 40.793840, longitude: -73.886012, zoom: 11)
+        view = GMSMapView.init(frame: CGRect.zero, camera: camera)
+        //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6)
+//                myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
+        //        view = myMapView
+        //        view.mapType = MKMapType.standard
+        //        view.isZoomEnabled = true
+        //        view.isScrollEnabled = true
+        //        view.center = self.center
+        return view
     }()
     
     override init(frame: CGRect) {
@@ -85,8 +100,19 @@ class EventView: UIView {
         addEventDate()
         addEventTracking()
         addTableView()
+        addMapView()
+//
+//        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+//        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
+//        addSubview(mapView)
+//        let marker = GMSMarker()
+//        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+//        marker.title = "Sydney"
+//        marker.snippet = "Australia"
+//        marker.map = mapView
     }
 
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -168,6 +194,18 @@ class EventView: UIView {
             ])
     }
     
+    private func addMapView() {
+        addSubview(myMapView)
+        myMapView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            myMapView.topAnchor.constraint(equalTo: eventTracking.bottomAnchor, constant: 20),
+            myMapView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            myMapView.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.8),
+            myMapView.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.8)
+            ])
+        
+    }
+    
     @objc func indexChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
         case 0:
@@ -188,6 +226,7 @@ class EventView: UIView {
             detailView.isUserInteractionEnabled = false
             peopleTableView.isHidden = false
             peopleTableView.isUserInteractionEnabled = true
+            myMapView.isHidden = true
         default:
             break
         }

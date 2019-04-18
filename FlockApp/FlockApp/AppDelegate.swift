@@ -25,30 +25,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
-            //Use ViewController() when pushing!
-            
-//            //push root
-//            window?.rootViewController = ViewController()
-//
-//
-//            //Biron root
-//            let dateVC = DateViewController()
-//            let dateNav = UINavigationController.init(rootViewController: dateVC)
-//            window?.rootViewController = dateNav
-//            //Nathalie root
-//            let detailevent = EventViewController()
-//            window?.rootViewController = ViewController()
-//            let nav = UINavigationController.init(rootViewController: detailevent)
-//            window?.rootViewController = nav
-//            //Stephanie root
-//           window?.rootViewController = CreateEditViewController()
-//            let createVC = CreateEditViewController()
-//            let createNav =       UINavigationController.init(rootViewController: createVC)
-//            window?.rootViewController = createNav
-            
-//            //Yaz root
-           window?.rootViewController = HomeViewController()
-
+            window?.rootViewController = UINavigationController(rootViewController: TabBarController())
+            UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+            UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            window?.makeKeyAndVisible()
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController

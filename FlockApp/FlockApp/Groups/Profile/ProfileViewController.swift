@@ -7,6 +7,7 @@
 
 import UIKit
 import Toucan
+import Firebase
 
 class ProfileViewController: BaseViewController {
     
@@ -14,13 +15,15 @@ class ProfileViewController: BaseViewController {
     let profileView = ProfileView()
     var editToggle = false
 
+    var friends = [String]()
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
         return ip
     }()
     private var profileImage: UIImage?
-
+    private var listener: ListenerRegistration!
+    private var authservice = AppDelegate.authservice
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
@@ -28,6 +31,8 @@ class ProfileViewController: BaseViewController {
         self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
+        profileView.addFriend.addTarget(self, action: #selector(addFriendPressed), for: .touchUpInside)
+        fetchFriends()
         setupProfile()
     }
 
@@ -43,15 +48,23 @@ class ProfileViewController: BaseViewController {
                     if userModel.userId == self.user!.userId {
                         self.profileView.editButton.isEnabled = true
                         self.profileView.editButton.isHidden = false
+                        self.profileView.addFriend.isEnabled = false
+                        self.profileView.addFriend.isHidden = true
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
+                        self.profileView.addFriend.isHidden = false
+                        self.profileView.addFriend.isEnabled = true
+                    }
+                    
+                    if self.friends.contains(self.user!.userId) {
+                        self.profileView.addFriend.isHidden = true
+                        self.profileView.addFriend.isEnabled = false
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
                     self.profileView.firstNameTextView.text = self.user!.firstName
                     self.profileView.lastNameTextView.text = self.user!.lastName
-                    self.profileView.bioTextView.text = self.user!.bio
                     self.profileView.phoneNumberTextView.text = self.user!.phoneNumber
                     if let image = self.user!.photoURL, !image.isEmpty {
                         self.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
@@ -60,9 +73,41 @@ class ProfileViewController: BaseViewController {
             }
         }
     }
+    private func fetchFriends() {
+        guard let user = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(FriendsCollectionKey.CollectionKey)
+            .addSnapshotListener { [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    self?.friends = snapshot.documents.map {
+                        let dictionary =  $0.data() as? [String:String]
+                        guard let key = dictionary?.keys.first else { return "" }
+                        return key
+                    }
+                }
+        }
+    }
     @objc private func imageButtonPressed() {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true)
+    }
+    @objc private func addFriendPressed() {
+        DBService.addFriend(friend: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Friend Added", message: nil)
+                self.profileView.addFriend.isEnabled = false
+                self.profileView.addFriend.isHidden = true
+            }
+        }
     }
     @objc private func editSetting() {
         if !editToggle {
@@ -77,8 +122,6 @@ class ProfileViewController: BaseViewController {
             profileView.lastNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.phoneNumberTextView.isEditable = true
             profileView.phoneNumberTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            profileView.bioTextView.isEditable = true
-            profileView.bioTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.editButton.setTitle("Save", for: .normal)
             editToggle = true
         } else {
@@ -95,8 +138,6 @@ class ProfileViewController: BaseViewController {
             profileView.lastNameTextView.backgroundColor = .white
             profileView.phoneNumberTextView.isEditable = false
             profileView.phoneNumberTextView.backgroundColor = .white
-            profileView.bioTextView.isEditable = false
-            profileView.bioTextView.backgroundColor = .white
             profileView.editButton.setTitle("Edit", for: .normal)
             editToggle = false
         }
@@ -108,8 +149,6 @@ class ProfileViewController: BaseViewController {
             !lastName.isEmpty,
             let displayName = profileView.displayNameTextView.text,
             !displayName.isEmpty,
-            let bio = profileView.bioTextView.text,
-            !bio.isEmpty,
             let email = profileView.emailTextView.text,
             !email.isEmpty,
             let phone = profileView.phoneNumberTextView.text,
@@ -138,7 +177,6 @@ class ProfileViewController: BaseViewController {
                     .document(user.uid)
                     .updateData([UsersCollectionKeys.FirstNameKey : firstName,
                                  UsersCollectionKeys.LastNameKey : lastName,
-                                 UsersCollectionKeys.BioKey : bio,
                                  UsersCollectionKeys.DisplayNameKey : displayName,
                                  UsersCollectionKeys.EmailKey : email,
                                  UsersCollectionKeys.PhoneNumberKey : phone,
