@@ -13,31 +13,39 @@ import FirebaseFirestore
 
 class HomeViewController: BaseViewController {
     
+    
     var homeView = HomeView()
-    var events = [Event](){
-        didSet{
-            DispatchQueue.main.async {
-                self.homeView.collectionView.reloadData()
+    var filteredEvents = [Date](){
+                didSet{
+                    DispatchQueue.main.async {
+                        self.homeView.usersCollectionView.reloadData()
+                    }
+                }
             }
-        }
-    }
+    
+    var events = [Event]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Flock"
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
-        homeView.collectionView.dataSource = self
-        homeView.collectionView.delegate = self
+        homeView.usersCollectionView.dataSource = self
+        homeView.usersCollectionView.delegate = self
+        
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        homeView.joinButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
+        //homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
         
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        homeView.collectionView.reloadData()
+        
+        
     }
     
+   
+    override func viewDidAppear(_ animated: Bool) {
+        homeView.usersCollectionView.reloadData()
+    }
+    
+
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
         let createNav = UINavigationController.init(rootViewController: createEditVC)
@@ -53,7 +61,7 @@ class HomeViewController: BaseViewController {
     private var authService = AppDelegate.authservice
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
-        homeView.collectionView.refreshControl = rc
+        homeView.usersCollectionView.refreshControl = rc
         rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
         return rc
     }()
@@ -68,6 +76,7 @@ class HomeViewController: BaseViewController {
                 } else if let snapshot = snapshot{
                     self?.events = snapshot.documents.map{Event(dict: $0.data()) }
                     .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                    
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
@@ -109,3 +118,37 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     
 }
+
+extension HomeViewController: UserEventCollectionViewDelegate {
+    func cancelPressed() {
+        
+    }
+    
+    func segmentedUserEventsPressed() {
+        
+    }
+    
+    func segmentedPastEventPressed() {
+//       let date = Date()
+//        let calendar = Calendar.current
+//        let hours = calendar.component(.hour, from: date)
+//        let minutes = calendar.component(.minute, from: date)
+//
+        
+//        var filteredDate = events.filter {
+//            $0.endDate < Date().
+//        }
+        }
+        
+    }
+    
+    func cancelPressed() {
+        
+    }
+    
+    private func fetchPastEvents(){
+        
+    }
+    
+    
+

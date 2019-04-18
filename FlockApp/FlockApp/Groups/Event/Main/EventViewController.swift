@@ -8,6 +8,7 @@
 import UIKit
 import Firebase
 import FirebaseFirestore
+import GoogleMaps
 
 class EventViewController: UIViewController {
     
@@ -35,6 +36,8 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+ 
 
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Map", style: UIBarButtonItem.Style.plain, target: self, action: #selector(mapPressed))
@@ -42,6 +45,7 @@ class EventViewController: UIViewController {
         fetchInvites()
         self.view.addSubview(eventView)
         guard let unwrappedEvent = event else {return}
+        
         let eventTitle = unwrappedEvent.eventName
         
         let eventAddress = unwrappedEvent.locationString

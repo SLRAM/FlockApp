@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct UserModel {
+struct UserModel: Equatable {
     let userId: String
     let displayName: String
     let email: String
