@@ -17,7 +17,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    public lazy var dayLabel: UILabel = {
+    public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
         label.backgroundColor = .white
@@ -26,15 +26,14 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var eventImage: UIImageView = {
-        let image = UIImageView()
-       // image.alpha = 
+        let image = UIImageView(image: UIImage(named: "pitons"))
         return image
     }()
     
     func setupEventLabel(){
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
-        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25).isActive = true
+        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 100).isActive = true
         eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
@@ -42,22 +41,23 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     func setupEventDay(){
-        addSubview(dayLabel)
-        dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        dayLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 60).isActive = true
-        dayLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
-        dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
+        addSubview(startDateLabel)
+        startDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 150).isActive = true
+        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
     }
     
     func setupImage(){
         addSubview(eventImage)
         eventImage.translatesAutoresizingMaskIntoConstraints = false
-        eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
-        eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor).isActive = true
-        eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor).isActive = true
-    
+        //eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
+        //eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
+        eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
+        eventImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
+        eventImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
     }
     
     
@@ -73,9 +73,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-       setupEventLabel()
-       setupEventDay()
-        //setupImage()
+        setupImage()
+        setupEventLabel()
+        setupEventDay()
+        
         
     }
     

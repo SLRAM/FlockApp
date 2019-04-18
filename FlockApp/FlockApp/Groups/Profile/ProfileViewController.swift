@@ -24,30 +24,38 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
+        self.profileView.editButton.isEnabled = false
+        self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
+        profileView.addFriend.addTarget(self, action: #selector(addFriendPressed), for: .touchUpInside)
         setupProfile()
     }
 
     private func setupProfile(){
-        if let currentUser = AppDelegate.authservice.getCurrentUser() {
-            DBService.fetchUser(userId: currentUser.uid) { (error, userModel) in
+        if let loggedUser = AppDelegate.authservice.getCurrentUser() {
+            DBService.fetchUser(userId: loggedUser.uid) { (error, userModel) in
                 if let error = error {
                     print(error)
-                } else if let userModel = userModel{
-                    self.user = userModel
-                    if currentUser.uid == self.user!.userId {
+                } else if let userModel = userModel {
+                    if self.user == nil {
+                        self.user = userModel
+                    }
+                    if userModel.userId == self.user!.userId {
                         self.profileView.editButton.isEnabled = true
                         self.profileView.editButton.isHidden = false
+                        self.profileView.addFriend.isEnabled = false
+                        self.profileView.addFriend.isHidden = true
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
+                        self.profileView.addFriend.isHidden = false
+                        self.profileView.addFriend.isEnabled = true
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
                     self.profileView.firstNameTextView.text = self.user!.firstName
                     self.profileView.lastNameTextView.text = self.user!.lastName
-                    self.profileView.bioTextView.text = self.user!.bio
                     self.profileView.phoneNumberTextView.text = self.user!.phoneNumber
                     if let image = self.user!.photoURL, !image.isEmpty {
                         self.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
@@ -59,6 +67,15 @@ class ProfileViewController: BaseViewController {
     @objc private func imageButtonPressed() {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true)
+    }
+    @objc private func addFriendPressed() {
+        DBService.addFriend(friend: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Friend Added", message: nil)
+            }
+        }
     }
     @objc private func editSetting() {
         if !editToggle {
@@ -73,8 +90,6 @@ class ProfileViewController: BaseViewController {
             profileView.lastNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.phoneNumberTextView.isEditable = true
             profileView.phoneNumberTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            profileView.bioTextView.isEditable = true
-            profileView.bioTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.editButton.setTitle("Save", for: .normal)
             editToggle = true
         } else {
@@ -91,8 +106,6 @@ class ProfileViewController: BaseViewController {
             profileView.lastNameTextView.backgroundColor = .white
             profileView.phoneNumberTextView.isEditable = false
             profileView.phoneNumberTextView.backgroundColor = .white
-            profileView.bioTextView.isEditable = false
-            profileView.bioTextView.backgroundColor = .white
             profileView.editButton.setTitle("Edit", for: .normal)
             editToggle = false
         }
@@ -104,8 +117,6 @@ class ProfileViewController: BaseViewController {
             !lastName.isEmpty,
             let displayName = profileView.displayNameTextView.text,
             !displayName.isEmpty,
-            let bio = profileView.bioTextView.text,
-            !bio.isEmpty,
             let email = profileView.emailTextView.text,
             !email.isEmpty,
             let phone = profileView.phoneNumberTextView.text,
@@ -134,7 +145,6 @@ class ProfileViewController: BaseViewController {
                     .document(user.uid)
                     .updateData([UsersCollectionKeys.FirstNameKey : firstName,
                                  UsersCollectionKeys.LastNameKey : lastName,
-                                 UsersCollectionKeys.BioKey : bio,
                                  UsersCollectionKeys.DisplayNameKey : displayName,
                                  UsersCollectionKeys.EmailKey : email,
                                  UsersCollectionKeys.PhoneNumberKey : phone,
