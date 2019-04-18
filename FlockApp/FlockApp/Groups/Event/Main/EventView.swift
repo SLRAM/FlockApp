@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleMaps
 
 protocol EventViewDelegate: AnyObject {
     func segmentedDetailsPressed()
@@ -74,6 +75,22 @@ class EventView: UIView {
         return segmentedControl
     }()
     
+//    guard let eventLat = event?.locationLat,
+//    let eventLong = event?.locationLong,
+//    let eventName = event?.eventName else {
+//    print("unable to locate event")
+//    return
+//    }
+//    let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+//    //        mapView.myMapView.animate(toLocation: eventLocation)
+//    mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+//    //        GMSCameraUpdate.zoom(to: 1)
+//    let eventMarker = GMSMarker.init()
+//    eventMarker.position = eventLocation
+//    eventMarker.title = eventName
+//    eventMarker.map = mapView.myMapView
+    
+    
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         self.backgroundColor = .white
@@ -84,8 +101,18 @@ class EventView: UIView {
         addEventDate()
         addEventTracking()
         addTableView()
+        
+        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
+        addSubview(mapView)
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+        marker.title = "Sydney"
+        marker.snippet = "Australia"
+        marker.map = mapView
     }
 
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

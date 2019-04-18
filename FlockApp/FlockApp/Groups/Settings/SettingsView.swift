@@ -10,6 +10,12 @@ import UIKit
 class SettingsView: UIView {
     
     //display email, number, full name between public and friends
+    
+    lazy var signOutButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Sign Out", for: .normal)
+        return button
+    }()
 
     lazy var displayEmail: UILabel = {
        let label = UILabel()
@@ -53,6 +59,7 @@ class SettingsView: UIView {
         segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
         return segmentedControl
     }()
+    
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -136,32 +143,33 @@ class SettingsView: UIView {
             ])
     }
     
-    @objc func emailSettingChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex{
-        case 0:
-            print("hi")
-        case 1:
-            print("yo")
-        default:
-            break
-        }
-    }
-   
-    @objc func phoneNumberSettingChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex{
-        case 0:
-            print("hi")
-        case 1:
-            print("yo")
-        default:
-            break
-        }
-    }
-//    
+    
+//    @objc func emailSettingChanged(_ sender: UISegmentedControl) {
+//        switch sender.selectedSegmentIndex{
+//        case 0:
+//
+//        case 1:
+//            print("yo")
+//        default:
+//            break
+//        }
+//    }
+//
+//    @objc func phoneNumberSettingChanged(_ sender: UISegmentedControl) {
+//        switch sender.selectedSegmentIndex{
+//        case 0:
+//            print("hi")
+//        case 1:
+//            print("yo")
+//        default:
+//            break
+//        }
+//    }
+//
 //    @objc func fullNameSettingChanged(_ sender: UISegmentedControl) {
 //        switch sender.selectedSegmentIndex{
 //        case 0:
-//            
+//            print("hi")
 //        case 1:
 //            print("yo")
 //        default:
