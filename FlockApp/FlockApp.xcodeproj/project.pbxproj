@@ -185,6 +185,7 @@
 			children = (
 				93D103F3225FD5F80038C6AA /* ProfileViewController.swift */,
 				93D103F5225FD6060038C6AA /* ProfileView.swift */,
+				97802CB5225CED88007D480D /* FireBase Helpers */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -230,7 +231,6 @@
 			children = (
 				97802CB1225CEB95007D480D /* Groups */,
 				97802CB4225CED7A007D480D /* Models */,
-				97802CB5225CED88007D480D /* FireBase Helpers */,
 				97802CB6225CF0EF007D480D /* Extensions */,
 				97025FA72257F15500273C91 /* Utilities */,
 				97802CB3225CEB9C007D480D /* Storyboard */,
