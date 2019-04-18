@@ -69,6 +69,7 @@
 		97802D10225E49AD007D480D /* InvitedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D0F225E49AD007D480D /* InvitedView.swift */; };
 		97802D12225E49BA007D480D /* InvitedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D11225E49BA007D480D /* InvitedViewController.swift */; };
 		97AD142222650EA800C2E3F7 /* DBService+Invited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD142122650EA700C2E3F7 /* DBService+Invited.swift */; };
+		97E4333A226822B500BC519C /* InvitedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43339226822B500BC519C /* InvitedModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -136,6 +137,7 @@
 		97802D0F225E49AD007D480D /* InvitedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedView.swift; sourceTree = "<group>"; };
 		97802D11225E49BA007D480D /* InvitedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedViewController.swift; sourceTree = "<group>"; };
 		97AD142122650EA700C2E3F7 /* DBService+Invited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBService+Invited.swift"; sourceTree = "<group>"; };
+		97E43339226822B500BC519C /* InvitedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedModel.swift; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				97802CD3225CF7E3007D480D /* UserModel.swift */,
+				97E43339226822B500BC519C /* InvitedModel.swift */,
 				939C62D9225E6BC900F93D76 /* EventModel.swift */,
 			);
 			path = Models;
@@ -645,6 +648,7 @@
 				97802CBF225CF5E6007D480D /* CreateAccountViewController.swift in Sources */,
 				9383291F225E4D7C00E4568F /* MenuCollectionViewCell.swift in Sources */,
 				97802CDE225CFE99007D480D /* FriendsView.swift in Sources */,
+				97E4333A226822B500BC519C /* InvitedModel.swift in Sources */,
 				97802CF9225D01F9007D480D /* EventPeopleViewController.swift in Sources */,
 				97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */,
 				97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */,
