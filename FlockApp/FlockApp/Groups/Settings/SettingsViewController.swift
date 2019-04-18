@@ -14,6 +14,7 @@ class SettingsViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(settingsView)
+        self.navigationItem.title = "Settings"
     }
 }
 
