@@ -22,9 +22,38 @@ struct InvitedCollectionKeys {
 }
 
 extension DBService {
-    static public func addInvited(docRef: String, friends: [UserModel], completion: @escaping (Error?) -> Void)  {
+    static public func addInvited(docRef: String, friends: [UserModel], tasks: Dictionary<Int,String>, completion: @escaping (Error?) -> Void)  {
         
         for friend in friends {
+            
+            print(tasks)
+            for (keyFriend,valueFriend) in friends.enumerated() {
+                for (key,value) in tasks {
+                    if keyFriend == key {
+                        print(value)
+                        firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData([
+                            InvitedCollectionKeys.UserIdKey         : friend.userId,
+                            InvitedCollectionKeys.DisplayNameKey    : friend.displayName,
+                            InvitedCollectionKeys.FirstNameKey      : friend.firstName,
+                            InvitedCollectionKeys.LastNameKey       : friend.lastName,
+                            InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
+                            InvitedCollectionKeys.LatitudeKey       : 0.0,
+                            InvitedCollectionKeys.LongitudeKey      : 0.0,
+                            InvitedCollectionKeys.TaskKey           : value
+                            ])
+                        { (error) in
+                            if let error = error {
+                                print("adding friends error: \(error)")
+                                completion(error)
+                            } else {
+                                print("friends added successfully to ref: \(friend.userId)")
+                                completion(nil)
+                            }
+                        }
+
+                    }
+                }
+            }
 //            var dictionaryFriends : Dictionary<String,Any> = [:]
 //            dictionaryFriends["userId"] = "\(friend.userId)"
 //            dictionaryFriends["displayName"] = "\(friend.displayName)"
@@ -34,25 +63,17 @@ extension DBService {
 //            dictionaryFriends["latitude"] = 0.0
 //            dictionaryFriends["longitude"] = 0.0
             
-            firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData([
-                InvitedCollectionKeys.UserIdKey         : friend.userId,
-                InvitedCollectionKeys.DisplayNameKey    : friend.displayName,
-                InvitedCollectionKeys.FirstNameKey      : friend.firstName,
-                InvitedCollectionKeys.LastNameKey       : friend.lastName,
-                InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
-                InvitedCollectionKeys.LatitudeKey       : 0.0,
-                InvitedCollectionKeys.LongitudeKey      : 0.0,
-                InvitedCollectionKeys.TaskKey           : "Task"
-                ])
-            { (error) in
-                if let error = error {
-                    print("adding friends error: \(error)")
-                    completion(error)
-                } else {
-                    print("friends added successfully to ref: \(friend.userId)")
-                    completion(nil)
-                }
-            }
+//            firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData([
+//                InvitedCollectionKeys.UserIdKey         : friend.userId,
+//                InvitedCollectionKeys.DisplayNameKey    : friend.displayName,
+//                InvitedCollectionKeys.FirstNameKey      : friend.firstName,
+//                InvitedCollectionKeys.LastNameKey       : friend.lastName,
+//                InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
+//                InvitedCollectionKeys.LatitudeKey       : 0.0,
+//                InvitedCollectionKeys.LongitudeKey      : 0.0,
+//                InvitedCollectionKeys.TaskKey           : "Task"
+//                ])
+            
             
             
         }

@@ -100,7 +100,8 @@ class MapViewController: UIViewController {
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
             let marker = GMSMarker(position: coordinate)
             marker.title = guest.displayName
-            marker.snippet = "task: \(guest.firstName)"
+            guard let task = guest.task else {return}
+            marker.snippet = "task: \(task)"
             marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.0208575353, green: 0.7171841264, blue: 0.6636909246, alpha: 1))
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {

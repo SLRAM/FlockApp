@@ -20,6 +20,7 @@ class CreateEditViewController: UIViewController {
 
     
     var friendsArray = [UserModel]()
+    var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
     var selectedStartDate = Date()
@@ -214,7 +215,7 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, completion: { [weak self] error in
+                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
                             } else {
@@ -235,18 +236,6 @@ extension CreateEditViewController: CreateViewDelegate {
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
-
-
-        
-        
-
     }
 }
 
@@ -256,9 +245,11 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        guard let cell = createEditView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
-        cell.textLabel?.text = friend.displayName
+        cell.friendName.text = friend.displayName
+        cell.friendTask.tag = indexPath.row
+        cell.friendTask.delegate = self
         return cell
     }
     
@@ -279,6 +270,12 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
+        var count = 0
+        for friend in friends {
+            friendsDictionary[count] = "No Task"
+        }
+        print(friendsDictionary)
+        
         createEditView.myTableView.reloadData()
     }
     
@@ -310,5 +307,39 @@ extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigatio
         selectedImage = resizedImage.image
         createEditView.imageButton.setImage(selectedImage, for: .normal)
         dismiss(animated: true)
+    }
+}
+extension CreateEditViewController: CreateEditTableViewCellDelegate {
+    func textDelegate() {
+        print("OKay")
+    }
+    
+    
+}
+extension CreateEditViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(textField.tag)
+        textField.resignFirstResponder()
+        //for id key save text
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = textField.text
+            }
+        }
+        
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(textField.tag)
+        textField.resignFirstResponder()
+        //for id key save text
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = textField.text
+            }
+        }
+        
     }
 }
