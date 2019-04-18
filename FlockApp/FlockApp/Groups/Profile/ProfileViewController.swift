@@ -7,6 +7,7 @@
 
 import UIKit
 import Toucan
+import Firebase
 
 class ProfileViewController: BaseViewController {
     
@@ -14,13 +15,15 @@ class ProfileViewController: BaseViewController {
     let profileView = ProfileView()
     var editToggle = false
 
+    var friends = [String]()
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
         return ip
     }()
     private var profileImage: UIImage?
-
+    private var listener: ListenerRegistration!
+    private var authservice = AppDelegate.authservice
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
@@ -29,6 +32,7 @@ class ProfileViewController: BaseViewController {
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
         profileView.addFriend.addTarget(self, action: #selector(addFriendPressed), for: .touchUpInside)
+        fetchFriends()
         setupProfile()
     }
 
@@ -49,8 +53,11 @@ class ProfileViewController: BaseViewController {
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
-                        self.profileView.addFriend.isHidden = false
-                        self.profileView.addFriend.isEnabled = true
+                    }
+                    
+                    if self.friends.contains(self.user!.userId) {
+                        self.profileView.addFriend.isHidden = true
+                        self.profileView.addFriend.isEnabled = false
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
@@ -64,6 +71,27 @@ class ProfileViewController: BaseViewController {
             }
         }
     }
+    private func fetchFriends() {
+        guard let user = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(FriendsCollectionKey.CollectionKey)
+            .addSnapshotListener { [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    self?.friends = snapshot.documents.map {
+                        let dictionary =  $0.data() as? [String:String]
+                        guard let key = dictionary?.keys.first else { return "" }
+                        return key
+                    }
+                }
+        }
+    }
     @objc private func imageButtonPressed() {
         imagePickerController.sourceType = .photoLibrary
         present(imagePickerController, animated: true)
@@ -74,6 +102,8 @@ class ProfileViewController: BaseViewController {
                 self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
             } else {
                 self.showAlert(title: "Friend Added", message: nil)
+                self.profileView.addFriend.isEnabled = false
+                self.profileView.addFriend.isHidden = true
             }
         }
     }

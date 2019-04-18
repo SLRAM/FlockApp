@@ -21,27 +21,37 @@ class FriendsViewController: BaseViewController {
             }
         }
     }
+    private var strangers = [UserModel]() {
+        didSet {
+            DispatchQueue.main.async {
+                self.friendsView.myTableView.reloadData()
+            }
+        }
+    }
     private var listener: ListenerRegistration!
     private var authservice = AppDelegate.authservice
+    private var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(friendsView)
-        navigationController?.setNavigationBarHidden(true, animated: false)
         friendsView.friendSearch.delegate = self
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
-        fetchFriends(keyword: "")
+        navigationController?.navigationBar.topItem?.title = "Friends"
+        setupTable(keyword: "")
     }
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(true, animated: animated)
+        setupTable(keyword: "")
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        navigationController?.setNavigationBarHidden(false, animated: animated)
+    private func setupTable(keyword: String) {
+            fetchFriends(keyword: keyword)
+        timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(fetchStrangers(keyword:)), userInfo: keyword, repeats: false)
     }
     
-    @objc private func fetchFriends(keyword: String) {
+    private func fetchFriends(keyword: String) {
+        self.friends.removeAll()
         guard let user = authservice.getCurrentUser() else {
             print("Please log in")
             return
@@ -54,23 +64,55 @@ class FriendsViewController: BaseViewController {
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    if keyword == "" {
-                        let friends: [String] = snapshot.documents.map {
-                          let dictionary =  $0.data() as? [String:String]
+                    let test : [String] = snapshot.documents.map {
+                            let dictionary =  $0.data() as? [String:String]
                             guard let key = dictionary?.keys.first else { return "" }
                             return key
                         }
-                        self!.fetchFriendInfo(list: friends)
-//                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
-                    } else {
-                        self?.friends = snapshot.documents.map { UserModel(dict: $0.data()) }
-//                            .filter({$0.displayName.lowercased().contains(keyword.lowercased())})
-//                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
-                    }
-            }
+                    self!.fetchFriendInfo(list: test, keyword: keyword)
+                }
         }
     }
-    private func fetchFriendInfo(list: [String]) {
+    @objc private func fetchStrangers(keyword: Timer) {
+        let text = keyword.userInfo as! String
+        guard let _ = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .addSnapshotListener { [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    guard let friends = self?.friends else { return }
+                    if text == "" {
+                        self?.strangers.removeAll()
+
+                        let str = snapshot.documents.map { UserModel(dict: $0.data()) }
+                        str.forEach { userModel in
+                            if !friends.contains(userModel) {
+                                self?.strangers.append(userModel)
+                            }
+                            self!.strangers = (self?.strangers.sorted { $0.displayName.lowercased() < $1.displayName.lowercased() })!
+                        }
+                    } else {
+                        self?.strangers.removeAll()
+                        let str = snapshot.documents.map { UserModel(dict: $0.data()) }
+                            .filter({$0.displayName.lowercased().contains(text.lowercased())})
+                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
+                        str.forEach { userModel in
+                            if !friends.contains(userModel) {
+                                self?.strangers.append(userModel)
+                            }
+                            self!.strangers = (self?.strangers.sorted { $0.displayName.lowercased() < $1.displayName.lowercased() })!
+                                .filter({$0.displayName.lowercased().contains(text.lowercased())})
+                        }
+                    }
+                } 
+        }
+    }
+    private func fetchFriendInfo(list: [String], keyword: String) {
         for friend in list {
             DBService.fetchUser(userId: friend) { (error, user) in
                 if let error = error {
@@ -84,29 +126,65 @@ class FriendsViewController: BaseViewController {
 }
 
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friends.count
+        switch section {
+        case 0 :
+             return friends.count
+        case 1:
+            return strangers.count
+        default:
+            return 0
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let friend = friends[indexPath.row]
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = friend.displayName
-        cell.backgroundColor = .clear
         
-        return cell
+        switch indexPath.section {
+        case 0:
+            let userCell = friends[indexPath.row]
+            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+            cell.textLabel?.text = userCell.displayName
+            cell.detailTextLabel?.text = "Friend added"
+            cell.backgroundColor = .clear
+            return cell
+        case 1 :
+            let userCell = strangers[indexPath.row]
+            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.textLabel?.text = userCell.displayName
+            cell.backgroundColor = .clear
+            return cell
+        default:
+            return UITableViewCell()
+        }
+        
+        
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        fetchFriends(keyword: searchText)
+            setupTable(keyword: searchText)
+        friends = friends.filter {$0.displayName.contains(searchText)}
+        
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
             fatalError("It broke")
         }
         let profileVC = ProfileViewController()
-        let user = friends[indexPath.row]
-        profileVC.user = user
-        let profileNav = UINavigationController.init(rootViewController: profileVC)
-        navigationController?.pushViewController(profileVC, animated: false)
+        switch indexPath.section {
+        case 0:
+            let user = friends[indexPath.row]
+            profileVC.user = user
+            navigationController?.pushViewController(profileVC, animated: false)
+        case 1:
+            let user = strangers[indexPath.row]
+            profileVC.user = user
+            navigationController?.pushViewController(profileVC, animated: false)
+        default:
+            return
+        }
     }
 }
