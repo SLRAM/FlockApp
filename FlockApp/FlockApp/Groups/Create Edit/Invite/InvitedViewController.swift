@@ -66,24 +66,43 @@ class InvitedViewController: BaseViewController {
     }
     
     @objc private func fetchFriends() {
+        friends.removeAll()
         refreshControl.beginRefreshing()
+        guard let user = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(FriendsCollectionKey.CollectionKey)
             .addSnapshotListener { [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    self?.friends = snapshot.documents.map { UserModel(dict: $0.data()) }
-                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
-                    
-                    //do filtered here
+                    let test: [String] = snapshot.documents.map {
+                        let dictionary =  $0.data() as? [String:String]
+                        guard let key = dictionary?.keys.first else { return "" }
+                        return key
+                    }
+                    self!.fetchFriendInfo(list: test)
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
                 }
         }
     }
-    
+    private func fetchFriendInfo(list: [String]) {
+        for friend in list {
+            DBService.fetchUser(userId: friend) { (error, user) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let user = user {
+                    self.friends.append(user)
+                }
+            }
+        }
+    }
     func friendListButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Add", style: .plain, target: self, action: #selector(addButton))
     }
