@@ -15,13 +15,15 @@ class HomeViewController: BaseViewController {
     
     
     var homeView = HomeView()
-    var events = [Event](){
-        didSet{
-            DispatchQueue.main.async {
-                self.homeView.usersCollectionView.reloadData()
+    var filteredEvents = [Date](){
+                didSet{
+                    DispatchQueue.main.async {
+                        self.homeView.usersCollectionView.reloadData()
+                    }
+                }
             }
-        }
-    }
+    
+    var events = [Event]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +46,6 @@ class HomeViewController: BaseViewController {
     }
     
 
-    
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
         let createNav = UINavigationController.init(rootViewController: createEditVC)
@@ -75,6 +76,7 @@ class HomeViewController: BaseViewController {
                 } else if let snapshot = snapshot{
                     self?.events = snapshot.documents.map{Event(dict: $0.data()) }
                     .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                    
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
@@ -116,3 +118,37 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     
 }
+
+extension HomeViewController: UserEventCollectionViewDelegate {
+    func cancelPressed() {
+        
+    }
+    
+    func segmentedUserEventsPressed() {
+        
+    }
+    
+    func segmentedPastEventPressed() {
+//       let date = Date()
+//        let calendar = Calendar.current
+//        let hours = calendar.component(.hour, from: date)
+//        let minutes = calendar.component(.minute, from: date)
+//
+        
+//        var filteredDate = events.filter {
+//            $0.endDate < Date().
+//        }
+        }
+        
+    }
+    
+    func cancelPressed() {
+        
+    }
+    
+    private func fetchPastEvents(){
+        
+    }
+    
+    
+

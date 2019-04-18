@@ -66,8 +66,8 @@ class HomeView: UIView {
         public lazy var usersCollectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
             cellLayout.scrollDirection = .vertical
-            cellLayout.sectionInset = UIEdgeInsets.init(top: 16, left: 5, bottom: 16, right: 20)
-            cellLayout.itemSize = CGSize.init(width: 375, height:350)
+            cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
+            cellLayout.itemSize = CGSize.init(width: 350, height:350)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = .white
             collectionView.layer.cornerRadius = 15.0
@@ -152,7 +152,7 @@ class HomeView: UIView {
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         segmentedControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant:
-            135).isActive = true
+            125).isActive = true
         segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.03).isActive = true
         segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8).isActive = true
     
@@ -198,11 +198,13 @@ class HomeView: UIView {
             dayLabel.isHidden = false
             createButton.isHidden = false
             segmentedControl.isHidden = false
+            
         case 1:
             print("Past Event")
             dateLabel.isHidden = true
             dayLabel.isHidden = true
             segmentedControl.isHidden = false
+            
         default:
             break
         }
