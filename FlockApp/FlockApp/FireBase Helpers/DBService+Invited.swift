@@ -11,20 +11,39 @@ import Firebase
 
 struct InvitedCollectionKeys {
     static let CollectionKey = "invited"
+    static let UserIdKey = "userId"
+    static let DisplayNameKey = "displayName"
+    static let FirstNameKey = "firstName"
+    static let LastNameKey = "lastName"
+    static let PhotoURLKey = "photoURL"
+    static let LatitudeKey = "latitude"
+    static let LongitudeKey = "longitude"
+    static let TaskKey = "task"
 }
 
 extension DBService {
     static public func addInvited(docRef: String, friends: [UserModel], completion: @escaping (Error?) -> Void)  {
         
         for friend in friends {
-            var dictionaryFriends : Dictionary<String,Any> = [:]
-            dictionaryFriends["userId"] = "\(friend.userId)"
-            dictionaryFriends["displayName"] = "\(friend.displayName)"
-            dictionaryFriends["firstName"] = "\(friend.firstName)"
-            dictionaryFriends["lastName"] = "\(friend.lastName)"
-            dictionaryFriends["coverImageURL"] = "\(friend.coverImageURL)"
+//            var dictionaryFriends : Dictionary<String,Any> = [:]
+//            dictionaryFriends["userId"] = "\(friend.userId)"
+//            dictionaryFriends["displayName"] = "\(friend.displayName)"
+//            dictionaryFriends["firstName"] = "\(friend.firstName)"
+//            dictionaryFriends["lastName"] = "\(friend.lastName)"
+//            dictionaryFriends["photoURL"] = "\(friend.photoURL)"
+//            dictionaryFriends["latitude"] = 0.0
+//            dictionaryFriends["longitude"] = 0.0
             
-            firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData(dictionaryFriends)
+            firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(friend.userId).setData([
+                InvitedCollectionKeys.UserIdKey         : friend.userId,
+                InvitedCollectionKeys.DisplayNameKey    : friend.displayName,
+                InvitedCollectionKeys.FirstNameKey      : friend.firstName,
+                InvitedCollectionKeys.LastNameKey       : friend.lastName,
+                InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
+                InvitedCollectionKeys.LatitudeKey       : 0.0,
+                InvitedCollectionKeys.LongitudeKey      : 0.0,
+                InvitedCollectionKeys.TaskKey           : "Task"
+                ])
             { (error) in
                 if let error = error {
                     print("adding friends error: \(error)")

@@ -18,8 +18,8 @@ class EventViewController: UIViewController {
             }
         }
     }
-    private var invited: [String]  = [String]() {
-        didSet {
+    var invited = [InvitedModel](){
+        didSet{
             DispatchQueue.main.async {
                 self.eventView.peopleTableView.reloadData()
             }
@@ -37,6 +37,8 @@ class EventViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = eventView.cancelButton
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Map", style: UIBarButtonItem.Style.plain, target: self, action: #selector(mapPressed))
+
         fetchInvites()
         self.view.addSubview(eventView)
         guard let unwrappedEvent = event else {return}
@@ -62,6 +64,14 @@ class EventViewController: UIViewController {
         
     }
     
+    @objc func mapPressed() {
+        print("map pressed")
+        let detailVC = MapViewController()
+//        detailVC.delegate = self
+        detailVC.event = event
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
     // 1. invites = ["userId", "userId"]
     // 2. event has a collection
     func fetchInvites() {
@@ -77,13 +87,8 @@ class EventViewController: UIViewController {
                 if let error = error {
                     print("failed to fetch invites: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    print("found \(snapshot.documents.count) invites")
-                     self.invited = snapshot.documents.map {
-                        let dictionary = $0.data() as? [String: String]
-                        guard let value = dictionary?.values.first else {return ""}
-                        return value
-                        
-                    }
+                    self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
+                        .sorted { $0.displayName > $1.displayName}
                 }
 
         }
@@ -121,15 +126,14 @@ extension EventViewController: EventViewDelegate {
 
 extension EventViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return friends.count
         return invited.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = eventView.peopleTableView.dequeueReusableCell(withIdentifier: "peopleCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
         let friend = invited[indexPath.row]
-        cell.textLabel?.text = friend
-//        cell.textLabel?.text = friends[indexPath.row].displayName
+        cell.textLabel?.text = friend.displayName
+        cell.detailTextLabel?.text = "lat:\(friend.latitude) long: \(friend.longitude)"
         return cell
     }
 }
