@@ -71,6 +71,6 @@ struct UserModel: Equatable {
         self.fullnameIsVisible = dict[UsersCollectionKeys.FullnameIsVisibleKey] as? Bool ?? false
         self.emailIsVisible = dict[UsersCollectionKeys.EmailIsVisibleKey] as? Bool ?? false
         self.phoneIsVisible = dict[UsersCollectionKeys.PhoneIsVisibleKey] as? Bool ?? false
-        
+
     }
 }

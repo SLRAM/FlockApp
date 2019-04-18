@@ -53,6 +53,8 @@ class ProfileViewController: BaseViewController {
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
+                        self.profileView.addFriend.isHidden = false
+                        self.profileView.addFriend.isEnabled = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
