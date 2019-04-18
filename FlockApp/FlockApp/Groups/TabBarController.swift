@@ -12,7 +12,7 @@ class TabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstViewController = EventViewController()
+        let firstViewController = HomeViewController()
         
         firstViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "event"), tag: 0)
         

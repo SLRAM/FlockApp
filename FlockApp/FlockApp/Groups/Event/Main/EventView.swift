@@ -75,21 +75,20 @@ class EventView: UIView {
         return segmentedControl
     }()
     
-//    guard let eventLat = event?.locationLat,
-//    let eventLong = event?.locationLong,
-//    let eventName = event?.eventName else {
-//    print("unable to locate event")
-//    return
-//    }
-//    let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-//    //        mapView.myMapView.animate(toLocation: eventLocation)
-//    mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
-//    //        GMSCameraUpdate.zoom(to: 1)
-//    let eventMarker = GMSMarker.init()
-//    eventMarker.position = eventLocation
-//    eventMarker.title = eventName
-//    eventMarker.map = mapView.myMapView
-    
+    lazy var myMapView: GMSMapView = {
+        var view = GMSMapView()
+        
+        let camera = GMSCameraPosition.camera(withLatitude: 40.793840, longitude: -73.886012, zoom: 11)
+        view = GMSMapView.init(frame: CGRect.zero, camera: camera)
+        //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6)
+//                myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
+        //        view = myMapView
+        //        view.mapType = MKMapType.standard
+        //        view.isZoomEnabled = true
+        //        view.isScrollEnabled = true
+        //        view.center = self.center
+        return view
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -101,15 +100,16 @@ class EventView: UIView {
         addEventDate()
         addEventTracking()
         addTableView()
-        
-        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
-        addSubview(mapView)
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-        marker.title = "Sydney"
-        marker.snippet = "Australia"
-        marker.map = mapView
+        addMapView()
+//
+//        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+//        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
+//        addSubview(mapView)
+//        let marker = GMSMarker()
+//        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+//        marker.title = "Sydney"
+//        marker.snippet = "Australia"
+//        marker.map = mapView
     }
 
     
@@ -194,6 +194,18 @@ class EventView: UIView {
             ])
     }
     
+    private func addMapView() {
+        addSubview(myMapView)
+        myMapView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            myMapView.topAnchor.constraint(equalTo: eventTracking.bottomAnchor, constant: 20),
+            myMapView.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            myMapView.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.8),
+            myMapView.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.8)
+            ])
+        
+    }
+    
     @objc func indexChanged(_ sender: UISegmentedControl) {
         switch sender.selectedSegmentIndex{
         case 0:
@@ -214,6 +226,7 @@ class EventView: UIView {
             detailView.isUserInteractionEnabled = false
             peopleTableView.isHidden = false
             peopleTableView.isUserInteractionEnabled = true
+            myMapView.isHidden = true
         default:
             break
         }

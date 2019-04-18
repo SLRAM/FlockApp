@@ -25,19 +25,36 @@ class EventViewController: UIViewController {
     private var listener: ListenerRegistration!
     
     public var event: Event?
+    
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
- 
-
         navigationItem.leftBarButtonItem = eventView.cancelButton
         getInvitees()
         self.view.addSubview(eventView)
         guard let unwrappedEvent = event else {return}
+        guard let eventLat = event?.locationLat,
+            let eventLong = event?.locationLong,
+            let eventName = event?.eventName else {
+                print("unable to locate event")
+                return
+        }
+
+        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
         
+        let marker = GMSMarker.init()
+
         let eventTitle = unwrappedEvent.eventName
+        marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+        marker.title = eventName
+        marker.map = eventView.myMapView
         
+        let position = marker.position
+        let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 12.0)
+        
+        //THIS LINE IS WHAT CENTERS THE MARKER.
+        eventView.myMapView.camera = camera
         let eventAddress = unwrappedEvent.locationString
         let eventTracking = unwrappedEvent.startDate
 
