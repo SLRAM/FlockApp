@@ -31,11 +31,10 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
-        
+
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        //homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
-        
+    
         
         
     }
@@ -43,6 +42,7 @@ class HomeViewController: BaseViewController {
    
     override func viewDidAppear(_ animated: Bool) {
         homeView.usersCollectionView.reloadData()
+        
     }
     
 
@@ -120,35 +120,20 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController: UserEventCollectionViewDelegate {
-    func cancelPressed() {
-        
-    }
-    
     func segmentedUserEventsPressed() {
         
     }
     
     func segmentedPastEventPressed() {
-//       let date = Date()
+        let currentDate = Date()
+        _ =  events.filter {
+        $0.endDate < currentDate }
+    }
+}
+
+    
+//        let currentDate = Date()
 //        let calendar = Calendar.current
-//        let hours = calendar.component(.hour, from: date)
-//        let minutes = calendar.component(.minute, from: date)
-//
-        
-//        var filteredDate = events.filter {
-//            $0.endDate < Date().
-//        }
-        }
-        
-    }
-    
-    func cancelPressed() {
-        
-    }
-    
-    private func fetchPastEvents(){
-        
-    }
-    
-    
+//        let hours = calendar.component(.hour, from: currentDate)
+//        let minutes = calendar.component(.minute, from: currentDate)
 
