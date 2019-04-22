@@ -42,7 +42,7 @@ class EventView: UIView {
     
     lazy var eventTracking: UILabel = {
         let label = UILabel()
-        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+//        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
     }()
     
@@ -205,32 +205,5 @@ class EventView: UIView {
             ])
         
     }
-    
-    @objc func indexChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex{
-        case 0:
-            print("Details")
-            detailView.isHidden = false
-            eventTracking.isHidden = false
-            eventAddress.isHidden = false
-            eventDate.isHidden = false
-            detailView.isUserInteractionEnabled = true
-            peopleTableView.isHidden = true
-            peopleTableView.isUserInteractionEnabled = false
-        case 1:
-            print("People")
-            detailView.isHidden = true
-            eventTracking.isHidden = true
-            eventAddress.isHidden = true
-            eventDate.isHidden = true
-            detailView.isUserInteractionEnabled = false
-            peopleTableView.isHidden = false
-            peopleTableView.isUserInteractionEnabled = true
-            myMapView.isHidden = true
-        default:
-            break
-        }
-    }
-
 
 }

@@ -38,6 +38,8 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        navigationController?.navigationBar.topItem?.title = "Event"
+
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Map", style: UIBarButtonItem.Style.plain, target: self, action: #selector(mapPressed))
 
@@ -58,6 +60,7 @@ class EventViewController: UIViewController {
         let eventTitle = unwrappedEvent.eventName
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
         marker.title = eventName
+        
         marker.map = eventView.myMapView
         
         let position = marker.position
@@ -66,14 +69,15 @@ class EventViewController: UIViewController {
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
         let eventAddress = unwrappedEvent.locationString
-        let eventTracking = unwrappedEvent.startDate
+//        let eventTracking = unwrappedEvent.startDate
 
-        let date = unwrappedEvent.startDate
-        let formatter = ISO8601DateFormatter()
+//        let date = unwrappedEvent.startDate
+//        let formatter = ISO8601DateFormatter()
 //        formatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime]
-        let str = formatter.string(from: date)
-        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-        eventView.eventDate.text = formattedDate
+//        let str = formatter.string(from: date)
+//        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
+//        eventView.eventDate.text = formattedDate
+        eventView.eventDate.text = unwrappedEvent.startDate
         eventView.eventTitle.text = eventTitle
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self

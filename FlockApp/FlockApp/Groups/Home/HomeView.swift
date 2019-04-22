@@ -23,7 +23,7 @@ class HomeView: UIView {
     lazy var dateLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .white
-        label.text = "Wednesday, 17th, 2019"
+        label.text = "Thursday, 18th, 2019"
         label.textColor = #colorLiteral(red: 0.4756349325, green: 0.4756467342, blue: 0.4756404161, alpha: 1)
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 12), size: 12)
         return label
@@ -31,7 +31,7 @@ class HomeView: UIView {
     
     lazy var dayLabel: UILabel = {
         let label = UILabel()
-        label.text = "Wednesday"
+        label.text = "Thursday"
         label.backgroundColor = .white
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 40), size: 30)
         label.font = UIFont.boldSystemFont(ofSize: 40)
