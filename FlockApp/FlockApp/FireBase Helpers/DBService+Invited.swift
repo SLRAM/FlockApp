@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import Firebase
+import FirebaseAuth
 
 struct InvitedCollectionKeys {
     static let CollectionKey = "invited"
@@ -22,7 +23,36 @@ struct InvitedCollectionKeys {
 }
 
 extension DBService {
-    static public func addInvited(docRef: String, friends: [UserModel], tasks: Dictionary<Int,String>, completion: @escaping (Error?) -> Void)  {
+    static public func addInvited(user: User, docRef: String, friends: [UserModel], tasks: Dictionary<Int,String>, completion: @escaping (Error?) -> Void)  {
+        
+        fetchUser(userId: user.uid) { (error, currentUser) in
+            if let error = error {
+                print("failed to fetch friends with error: \(error.localizedDescription)")
+            } else if let currentUser = currentUser {
+                firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(user.uid).setData([
+                    InvitedCollectionKeys.UserIdKey         : currentUser.userId,
+                    InvitedCollectionKeys.DisplayNameKey    : currentUser.displayName,
+                    InvitedCollectionKeys.FirstNameKey      : currentUser.firstName,
+                    InvitedCollectionKeys.LastNameKey       : currentUser.lastName,
+                    InvitedCollectionKeys.PhotoURLKey       : currentUser.photoURL ?? "",
+                    InvitedCollectionKeys.LatitudeKey       : 0.0,
+                    InvitedCollectionKeys.LongitudeKey      : 0.0,
+                    InvitedCollectionKeys.TaskKey           : "Host"
+                    ])
+                { (error) in
+                    if let error = error {
+                        print("adding friends error: \(error)")
+                        completion(error)
+                    } else {
+                        print("friends added successfully to ref: \(currentUser.userId)")
+                        completion(nil)
+                    }
+                }
+                
+            }
+        }
+                    
+
         
         for friend in friends {
             
