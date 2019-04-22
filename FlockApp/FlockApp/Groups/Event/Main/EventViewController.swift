@@ -38,6 +38,8 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        navigationController?.navigationBar.topItem?.title = "Event"
+
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Map", style: UIBarButtonItem.Style.plain, target: self, action: #selector(mapPressed))
 
@@ -58,6 +60,7 @@ class EventViewController: UIViewController {
         let eventTitle = unwrappedEvent.eventName
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
         marker.title = eventName
+        
         marker.map = eventView.myMapView
         
         let position = marker.position
