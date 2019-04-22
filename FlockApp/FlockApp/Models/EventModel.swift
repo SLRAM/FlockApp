@@ -49,8 +49,8 @@ struct Event {
         self.imageURL = dict[EventsCollectionKeys.ImageURLKey] as? String ?? "no imageURL"
         self.eventDescription = dict[EventsCollectionKeys.EventDescriptionKey] as? String ?? "no description"
         self.documentId = dict[EventsCollectionKeys.DocumentIdKey] as? String ?? "no document id"
-        self.startDate = dict[EventsCollectionKeys.StartDateKey] as? String ?? ""
-        self.endDate = dict[EventsCollectionKeys.EndDateKey] as? String ?? ""
+        self.startDate = dict[EventsCollectionKeys.StartDateKey] as? String ?? "no start date"
+        self.endDate = dict[EventsCollectionKeys.EndDateKey] as? String ?? "No end date"
         self.locationString = dict[EventsCollectionKeys.LocationStringKey] as? String ?? "no event location"
         self.locationLat = dict[EventsCollectionKeys.LocationLatKey] as? Double ?? 0
         self.locationLong = dict[EventsCollectionKeys.LocationLongKey] as? Double ?? 0

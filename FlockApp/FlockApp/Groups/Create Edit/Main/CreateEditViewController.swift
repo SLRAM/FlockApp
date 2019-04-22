@@ -286,9 +286,9 @@ extension CreateEditViewController: DateViewControllerDelegate {
         let startString = isoDateFormatter.string(from: startDate)
         let endingString = isoDateFormatter.string(from: endDate)
         
-//        selectedStartDate = startDate
-//        selectedEndDate = endDate
-        print(startDate)
+        selectedStartDate = startString
+        selectedEndDate = endingString
+        
         let startDisplayString = startDate.toString(dateFormat: "MMMM dd hh:mm a")
         createEditView.dateButton.setTitle(startDisplayString, for: .normal)
 

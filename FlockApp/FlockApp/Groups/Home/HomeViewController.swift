@@ -99,8 +99,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         let eventToSet = events[indexPath.row]
         
         collectionViewCell.eventLabel.text = eventToSet.eventName
-        print(eventToSet.startDate)
-        collectionViewCell.startDateLabel.text = eventToSet.startDate.description
+//        print(eventToSet.startDate)
+        collectionViewCell.startDateLabel.text = eventToSet.startDate
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
