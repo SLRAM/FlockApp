@@ -42,7 +42,7 @@ class EventView: UIView {
     
     lazy var eventTracking: UILabel = {
         let label = UILabel()
-        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+//        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
     }()
     

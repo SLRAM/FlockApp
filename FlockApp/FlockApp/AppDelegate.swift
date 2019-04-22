@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
             UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
             UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-            window?.makeKeyAndVisible()
+//            window?.makeKeyAndVisible()
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController

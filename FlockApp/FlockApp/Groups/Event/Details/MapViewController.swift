@@ -7,8 +7,10 @@
 
 import UIKit
 import GoogleMaps
+//import GooglePlaces
 import Firebase
 import FirebaseFirestore
+import CoreLocation
 
 class MapViewController: UIViewController {
 
@@ -17,6 +19,10 @@ class MapViewController: UIViewController {
     public var event: Event?
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
+    
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation?
+//    var placesClient: GMSPlacesClient!
     
     var invited = [InvitedModel](){
         didSet{
@@ -33,11 +39,26 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationManager.delegate = self
         guard let unwrappedEvent = event else {
             print("Unable to segue event")
             return
         }
         self.view.addSubview(mapView)
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            //we need to say how accurate the data should be
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.startUpdatingLocation()
+//            mapView.showsUserLocation = true
+//            mapView.sh
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+//            mapView.showsUserLocation = true
+        }
+        
+        
+        
         fetchEventLocation()
         fetchInvitedLocations()
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
@@ -113,4 +134,25 @@ class MapViewController: UIViewController {
     
 
 
+}
+extension MapViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        //this kicks off whenever authorization is turned on or off
+        print("user changed the authorization")
+        
+//        let currentLocation = mapView.userLocation
+//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+//
+//        myMapView.setRegion(myCurrentRegion, animated: true)
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        //this kicks off whenever the user's location has noticeably changed
+        print("user has changed locations")
+        guard let currentLocation = locations.last else {return}
+        print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
+        
+//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
+//
+//        myMapView.setRegion(myCurrentRegion, animated: true)
+    }
 }
