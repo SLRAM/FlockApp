@@ -40,6 +40,7 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
 //        navigationController?.navigationBar.topItem?.title = ""
+
     }
     override func viewWillAppear(_ animated: Bool) {
         setupTable(keyword: "")
