@@ -142,8 +142,8 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         filteredEvents =  events.filter {
             $0.endDate.date() < currentDate
-            
         }
+      
     
     }
     

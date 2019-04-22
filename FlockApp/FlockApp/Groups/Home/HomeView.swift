@@ -201,6 +201,7 @@ class HomeView: UIView {
             createButton.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedUserEventsPressed()
+    
             
         case 1:
             print("Past Event")
