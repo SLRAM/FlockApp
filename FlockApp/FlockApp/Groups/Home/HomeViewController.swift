@@ -41,6 +41,9 @@ class HomeViewController: BaseViewController {
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         fetchEvents()
         homeView.delegate = self
+        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+    
     
         
     }
@@ -105,8 +108,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         let eventToSet = filteredEvents[indexPath.row]
         
         collectionViewCell.eventLabel.text = eventToSet.eventName
-
-        print(" Todays date is \(eventToSet.startDate)")
+//print(" Todays date is \(eventToSet.startDate)")
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         print(eventToSet.startDate)
