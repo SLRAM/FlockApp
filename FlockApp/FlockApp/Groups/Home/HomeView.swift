@@ -112,6 +112,8 @@ class HomeView: UIView {
             setupUsersCollectionView()
             setupSegmentedView()
             
+           
+            
             
     
         }
@@ -198,15 +200,15 @@ class HomeView: UIView {
             dayLabel.isHidden = false
             createButton.isHidden = false
             segmentedControl.isHidden = false
+            delegate?.segmentedUserEventsPressed()
             
         case 1:
             print("Past Event")
             dateLabel.isHidden = false
             dayLabel.isHidden = false
             segmentedControl.isHidden = false
-            //usersCollectionView.isHidden = true
-            //dateLabel.text = "Wednesday, 17th, 2019"
-            //dayLabel.text = "Wednesday"
+            delegate?.segmentedPastEventPressed()
+            
         default:
             break
         }
