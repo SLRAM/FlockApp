@@ -98,8 +98,8 @@ class FriendsViewController: UIViewController {
                 } else {
                     self?.strangers.removeAll()
                     let str = snapshot.documents.map { UserModel(dict: $0.data()) }
-                        .filter({$0.displayName.lowercased().contains(text.lowercased())})
-                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
+//                        .filter({$0.displayName.lowercased().contains(text.lowercased())})
+//                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
                     str.forEach { userModel in
                         if !friends.contains(userModel) && userModel.userId != user.uid {
                             self?.strangers.append(userModel)

@@ -71,7 +71,7 @@ class EventView: UIView {
         let items = ["Details", "People"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        
+         
         return segmentedControl
     }()
     
