@@ -30,6 +30,15 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return image
     }()
     
+    public lazy var joinEventButton: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.custom)
+        let image = UIImage(named: "joinButton")
+        button.frame = CGRect.init(x: -10, y: -20, width: 80, height: 55)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
+    
     func setupEventLabel(){
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +69,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         eventImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10).isActive = true
     }
     
+    func setupJoinButton(){
+        addSubview(joinEventButton)
+        joinEventButton.translatesAutoresizingMaskIntoConstraints = false
+    }
     
     
     override init(frame: CGRect) {

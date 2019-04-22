@@ -15,7 +15,8 @@ class HomeViewController: BaseViewController {
     
     
     var homeView = HomeView()
-    var filteredEvents = [Date](){
+    var currentDate = Date.getISOTimestamp()
+    var filteredEvents = [Event](){
                 didSet{
                     DispatchQueue.main.async {
                         self.homeView.usersCollectionView.reloadData()
@@ -23,7 +24,11 @@ class HomeViewController: BaseViewController {
                 }
             }
     
-    var events = [Event]()
+    var events = [Event]() {
+        didSet {
+            self.filteredEvents = events
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,19 +36,22 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
-//        navigationController?.navigationBar.topItem?.title = "Home"
+        navigationController?.navigationBar.topItem?.title = "Home"
 
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
-        //homeView.pastEventsButton.addTarget(self, action: #selector(showJoinEvent), for: .touchUpInside)
         fetchEvents()
-        
-        
+        homeView.delegate = self
+        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+    
+    
         
     }
     
    
     override func viewDidAppear(_ animated: Bool) {
         homeView.usersCollectionView.reloadData()
+        
     }
     
 
@@ -89,7 +97,7 @@ class HomeViewController: BaseViewController {
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return events.count
+        return filteredEvents.count
         
     }
     
@@ -97,11 +105,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let eventToSet = events[indexPath.row]
+        let eventToSet = filteredEvents[indexPath.row]
         
         collectionViewCell.eventLabel.text = eventToSet.eventName
-//        print(eventToSet.startDate)
-        collectionViewCell.startDateLabel.text = eventToSet.startDate
+//print(" Todays date is \(eventToSet.startDate)")
+        let startDate = eventToSet.startDate
+        collectionViewCell.startDateLabel.text = startDate
+        print(eventToSet.startDate)
+        collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
@@ -110,7 +121,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventViewController()
-        let event = events[indexPath.row]
+        let event = filteredEvents[indexPath.row]
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
 
@@ -121,35 +132,24 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController: UserEventCollectionViewDelegate {
-    func cancelPressed() {
-        
-    }
-    
     func segmentedUserEventsPressed() {
+        filteredEvents = events
         
     }
     
     func segmentedPastEventPressed() {
-//       let date = Date()
-//        let calendar = Calendar.current
-//        let hours = calendar.component(.hour, from: date)
-//        let minutes = calendar.component(.minute, from: date)
-//
-        
-//        var filteredDate = events.filter {
-//            $0.endDate < Date().
-//        }
+        let formatter = ISO8601DateFormatter()
+        guard let currentDate = formatter.date(from: self.currentDate) else { return }
+        filteredEvents =  events.filter {
+            $0.endDate.date() < currentDate
         }
-        
-    }
+      
     
-    func cancelPressed() {
-        
-    }
-    
-    private func fetchPastEvents(){
-        
     }
     
     
 
+}
+
+
+    

@@ -10,7 +10,7 @@ import UIKit
 protocol UserEventCollectionViewDelegate: AnyObject {
     func segmentedUserEventsPressed()
     func segmentedPastEventPressed()
-    func cancelPressed()
+
 }
 
 class HomeView: UIView {
@@ -34,7 +34,7 @@ class HomeView: UIView {
         label.text = "Thursday"
         label.backgroundColor = .white
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 40), size: 30)
-        label.font = UIFont.boldSystemFont(ofSize: 40)
+        label.font = UIFont.boldSystemFont(ofSize: 35)
         return label
     }()
     
@@ -111,6 +111,8 @@ class HomeView: UIView {
             setUpCreateButton()
             setupUsersCollectionView()
             setupSegmentedView()
+            
+           
             
             
     
@@ -198,12 +200,15 @@ class HomeView: UIView {
             dayLabel.isHidden = false
             createButton.isHidden = false
             segmentedControl.isHidden = false
+            delegate?.segmentedUserEventsPressed()
+    
             
         case 1:
             print("Past Event")
-            dateLabel.isHidden = true
-            dayLabel.isHidden = true
+            dateLabel.isHidden = false
+            dayLabel.isHidden = false
             segmentedControl.isHidden = false
+            delegate?.segmentedPastEventPressed()
             
         default:
             break
