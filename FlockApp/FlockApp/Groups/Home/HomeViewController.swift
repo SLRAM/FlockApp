@@ -11,7 +11,7 @@ import Firebase
 import FirebaseFirestore
 
 
-class HomeViewController: BaseViewController {
+class HomeViewController: UIViewController {
     
     
     var homeView = HomeView()
