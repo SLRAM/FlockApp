@@ -36,6 +36,7 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
+//        navigationController?.navigationBar.topItem?.title = "Home"
 
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         fetchEvents()
@@ -104,9 +105,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         let eventToSet = filteredEvents[indexPath.row]
         
         collectionViewCell.eventLabel.text = eventToSet.eventName
+
         print(" Todays date is \(eventToSet.startDate)")
-        let startDate = eventToSet.startDate.toString(dateFormat: "MMMM dd hh:mm a")
-        collectionViewCell.startDateLabel.text = startDate
+        //let startDate = eventToSet.startDate.toString(dateFormat: "MMMM dd hh:mm a")
+        //collectionViewCell.startDateLabel.text = startDate
+//        print(eventToSet.startDate)
+        collectionViewCell.startDateLabel.text = eventToSet.startDate
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
@@ -135,7 +139,7 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         var formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         filteredEvents =  events.filter {
-        $0.endDate < currentDate }
+        $0.endDate < currentDate } 
     
     }
     

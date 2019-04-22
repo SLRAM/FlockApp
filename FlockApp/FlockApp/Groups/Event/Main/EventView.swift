@@ -1,4 +1,3 @@
-//
 //  EventView.swift
 //  FlockApp
 //
@@ -27,7 +26,7 @@ class EventView: UIView {
     }
     
     lazy var eventAddress: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 4
         label.text = "47-10 Austell Pl. 11111"
@@ -42,7 +41,7 @@ class EventView: UIView {
     
     lazy var eventTracking: UILabel = {
         let label = UILabel()
-        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
+        //        label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
     }()
     
@@ -66,7 +65,7 @@ class EventView: UIView {
         tv.backgroundColor = .clear
         return tv
     }()
-
+    
     lazy var segmentedControl: UISegmentedControl = {
         let items = ["Details", "People"]
         let segmentedControl = UISegmentedControl(items: items)
@@ -81,7 +80,7 @@ class EventView: UIView {
         let camera = GMSCameraPosition.camera(withLatitude: 40.793840, longitude: -73.886012, zoom: 11)
         view = GMSMapView.init(frame: CGRect.zero, camera: camera)
         //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6)
-//                myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
+        //                myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
         //        view = myMapView
         //        view.mapType = MKMapType.standard
         //        view.isZoomEnabled = true
@@ -101,17 +100,17 @@ class EventView: UIView {
         addEventTracking()
         addTableView()
         addMapView()
-//
-//        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
-//        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
-//        addSubview(mapView)
-//        let marker = GMSMarker()
-//        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
-//        marker.title = "Sydney"
-//        marker.snippet = "Australia"
-//        marker.map = mapView
+        //
+        //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6.0)
+        //        let mapView = GMSMapView.map(withFrame: CGRect(x: 60, y: 500, width: 250, height: 250), camera: camera)
+        //        addSubview(mapView)
+        //        let marker = GMSMarker()
+        //        marker.position = CLLocationCoordinate2D(latitude: -33.86, longitude: 151.20)
+        //        marker.title = "Sydney"
+        //        marker.snippet = "Australia"
+        //        marker.map = mapView
     }
-
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -121,10 +120,10 @@ class EventView: UIView {
         addSubview(eventAddress)
         eventAddress.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        eventAddress.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 10),
-        eventAddress.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-        eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
-        eventAddress.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            eventAddress.topAnchor.constraint(equalTo: detailView.topAnchor, constant: 10),
+            eventAddress.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            eventAddress.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
+            eventAddress.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
             ])
     }
     
@@ -132,10 +131,10 @@ class EventView: UIView {
         addSubview(eventDate)
         eventDate.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 50),
-        eventDate.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
-        eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
-        eventDate.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
+            eventDate.topAnchor.constraint(equalTo: eventAddress.topAnchor, constant: 50),
+            eventDate.centerXAnchor.constraint(equalTo: detailView.centerXAnchor),
+            eventDate.heightAnchor.constraint(equalTo: detailView.heightAnchor, multiplier: 0.30),
+            eventDate.widthAnchor.constraint(equalTo: detailView.widthAnchor, multiplier: 0.80)
             ])
     }
     
@@ -154,33 +153,33 @@ class EventView: UIView {
         addSubview(eventTitle)
         eventTitle.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        eventTitle.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60),
-        eventTitle.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10),
-        eventTitle.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90),
-        eventTitle.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
-        ])
+            eventTitle.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 60),
+            eventTitle.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10),
+            eventTitle.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90),
+            eventTitle.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor)
+            ])
     }
     
     private func addSegmentedControl() {
         addSubview(segmentedControl)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-        segmentedControl.topAnchor.constraint(equalTo: eventTitle.bottomAnchor, constant: 40),
-        segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07),
-        segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
-        ])
+            segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            segmentedControl.topAnchor.constraint(equalTo: eventTitle.bottomAnchor, constant: 40),
+            segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07),
+            segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
+            ])
     }
     
     private func addDetailView() {
         addSubview(detailView)
         detailView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-        detailView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-        detailView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
-        detailView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40),
-        detailView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
-        ])
+            detailView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            detailView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor, constant: 10),
+            detailView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40),
+            detailView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.90)
+            ])
     }
     
     private func addTableView() {
@@ -231,6 +230,6 @@ class EventView: UIView {
             break
         }
     }
-
-
+    
+    
 }
