@@ -23,8 +23,8 @@ class CreateEditViewController: UIViewController {
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
-    var selectedStartDate = Date()
-    var selectedEndDate = Date()
+    var selectedStartDate = String()
+    var selectedEndDate = String()
     var trackingTime = 0
     private var selectedImage: UIImage?
     
@@ -232,7 +232,6 @@ extension CreateEditViewController: CreateViewDelegate {
                         })
                     }
                 })
-
             }
         }
         
@@ -283,11 +282,15 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
 }
 extension CreateEditViewController: DateViewControllerDelegate {
     func selectedDate(startDate: Date, endDate: Date) {
-        selectedStartDate = startDate
-        selectedEndDate = endDate
+        let isoDateFormatter = ISO8601DateFormatter()
+        let startString = isoDateFormatter.string(from: startDate)
+        let endingString = isoDateFormatter.string(from: endDate)
+        
+//        selectedStartDate = startDate
+//        selectedEndDate = endDate
         print(startDate)
-        let startString = selectedStartDate.toString(dateFormat: "MMMM dd hh:mm a")
-        createEditView.dateButton.setTitle(startString, for: .normal)
+        let startDisplayString = startDate.toString(dateFormat: "MMMM dd hh:mm a")
+        createEditView.dateButton.setTitle(startDisplayString, for: .normal)
 
     }
 

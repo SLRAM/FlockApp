@@ -14,8 +14,8 @@ struct Event {
     let imageURL: String?
     let eventDescription: String
     let documentId: String
-    let startDate: Date
-    let endDate: Date
+    let startDate: String
+    let endDate: String
     let locationString: String
     let locationLat: Double
     let locationLong: Double
@@ -26,7 +26,7 @@ struct Event {
     // add time/date
     // add location
     
-    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String, documentId: String, startDate: Date, endDate: Date, locationString: String, locationLat: Double, locationLong: Double, trackingTime: Int) {
+    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String, documentId: String, startDate: String, endDate: String, locationString: String, locationLat: Double, locationLong: Double, trackingTime: Int) {
         self.eventName = eventName
         self.createdDate = createdDate
         self.userID = userID
@@ -49,8 +49,8 @@ struct Event {
         self.imageURL = dict[EventsCollectionKeys.ImageURLKey] as? String ?? "no imageURL"
         self.eventDescription = dict[EventsCollectionKeys.EventDescriptionKey] as? String ?? "no description"
         self.documentId = dict[EventsCollectionKeys.DocumentIdKey] as? String ?? "no document id"
-        self.startDate = dict[EventsCollectionKeys.StartDateKey] as? Date ?? Date()
-        self.endDate = dict[EventsCollectionKeys.EndDateKey] as? Date ?? Date()
+        self.startDate = dict[EventsCollectionKeys.StartDateKey] as? String ?? ""
+        self.endDate = dict[EventsCollectionKeys.EndDateKey] as? String ?? ""
         self.locationString = dict[EventsCollectionKeys.LocationStringKey] as? String ?? "no event location"
         self.locationLat = dict[EventsCollectionKeys.LocationLatKey] as? Double ?? 0
         self.locationLong = dict[EventsCollectionKeys.LocationLongKey] as? Double ?? 0
