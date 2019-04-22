@@ -30,6 +30,8 @@ class EventViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        navigationController?.navigationBar.topItem?.title = "Event"
+
         navigationItem.leftBarButtonItem = eventView.cancelButton
         getInvitees()
         self.view.addSubview(eventView)
@@ -48,6 +50,7 @@ class EventViewController: UIViewController {
         let eventTitle = unwrappedEvent.eventName
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
         marker.title = eventName
+        
         marker.map = eventView.myMapView
         
         let position = marker.position

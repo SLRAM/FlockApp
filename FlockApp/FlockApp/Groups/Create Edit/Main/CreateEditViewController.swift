@@ -41,6 +41,8 @@ class CreateEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
+        navigationItem.title = "Create"
+
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
         createEditView.myTableView.dataSource = self
