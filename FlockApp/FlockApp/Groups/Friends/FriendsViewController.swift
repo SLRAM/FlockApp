@@ -47,7 +47,6 @@ class FriendsViewController: UIViewController {
     }
     private func setupTable(keyword: String) {
         fetchFriends(keyword: keyword)
-        //timer = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(fetchStrangers(keyword:)), userInfo: keyword, repeats: false)
     }
     
     private func fetchFriends(keyword: String) {
@@ -98,8 +97,6 @@ class FriendsViewController: UIViewController {
                 } else {
                     self?.strangers.removeAll()
                     let str = snapshot.documents.map { UserModel(dict: $0.data()) }
-//                        .filter({$0.displayName.lowercased().contains(text.lowercased())})
-//                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased() }
                     str.forEach { userModel in
                         if !friends.contains(userModel) && userModel.userId != user.uid {
                             self?.strangers.append(userModel)
@@ -149,10 +146,9 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard !friends.isEmpty else { return UITableViewCell() }
-        guard !strangers.isEmpty else { return UITableViewCell() }
         switch indexPath.section {
         case 0:
+            guard !friends.isEmpty else {return UITableViewCell() }
             let userCell = friends[indexPath.row]
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
             cell.textLabel?.text = userCell.displayName
@@ -160,6 +156,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             cell.backgroundColor = .clear
             return cell
         case 1 :
+            guard !strangers.isEmpty && indexPath.row < strangers.count else { return UITableViewCell() }
             let userCell = strangers[indexPath.row]
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.textLabel?.text = userCell.displayName
