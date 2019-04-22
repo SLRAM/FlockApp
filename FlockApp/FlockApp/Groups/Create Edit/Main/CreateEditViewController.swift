@@ -215,7 +215,7 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
+                        DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
                             } else {
