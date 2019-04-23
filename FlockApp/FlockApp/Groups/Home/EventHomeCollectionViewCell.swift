@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import CoreMotion
 
 class EventHomeCollectionViewCell: UICollectionViewCell {
     
@@ -72,6 +73,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupJoinButton(){
         addSubview(joinEventButton)
         joinEventButton.translatesAutoresizingMaskIntoConstraints = false
+        joinEventButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
+        joinEventButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        joinEventButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
+        joinEventButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.07).isActive = true
     }
     
     
@@ -87,8 +92,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     private func commonInit(){
         setupImage()
+        //setupJoinButton()
         setupEventLabel()
         setupEventDay()
+        
         
         
     }

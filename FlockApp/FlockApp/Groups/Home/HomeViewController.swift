@@ -11,22 +11,25 @@ import Firebase
 import FirebaseFirestore
 
 
-class HomeViewController: BaseViewController {
+class HomeViewController: UIViewController {
     
     
     var homeView = HomeView()
     var currentDate = Date.getISOTimestamp()
-    var filteredEvents = [Event](){
-                didSet{
-                    DispatchQueue.main.async {
-                        self.homeView.usersCollectionView.reloadData()
-                    }
-                }
-            }
     
+  
     var events = [Event]() {
         didSet {
             self.filteredEvents = events
+        }
+        
+    }
+
+    var filteredEvents = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
         }
     }
 
@@ -36,8 +39,8 @@ class HomeViewController: BaseViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
-        navigationController?.navigationBar.topItem?.title = "Home"
-
+        //Tab bar item
+        title = "Home"
         homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         fetchEvents()
         homeView.delegate = self
@@ -50,7 +53,8 @@ class HomeViewController: BaseViewController {
     
    
     override func viewDidAppear(_ animated: Bool) {
-        homeView.usersCollectionView.reloadData()
+        //homeView.usersCollectionView.reloadData()
+        //segmentedPastEventPressed()
         
     }
     
@@ -106,12 +110,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionViewCell()
         }
         let eventToSet = filteredEvents[indexPath.row]
-        
         collectionViewCell.eventLabel.text = eventToSet.eventName
-//print(" Todays date is \(eventToSet.startDate)")
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
-        print(eventToSet.startDate)
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         collectionViewCell.eventImage.alpha = 0.8
@@ -133,18 +134,28 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
 extension HomeViewController: UserEventCollectionViewDelegate {
     func segmentedUserEventsPressed() {
-        filteredEvents = events
+        let formatter = ISO8601DateFormatter()
+        guard let pastEvent = formatter.date(from: self.currentDate) else { return }
+        filteredEvents = events.filter {
+            $0.endDate.date() > pastEvent
+        }
+            
         
     }
     
     func segmentedPastEventPressed() {
-        let formatter = ISO8601DateFormatter()
+         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         filteredEvents =  events.filter {
             $0.endDate.date() < currentDate
+            
         }
-      
+        
+        
+    }
     
+    func joinEventPressed(){
+        
     }
     
     
