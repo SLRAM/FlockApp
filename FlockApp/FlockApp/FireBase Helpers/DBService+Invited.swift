@@ -35,8 +35,8 @@ extension DBService {
                     InvitedCollectionKeys.FirstNameKey      : currentUser.firstName,
                     InvitedCollectionKeys.LastNameKey       : currentUser.lastName,
                     InvitedCollectionKeys.PhotoURLKey       : currentUser.photoURL ?? "",
-                    InvitedCollectionKeys.LatitudeKey       : 0.0,
-                    InvitedCollectionKeys.LongitudeKey      : 0.0,
+                    InvitedCollectionKeys.LatitudeKey       : nil,
+                    InvitedCollectionKeys.LongitudeKey      : nil,
                     InvitedCollectionKeys.TaskKey           : "Host"
                     ])
                 { (error) in
@@ -67,8 +67,8 @@ extension DBService {
                             InvitedCollectionKeys.FirstNameKey      : friend.firstName,
                             InvitedCollectionKeys.LastNameKey       : friend.lastName,
                             InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
-                            InvitedCollectionKeys.LatitudeKey       : 0.0,
-                            InvitedCollectionKeys.LongitudeKey      : 0.0,
+                            InvitedCollectionKeys.LatitudeKey       : nil,
+                            InvitedCollectionKeys.LongitudeKey      : nil,
                             InvitedCollectionKeys.TaskKey           : value
                             ])
                         { (error) in

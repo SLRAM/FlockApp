@@ -13,8 +13,8 @@ struct InvitedModel {
     let firstName: String?
     let lastName: String?
     let photoURL: String?
-    let latitude: Double
-    let longitude: Double
+    let latitude: Double?
+    let longitude: Double?
     let task: String?
     //pendingEvents: [EventModel]
     //acceptedEvents: [EventModel]
@@ -32,8 +32,8 @@ struct InvitedModel {
          firstName: String?,
          lastName: String?,
          photoURL: String?,
-         latitude: Double,
-         longitude: Double,
+         latitude: Double?,
+         longitude: Double?,
          task: String) {
         self.userId = userId
         self.displayName = displayName
@@ -51,8 +51,8 @@ struct InvitedModel {
         self.firstName = dict[InvitedCollectionKeys.FirstNameKey] as? String ?? "FirstName"
         self.lastName = dict[InvitedCollectionKeys.LastNameKey] as? String ?? "LastName"
         self.photoURL = dict[InvitedCollectionKeys.PhotoURLKey] as? String ?? ""
-        self.latitude = dict[InvitedCollectionKeys.LatitudeKey] as? Double ?? 0.0
-        self.longitude = dict[InvitedCollectionKeys.LongitudeKey] as? Double ?? 0.0
+        self.latitude = dict[InvitedCollectionKeys.LatitudeKey] as? Double
+        self.longitude = dict[InvitedCollectionKeys.LongitudeKey] as? Double
         self.task = dict[InvitedCollectionKeys.TaskKey] as? String ?? "Task"
         
     }

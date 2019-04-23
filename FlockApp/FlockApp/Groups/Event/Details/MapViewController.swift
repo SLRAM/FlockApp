@@ -21,6 +21,7 @@ class MapViewController: UIViewController {
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
+    lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
     let locationManager = CLLocationManager()
     var usersCurrentLocation = CLLocation()
@@ -64,6 +65,9 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
+        if let event = event, event.startDate.date() > Date() {
+            
+        }
         let startDate = unwrappedEvent.startDate.date()
         
 //        if startDate > Date() {
@@ -74,17 +78,23 @@ class MapViewController: UIViewController {
 //        }
         print(startDate)
         print(Date())
-        timer()
+        startTimer()
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         
     }
-    func timer() {
-        let myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+
+    func startTimer() {
+        //make it a
+
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
         updateUserLocation()
         fetchInvitedLocations()
+        if let endDate = event?.endDate.date(), endDate < Date() {
+            //invalidate timer
+            myTimer.invalidate()
+        }
         
     }
     func updateUserLocation() {
@@ -148,12 +158,20 @@ class MapViewController: UIViewController {
             })
     }
     func setupMarkers(activeGuests: [InvitedModel]){
-        
         var count = 0
-        
-        for guest in activeGuests {
-            let guestLat = guest.latitude
-            let guestLon = guest.longitude
+        let filteredGuests = activeGuests.filter {
+            $0.latitude != nil
+        }
+        print(filteredGuests)
+        for guest in filteredGuests {
+            guard let guestLat = guest.latitude,
+                let guestLon = guest.longitude else {
+                    print("unable to obtain guest coordinates")
+                    return
+            }
+            print("able to obtain guest coordinates")
+//            let guestLat = guest.latitude
+//            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
             let marker = GMSMarker(position: coordinate)
             marker.title = guest.displayName
@@ -166,6 +184,51 @@ class MapViewController: UIViewController {
             }
             count += 1
         }
+        allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
+        setupMapBounds()
+    }
+    func boundsNumber(guests: [GMSMarker]) -> Int? {
+        
+        if guests.count >= 3 {
+            return 2
+        } else if guests.count > 0 {
+            return guests.count - 1
+        } else {
+            return nil
+        }
+    }
+    func setupMapBounds() {
+        guard let event = event else {
+            print("Unable to segue event")
+            return
+        }
+        let eventCoordinates = CLLocationCoordinate2D(latitude: event.locationLat, longitude: event.locationLong)
+        if let guestNumber = boundsNumber(guests: allGuestMarkers) {
+            let guestCoordinate = allGuestMarkers[guestNumber].position
+            mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
+        }
+
+    }
+    func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
+        guard let event = event else {
+            print("Unable to segue event")
+            return markers
+        }
+        let eventCoordinates = CLLocationCoordinate2D(latitude: event.locationLat, longitude: event.locationLong)
+        let sortedMarkers = markers.sorted { markerOne, markerTwo in
+            let distanceOne = distance(from: markerOne.position, to: eventCoordinates)
+            let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
+            return distanceOne < distanceTwo
+            }
+        print(sortedMarkers)
+
+        return sortedMarkers
+    }
+    public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
+        let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        let distanceInMiles = (coordinate0.distance(from: coordinate1))/1609.344
+        return distanceInMiles
     }
     
 
