@@ -10,6 +10,7 @@ import UIKit
 protocol UserEventCollectionViewDelegate: AnyObject {
     func segmentedUserEventsPressed()
     func segmentedPastEventPressed()
+    func joinEventPressed()
 
 }
 
@@ -202,13 +203,20 @@ class HomeView: UIView {
             segmentedControl.isHidden = false
             delegate?.segmentedUserEventsPressed()
     
-            
         case 1:
             print("Past Event")
             dateLabel.isHidden = false
             dayLabel.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedPastEventPressed()
+            usersCollectionView.isHidden = false
+         
+        case 2:
+            print("Join Event")
+            dateLabel.isHidden = false
+            dayLabel.isHidden = false
+            segmentedControl.isHidden = false
+            usersCollectionView.isHidden = false
             
         default:
             break
