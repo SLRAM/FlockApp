@@ -11,17 +11,19 @@ import GoogleMaps
 import Firebase
 import FirebaseFirestore
 import CoreLocation
+import MapKit
 
 class MapViewController: UIViewController {
 
 //    var mapView: GMSMapView?
 
     public var event: Event?
+    private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
     
     let locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    var usersCurrentLocation = CLLocation()
 //    var placesClient: GMSPlacesClient!
     
     var invited = [InvitedModel](){
@@ -45,31 +47,65 @@ class MapViewController: UIViewController {
             return
         }
         self.view.addSubview(mapView)
+//        myMapView.delegate = self
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-//            mapView.showsUserLocation = true
+//            myMapView.showsUserLocation = true
 //            mapView.sh
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
-//            mapView.showsUserLocation = true
+//            myMapView.showsUserLocation = true
         }
         
         
         
         fetchEventLocation()
         fetchInvitedLocations()
+        let startDate = unwrappedEvent.startDate.date()
+        
+//        if startDate > Date() {
+//            print("start date is > ")
+//        } else {
+//            print("start date is < ")
+//            timer()
+//        }
+        print(startDate)
+        print(Date())
+        timer()
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         
     }
     func timer() {
-        let myTimer = Timer(timeInterval: 20.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+        let myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
+        updateUserLocation()
         fetchInvitedLocations()
+        
+    }
+    func updateUserLocation() {
+//        usersCurrentLocation
+        guard let user = authservice.getCurrentUser() else {
+            print("no logged user")
+            return
+        }
+        guard let event = event else {return}
+        DBService.firestoreDB
+            .collection(EventsCollectionKeys.CollectionKey)
+            .document(event.documentId)
+            .collection(InvitedCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
+                         InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
+            ]) { [weak self] (error) in
+                if let error = error {
+                    self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                }
+        }
     }
     func fetchEventLocation() {
         guard let eventLat = event?.locationLat,
@@ -140,7 +176,8 @@ extension MapViewController: CLLocationManagerDelegate {
         //this kicks off whenever authorization is turned on or off
         print("user changed the authorization")
         
-//        let currentLocation = mapView.userLocation
+//        let currentLocation = myMapView.userLocation
+//        print(currentLocation)
 //        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
 //
 //        myMapView.setRegion(myCurrentRegion, animated: true)
@@ -150,9 +187,11 @@ extension MapViewController: CLLocationManagerDelegate {
         print("user has changed locations")
         guard let currentLocation = locations.last else {return}
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
-        
+        usersCurrentLocation = currentLocation
+        //once time starts, save user location to firebase every 30 seconds. once they reach destinate stop updating firebase
 //        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
 //
 //        myMapView.setRegion(myCurrentRegion, animated: true)
     }
 }
+
