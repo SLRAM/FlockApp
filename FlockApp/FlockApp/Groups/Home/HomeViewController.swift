@@ -20,12 +20,15 @@ class HomeViewController: UIViewController {
   
     var events = [Event]() {
         didSet {
-            self.filteredEvents = events
-        }
+            DispatchQueue.main.async {
+                self.segmentedUserEventsPressed()
+
+            }
         
+        }
     }
 
-    var filteredEvents = [Event](){
+    var filteredEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
@@ -39,9 +42,9 @@ class HomeViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
-        //Tab bar item
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
-        homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
+        //homeView.createButton.addTarget.(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
         fetchEvents()
         homeView.delegate = self
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")

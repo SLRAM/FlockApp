@@ -39,12 +39,9 @@ class HomeView: UIView {
         return label
     }()
     
-    lazy var createButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
+    lazy var createButton: UIBarButtonItem = {
+        let button = UIBarButtonItem()
         let image = UIImage(named: "createButton")
-        button.frame = CGRect.init(x: -10, y: -20, width: 50, height: 45)
-        button.setImage(image, for: .normal)
-
         print("Create button pressed")
         return button
     }()
@@ -109,7 +106,7 @@ class HomeView: UIView {
             //setupMyView()
             setUpDateLabel()
             setUpDayLabel()
-            setUpCreateButton()
+           // setUpCreateButton()
             setupUsersCollectionView()
             setupSegmentedView()
             
@@ -139,14 +136,14 @@ class HomeView: UIView {
     }
     
     
-    func setUpCreateButton(){
-        addSubview(createButton)
-        createButton.translatesAutoresizingMaskIntoConstraints = false
-        createButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-        createButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 170).isActive = true
-        createButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
-        createButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.07).isActive = true
-    }
+//    func setUpCreateButton(){
+//        addSubview(createButton)
+//        createButton.translatesAutoresizingMaskIntoConstraints = false
+//        createButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
+//        createButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 170).isActive = true
+//        createButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
+//        createButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.07).isActive = true
+//    }
     
     
     private func setupSegmentedView(){
@@ -199,7 +196,7 @@ class HomeView: UIView {
             print("Current Events")
             dateLabel.isHidden = false
             dayLabel.isHidden = false
-            createButton.isHidden = false
+            //createButton.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedUserEventsPressed()
     
