@@ -59,12 +59,5 @@ class DirectionsView: UIView {
 
 }
 
-//guard let venueLat = self.venue?.location.lat,
-//    let venueLong = self.venue?.location.lng else {return}
-//let coordinate = CLLocationCoordinate2DMake(venueLat,venueLong)
-//let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-//mapItem.name = self.venue?.name
-//mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
-
 
 
