@@ -210,7 +210,9 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: self!.trackingTime)
+                                          trackingTime: self!.trackingTime,
+                                          quickEvent: false,
+                                          proximity: 0)
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
@@ -248,6 +250,7 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = createEditView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
+        cell.selectionStyle = .none
         cell.friendName.text = friend.displayName
         cell.friendTask.tag = indexPath.row
         cell.friendTask.delegate = self

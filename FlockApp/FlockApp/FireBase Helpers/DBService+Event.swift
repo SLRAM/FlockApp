@@ -24,6 +24,8 @@ struct EventsCollectionKeys {
     static let LocationLongKey = "locationLong"
 //    static let InvitedKey = "invited"
     static let TrackingTimeKey = "trackingTime"
+    static let QuickEventKey = "quickEvent"
+    static let ProximityKey = "proximity"
 }
 
 extension DBService {
@@ -41,7 +43,9 @@ extension DBService {
                 EventsCollectionKeys.LocationStringKey  : event.locationString,
                 EventsCollectionKeys.LocationLatKey     : event.locationLat,
                 EventsCollectionKeys.LocationLongKey    : event.locationLong,
-                EventsCollectionKeys.TrackingTimeKey    : event.trackingTime
+                EventsCollectionKeys.TrackingTimeKey    : event.trackingTime,
+                EventsCollectionKeys.QuickEventKey      : event.quickEvent,
+                EventsCollectionKeys.ProximityKey       : event.proximity
                 ])
             { (error) in
                 if let error = error {

@@ -20,6 +20,7 @@ struct InvitedCollectionKeys {
     static let LatitudeKey = "latitude"
     static let LongitudeKey = "longitude"
     static let TaskKey = "task"
+    static let ConfirmationKey = "confirmation"
 }
 
 extension DBService {
@@ -29,6 +30,10 @@ extension DBService {
             if let error = error {
                 print("failed to fetch friends with error: \(error.localizedDescription)")
             } else if let currentUser = currentUser {
+//                guard let hostFirstName = currentUser.firstName,
+//                let hostLastName = currentUser.lastName,
+//                let hostPhoto = currentUser.photoURL else {return}
+                
                 firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(user.uid).setData([
                     InvitedCollectionKeys.UserIdKey         : currentUser.userId,
                     InvitedCollectionKeys.DisplayNameKey    : currentUser.displayName,
@@ -37,6 +42,7 @@ extension DBService {
                     InvitedCollectionKeys.PhotoURLKey       : currentUser.photoURL ?? "",
                     InvitedCollectionKeys.LatitudeKey       : nil,
                     InvitedCollectionKeys.LongitudeKey      : nil,
+//                    InvitedCollectionKeys.ConfirmationKey   : true,
                     InvitedCollectionKeys.TaskKey           : "Host"
                     ])
                 { (error) in
@@ -69,6 +75,7 @@ extension DBService {
                             InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
                             InvitedCollectionKeys.LatitudeKey       : nil,
                             InvitedCollectionKeys.LongitudeKey      : nil,
+//                            InvitedCollectionKeys.ConfirmationKey   : false
                             InvitedCollectionKeys.TaskKey           : value
                             ])
                         { (error) in

@@ -16,6 +16,7 @@ struct InvitedModel {
     let latitude: Double?
     let longitude: Double?
     let task: String?
+    let confirmation: Bool
     //pendingEvents: [EventModel]
     //acceptedEvents: [EventModel]
     //add friend array: [FriendModel]
@@ -34,7 +35,8 @@ struct InvitedModel {
          photoURL: String?,
          latitude: Double?,
          longitude: Double?,
-         task: String) {
+         task: String,
+         confirmation: Bool) {
         self.userId = userId
         self.displayName = displayName
         self.firstName = firstName
@@ -43,6 +45,7 @@ struct InvitedModel {
         self.latitude = latitude
         self.longitude = longitude
         self.task = task
+        self.confirmation = confirmation
     }
     
     init(dict: [String: Any]) {
@@ -54,6 +57,7 @@ struct InvitedModel {
         self.latitude = dict[InvitedCollectionKeys.LatitudeKey] as? Double
         self.longitude = dict[InvitedCollectionKeys.LongitudeKey] as? Double
         self.task = dict[InvitedCollectionKeys.TaskKey] as? String ?? "Task"
+        self.confirmation = dict[InvitedCollectionKeys.ConfirmationKey] as? Bool ?? false
         
     }
 }
