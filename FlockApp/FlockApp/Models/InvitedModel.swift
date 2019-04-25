@@ -17,13 +17,7 @@ struct InvitedModel {
     let longitude: Double?
     let task: String?
     let confirmation: Bool
-    //pendingEvents: [EventModel]
-    //acceptedEvents: [EventModel]
-    //add friend array: [FriendModel]
-    
-    // add array event id?
-    // add array friend/users id?
-    // add location
+
     public var fullName: String {
         return ((firstName ?? "") + " " + (lastName ?? "")).trimmingCharacters(in: .whitespacesAndNewlines)
     }

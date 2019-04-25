@@ -105,8 +105,6 @@ extension QuickEventViewController: QuickEventViewDelegate {
     }
     
     func quickTrackingIncrease() {
-        print("tracking increase pressed")
-        
         let trackingLabel = editNumber(increase: true)
         quickEventView.myLabel.text = trackingLabel
         trackingTime += 1
@@ -181,7 +179,6 @@ extension QuickEventViewController: QuickEventViewDelegate {
                             } else {
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
-                                    //                    self?.dismiss(animated: true)//code here to segue to detail
                                     let detailVC = EventViewController()
                                     detailVC.event = event
                                     //                    detailVC.delegate = self
@@ -197,15 +194,12 @@ extension QuickEventViewController: QuickEventViewDelegate {
     }
     
     func friendsQuickPressed() {
-        print("friends pressed")
         let detailVC = InvitedViewController()
         detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
     func quickProximityIncrease() {
-        print("proximity increase pressed")
-        
         let proximityLabel = editProximity(increase: true)
         quickEventView.myProximityLabel.text = proximityLabel
         proximity += 10
@@ -230,45 +224,29 @@ extension QuickEventViewController: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.friendTask.alpha = 0
         cell.friendName.text = friend.displayName
-//        cell.friendTask.tag = indexPath.row
-//        cell.friendTask.delegate = self
         return cell
     }
-    
     
 }
 extension QuickEventViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
-        print("Friends selected")
         friendsArray = friends
         var count = 0
         for friend in friends {
             friendsDictionary[count] = "No Task"
         }
-        print(friendsDictionary)
         quickEventView.myTableView.reloadData()
-//        createEditView.myTableView.reloadData()
     }
-    
     
 }
 extension QuickEventViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        //this kicks off whenever authorization is turned on or off
         print("user changed the authorization")
-        
-        //        let currentLocation = myMapView.userLocation
-        //        print(currentLocation)
-        //        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-        //
-        //        myMapView.setRegion(myCurrentRegion, animated: true)
+
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //this kicks off whenever the user's location has noticeably changed
-        print("user has changed locations")
         guard let currentLocation = locations.last else {return}
-        print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
         usersCurrentLocation = currentLocation
-
     }
 }
