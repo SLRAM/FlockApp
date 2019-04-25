@@ -11,6 +11,7 @@ protocol UserEventCollectionViewDelegate: AnyObject {
     func segmentedUserEventsPressed()
     func segmentedPastEventPressed()
     func joinEventPressed()
+    func newUserView()
 
 }
 
@@ -19,6 +20,7 @@ class HomeView: UIView {
     weak var delegate: UserEventCollectionViewDelegate?
     
     var homeViewController: HomeViewController?
+    var cellView =  EventHomeCollectionViewCell()
 
     
     lazy var dateLabel: UILabel = {
@@ -50,7 +52,7 @@ class HomeView: UIView {
     
 
     lazy var segmentedControl: UISegmentedControl = {
-        let items = ["Current Events", "Past Events", "Join"]
+        let items = ["Current Events", "Past Events", "Join Event"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor =  .black
         segmentedControl.backgroundColor = #colorLiteral(red: 0.9101855159, green: 0.2931141555, blue: 1, alpha: 1)
@@ -71,6 +73,19 @@ class HomeView: UIView {
             collectionView.layer.cornerRadius = 15.0
             return collectionView
         }()
+    
+    public lazy var newUsersCollectionView: UICollectionView = {
+        let cellLayout = UICollectionViewFlowLayout()
+        cellLayout.scrollDirection = .vertical
+        cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
+        cellLayout.itemSize = CGSize.init(width: 350, height:350)
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
+        collectionView.backgroundColor = .white
+        collectionView.layer.cornerRadius = 15.0
+        return collectionView
+    }()
+    
+    
     
     
     lazy var myView: UIView = {
@@ -102,13 +117,12 @@ class HomeView: UIView {
         }
     
         func setConstraints() {
-            //setupMyViewTwo()
-            //setupMyView()
+           
             setUpDateLabel()
             setUpDayLabel()
-           // setUpCreateButton()
             setupUsersCollectionView()
             setupSegmentedView()
+            cellView.setupJoinButton()
             
            
             
@@ -135,15 +149,6 @@ class HomeView: UIView {
         
     }
     
-    
-//    func setUpCreateButton(){
-//        addSubview(createButton)
-//        createButton.translatesAutoresizingMaskIntoConstraints = false
-//        createButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 80).isActive = true
-//        createButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 170).isActive = true
-//        createButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
-//        createButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.07).isActive = true
-//    }
     
     
     private func setupSegmentedView(){
@@ -199,6 +204,7 @@ class HomeView: UIView {
             //createButton.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedUserEventsPressed()
+            cellView.joinEventButton.isHidden = true
     
         case 1:
             print("Past Event")
@@ -206,6 +212,7 @@ class HomeView: UIView {
             dayLabel.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedPastEventPressed()
+            cellView.joinEventButton.isHidden = true
             usersCollectionView.isHidden = false
          
         case 2:
@@ -214,7 +221,10 @@ class HomeView: UIView {
             dayLabel.isHidden = false
             segmentedControl.isHidden = false
             usersCollectionView.isHidden = false
-            
+            cellView.joinEventButton.isEnabled = true
+            cellView.joinEventButton.isHidden = false
+            cellView.eventImage.isHidden = false
+            cellView.eventLabel.isHidden = false
         default:
             break
         }
