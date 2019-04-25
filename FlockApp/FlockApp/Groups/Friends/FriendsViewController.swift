@@ -39,7 +39,7 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
-//        navigationController?.navigationBar.topItem?.title = ""
+        navigationController?.navigationBar.topItem?.title = "Flockers"
 
     }
     override func viewWillAppear(_ animated: Bool) {
