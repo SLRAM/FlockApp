@@ -1,4 +1,3 @@
-//
 //  EventView.swift
 //  FlockApp
 //
@@ -42,7 +41,7 @@ class EventView: UIView {
 
     
     lazy var eventAddress: UILabel = {
-       let label = UILabel()
+        let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 4
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
@@ -81,7 +80,7 @@ class EventView: UIView {
         addEventAddress()
         addMapButton()
     }
-
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

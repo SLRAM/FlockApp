@@ -11,17 +11,20 @@ import GoogleMaps
 import Firebase
 import FirebaseFirestore
 import CoreLocation
+import MapKit
 
 class MapViewController: UIViewController {
 
 //    var mapView: GMSMapView?
 
     public var event: Event?
+    private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
+    lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
     let locationManager = CLLocationManager()
-    var currentLocation: CLLocation?
+    var usersCurrentLocation = CLLocation()
 //    var placesClient: GMSPlacesClient!
     
     var invited = [InvitedModel](){
@@ -45,31 +48,74 @@ class MapViewController: UIViewController {
             return
         }
         self.view.addSubview(mapView)
+//        myMapView.delegate = self
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-//            mapView.showsUserLocation = true
+//            myMapView.showsUserLocation = true
 //            mapView.sh
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
-//            mapView.showsUserLocation = true
+//            myMapView.showsUserLocation = true
         }
         
         
         
         fetchEventLocation()
         fetchInvitedLocations()
+        if let event = event, event.startDate.date() > Date() {
+            
+        }
+        let startDate = unwrappedEvent.startDate.date()
+        
+//        if startDate > Date() {
+//            print("start date is > ")
+//        } else {
+//            print("start date is < ")
+//            timer()
+//        }
+        print(startDate)
+        print(Date())
+        startTimer()
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         
     }
-    func timer() {
-        let myTimer = Timer(timeInterval: 20.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+
+    func startTimer() {
+        //make it a
+
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
+        updateUserLocation()
         fetchInvitedLocations()
+        if let endDate = event?.endDate.date(), endDate < Date() {
+            //invalidate timer
+            myTimer.invalidate()
+        }
+        
+    }
+    func updateUserLocation() {
+//        usersCurrentLocation
+        guard let user = authservice.getCurrentUser() else {
+            print("no logged user")
+            return
+        }
+        guard let event = event else {return}
+        DBService.firestoreDB
+            .collection(EventsCollectionKeys.CollectionKey)
+            .document(event.documentId)
+            .collection(InvitedCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
+                         InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
+            ]) { [weak self] (error) in
+                if let error = error {
+                    self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                }
+        }
     }
     func fetchEventLocation() {
         guard let eventLat = event?.locationLat,
@@ -112,12 +158,20 @@ class MapViewController: UIViewController {
             })
     }
     func setupMarkers(activeGuests: [InvitedModel]){
-        
         var count = 0
-        
-        for guest in activeGuests {
-            let guestLat = guest.latitude
-            let guestLon = guest.longitude
+        let filteredGuests = activeGuests.filter {
+            $0.latitude != nil
+        }
+        print(filteredGuests)
+        for guest in filteredGuests {
+            guard let guestLat = guest.latitude,
+                let guestLon = guest.longitude else {
+                    print("unable to obtain guest coordinates")
+                    return
+            }
+            print("able to obtain guest coordinates")
+//            let guestLat = guest.latitude
+//            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
             let marker = GMSMarker(position: coordinate)
             marker.title = guest.displayName
@@ -130,6 +184,51 @@ class MapViewController: UIViewController {
             }
             count += 1
         }
+        allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
+        setupMapBounds()
+    }
+    func boundsNumber(guests: [GMSMarker]) -> Int? {
+        
+        if guests.count >= 3 {
+            return 2
+        } else if guests.count > 0 {
+            return guests.count - 1
+        } else {
+            return nil
+        }
+    }
+    func setupMapBounds() {
+        guard let event = event else {
+            print("Unable to segue event")
+            return
+        }
+        let eventCoordinates = CLLocationCoordinate2D(latitude: event.locationLat, longitude: event.locationLong)
+        if let guestNumber = boundsNumber(guests: allGuestMarkers) {
+            let guestCoordinate = allGuestMarkers[guestNumber].position
+            mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
+        }
+
+    }
+    func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
+        guard let event = event else {
+            print("Unable to segue event")
+            return markers
+        }
+        let eventCoordinates = CLLocationCoordinate2D(latitude: event.locationLat, longitude: event.locationLong)
+        let sortedMarkers = markers.sorted { markerOne, markerTwo in
+            let distanceOne = distance(from: markerOne.position, to: eventCoordinates)
+            let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
+            return distanceOne < distanceTwo
+            }
+        print(sortedMarkers)
+
+        return sortedMarkers
+    }
+    public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
+        let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
+        let distanceInMiles = (coordinate0.distance(from: coordinate1))/1609.344
+        return distanceInMiles
     }
     
 
@@ -140,7 +239,8 @@ extension MapViewController: CLLocationManagerDelegate {
         //this kicks off whenever authorization is turned on or off
         print("user changed the authorization")
         
-//        let currentLocation = mapView.userLocation
+//        let currentLocation = myMapView.userLocation
+//        print(currentLocation)
 //        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
 //
 //        myMapView.setRegion(myCurrentRegion, animated: true)
@@ -150,9 +250,11 @@ extension MapViewController: CLLocationManagerDelegate {
         print("user has changed locations")
         guard let currentLocation = locations.last else {return}
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
-        
+        usersCurrentLocation = currentLocation
+        //once time starts, save user location to firebase every 30 seconds. once they reach destinate stop updating firebase
 //        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
 //
 //        myMapView.setRegion(myCurrentRegion, animated: true)
     }
 }
+

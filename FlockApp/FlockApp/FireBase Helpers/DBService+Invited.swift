@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import Firebase
+import FirebaseAuth
 
 struct InvitedCollectionKeys {
     static let CollectionKey = "invited"
@@ -19,10 +20,45 @@ struct InvitedCollectionKeys {
     static let LatitudeKey = "latitude"
     static let LongitudeKey = "longitude"
     static let TaskKey = "task"
+    static let ConfirmationKey = "confirmation"
 }
 
 extension DBService {
-    static public func addInvited(docRef: String, friends: [UserModel], tasks: Dictionary<Int,String>, completion: @escaping (Error?) -> Void)  {
+    static public func addInvited(user: User, docRef: String, friends: [UserModel], tasks: Dictionary<Int,String>, completion: @escaping (Error?) -> Void)  {
+        
+        fetchUser(userId: user.uid) { (error, currentUser) in
+            if let error = error {
+                print("failed to fetch friends with error: \(error.localizedDescription)")
+            } else if let currentUser = currentUser {
+//                guard let hostFirstName = currentUser.firstName,
+//                let hostLastName = currentUser.lastName,
+//                let hostPhoto = currentUser.photoURL else {return}
+                
+                firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(user.uid).setData([
+                    InvitedCollectionKeys.UserIdKey         : currentUser.userId,
+                    InvitedCollectionKeys.DisplayNameKey    : currentUser.displayName,
+                    InvitedCollectionKeys.FirstNameKey      : currentUser.firstName,
+                    InvitedCollectionKeys.LastNameKey       : currentUser.lastName,
+                    InvitedCollectionKeys.PhotoURLKey       : currentUser.photoURL ?? "",
+                    InvitedCollectionKeys.LatitudeKey       : nil,
+                    InvitedCollectionKeys.LongitudeKey      : nil,
+//                    InvitedCollectionKeys.ConfirmationKey   : true,
+                    InvitedCollectionKeys.TaskKey           : "Host"
+                    ])
+                { (error) in
+                    if let error = error {
+                        print("adding friends error: \(error)")
+                        completion(error)
+                    } else {
+                        print("friends added successfully to ref: \(currentUser.userId)")
+                        completion(nil)
+                    }
+                }
+                
+            }
+        }
+                    
+
         
         for friend in friends {
             
@@ -37,8 +73,9 @@ extension DBService {
                             InvitedCollectionKeys.FirstNameKey      : friend.firstName,
                             InvitedCollectionKeys.LastNameKey       : friend.lastName,
                             InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
-                            InvitedCollectionKeys.LatitudeKey       : 0.0,
-                            InvitedCollectionKeys.LongitudeKey      : 0.0,
+                            InvitedCollectionKeys.LatitudeKey       : nil,
+                            InvitedCollectionKeys.LongitudeKey      : nil,
+//                            InvitedCollectionKeys.ConfirmationKey   : false
                             InvitedCollectionKeys.TaskKey           : value
                             ])
                         { (error) in

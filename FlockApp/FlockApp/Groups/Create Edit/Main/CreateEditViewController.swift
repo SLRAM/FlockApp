@@ -10,7 +10,7 @@ import MapKit
 import GoogleMaps
 import Firebase
 import Toucan
-
+import UserNotifications
 class CreateEditViewController: UIViewController {
     
     private let createEditView = CreateEditView()
@@ -23,8 +23,8 @@ class CreateEditViewController: UIViewController {
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
-    var selectedStartDate = String()
-    var selectedEndDate = String()
+    var selectedStartDate: Date?
+    var selectedEndDate: Date?
     var trackingTime = 0
     private var selectedImage: UIImage?
     
@@ -153,7 +153,10 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
-        
+        guard let startDate = self.selectedStartDate else { return }
+        guard let endDate = self.selectedEndDate else {return}
+        let startDateString = ISO8601DateFormatter().string(from: startDate)
+        let endDateString = ISO8601DateFormatter().string(from: endDate)
         if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
             let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
@@ -205,23 +208,74 @@ extension CreateEditViewController: CreateViewDelegate {
                                           imageURL: imageURL.absoluteString,
                                           eventDescription: "Event Description",
                                           documentId: docRef.documentID,
-                                          startDate: self!.selectedStartDate,
-                                          endDate: self!.selectedEndDate,
+                                          startDate: startDateString,
+                                          endDate: endDateString,
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: self!.trackingTime)
+                                          trackingTime: self!.trackingTime,
+                                          quickEvent: false,
+                                          proximity: 0)
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
+                        DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
                             } else {
+                                //============================================================
+                                // Adding notification
+                                let startContent = UNMutableNotificationContent()
                                 
+                                startContent.title = NSString.localizedUserNotificationString(forKey: "Testing Beginning", arguments: nil)
+                                startContent.body = NSString.localizedUserNotificationString(forKey: "Event Starting", arguments: nil)
+                                startContent.sound = UNNotificationSound.default
+                                
+                                let endContent = UNMutableNotificationContent()
+                                endContent.title = NSString.localizedUserNotificationString(forKey: "Testing end", arguments: nil)
+                                endContent.body = NSString.localizedUserNotificationString(forKey: "Event Ending", arguments: nil)
+                                endContent.sound = UNNotificationSound.default
+                                let startDate = self?.selectedStartDate
+                                let calendar = Calendar.current
+                                let startHour = calendar.component(.hour, from: startDate!)
+                                let startMinutes = calendar.component(.minute, from: startDate!)
+                                
+                                let endDate = self?.selectedEndDate
+                                let endHour = calendar.component(.hour, from: endDate!)
+                                let endMinutes = calendar.component(.minute, from: endDate!)
+                                
+                                var startDateComponent = DateComponents()
+                                startDateComponent.hour = startHour
+                                startDateComponent.minute = startMinutes
+                                startDateComponent.timeZone = TimeZone.current
+                                var endDateComponent = DateComponents()
+                                endDateComponent.hour = endHour
+                                endDateComponent.minute = endMinutes
+                                endDateComponent.timeZone = TimeZone.current
+                                
+                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
+                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
+                                
+                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
+                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
+                                
+                                UNUserNotificationCenter.current().add(startRequest) { (error) in
+                                    if let error = error {
+                                        print("notification delivery error: \(error)")
+                                    } else {
+                                        print("successfully added start notification")
+                                    }
+                                }
+                                UNUserNotificationCenter.current().add(endRequest) { (error) in
+                                    if let error = error {
+                                        print("notification delivery error: \(error)")
+                                    } else {
+                                        print("successfully added end notification")
+                                    }
+                                }
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
@@ -248,6 +302,7 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = createEditView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
+        cell.selectionStyle = .none
         cell.friendName.text = friend.displayName
         cell.friendTask.tag = indexPath.row
         cell.friendTask.delegate = self
@@ -284,12 +339,9 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
 }
 extension CreateEditViewController: DateViewControllerDelegate {
     func selectedDate(startDate: Date, endDate: Date) {
-        let isoDateFormatter = ISO8601DateFormatter()
-        let startString = isoDateFormatter.string(from: startDate)
-        let endingString = isoDateFormatter.string(from: endDate)
         
-        selectedStartDate = startString
-        selectedEndDate = endingString
+        selectedStartDate = startDate
+        selectedEndDate = endDate
         
         let startDisplayString = startDate.toString(dateFormat: "MMMM dd hh:mm a")
         createEditView.dateButton.setTitle(startDisplayString, for: .normal)
