@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 struct InvitedModel {
     let userId: String
@@ -13,13 +14,20 @@ struct InvitedModel {
     let firstName: String?
     let lastName: String?
     let photoURL: String?
-    let latitude: Double?
-    let longitude: Double?
+    var latitude: Double?
+    var longitude: Double?
     let task: String?
     let confirmation: Bool
 
     public var fullName: String {
         return ((firstName ?? "") + " " + (lastName ?? "")).trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+    
+    public var coordinate: CLLocationCoordinate2D? {
+        guard let lat = latitude, let lon = longitude else {
+            return nil
+        }
+        return CLLocationCoordinate2DMake(lat, lon)
     }
     
     init(userId: String,
@@ -53,5 +61,11 @@ struct InvitedModel {
         self.task = dict[InvitedCollectionKeys.TaskKey] as? String ?? "Task"
         self.confirmation = dict[InvitedCollectionKeys.ConfirmationKey] as? Bool ?? false
         
+        if latitude == -1 {
+            latitude = nil
+        }
+        if longitude == -1 {
+            longitude = nil
+        }
     }
 }
