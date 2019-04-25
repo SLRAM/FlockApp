@@ -158,7 +158,7 @@ extension EventViewController: UITableViewDataSource, UITableViewDelegate {
         guard let cell = eventView.peopleTableView.dequeueReusableCell(withIdentifier: "peopleCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
         let friend = invited[indexPath.row]
         cell.textLabel?.text = friend.displayName
-        cell.detailTextLabel?.text = "lat:\(friend.latitude) long: \(friend.longitude)"
+        cell.detailTextLabel?.text = "lat:\(String(describing: friend.latitude)) long: \(String(describing: friend.longitude))"
         return cell
     }
 }
