@@ -28,11 +28,22 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var eventImage: UIImageView = {
         let image = UIImageView(image: UIImage(named: "pitons"))
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 14
         return image
     }()
     
     public lazy var joinEventButton: UIButton = {
         let button = UIButton(type: UIButton.ButtonType.custom)
+        let image = UIImage(named: "joinButton")
+        button.frame = CGRect.init(x: 10, y: 20, width: 500, height: 500)
+        button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
+    public lazy var startAnEventButton: UIButton = {
+        let button = UIButton()
         let image = UIImage(named: "joinButton")
         button.frame = CGRect.init(x: -10, y: -20, width: 80, height: 55)
         button.setImage(image, for: .normal)
@@ -75,8 +86,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         joinEventButton.translatesAutoresizingMaskIntoConstraints = false
         joinEventButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
         joinEventButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        joinEventButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
-        joinEventButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.07).isActive = true
+        joinEventButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.3).isActive = true
+        joinEventButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.3).isActive = true
     }
     
     
@@ -91,8 +102,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
+       // setupJoinButton()
         setupImage()
-        //setupJoinButton()
         setupEventLabel()
         setupEventDay()
         

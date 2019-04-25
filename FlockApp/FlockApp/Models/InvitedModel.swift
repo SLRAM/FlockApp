@@ -13,16 +13,11 @@ struct InvitedModel {
     let firstName: String?
     let lastName: String?
     let photoURL: String?
-    let latitude: Double
-    let longitude: Double
+    let latitude: Double?
+    let longitude: Double?
     let task: String?
-    //pendingEvents: [EventModel]
-    //acceptedEvents: [EventModel]
-    //add friend array: [FriendModel]
-    
-    // add array event id?
-    // add array friend/users id?
-    // add location
+    let confirmation: Bool
+
     public var fullName: String {
         return ((firstName ?? "") + " " + (lastName ?? "")).trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -32,9 +27,10 @@ struct InvitedModel {
          firstName: String?,
          lastName: String?,
          photoURL: String?,
-         latitude: Double,
-         longitude: Double,
-         task: String) {
+         latitude: Double?,
+         longitude: Double?,
+         task: String,
+         confirmation: Bool) {
         self.userId = userId
         self.displayName = displayName
         self.firstName = firstName
@@ -43,6 +39,7 @@ struct InvitedModel {
         self.latitude = latitude
         self.longitude = longitude
         self.task = task
+        self.confirmation = confirmation
     }
     
     init(dict: [String: Any]) {
@@ -51,9 +48,10 @@ struct InvitedModel {
         self.firstName = dict[InvitedCollectionKeys.FirstNameKey] as? String ?? "FirstName"
         self.lastName = dict[InvitedCollectionKeys.LastNameKey] as? String ?? "LastName"
         self.photoURL = dict[InvitedCollectionKeys.PhotoURLKey] as? String ?? ""
-        self.latitude = dict[InvitedCollectionKeys.LatitudeKey] as? Double ?? 0.0
-        self.longitude = dict[InvitedCollectionKeys.LongitudeKey] as? Double ?? 0.0
+        self.latitude = dict[InvitedCollectionKeys.LatitudeKey] as? Double
+        self.longitude = dict[InvitedCollectionKeys.LongitudeKey] as? Double
         self.task = dict[InvitedCollectionKeys.TaskKey] as? String ?? "Task"
+        self.confirmation = dict[InvitedCollectionKeys.ConfirmationKey] as? Bool ?? false
         
     }
 }

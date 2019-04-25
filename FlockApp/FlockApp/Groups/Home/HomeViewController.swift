@@ -15,17 +15,22 @@ class HomeViewController: UIViewController {
     
     
     var homeView = HomeView()
+    
     var currentDate = Date.getISOTimestamp()
+    var newUser = false
     
   
     var events = [Event]() {
         didSet {
-            self.filteredEvents = events
-        }
+            DispatchQueue.main.async {
+                self.segmentedUserEventsPressed()
+
+            }
         
+        }
     }
 
-    var filteredEvents = [Event](){
+    var filteredEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
@@ -39,9 +44,9 @@ class HomeViewController: UIViewController {
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
-        //Tab bar item
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
-        homeView.createButton.addTarget(self, action: #selector(showCreateEditEvent), for: .touchUpInside)
+        
         fetchEvents()
         homeView.delegate = self
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
@@ -52,12 +57,6 @@ class HomeViewController: UIViewController {
     }
     
    
-    override func viewDidAppear(_ animated: Bool) {
-        //homeView.usersCollectionView.reloadData()
-        //segmentedPastEventPressed()
-        
-    }
-    
 
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
@@ -95,8 +94,31 @@ class HomeViewController: UIViewController {
                     self?.refreshControl.endRefreshing()
                 }
             })
-    }
+        }
     
+//    func fetchHomeState() {
+//        refreshControl.beginRefreshing()
+//        listener = DBService.firestoreDB
+//        .collection(EventsCollectionKeys.CollectionKey)
+//            .addSnapshotListener({ [weak self] ( createEvent, error ) in
+//                if let error = error {
+//                    print("failed to fetch home state: \(error.localizedDescription)")
+//                } else if let createEvent = createEvent {
+//
+//                }
+//            })
+//        if newUser == false {
+//            guard let user = authService.getCurrentUser() else {
+//                print("no user")
+//                return
+//            }
+//        homeView.delegate = self
+//            DBService.fetchUser(userId: user.uid) { (error, user) in
+//
+//            }
+//
+//        }
+//    }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -115,6 +137,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        //collectionViewCell.layer.cornerRadius = 14
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
     }
@@ -155,6 +178,10 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     }
     
     func joinEventPressed(){
+        
+    }
+    
+    func newUserView() {
         
     }
     

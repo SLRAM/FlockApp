@@ -12,21 +12,19 @@ struct Event {
     let createdDate: String
     let userID: String
     let imageURL: String?
-    let eventDescription: String
+    let eventDescription: String?
     let documentId: String
     let startDate: String
     let endDate: String
-    let locationString: String
+    let locationString: String?
     let locationLat: Double
     let locationLong: Double
-//    let invited: [String]
     let trackingTime: Int
-    // add user id for attendees
-    // add tasks?
-    // add time/date
-    // add location
+    let quickEvent: Bool
+    let proximity: Double
+
     
-    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String, documentId: String, startDate: String, endDate: String, locationString: String, locationLat: Double, locationLong: Double, trackingTime: Int) {
+    init(eventName: String, createdDate: String, userID: String, imageURL: String?, eventDescription: String?, documentId: String, startDate: String, endDate: String, locationString: String?, locationLat: Double, locationLong: Double, trackingTime: Int, quickEvent: Bool, proximity: Double) {
         self.eventName = eventName
         self.createdDate = createdDate
         self.userID = userID
@@ -38,8 +36,9 @@ struct Event {
         self.locationString = locationString
         self.locationLat = locationLat
         self.locationLong = locationLong
-//        self.invited = invited
         self.trackingTime = trackingTime
+        self.quickEvent = quickEvent
+        self.proximity = proximity
     }
     
     init(dict: [String: Any]) {
@@ -54,7 +53,8 @@ struct Event {
         self.locationString = dict[EventsCollectionKeys.LocationStringKey] as? String ?? "no event location"
         self.locationLat = dict[EventsCollectionKeys.LocationLatKey] as? Double ?? 0
         self.locationLong = dict[EventsCollectionKeys.LocationLongKey] as? Double ?? 0
-//        self.invited = dict[EventsCollectionKeys.InvitedKey] as? [String] ?? []
         self.trackingTime = dict[EventsCollectionKeys.TrackingTimeKey] as? Int ?? 0
+        self.quickEvent = dict[EventsCollectionKeys.QuickEventKey] as? Bool ?? false
+        self.proximity = dict[EventsCollectionKeys.ProximityKey] as? Double ?? 0
     }
 }
