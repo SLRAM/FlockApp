@@ -154,3 +154,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     
 }
+
+
+//two buttons with custom images for two different events

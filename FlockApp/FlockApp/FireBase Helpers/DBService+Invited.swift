@@ -30,19 +30,16 @@ extension DBService {
             if let error = error {
                 print("failed to fetch friends with error: \(error.localizedDescription)")
             } else if let currentUser = currentUser {
-//                guard let hostFirstName = currentUser.firstName,
-//                let hostLastName = currentUser.lastName,
-//                let hostPhoto = currentUser.photoURL else {return}
                 
                 firestoreDB.collection(EventsCollectionKeys.CollectionKey).document(docRef).collection(InvitedCollectionKeys.CollectionKey).document(user.uid).setData([
                     InvitedCollectionKeys.UserIdKey         : currentUser.userId,
                     InvitedCollectionKeys.DisplayNameKey    : currentUser.displayName,
-                    InvitedCollectionKeys.FirstNameKey      : currentUser.firstName,
-                    InvitedCollectionKeys.LastNameKey       : currentUser.lastName,
+                    InvitedCollectionKeys.FirstNameKey      : currentUser.firstName ?? "",
+                    InvitedCollectionKeys.LastNameKey       : currentUser.lastName ?? "",
                     InvitedCollectionKeys.PhotoURLKey       : currentUser.photoURL ?? "",
-                    InvitedCollectionKeys.LatitudeKey       : nil,
-                    InvitedCollectionKeys.LongitudeKey      : nil,
-//                    InvitedCollectionKeys.ConfirmationKey   : true,
+                    InvitedCollectionKeys.LatitudeKey       : -1.0,
+                    InvitedCollectionKeys.LongitudeKey      : -1.0,
+                    InvitedCollectionKeys.ConfirmationKey   : true,
                     InvitedCollectionKeys.TaskKey           : "Host"
                     ])
                 { (error) in
@@ -73,9 +70,9 @@ extension DBService {
                             InvitedCollectionKeys.FirstNameKey      : friend.firstName,
                             InvitedCollectionKeys.LastNameKey       : friend.lastName,
                             InvitedCollectionKeys.PhotoURLKey       : friend.photoURL ?? "",
-                            InvitedCollectionKeys.LatitudeKey       : nil,
-                            InvitedCollectionKeys.LongitudeKey      : nil,
-//                            InvitedCollectionKeys.ConfirmationKey   : false
+                            InvitedCollectionKeys.LatitudeKey       : -1.0,
+                            InvitedCollectionKeys.LongitudeKey      : -1.0,
+                            InvitedCollectionKeys.ConfirmationKey   : false,
                             InvitedCollectionKeys.TaskKey           : value
                             ])
                         { (error) in
