@@ -10,6 +10,8 @@ import CoreMotion
 
 class EventHomeCollectionViewCell: UICollectionViewCell {
     
+    //var homeView = HomeView()
+    
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         label.text = "Event #1"
@@ -50,6 +52,47 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    public lazy var invitedByLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    private let motionManager = CMMotionManager()
+    private weak var shadowView: UIView?
+    private static let kInnerMargin: CGFloat = 20.0
+    
+    private func configureShadowView(){
+        self.shadowView?.removeFromSuperview()
+        let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
+    }
+    
+//    public lazy var cellSegmentedView: UISegmentedControl = {
+//        let sv = homeView.segmentedControl
+//        sv.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+//        return sv
+//    }()
+//
+//    @objc func indexChanged(_ sender: UISegmentedControl) {
+//        switch sender.selectedSegmentIndex{
+//        case 2:
+//            print("Pending pressed")
+//            joinEventButton.isEnabled = true
+//            joinEventButton.isHidden = false
+//            eventImage.isHidden = true
+//
+//        default:
+//            break
+//        }
+//    }
+    
+//    
+//    func setupPendingJoinEvents(){
+//        addSubview(cellSegmentedView)
+//        cellSegmentedView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//    }
+    
+    
     
     func setupEventLabel(){
       addSubview(eventLabel)
@@ -73,8 +116,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupImage(){
         addSubview(eventImage)
         eventImage.translatesAutoresizingMaskIntoConstraints = false
-        //eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
-        //eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
         eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
         eventImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
@@ -102,11 +143,11 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-       // setupJoinButton()
+        //setupJoinButton()
         setupImage()
         setupEventLabel()
         setupEventDay()
-        
+        //setupPendingJoinEvents()
         
         
     }

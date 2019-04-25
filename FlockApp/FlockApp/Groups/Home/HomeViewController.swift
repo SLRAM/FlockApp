@@ -38,6 +38,14 @@ class HomeViewController: UIViewController {
         }
     }
 
+    var pendingEvents = [Event]() {
+        didSet{
+            DispatchQueue.main.async {
+                self.joinEventPressed()
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)
@@ -46,7 +54,6 @@ class HomeViewController: UIViewController {
         homeView.usersCollectionView.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
-        
         fetchEvents()
         homeView.delegate = self
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
@@ -132,6 +139,12 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionViewCell()
         }
         let eventToSet = filteredEvents[indexPath.row]
+//        if eventToSet.quickEvent {
+//            collectionViewCell.eventLabel.isHidden = true
+//            collectionViewCell.eventImage.isHidden = true
+//        }
+        
+
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -178,8 +191,9 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     }
     
     func joinEventPressed(){
-        
+       
     }
+    
     
     func newUserView() {
         
