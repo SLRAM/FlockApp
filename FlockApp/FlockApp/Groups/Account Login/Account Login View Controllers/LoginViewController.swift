@@ -40,10 +40,14 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
     }
     
     func didSignInToExistingAccount(_ authservice: AuthService, user: User) {
-        let homeViewController = HomeViewController()
-        homeViewController.modalTransitionStyle = .crossDissolve
-        homeViewController.modalPresentationStyle = .overFullScreen
-        present(homeViewController, animated: true)
+//        let homeViewController = HomeViewController()
+//        homeViewController.modalTransitionStyle = .crossDissolve
+//        homeViewController.modalPresentationStyle = .overFullScreen
+//        present(homeViewController, animated: true)
+        let mainTabBarController = TabBarController()
+        mainTabBarController.modalTransitionStyle = .crossDissolve
+        mainTabBarController.modalPresentationStyle = .overFullScreen
+        present(mainTabBarController, animated: true)
     }
 }
 extension LoginViewController: UITextFieldDelegate {
