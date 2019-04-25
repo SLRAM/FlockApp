@@ -39,6 +39,7 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
+//        navigationController?.navigationBar.topItem?.title = "Friends"
         navigationController?.navigationBar.topItem?.title = "Flockers"
 
     }
