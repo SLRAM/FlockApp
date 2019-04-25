@@ -10,7 +10,7 @@ import UIKit
 protocol UserEventCollectionViewDelegate: AnyObject {
     func segmentedUserEventsPressed()
     func segmentedPastEventPressed()
-    func joinEventPressed()
+    func pendingJoinEventPressed()
     func newUserView()
 
 }
@@ -52,7 +52,7 @@ class HomeView: UIView {
     
 
     lazy var segmentedControl: UISegmentedControl = {
-        let items = ["Current Events", "Past Events", "Pending Events"]
+        let items = ["Events", "Past Events", "Pending Events"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor =  .black
         segmentedControl.backgroundColor = #colorLiteral(red: 0.9101855159, green: 0.2931141555, blue: 1, alpha: 1)
@@ -191,7 +191,6 @@ class HomeView: UIView {
             //createButton.isHidden = false
             segmentedControl.isHidden = false
             delegate?.segmentedUserEventsPressed()
-            
     
         case 1:
             print("Past Event")
@@ -201,12 +200,12 @@ class HomeView: UIView {
             delegate?.segmentedPastEventPressed()
             usersCollectionView.isHidden = false
             
-         
         case 2:
             print("Join Event")
             dateLabel.isHidden = false
             dayLabel.isHidden = false
             segmentedControl.isHidden = false
+            delegate?.pendingJoinEventPressed()
 //            usersCollectionView.isHidden = false
 //            cellView.startDateLabel.isHidden = false
 //            cellView.joinEventButton.isEnabled = true

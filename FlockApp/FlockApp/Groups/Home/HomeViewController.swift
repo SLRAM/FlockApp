@@ -18,15 +18,27 @@ class HomeViewController: UIViewController {
     
     var currentDate = Date.getISOTimestamp()
     var newUser = false
+    private var authService = AppDelegate.authservice
+    private var listener: ListenerRegistration!
+
     
   
     var events = [Event]() {
         didSet {
             DispatchQueue.main.async {
-                self.segmentedUserEventsPressed()
+                self.pendingJoinEventPressed()
 
             }
         
+        }
+    }
+    var invitedEvents = [Event]() {
+        didSet {
+            DispatchQueue.main.async {
+//                self.pendingJoinEventPressed()
+                
+            }
+            
         }
     }
 
@@ -38,10 +50,10 @@ class HomeViewController: UIViewController {
         }
     }
 
-    var pendingEvents = [Event]() {
+    var invited = [InvitedModel]() {
         didSet{
             DispatchQueue.main.async {
-                self.joinEventPressed()
+                self.pendingJoinEventPressed()
             }
         }
     }
@@ -67,6 +79,7 @@ class HomeViewController: UIViewController {
 
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
+        
         let createNav = UINavigationController.init(rootViewController: createEditVC)
         present(createNav, animated: true) 
     }
@@ -76,8 +89,6 @@ class HomeViewController: UIViewController {
         present (joinVC, animated: true)
     }
     
-    private var listener: ListenerRegistration!
-    private var authService = AppDelegate.authservice
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
         homeView.usersCollectionView.refreshControl = rc
@@ -103,29 +114,6 @@ class HomeViewController: UIViewController {
             })
         }
     
-//    func fetchHomeState() {
-//        refreshControl.beginRefreshing()
-//        listener = DBService.firestoreDB
-//        .collection(EventsCollectionKeys.CollectionKey)
-//            .addSnapshotListener({ [weak self] ( createEvent, error ) in
-//                if let error = error {
-//                    print("failed to fetch home state: \(error.localizedDescription)")
-//                } else if let createEvent = createEvent {
-//
-//                }
-//            })
-//        if newUser == false {
-//            guard let user = authService.getCurrentUser() else {
-//                print("no user")
-//                return
-//            }
-//        homeView.delegate = self
-//            DBService.fetchUser(userId: user.uid) { (error, user) in
-//
-//            }
-//
-//        }
-//    }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -139,12 +127,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             return UICollectionViewCell()
         }
         let eventToSet = filteredEvents[indexPath.row]
-//        if eventToSet.quickEvent {
+//        if eventToSet.quickEvent == true {
 //            collectionViewCell.eventLabel.isHidden = true
 //            collectionViewCell.eventImage.isHidden = true
 //        }
-        
-
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -169,6 +155,10 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController: UserEventCollectionViewDelegate {
+    func newUserView() {
+        
+    }
+    
     func segmentedUserEventsPressed() {
         let formatter = ISO8601DateFormatter()
         guard let pastEvent = formatter.date(from: self.currentDate) else { return }
@@ -186,22 +176,49 @@ extension HomeViewController: UserEventCollectionViewDelegate {
             $0.endDate.date() < currentDate
             
         }
-        
-        
     }
-    
-    func joinEventPressed(){
-       
-    }
-    
-    
-    func newUserView() {
+    func fetchInvites() {
+
+        for event in events {
+            DBService.firestoreDB
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .collection(InvitedCollectionKeys.CollectionKey)
+                .getDocuments { (snapshot, error) in
+                    if let error = error {
+                        print("failed to fetch invites: \(error.localizedDescription)")
+                    } else if let snapshot = snapshot {
+                        self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
+                            .sorted { $0.displayName > $1.displayName}
+                    }
+                    
+            }
+            //if users id is in invited then show events
+            guard let user = authService.getCurrentUser() else {
+                print("no logged user")
+                return
+            }
+            if invited.contains(where: {$0.userId == user.uid && $0.confirmation == false}) {
+                invitedEvents.append(event)
+            }
+            
+        }
         
+        }
+
+    
+    func pendingJoinEventPressed() {
+        let formatter = ISO8601DateFormatter()
+        guard let pastEvent = formatter.date(from: self.currentDate) else { return }
+        
+        invitedEvents = events.filter {
+            $0.endDate.date() > pastEvent
+            
+        
+        }
+    
+    
     }
-    
-    
+
 
 }
-
-
-    
