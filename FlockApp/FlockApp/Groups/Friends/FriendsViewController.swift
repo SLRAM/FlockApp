@@ -10,7 +10,7 @@ import Kingfisher
 import Firebase
 import FirebaseFirestore
 
-class FriendsViewController: BaseViewController {
+class FriendsViewController: UIViewController {
 
     let friendsView = FriendsView()
     
@@ -39,7 +39,9 @@ class FriendsViewController: BaseViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.myTableView.tableFooterView = UIView()
+
 //        navigationController?.navigationBar.topItem?.title = "Friends"
+
     }
     override func viewWillAppear(_ animated: Bool) {
         setupTable(keyword: "")

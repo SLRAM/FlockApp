@@ -40,7 +40,7 @@ class SettingsView: UIView {
         let items = ["Public", "Friends"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
+//        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
         return segmentedControl
     }()
     
@@ -48,7 +48,7 @@ class SettingsView: UIView {
         let items = ["Public", "Friends"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
+//        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
         return segmentedControl
     }()
     
@@ -56,7 +56,7 @@ class SettingsView: UIView {
         let items = ["Public", "Friends"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
+//        segmentedControl.addTarget(self, action: #selector(EventView.indexChanged(_:)), for: .valueChanged)
         return segmentedControl
     }()
     

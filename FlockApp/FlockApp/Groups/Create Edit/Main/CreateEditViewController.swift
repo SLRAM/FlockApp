@@ -20,10 +20,11 @@ class CreateEditViewController: UIViewController {
 
     
     var friendsArray = [UserModel]()
+    var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
     var selectedCoordinates = CLLocationCoordinate2D()
-    var selectedStartDate = Date()
-    var selectedEndDate = Date()
+    var selectedStartDate = String()
+    var selectedEndDate = String()
     var trackingTime = 0
     private var selectedImage: UIImage?
     
@@ -209,7 +210,6 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          invited: friendIds, //remove
                                           trackingTime: self!.trackingTime)
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
@@ -217,7 +217,7 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, completion: { [weak self] error in
+                        DBService.addInvited(docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
                             } else {
@@ -225,7 +225,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
-                                    let detailVC = EventViewController()
+                                    let detailVC = EventTableViewController()
                                     detailVC.event = event
                                     //                    detailVC.delegate = self
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
@@ -234,22 +234,9 @@ extension CreateEditViewController: CreateViewDelegate {
                         })
                     }
                 })
-
             }
         }
         
-        
-        
-        
-        
-        
-        
-        
-
-
-        
-        
-
     }
 }
 
@@ -259,9 +246,11 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+        guard let cell = createEditView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
-        cell.textLabel?.text = friend.displayName
+        cell.friendName.text = friend.displayName
+        cell.friendTask.tag = indexPath.row
+        cell.friendTask.delegate = self
         return cell
     }
     
@@ -282,6 +271,12 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
+        var count = 0
+        for friend in friends {
+            friendsDictionary[count] = "No Task"
+        }
+        print(friendsDictionary)
+        
         createEditView.myTableView.reloadData()
     }
     
@@ -289,11 +284,15 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
 }
 extension CreateEditViewController: DateViewControllerDelegate {
     func selectedDate(startDate: Date, endDate: Date) {
-        selectedStartDate = startDate
-        selectedEndDate = endDate
-        print(startDate)
-        let startString = selectedStartDate.toString(dateFormat: "MMMM dd hh:mm a")
-        createEditView.dateButton.setTitle(startString, for: .normal)
+        let isoDateFormatter = ISO8601DateFormatter()
+        let startString = isoDateFormatter.string(from: startDate)
+        let endingString = isoDateFormatter.string(from: endDate)
+        
+        selectedStartDate = startString
+        selectedEndDate = endingString
+        
+        let startDisplayString = startDate.toString(dateFormat: "MMMM dd hh:mm a")
+        createEditView.dateButton.setTitle(startDisplayString, for: .normal)
 
     }
 
@@ -313,5 +312,39 @@ extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigatio
         selectedImage = resizedImage.image
         createEditView.imageButton.setImage(selectedImage, for: .normal)
         dismiss(animated: true)
+    }
+}
+extension CreateEditViewController: CreateEditTableViewCellDelegate {
+    func textDelegate() {
+        print("OKay")
+    }
+    
+    
+}
+extension CreateEditViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        print(textField.tag)
+        textField.resignFirstResponder()
+        //for id key save text
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = textField.text
+            }
+        }
+        
+        return true
+    }
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        print(textField.tag)
+        textField.resignFirstResponder()
+        //for id key save text
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = textField.text
+            }
+        }
+        
     }
 }
