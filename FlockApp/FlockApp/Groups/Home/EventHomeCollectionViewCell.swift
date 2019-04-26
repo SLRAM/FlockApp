@@ -13,7 +13,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         label.text = "Event #1"
-        label.backgroundColor = .white
+//        label.backgroundColor = .white
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+
         label.textColor = .black
         return label
     }()
@@ -21,7 +23,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        label.backgroundColor = .white
+//        label.backgroundColor = .white
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+
         label.textColor = .black
         return label
     }()

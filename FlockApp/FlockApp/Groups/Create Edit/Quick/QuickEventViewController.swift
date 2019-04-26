@@ -119,6 +119,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
         var eventLength = hours*60
         var currentDate = Date()
         var endingDate = currentDate.adding(minutes: eventLength)
+
         let isoDateFormatter = ISO8601DateFormatter()
         let startingString = isoDateFormatter.string(from: currentDate)
         let endingString = isoDateFormatter.string(from: endingDate)

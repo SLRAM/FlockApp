@@ -64,7 +64,12 @@ class EventTableViewController: UITableViewController {
 //                        let str = formatter.string(from: date)
 //                        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
 //                        eventView.eventDate.text = formattedDate
-        eventView.eventDate.text = unwrappedEvent.startDate
+        let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        eventView.eventDate.text = startDate
+        
+        
+        
+        
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
         
