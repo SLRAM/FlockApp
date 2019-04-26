@@ -8,7 +8,7 @@
 import UIKit
 
 protocol UserEventCollectionViewDelegate: AnyObject {
-    func segmentedUserEventsPressed()
+    func segmentedEventsPressed()
     func segmentedPastEventPressed()
     func pendingJoinEventPressed()
     
@@ -121,8 +121,8 @@ class HomeView: UIView {
             setUpDayLabel()
             setupUsersCollectionView()
             setupSegmentedView()
-            cellView.setupEventLabel()
-            cellView.setupJoinButton()
+            //cellView.setupEventLabel()
+            //cellView.setupJoinButton()
         }
     
     func setUpDateLabel(){
@@ -170,44 +170,25 @@ class HomeView: UIView {
         
     }
 
-//    func setupNewEventsCollectionView() {
-//        addSubview(newEventsCollectionView)
-//        newEventsCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//        newEventsCollectionView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
-//        newEventsCollectionView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.80).isActive = true
-//        newEventsCollectionView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-//        newEventsCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-//    }
     
-
-
-
        @objc func indexChanged(_ sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
             print("Current Events")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
-            delegate?.segmentedUserEventsPressed()
-    
+            delegate?.segmentedEventsPressed()
+            cellView.joinEventButton.isHidden = true
         case 1:
             print("Past Event")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
             delegate?.segmentedPastEventPressed()
-            
+            cellView.joinEventButton.isHidden = true
         case 2:
             print("Join Event")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
-//
             delegate?.pendingJoinEventPressed()
-//            usersCollectionView.isHidden = false
-//            cellView.startDateLabel.isHidden = false
-//            cellView.joinEventButton.isEnabled = true
-//            cellView.joinEventButton.isHidden = false
-//            cellView.eventImage.isHidden = false
-//            cellView.eventLabel.isHidden = true
+            //cellView.startDateLabel.isHidden = false
+            cellView.joinEventButton.isEnabled = true
+            cellView.joinEventButton.isHidden = false
+            //cellView.eventImage.isHidden = true
+            //cellView.eventLabel.isHidden = true
     
             
         default:
