@@ -6,15 +6,47 @@
 //
 
 import UIKit
+import Firebase
+import GoogleMaps
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
-
+    
+    static var authservice = AuthService()
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        GMSServices.provideAPIKey(SecretKeys.googleKey)
+        FirebaseApp.configure()
+        UNUserNotificationCenter.current().delegate = self
+
+        window = UIWindow(frame: UIScreen.main.bounds)
+        if let _ = AppDelegate.authservice.getCurrentUser() {
+            window?.rootViewController = TabBarController()
+            UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+            UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+//            window?.makeKeyAndVisible()
+        } else {
+            let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
+            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+            window?.rootViewController = UINavigationController(rootViewController: loginViewController)
+        }
+        window?.makeKeyAndVisible()
+        
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
+            if let error = error {
+                print("Request Authorization Error: \(error)")
+            } else if granted{
+                print("Authorization Granted")
+            } else{
+                print("User Denied")
+            }
+        }
         return true
     }
 
@@ -43,3 +75,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.userInfo)
+        return completionHandler()
+    }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        return completionHandler([.alert, .badge, .sound])
+    }
+}
