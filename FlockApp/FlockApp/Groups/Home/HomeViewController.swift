@@ -144,7 +144,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailVC = EventViewController()
+        let detailVC = EventTableViewController()
         let event = filteredEvents[indexPath.row]
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
