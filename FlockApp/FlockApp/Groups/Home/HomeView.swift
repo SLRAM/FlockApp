@@ -8,10 +8,10 @@
 import UIKit
 
 protocol UserEventCollectionViewDelegate: AnyObject {
-    func segmentedUserEventsPressed()
+    func segmentedEventsPressed()
     func segmentedPastEventPressed()
-    func joinEventPressed()
-    func newUserView()
+    func pendingJoinEventPressed()
+    
 
 }
 
@@ -41,7 +41,7 @@ class HomeView: UIView {
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
 
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 40), size: 30)
-        label.font = UIFont.boldSystemFont(ofSize: 35)
+        label.font = UIFont.boldSystemFont(ofSize: 45)
         return label
     }()
     
@@ -56,7 +56,7 @@ class HomeView: UIView {
     
 
     lazy var segmentedControl: UISegmentedControl = {
-        let items = ["Current Events", "Past Events", "Join Event"]
+        let items = ["Events", "Past Events", "Pending Events"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.tintColor =  .black
         segmentedControl.backgroundColor = #colorLiteral(red: 0.9101855159, green: 0.2931141555, blue: 1, alpha: 1)
@@ -78,16 +78,16 @@ class HomeView: UIView {
             return collectionView
         }()
     
-    public lazy var newUsersCollectionView: UICollectionView = {
-        let cellLayout = UICollectionViewFlowLayout()
-        cellLayout.scrollDirection = .vertical
-        cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
-        cellLayout.itemSize = CGSize.init(width: 350, height:350)
-        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
-        collectionView.backgroundColor = .white
-        collectionView.layer.cornerRadius = 15.0
-        return collectionView
-    }()
+//    public lazy var newEventsCollectionView: UICollectionView = {
+//        let cellLayout = UICollectionViewFlowLayout()
+//        cellLayout.scrollDirection = .vertical
+//        cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
+//        cellLayout.itemSize = CGSize.init(width: 350, height:350)
+//        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
+//        collectionView.layer.cornerRadius = 15.0
+//        collectionView.backgroundColor = .white
+//        return collectionView
+//    }()
     
     
     
@@ -121,17 +121,12 @@ class HomeView: UIView {
         }
     
         func setConstraints() {
-           
             setUpDateLabel()
             setUpDayLabel()
             setupUsersCollectionView()
             setupSegmentedView()
-            cellView.setupJoinButton()
-            
-           
-            
-            
-    
+            //cellView.setupEventLabel()
+            //cellView.setupJoinButton()
         }
     
     func setUpDateLabel(){
@@ -155,7 +150,7 @@ class HomeView: UIView {
     
     
     
-    private func setupSegmentedView(){
+    func setupSegmentedView(){
         addSubview(segmentedControl)
         
     segmentedControl.translatesAutoresizingMaskIntoConstraints = false
@@ -178,57 +173,28 @@ class HomeView: UIView {
         usersCollectionView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
         
     }
+
     
-    func setupMyViewTwo() {
-        addSubview(myViewTwo)
-        myViewTwo.translatesAutoresizingMaskIntoConstraints = false
-        myViewTwo.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
-        myViewTwo.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.9).isActive = true
-        myViewTwo.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        myViewTwo.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-    }
-    func setupMyView() {
-        addSubview(myView)
-        myView.translatesAutoresizingMaskIntoConstraints = false
-        myView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
-        myView.heightAnchor.constraint(equalTo: myViewTwo.heightAnchor, multiplier: 0.9).isActive = true
-        myView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        myView.centerYAnchor.constraint(equalTo: myViewTwo.centerYAnchor).isActive = true
-    }
-
-
-
-
        @objc func indexChanged(_ sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
             print("Current Events")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
-            //createButton.isHidden = false
-            segmentedControl.isHidden = false
-            delegate?.segmentedUserEventsPressed()
+            delegate?.segmentedEventsPressed()
             cellView.joinEventButton.isHidden = true
-    
         case 1:
             print("Past Event")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
-            segmentedControl.isHidden = false
             delegate?.segmentedPastEventPressed()
             cellView.joinEventButton.isHidden = true
-            usersCollectionView.isHidden = false
-         
         case 2:
             print("Join Event")
-            dateLabel.isHidden = false
-            dayLabel.isHidden = false
-            segmentedControl.isHidden = false
-            usersCollectionView.isHidden = false
+            delegate?.pendingJoinEventPressed()
+            //cellView.startDateLabel.isHidden = false
             cellView.joinEventButton.isEnabled = true
             cellView.joinEventButton.isHidden = false
-            cellView.eventImage.isHidden = false
-            cellView.eventLabel.isHidden = false
+            //cellView.eventImage.isHidden = true
+            //cellView.eventLabel.isHidden = true
+    
+            
         default:
             break
         }
