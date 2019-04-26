@@ -54,6 +54,7 @@ class CreateEditViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
     }
+
     func editNumber(increase: Bool)-> String {
         if number != 0 && increase == false{
             number -= 1
@@ -153,6 +154,7 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+        
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
         let startDateString = ISO8601DateFormatter().string(from: startDate)
@@ -306,7 +308,27 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
         cell.friendName.text = friend.displayName
         cell.friendTask.tag = indexPath.row
         cell.friendTask.delegate = self
+        cell.friendTask.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
+
         return cell
+    }
+    @objc func didChangeText(textField:UITextField) {
+//        print(textField.tag)
+//        print(textField.text)
+        //for id key save text
+        guard let typedText = textField.text else {
+            print("unable to obtain task")
+            return
+            
+        }
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = typedText
+                
+            }
+        }
+        
     }
     
     
@@ -329,6 +351,7 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
         var count = 0
         for friend in friends {
             friendsDictionary[count] = "No Task"
+            count += 1
         }
         print(friendsDictionary)
         
@@ -368,35 +391,43 @@ extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigatio
 }
 extension CreateEditViewController: CreateEditTableViewCellDelegate {
     func textDelegate() {
-        print("OKay")
+        print("Okay")
     }
     
     
 }
 extension CreateEditViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print(textField.tag)
         textField.resignFirstResponder()
         //for id key save text
+        guard let typedText = textField.text else {return false}
         for (key, value) in friendsDictionary {
             
             if textField.tag == key {
-                friendsDictionary[key] = textField.text
+                friendsDictionary[key] = typedText
+                
             }
         }
         
         return true
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print(textField.tag)
         textField.resignFirstResponder()
         //for id key save text
+        guard let typedText = textField.text else {
+            print("unable to obtain task")
+            return
+            
+        }
         for (key, value) in friendsDictionary {
             
             if textField.tag == key {
-                friendsDictionary[key] = textField.text
+                friendsDictionary[key] = typedText
+                
             }
         }
         
     }
+
+
 }
