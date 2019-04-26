@@ -34,9 +34,9 @@ class DirectionsViewController: UIViewController {
         guard let venueLat = self.event?.locationLat,
             let venueLong = self.event?.locationLong else {return}
         let coordinate = CLLocationCoordinate2DMake(venueLat,venueLong)
-        let coordinate2 = CLLocationCoordinate2DMake(MKUserLocation, <#T##longitude: CLLocationDegrees##CLLocationDegrees#>)
+//        let coordinate2 = CLLocationCoordinate2DMake(MKUserLocation, <#T##longitude: CLLocationDegrees##CLLocationDegrees#>)
         let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-        let mapItem2 = MKMapItem(placemark: MKPlacemark(coordinate: coordinate2))
+//        let mapItem2 = MKMapItem(placemark: MKPlacemark(coordinate: coordinate2))
         mapItem.name = self.event?.eventName
 //        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
     }
