@@ -218,12 +218,20 @@ extension CreateEditViewController: CreateViewDelegate {
                                           trackingTime: self!.trackingTime,
                                           quickEvent: false,
                                           proximity: 0)
+                //post event to user
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
+                        DBService.postEventToUser(userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to user")
+                            }
+                        })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
@@ -232,13 +240,13 @@ extension CreateEditViewController: CreateViewDelegate {
                                 // Adding notification
                                 let startContent = UNMutableNotificationContent()
                                 
-                                startContent.title = NSString.localizedUserNotificationString(forKey: "Testing Beginning", arguments: nil)
-                                startContent.body = NSString.localizedUserNotificationString(forKey: "Event Starting", arguments: nil)
+                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
+                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
                                 startContent.sound = UNNotificationSound.default
                                 
                                 let endContent = UNMutableNotificationContent()
-                                endContent.title = NSString.localizedUserNotificationString(forKey: "Testing end", arguments: nil)
-                                endContent.body = NSString.localizedUserNotificationString(forKey: "Event Ending", arguments: nil)
+                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
+                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
                                 endContent.sound = UNNotificationSound.default
                                 let startDate = self?.selectedStartDate
                                 let calendar = Calendar.current
