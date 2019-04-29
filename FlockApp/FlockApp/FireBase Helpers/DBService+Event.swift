@@ -8,6 +8,8 @@
 import Foundation
 import FirebaseFirestore
 import Firebase
+import FirebaseAuth
+
 
 struct EventsCollectionKeys {
     static let EventNameKey = "eventName"
@@ -57,13 +59,20 @@ extension DBService {
                 }
         }
     }
-    static public func postEventToUser(userIds: [UserModel], event: Event, completion: @escaping (Error?) -> Void)  {
+    static public func postEventToUser(user: User, userIds: [UserModel], event: Event, completion: @escaping (Error?) -> Void)  {
+        var usersIds = [String]()
+        usersIds.append(user.uid)
         for userId in userIds {
-            fetchUser(userId: userId.userId) { (error, currentUser) in
+            usersIds.append(userId.userId)
+        }
+        
+        
+        for userId in usersIds {
+            fetchUser(userId: userId) { (error, currentUser) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let currentUser = currentUser {
-                    firestoreDB.collection(UsersCollectionKeys.CollectionKey).document(userId.userId).collection(EventsCollectionKeys.CollectionKey).document(event.documentId).setData([
+                    firestoreDB.collection(UsersCollectionKeys.CollectionKey).document(userId).collection(EventsCollectionKeys.CollectionKey).document(event.documentId).setData([
                         EventsCollectionKeys.EventNameKey       : event.eventName,
                         EventsCollectionKeys.CreatedDateKey     : event.createdDate,
                         EventsCollectionKeys.StartDateKey       : event.startDate,

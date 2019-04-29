@@ -26,6 +26,9 @@ class HomeViewController: UIViewController {
             DispatchQueue.main.async {
 //                self.filteredEvents = self.events
                 self.segmentedEventsPressed()
+                self.segmentedUserEventsPressed()
+//                print(self.events)
+                
             }
             
         }
@@ -80,9 +83,35 @@ class HomeViewController: UIViewController {
         return rc
     }()
     
+//    @objc func fetchEvents(){
+//        refreshControl.beginRefreshing()
+//        listener = DBService.firestoreDB
+//            .collection(EventsCollectionKeys.CollectionKey)
+//            .addSnapshotListener({ [weak self] (snapshot, error) in
+//                if let error = error {
+//                    print("failed to fetch events with error: \(error.localizedDescription)")
+//                } else if let snapshot = snapshot{
+//                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
+//                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
+//
+//                }
+//                DispatchQueue.main.async {
+//                    self?.refreshControl.endRefreshing()
+//                }
+//            })
+//    }
+    
+//    use this for filtering
+    
     @objc func fetchEvents(){
+        guard let user = authService.getCurrentUser() else {
+            print("no logged user")
+            return
+        }
         refreshControl.beginRefreshing()
         listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
             .collection(EventsCollectionKeys.CollectionKey)
             .addSnapshotListener({ [weak self] (snapshot, error) in
                 if let error = error {
@@ -90,7 +119,6 @@ class HomeViewController: UIViewController {
                 } else if let snapshot = snapshot{
                     self?.events = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
-                    
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
@@ -196,10 +224,15 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     func segmentedUserEventsPressed() {
         let formatter = ISO8601DateFormatter()
         guard let pastEvent = formatter.date(from: self.currentDate) else { return }
-        filteredEvents = events.filter {
-            $0.endDate.date() > pastEvent
-        }
         
+        filteredEvents = events.filter {
+//            let eventDate = $0.endDate.date()
+//
+//            return eventDate > pastEvent
+            
+            $0.endDate.date() > pastEvent
+            
+        }
         
     }
     
@@ -207,11 +240,8 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         filteredEvents =  events.filter {
-            $0.endDate.date() <= currentDate
-            
+            $0.endDate.date() < currentDate
         }
-        
-        
     }
     
     func joinEventPressed(){
