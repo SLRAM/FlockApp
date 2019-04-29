@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import GoogleMaps
 import UserNotifications
 
@@ -22,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
+        
+        // force signout
+//        try? Auth.auth().signOut()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
