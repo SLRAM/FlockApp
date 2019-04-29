@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
     var homeView = HomeView()
     
     var currentDate = Date.getISOTimestamp()
+    
     var newUser = false
     
     
