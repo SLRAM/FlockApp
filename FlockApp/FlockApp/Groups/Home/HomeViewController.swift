@@ -17,19 +17,20 @@ class HomeViewController: UIViewController {
     var homeView = HomeView()
     
     var currentDate = Date.getISOTimestamp()
+    
     var newUser = false
     
-  
+    
     var events = [Event]() {
         didSet {
             DispatchQueue.main.async {
                 self.segmentedUserEventsPressed()
-
+                
             }
-        
+            
         }
     }
-
+    
     var filteredEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
@@ -37,7 +38,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)
@@ -51,17 +52,17 @@ class HomeViewController: UIViewController {
         homeView.delegate = self
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
-    
-    
+        
+        
         
     }
     
-   
-
+    
+    
     @objc func showCreateEditEvent() {
         let createEditVC = CreateEditViewController()
         let createNav = UINavigationController.init(rootViewController: createEditVC)
-        present(createNav, animated: true) 
+        present(createNav, animated: true)
     }
     @objc func showJoinEvent(){
         let joinVC = JoinViewController()
@@ -81,44 +82,71 @@ class HomeViewController: UIViewController {
     @objc func fetchEvents(){
         refreshControl.beginRefreshing()
         listener = DBService.firestoreDB
-        .collection(EventsCollectionKeys.CollectionKey)
+            .collection(EventsCollectionKeys.CollectionKey)
             .addSnapshotListener({ [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
                     self?.events = snapshot.documents.map{Event(dict: $0.data()) }
-                    .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
                     
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
                 }
             })
-        }
-    
-//    func fetchHomeState() {
+    }
+    //use this for filtering
+//    @objc func fetchUserEvents(){
+//        guard let user = authService.getCurrentUser() else {
+//            print("no logged user")
+//            return
+//        }
 //        refreshControl.beginRefreshing()
 //        listener = DBService.firestoreDB
-//        .collection(EventsCollectionKeys.CollectionKey)
-//            .addSnapshotListener({ [weak self] ( createEvent, error ) in
+//            .collection(UsersCollectionKeys.CollectionKey)
+//            .document(user.uid)
+//            .collection(EventsCollectionKeys.CollectionKey)
+//            .addSnapshotListener({ [weak self] (snapshot, error) in
 //                if let error = error {
-//                    print("failed to fetch home state: \(error.localizedDescription)")
-//                } else if let createEvent = createEvent {
-//
+//                    print("failed to fetch events with error: \(error.localizedDescription)")
+//                } else if let snapshot = snapshot{
+//                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
+//                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
+//                }
+//                DispatchQueue.main.async {
+//                    self?.refreshControl.endRefreshing()
 //                }
 //            })
-//        if newUser == false {
-//            guard let user = authService.getCurrentUser() else {
-//                print("no user")
-//                return
-//            }
-//        homeView.delegate = self
-//            DBService.fetchUser(userId: user.uid) { (error, user) in
-//
-//            }
-//
-//        }
 //    }
+    
+    
+    
+    
+    
+    //    func fetchHomeState() {
+    //        refreshControl.beginRefreshing()
+    //        listener = DBService.firestoreDB
+    //        .collection(EventsCollectionKeys.CollectionKey)
+    //            .addSnapshotListener({ [weak self] ( createEvent, error ) in
+    //                if let error = error {
+    //                    print("failed to fetch home state: \(error.localizedDescription)")
+    //                } else if let createEvent = createEvent {
+    //
+    //                }
+    //            })
+    //        if newUser == false {
+    //            guard let user = authService.getCurrentUser() else {
+    //                print("no user")
+    //                return
+    //            }
+    //        homeView.delegate = self
+    //            DBService.fetchUser(userId: user.uid) { (error, user) in
+    //
+    //            }
+    //
+    //        }
+    //    }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
@@ -141,14 +169,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
     }
-
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventTableViewController()
         let event = filteredEvents[indexPath.row]
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
-
+        
         present(detailNav, animated: true)
     }
     
@@ -156,18 +184,26 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController: UserEventCollectionViewDelegate {
+    func segmentedEventsPressed() {
+        
+    }
+    
+    func pendingJoinEventPressed() {
+        
+    }
+    
     func segmentedUserEventsPressed() {
         let formatter = ISO8601DateFormatter()
         guard let pastEvent = formatter.date(from: self.currentDate) else { return }
         filteredEvents = events.filter {
             $0.endDate.date() > pastEvent
         }
-            
+        
         
     }
     
     func segmentedPastEventPressed() {
-         let formatter = ISO8601DateFormatter()
+        let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         filteredEvents =  events.filter {
             $0.endDate.date() < currentDate
@@ -186,8 +222,5 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     }
     
     
-
-}
-
-
     
+}

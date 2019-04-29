@@ -54,6 +54,7 @@ class CreateEditViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         
     }
+
     func editNumber(increase: Bool)-> String {
         if number != 0 && increase == false{
             number -= 1
@@ -153,6 +154,7 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+        
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
         let startDateString = ISO8601DateFormatter().string(from: startDate)
@@ -216,12 +218,20 @@ extension CreateEditViewController: CreateViewDelegate {
                                           trackingTime: self!.trackingTime,
                                           quickEvent: false,
                                           proximity: 0)
+                //post event to user
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
+                        DBService.postEventToUser(userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to user")
+                            }
+                        })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
@@ -230,13 +240,13 @@ extension CreateEditViewController: CreateViewDelegate {
                                 // Adding notification
                                 let startContent = UNMutableNotificationContent()
                                 
-                                startContent.title = NSString.localizedUserNotificationString(forKey: "Testing Beginning", arguments: nil)
-                                startContent.body = NSString.localizedUserNotificationString(forKey: "Event Starting", arguments: nil)
+                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
+                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
                                 startContent.sound = UNNotificationSound.default
                                 
                                 let endContent = UNMutableNotificationContent()
-                                endContent.title = NSString.localizedUserNotificationString(forKey: "Testing end", arguments: nil)
-                                endContent.body = NSString.localizedUserNotificationString(forKey: "Event Ending", arguments: nil)
+                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
+                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
                                 endContent.sound = UNNotificationSound.default
                                 let startDate = self?.selectedStartDate
                                 let calendar = Calendar.current
@@ -306,7 +316,27 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
         cell.friendName.text = friend.displayName
         cell.friendTask.tag = indexPath.row
         cell.friendTask.delegate = self
+        cell.friendTask.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
+
         return cell
+    }
+    @objc func didChangeText(textField:UITextField) {
+//        print(textField.tag)
+//        print(textField.text)
+        //for id key save text
+        guard let typedText = textField.text else {
+            print("unable to obtain task")
+            return
+            
+        }
+        for (key, value) in friendsDictionary {
+            
+            if textField.tag == key {
+                friendsDictionary[key] = typedText
+                
+            }
+        }
+        
     }
     
     
@@ -329,6 +359,7 @@ extension CreateEditViewController: InvitedViewControllerDelegate {
         var count = 0
         for friend in friends {
             friendsDictionary[count] = "No Task"
+            count += 1
         }
         print(friendsDictionary)
         
@@ -368,35 +399,43 @@ extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigatio
 }
 extension CreateEditViewController: CreateEditTableViewCellDelegate {
     func textDelegate() {
-        print("OKay")
+        print("Okay")
     }
     
     
 }
 extension CreateEditViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        print(textField.tag)
         textField.resignFirstResponder()
         //for id key save text
+        guard let typedText = textField.text else {return false}
         for (key, value) in friendsDictionary {
             
             if textField.tag == key {
-                friendsDictionary[key] = textField.text
+                friendsDictionary[key] = typedText
+                
             }
         }
         
         return true
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
-        print(textField.tag)
         textField.resignFirstResponder()
         //for id key save text
+        guard let typedText = textField.text else {
+            print("unable to obtain task")
+            return
+            
+        }
         for (key, value) in friendsDictionary {
             
             if textField.tag == key {
-                friendsDictionary[key] = textField.text
+                friendsDictionary[key] = typedText
+                
             }
         }
         
     }
+
+
 }

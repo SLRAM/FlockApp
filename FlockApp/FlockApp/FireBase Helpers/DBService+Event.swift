@@ -57,6 +57,45 @@ extension DBService {
                 }
         }
     }
+    static public func postEventToUser(userIds: [UserModel], event: Event, completion: @escaping (Error?) -> Void)  {
+        for userId in userIds {
+            fetchUser(userId: userId.userId) { (error, currentUser) in
+                if let error = error {
+                    print("failed to fetch friends with error: \(error.localizedDescription)")
+                } else if let currentUser = currentUser {
+                    firestoreDB.collection(UsersCollectionKeys.CollectionKey).document(userId.userId).collection(EventsCollectionKeys.CollectionKey).document(event.documentId).setData([
+                        EventsCollectionKeys.EventNameKey       : event.eventName,
+                        EventsCollectionKeys.CreatedDateKey     : event.createdDate,
+                        EventsCollectionKeys.StartDateKey       : event.startDate,
+                        EventsCollectionKeys.EndDateKey         : event.endDate,
+                        EventsCollectionKeys.UserIDKey          : event.userID,
+                        EventsCollectionKeys.EventDescriptionKey: event.eventDescription,
+                        EventsCollectionKeys.ImageURLKey        : event.imageURL,
+                        EventsCollectionKeys.DocumentIdKey      : event.documentId,
+                        EventsCollectionKeys.LocationStringKey  : event.locationString,
+                        EventsCollectionKeys.LocationLatKey     : event.locationLat,
+                        EventsCollectionKeys.LocationLongKey    : event.locationLong,
+                        EventsCollectionKeys.TrackingTimeKey    : event.trackingTime,
+                        EventsCollectionKeys.QuickEventKey      : event.quickEvent,
+                        EventsCollectionKeys.ProximityKey       : event.proximity,
+                        "confirmation"                          : false
+                        ])
+                    { (error) in
+                        if let error = error {
+                            print("adding friends error: \(error)")
+                            completion(error)
+                        } else {
+                            print("friends added successfully to ref: \(currentUser.userId)")
+                            completion(nil)
+                        }
+                    }
+                    
+                }
+            }
+        }
+
+    }
+
     static public func deleteEvent(event: Event, completion: @escaping (Error?) -> Void) {
         DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)

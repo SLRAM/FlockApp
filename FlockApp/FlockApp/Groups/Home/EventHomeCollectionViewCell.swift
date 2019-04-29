@@ -10,10 +10,14 @@ import CoreMotion
 
 class EventHomeCollectionViewCell: UICollectionViewCell {
     
+    //var homeView = HomeView()
+    
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         label.text = "Event #1"
-        label.backgroundColor = .white
+//        label.backgroundColor = .white
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+
         label.textColor = .black
         return label
     }()
@@ -21,7 +25,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        label.backgroundColor = .white
+//        label.backgroundColor = .white
+        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+
         label.textColor = .black
         return label
     }()
@@ -37,7 +43,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         let button = UIButton(type: UIButton.ButtonType.custom)
         let image = UIImage(named: "joinButton")
         button.frame = CGRect.init(x: 10, y: 20, width: 500, height: 500)
-        button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
+        //button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
         button.setImage(image, for: .normal)
         return button
     }()
@@ -49,6 +55,47 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         button.setImage(image, for: .normal)
         return button
     }()
+    
+    public lazy var invitedByLabel: UILabel = {
+        let label = UILabel()
+        return label
+    }()
+    
+    private let motionManager = CMMotionManager()
+    private weak var shadowView: UIView?
+    private static let kInnerMargin: CGFloat = 20.0
+    
+    private func configureShadowView(){
+        self.shadowView?.removeFromSuperview()
+        let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
+    }
+    
+//    public lazy var cellSegmentedView: UISegmentedControl = {
+//        let sv = homeView.segmentedControl
+//        sv.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+//        return sv
+//    }()
+//
+//    @objc func indexChanged(_ sender: UISegmentedControl) {
+//        switch sender.selectedSegmentIndex{
+//        case 2:
+//            print("Pending pressed")
+//            joinEventButton.isEnabled = true
+//            joinEventButton.isHidden = false
+//            eventImage.isHidden = true
+//
+//        default:
+//            break
+//        }
+//    }
+    
+//    
+//    func setupPendingJoinEvents(){
+//        addSubview(cellSegmentedView)
+//        cellSegmentedView.translatesAutoresizingMaskIntoConstraints = false
+//        
+//    }
+    
     
     
     func setupEventLabel(){
@@ -73,8 +120,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupImage(){
         addSubview(eventImage)
         eventImage.translatesAutoresizingMaskIntoConstraints = false
-        //eventImage.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 0).isActive = true
-        //eventImage.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
         eventImage.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 1).isActive = true
         eventImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10).isActive = true
@@ -102,11 +147,11 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-       // setupJoinButton()
+        setupJoinButton()
         setupImage()
         setupEventLabel()
         setupEventDay()
-        
+        //setupPendingJoinEvents()
         
         
     }

@@ -40,10 +40,18 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
     }
     
     func didSignInToExistingAccount(_ authservice: AuthService, user: User) {
-        let homeViewController = HomeViewController()
-        homeViewController.modalTransitionStyle = .crossDissolve
-        homeViewController.modalPresentationStyle = .overFullScreen
-        present(homeViewController, animated: true)
+//        let homeViewController = HomeViewController()
+//        homeViewController.modalTransitionStyle = .crossDissolve
+//        homeViewController.modalPresentationStyle = .overFullScreen
+//        present(homeViewController, animated: true)
+        let mainTabBarController = TabBarController()
+//        mainTabBarController.modalTransitionStyle = .crossDissolve
+//        mainTabBarController.modalPresentationStyle = .overFullScreen
+        UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+        UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+        UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+        UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+        present(mainTabBarController, animated: true)
     }
 }
 extension LoginViewController: UITextFieldDelegate {
