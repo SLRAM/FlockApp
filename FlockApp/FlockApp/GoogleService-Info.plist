@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>852053973926-1nfsp79805ujcdct91afu7ol07mc5tbv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.852053973926-1nfsp79805ujcdct91afu7ol07mc5tbv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCqyYUXnxxqBroFTnIwqNbyvsP7elD47qs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>852053973926</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.flockapp.pursuit</string>
+	<key>PROJECT_ID</key>
+	<string>flock-ca5ff</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flock-ca5ff.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:852053973926:ios:dbb8130d85ac8a0b</string>
+	<key>DATABASE_URL</key>
+	<string>https://flock-ca5ff.firebaseio.com</string>
+</dict>
+</plist>
