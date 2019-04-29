@@ -33,7 +33,6 @@
 		97025F992257EA1100273C91 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F972257EA1100273C91 /* Main.storyboard */; };
 		97025F9B2257EA1200273C91 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97025F9A2257EA1200273C91 /* Assets.xcassets */; };
 		97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97025F9C2257EA1200273C91 /* LaunchScreen.storyboard */; };
-		97025FA62257EB6E00273C91 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97025FA52257EB6D00273C91 /* GoogleService-Info.plist */; };
 		97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025FA82257F16E00273C91 /* IBADesignablesViews.swift */; };
 		97802CBA225CF527007D480D /* LoginView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97802CB9225CF527007D480D /* LoginView.storyboard */; };
 		97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802CBC225CF5D3007D480D /* LoginViewController.swift */; };
@@ -106,7 +105,6 @@
 		97025F9A2257EA1200273C91 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		97025F9D2257EA1200273C91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		97025F9F2257EA1200273C91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97025FA52257EB6D00273C91 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97025FA82257F16E00273C91 /* IBADesignablesViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBADesignablesViews.swift; sourceTree = "<group>"; };
 		97802CB9225CF527007D480D /* LoginView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginView.storyboard; sourceTree = "<group>"; };
 		97802CBC225CF5D3007D480D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -257,7 +255,6 @@
 				97025F9A2257EA1200273C91 /* Assets.xcassets */,
 				97025F9C2257EA1200273C91 /* LaunchScreen.storyboard */,
 				97025F9F2257EA1200273C91 /* Info.plist */,
-				97025FA52257EB6D00273C91 /* GoogleService-Info.plist */,
 			);
 			path = FlockApp;
 			sourceTree = "<group>";
@@ -551,7 +548,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */,
-				97025FA62257EB6E00273C91 /* GoogleService-Info.plist in Resources */,
 				97025F9B2257EA1200273C91 /* Assets.xcassets in Resources */,
 				97025F992257EA1100273C91 /* Main.storyboard in Resources */,
 				97802CBA225CF527007D480D /* LoginView.storyboard in Resources */,
@@ -865,14 +861,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PLXRGQY243;
-				DEVELOPMENT_TEAM = FSUP887MQU;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = FlockAppap;
+				PRODUCT_BUNDLE_IDENTIFIER = FlockAppa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -886,14 +881,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PLXRGQY243;
-				DEVELOPMENT_TEAM = FSUP887MQU;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = FlockAppap;
+				PRODUCT_BUNDLE_IDENTIFIER = FlockAppa;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

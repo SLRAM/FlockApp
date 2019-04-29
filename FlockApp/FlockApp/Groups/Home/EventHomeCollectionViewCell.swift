@@ -68,6 +68,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     private func configureShadowView(){
         self.shadowView?.removeFromSuperview()
         let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
+        insertSubview(shadowView, at: 0)
+        self.shadowView = shadowView
     }
     
 //    public lazy var cellSegmentedView: UISegmentedControl = {
