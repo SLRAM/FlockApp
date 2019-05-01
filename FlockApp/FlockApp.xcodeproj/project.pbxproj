@@ -258,6 +258,7 @@
 				97025F9C2257EA1200273C91 /* LaunchScreen.storyboard */,
 				97025F9F2257EA1200273C91 /* Info.plist */,
 				97E433442277500A00BC519C /* GoogleService-Info.plist */,
+
 			);
 			path = FlockApp;
 			sourceTree = "<group>";
@@ -864,6 +865,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PLXRGQY243;
 				DEVELOPMENT_TEAM = FSUP887MQU;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -871,6 +873,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = FlockAppa;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flock.pursuit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
@@ -884,6 +887,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = PLXRGQY243;
 				DEVELOPMENT_TEAM = FSUP887MQU;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -891,6 +895,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = FlockAppa;
 				PRODUCT_BUNDLE_IDENTIFIER = com.flock.pursuit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
