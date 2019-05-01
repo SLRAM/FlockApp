@@ -225,7 +225,7 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.postEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                        DBService.postPendingEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
                             } else {
