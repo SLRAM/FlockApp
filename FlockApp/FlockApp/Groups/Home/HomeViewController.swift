@@ -25,24 +25,9 @@ class HomeViewController: UIViewController {
         rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
         return rc
     }()
-    var events = [Event]() {
-        didSet {
-            DispatchQueue.main.async {
-                
-                
-//               call filtered events here
-                
-                
-                
-//              self.filteredEvents = self.events
-                //self.segmentedPastEventPressed()
-               
-//             print(self.events)
-                
-            }
-            
-        }
-    }
+    var pendingEvents = [Event]()
+    var acceptedEvents = [Event]()
+
     
     var filteredEvents  = [Event](){
         didSet{
@@ -84,13 +69,17 @@ class HomeViewController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 0:
             print("Current Events")
-            
+            homeView.delegate?.segmentedEventsPressed()
             homeView.cellView.joinEventButton.isHidden = true
         case 1:
             print("Past Event")
+            homeView.delegate?.segmentedPastEventPressed()
+
             homeView.cellView.joinEventButton.isHidden = true
         case 2:
             print("Join Event")
+            homeView.delegate?.pendingJoinEventPressed()
+
             homeView.cellView.startDateLabel.isHidden = false
             homeView.cellView.joinEventButton.isEnabled = true
             homeView.cellView.joinEventButton.isHidden = false
@@ -117,12 +106,12 @@ class HomeViewController: UIViewController {
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
-            .collection(EventsCollectionKeys.CollectionKey)
+            .collection(EventsCollectionKeys.EventPendingKey)
             .addSnapshotListener({ [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
-                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
+                    self?.pendingEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
@@ -229,7 +218,8 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     func segmentedEventsPressed() {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
-        filteredEvents =  events.filter {
+        //this should be events that you've accepted
+        filteredEvents =  pendingEvents.filter {
             $0.endDate.date() > currentDate
         }
     }
@@ -237,13 +227,17 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     func segmentedPastEventPressed() {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
-        filteredEvents =  events.filter {
+        filteredEvents =  pendingEvents.filter {
             $0.endDate.date() < currentDate
         }
     }
     
     func pendingJoinEventPressed() {
-        
+        let formatter = ISO8601DateFormatter()
+        guard let currentDate = formatter.date(from: self.currentDate) else { return }
+        filteredEvents =  pendingEvents.filter {
+            $0.endDate.date() > currentDate
+        }
     }
     
     

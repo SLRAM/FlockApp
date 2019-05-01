@@ -62,20 +62,20 @@ extension DBService {
         }
     }
     static public func postPendingEventToUser(user: User, userIds: [UserModel], event: Event, completion: @escaping (Error?) -> Void)  {
-        var usersIds = [String]()
-        usersIds.append(user.uid)
+//        var usersIds = [String]()
+//        usersIds.append(user.uid)
+//        for userId in userIds {
+//            usersIds.append(userId.userId)
+//        }
+        
+        
         for userId in userIds {
-            usersIds.append(userId.userId)
-        }
-        
-        
-        for userId in usersIds {
-            fetchUser(userId: userId) { (error, currentUser) in
+            fetchUser(userId: userId.userId) { (error, currentUser) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let currentUser = currentUser {
                     firestoreDB.collection(UsersCollectionKeys.CollectionKey)
-                        .document(userId)
+                        .document(userId.userId)
                         .collection(EventsCollectionKeys.EventPendingKey)
                         .document(event.documentId)
                         .setData([
@@ -109,19 +109,14 @@ extension DBService {
         }
 
     }
-    static public func postAcceptedEventToUser(user: User, userIds: [UserModel], event: Event, completion: @escaping (Error?) -> Void)  {
-        var usersIds = [String]()
-        usersIds.append(user.uid)
-        for userId in userIds {
-            usersIds.append(userId.userId)
-        }
-        for userId in usersIds {
-            fetchUser(userId: userId) { (error, currentUser) in
+    static public func postAcceptedEventToUser(user: User, event: Event, completion: @escaping (Error?) -> Void)  {
+
+            fetchUser(userId: user.uid) { (error, currentUser) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let currentUser = currentUser {
                     firestoreDB.collection(UsersCollectionKeys.CollectionKey)
-                        .document(userId)
+                        .document(user.uid)
                         .collection(EventsCollectionKeys.EventAcceptedKey)
                         .document(event.documentId)
                         .setData([
@@ -152,7 +147,7 @@ extension DBService {
                     
                 }
             }
-        }
+        
         
         
     }

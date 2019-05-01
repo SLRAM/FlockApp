@@ -227,9 +227,16 @@ extension CreateEditViewController: CreateViewDelegate {
                         //function that takes array and turns to dictionary
                         DBService.postPendingEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
                             if let error = error {
-                                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                                self?.showAlert(title: "Posting Event To Guest Pending Error", message: error.localizedDescription)
                             } else {
-                                print("posted to user")
+                                print("posted to guest pending")
+                            }
+                        })
+                        DBService.postAcceptedEventToUser(user: user, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event To Host Accepted Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to host accepted")
                             }
                         })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
