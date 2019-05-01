@@ -63,7 +63,7 @@ class HomeView: UIView {
         segmentedControl.layer.borderWidth = 0.1
         //segmentedControl.layer.opacity = 0.3
         segmentedControl.layer.backgroundColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.9568627451, alpha: 1)
-        segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        //segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         return segmentedControl
     }()
     
@@ -92,16 +92,16 @@ class HomeView: UIView {
     
     
     
-    lazy var myView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
-    lazy var myViewTwo: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        return view
-    }()
+//    lazy var myView: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = .white
+//        return view
+//    }()
+//    lazy var myViewTwo: UIView = {
+//        let view = UIView()
+//        view.backgroundColor = .white
+//        return view
+//    }()
     
     
         override init(frame: CGRect) {
@@ -175,30 +175,30 @@ class HomeView: UIView {
     }
 
     
-       @objc func indexChanged(_ sender: UISegmentedControl){
-        switch sender.selectedSegmentIndex {
-        case 0:
-            print("Current Events")
-            delegate?.segmentedEventsPressed()
-            cellView.joinEventButton.isHidden = true
-        case 1:
-            print("Past Event")
-            delegate?.segmentedPastEventPressed()
-            cellView.joinEventButton.isHidden = true
-        case 2:
-            print("Join Event")
-            delegate?.pendingJoinEventPressed()
-            //cellView.startDateLabel.isHidden = false
-            cellView.joinEventButton.isEnabled = true
-            cellView.joinEventButton.isHidden = false
-            //cellView.eventImage.isHidden = true
-            //cellView.eventLabel.isHidden = true
-    
-            
-        default:
-            break
-        }
-    }
+//       @objc func indexChanged(_ sender: UISegmentedControl){
+//        switch sender.selectedSegmentIndex {
+//        case 0:
+//            print("Current Events")
+//            delegate?.segmentedEventsPressed()
+//            cellView.joinEventButton.isHidden = true
+//        case 1:
+//            print("Past Event")
+//            delegate?.segmentedPastEventPressed()
+//            cellView.joinEventButton.isHidden = true
+//        case 2:
+//            print("Join Event")
+//            delegate?.pendingJoinEventPressed()
+//            //cellView.startDateLabel.isHidden = false
+//            cellView.joinEventButton.isEnabled = true
+//            cellView.joinEventButton.isHidden = false
+//            //cellView.eventImage.isHidden = true
+//            //cellView.eventLabel.isHidden = true
+//    
+//            
+//        default:
+//            break
+//        }
+//    }
     
     }
 

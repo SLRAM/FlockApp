@@ -17,11 +17,19 @@ class HomeViewController: UIViewController {
     var homeView = HomeView()
     var currentDate = Date.getISOTimestamp()
     var newUser = false
-    
-    
+    private var listener: ListenerRegistration!
+    private var authService = AppDelegate.authservice
+    private lazy var refreshControl: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        homeView.usersCollectionView.refreshControl = rc
+        rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
+        return rc
+    }()
     var events = [Event]() {
         didSet {
             DispatchQueue.main.async {
+                
+                
 //               call filtered events here
                 
                 
@@ -57,6 +65,7 @@ class HomeViewController: UIViewController {
         homeView.delegate = self
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+        homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
     }
     
     
@@ -71,14 +80,30 @@ class HomeViewController: UIViewController {
         present (joinVC, animated: true)
     }
     
-    private var listener: ListenerRegistration!
-    private var authService = AppDelegate.authservice
-    private lazy var refreshControl: UIRefreshControl = {
-        let rc = UIRefreshControl()
-        homeView.usersCollectionView.refreshControl = rc
-        rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
-        return rc
-    }()
+    @objc func indexChanged(_ sender: UISegmentedControl){
+        switch sender.selectedSegmentIndex {
+        case 0:
+            print("Current Events")
+            
+            homeView.cellView.joinEventButton.isHidden = true
+        case 1:
+            print("Past Event")
+            homeView.cellView.joinEventButton.isHidden = true
+        case 2:
+            print("Join Event")
+            homeView.cellView.startDateLabel.isHidden = false
+            homeView.cellView.joinEventButton.isEnabled = true
+            homeView.cellView.joinEventButton.isHidden = false
+            homeView.cellView.eventImage.isHidden = true
+            homeView.cellView.eventLabel.isHidden = true
+    
+            
+        default:
+            break
+        }
+    }
+
+  
     
     
 //    use this for filtering
@@ -183,6 +208,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
         //add segmented control function here
+        
     }
     
     
