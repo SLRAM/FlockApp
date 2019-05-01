@@ -17,7 +17,9 @@ class HomeViewController: UIViewController {
     var homeView = HomeView()
     var currentDate = Date.getISOTimestamp()
     var newUser = false
-    private var listener: ListenerRegistration!
+    private var pendingEventListener: ListenerRegistration!
+    private var acceptedEventListener: ListenerRegistration!
+
     private var authService = AppDelegate.authservice
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
@@ -28,8 +30,22 @@ class HomeViewController: UIViewController {
     var pendingEvents = [Event]()
     var acceptedEvents = [Event]()
 
-    
-    var filteredEvents  = [Event](){
+    var tag = 0
+    var filteredPendingEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    var filteredAcceptedEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    var filteredPastEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
@@ -42,15 +58,24 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
+
         homeView.usersCollectionView.dataSource = self
         homeView.usersCollectionView.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
         fetchEvents()
+        homeView.segmentedControl.selectedSegmentIndex = 0
+
         homeView.delegate = self
+
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+        
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        
+        indexChanged(homeView.segmentedControl)
+//        homeView.segmentedControl.selectedSegmentIndex = 0
+
     }
     
     
@@ -69,15 +94,22 @@ class HomeViewController: UIViewController {
         switch sender.selectedSegmentIndex {
         case 0:
             print("Current Events")
+            tag = 0
+
             homeView.delegate?.segmentedEventsPressed()
+            
             homeView.cellView.joinEventButton.isHidden = true
         case 1:
             print("Past Event")
+            tag = 1
+
             homeView.delegate?.segmentedPastEventPressed()
 
             homeView.cellView.joinEventButton.isHidden = true
         case 2:
             print("Join Event")
+            tag = 2
+
             homeView.delegate?.pendingJoinEventPressed()
 
             homeView.cellView.startDateLabel.isHidden = false
@@ -103,7 +135,7 @@ class HomeViewController: UIViewController {
             return
         }
         refreshControl.beginRefreshing()
-        listener = DBService.firestoreDB
+        pendingEventListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
             .collection(EventsCollectionKeys.EventPendingKey)
@@ -111,6 +143,7 @@ class HomeViewController: UIViewController {
                 if let error = error {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
+                    
                     self?.pendingEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
@@ -118,10 +151,23 @@ class HomeViewController: UIViewController {
                     self?.refreshControl.endRefreshing()
                 }
             })
-    }
-    
-    func fetchFilteredEvents() {
-        
+        acceptedEventListener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(EventsCollectionKeys.EventAcceptedKey)
+            .addSnapshotListener({ [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch events with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot{
+                    
+                    
+                    self?.acceptedEvents = snapshot.documents.map{Event(dict: $0.data()) }
+                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                }
+                DispatchQueue.main.async {
+                    self?.refreshControl.endRefreshing()
+                }
+            })
     }
     
     //use this for filtering
@@ -180,7 +226,19 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredEvents.count
+        switch tag {
+        case 0:
+            return filteredAcceptedEvents.count
+
+        case 1:
+            return filteredPastEvents.count
+
+        case 2:
+            return filteredPendingEvents.count
+
+        default:
+            return 0
+        }
         
     }
     
@@ -188,7 +246,24 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let eventToSet = filteredEvents[indexPath.row]
+        var eventToSet = Event()
+        
+        switch tag {
+        case 0:
+            eventToSet = filteredAcceptedEvents[indexPath.row]
+
+            
+        case 1:
+            eventToSet = filteredPastEvents[indexPath.row]
+
+            
+        case 2:
+            eventToSet = filteredPendingEvents[indexPath.row]
+
+            
+        default:
+            print("you good fam")
+        }
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -196,6 +271,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
+        
+        
+        
+        
+        
+        
+        
+
         //add segmented control function here
         
     }
@@ -203,7 +286,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventTableViewController()
-        let event = filteredEvents[indexPath.row]
+        let event = filteredPendingEvents[indexPath.row]
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
         
@@ -219,7 +302,7 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
         //this should be events that you've accepted
-        filteredEvents =  pendingEvents.filter {
+        filteredAcceptedEvents =  acceptedEvents.filter {
             $0.endDate.date() > currentDate
         }
     }
@@ -227,7 +310,7 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     func segmentedPastEventPressed() {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
-        filteredEvents =  pendingEvents.filter {
+        filteredPastEvents =  acceptedEvents.filter {
             $0.endDate.date() < currentDate
         }
     }
@@ -235,7 +318,7 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     func pendingJoinEventPressed() {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
-        filteredEvents =  pendingEvents.filter {
+        filteredPendingEvents =  pendingEvents.filter {
             $0.endDate.date() > currentDate
         }
     }

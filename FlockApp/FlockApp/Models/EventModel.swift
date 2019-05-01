@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Event {
+class Event {
     let eventName: String
     let createdDate: String
     let userID: String
@@ -39,6 +39,10 @@ struct Event {
         self.trackingTime = trackingTime
         self.quickEvent = quickEvent
         self.proximity = proximity
+    }
+    
+    convenience init() {
+        self.init(eventName: "", createdDate: Date.getISOTimestamp(), userID: "", imageURL: "", eventDescription: "", documentId: "", startDate: "", endDate: "", locationString: "", locationLat: -1, locationLong: -1, trackingTime: 0, quickEvent: false, proximity: 0.0)
     }
     
     init(dict: [String: Any]) {
