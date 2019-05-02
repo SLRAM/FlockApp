@@ -28,8 +28,6 @@ class CreateEditViewController: UIViewController {
     var trackingTime = 0
     private var selectedImage: UIImage?
     
-
-    
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
@@ -42,7 +40,7 @@ class CreateEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
-        navigationItem.title = "Create"
+        navigationItem.title = "Create Event"
 
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self

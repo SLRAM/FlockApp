@@ -41,38 +41,34 @@ class EventTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
         fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
-        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
-        
+        //if !quick event then add target
         guard let unwrappedEvent = event else {return}
-        guard let eventLat = event?.locationLat,
-            let eventLong = event?.locationLong,
-            let eventName = event?.eventName else {
-                print("unable to locate event")
-                return
+
+        if isQuickEvent(eventType: unwrappedEvent) {
+            quickEventMap(unwrappedEvent: unwrappedEvent)
+        } else {
+            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
-        
+
+
+    }
+    func standardEventMap(unwrappedEvent: Event) {
+        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        let eventLat = unwrappedEvent.locationLat
+        let eventLong = unwrappedEvent.locationLong
+        let eventName = unwrappedEvent.eventName
         let eventAddress = unwrappedEvent.locationString
-        //        let eventTracking = unwrappedEvent.startDate
-//                        let date = unwrappedEvent.startDate
-//                        let formatter = ISO8601DateFormatter()
-//                        formatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime]
-//                        let str = formatter.string(from: date)
-//                        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-//                        eventView.eventDate.text = formattedDate
         let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
-        eventView.eventDate.text = startDate
-        
-        
-        
-        
+        let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        eventView.eventDate.text = "\(startDate) to \(endDate)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
-        
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
         let marker = GMSMarker.init()
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
@@ -82,9 +78,35 @@ class EventTableViewController: UITableViewController {
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 12.0)
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
-
     }
-    
+    func quickEventMap(unwrappedEvent: Event){
+        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        let eventLat = unwrappedEvent.locationLat
+        let eventLong = unwrappedEvent.locationLong
+        let eventName = unwrappedEvent.eventName
+        let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        eventView.eventDate.text = "\(startDate) to \(endDate)"
+        eventView.eventAddress.text = "Starting Location"
+        eventView.delegate = self
+        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        let marker = GMSMarker.init()
+        marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+        marker.title = eventName
+        marker.map = eventView.myMapView
+        let position = marker.position
+        let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 18)
+        //THIS LINE IS WHAT CENTERS THE MARKER.
+        eventView.myMapView.camera = camera
+        
+    }
+    func isQuickEvent(eventType: Event) -> Bool {
+        if eventType.eventName == "Quick Event" {
+            return true
+        } else {
+            return false
+        }
+    }
 
     
     func fetchInvites() {
@@ -103,7 +125,6 @@ class EventTableViewController: UITableViewController {
                     self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
                 }
-                
         }
     }
     
@@ -111,15 +132,11 @@ class EventTableViewController: UITableViewController {
         @objc func mapPressed() {
             print("map pressed")
             let detailVC = MapViewController()
-    //        detailVC.delegate = self
             detailVC.event = event
             navigationController?.pushViewController(detailVC, animated: true)
         }
     
         @objc func getDirections() {
-//            let detailVC = DirectionsViewController()
-//            detailVC.event = event
-//            navigationController?.pushViewController(detailVC, animated: true)
             guard let eventLat = self.event?.locationLat,
                 let eventLong = self.event?.locationLong else {return}
             let coordinate = CLLocationCoordinate2DMake(eventLat,eventLong)
