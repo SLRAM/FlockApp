@@ -76,6 +76,7 @@
 		97E43341227200B900BC519C /* QuickEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43340227200B900BC519C /* QuickEventView.swift */; };
 		97E433452277500A00BC519C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97E433442277500A00BC519C /* GoogleService-Info.plist */; };
 		97E4334A227B5AE100BC519C /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43349227B5AE100BC519C /* SelectionViewController.swift */; };
+		97E4334C227B5D4000BC519C /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4334B227B5D3F00BC519C /* SelectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -150,6 +151,7 @@
 		97E43340227200B900BC519C /* QuickEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEventView.swift; sourceTree = "<group>"; };
 		97E433442277500A00BC519C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97E43349227B5AE100BC519C /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
+		97E4334B227B5D3F00BC519C /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -481,6 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				97E43349227B5AE100BC519C /* SelectionViewController.swift */,
+				97E4334B227B5D3F00BC519C /* SelectionView.swift */,
 			);
 			path = Selection;
 			sourceTree = "<group>";
@@ -711,6 +714,7 @@
 				939C62DC225E6C4000F93D76 /* DBService+Event.swift in Sources */,
 				97AD142222650EA800C2E3F7 /* DBService+Invited.swift in Sources */,
 				93D103F6225FD6060038C6AA /* ProfileView.swift in Sources */,
+				97E4334C227B5D4000BC519C /* SelectionView.swift in Sources */,
 				97802CC9225CF658007D480D /* StorageService.swift in Sources */,
 				97E4333F227200A700BC519C /* QuickEventViewController.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
