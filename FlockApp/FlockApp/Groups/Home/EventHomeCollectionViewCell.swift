@@ -40,11 +40,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var joinEventButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        let image = UIImage(named: "joinButton")
-        button.frame = CGRect.init(x: 10, y: 20, width: 500, height: 500)
-        //button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
-        button.setImage(image, for: .normal)
+        let button = UIButton()
+        button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
         return button
     }()
     
@@ -68,6 +65,31 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     private func configureShadowView(){
         self.shadowView?.removeFromSuperview()
         let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
+        insertSubview(shadowView, at: 0)
+        self.shadowView = shadowView
+
+        if motionManager.isDeviceMotionActive {
+            motionManager.deviceMotionUpdateInterval = 0.02
+            motionManager.startDeviceMotionUpdates(to: .main, withHandler: { (motion, error) in
+                if let motion = motion {
+                    let pitch = motion.attitude.pitch * 10
+                    let roll = motion.attitude.roll * 10
+                    self.applyShadow(width: CGFloat(roll), height: CGFloat(pitch))
+                }
+            })
+        }
+    }
+    
+    func applyShadow(width: CGFloat, height: CGFloat) {
+        if let shadowView = shadowView {
+            let shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: 14.0)
+            shadowView.layer.masksToBounds = false
+            shadowView.layer.shadowRadius = 8.0
+            shadowView.layer.shadowColor = UIColor.black.cgColor
+            shadowView.layer.shadowOffset = CGSize(width: width, height: height)
+            shadowView.layer.shadowOpacity = 0.35
+            shadowView.layer.shadowPath = shadowPath.cgPath
+        }
     }
     
 //    public lazy var cellSegmentedView: UISegmentedControl = {
@@ -151,6 +173,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         setupImage()
         setupEventLabel()
         setupEventDay()
+        configureShadowView()
         //setupPendingJoinEvents()
         
         

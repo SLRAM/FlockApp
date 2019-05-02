@@ -15,63 +15,12 @@ class HomeViewController: UIViewController {
     
     
     var homeView = HomeView()
-    
     var currentDate = Date.getISOTimestamp()
-    
     var newUser = false
-    
-    
-    var events = [Event]() {
-        didSet {
-            DispatchQueue.main.async {
-                self.segmentedUserEventsPressed()
-                
-            }
-            
-        }
-    }
-    
-    var filteredEvents  = [Event](){
-        didSet{
-            DispatchQueue.main.async {
-                self.homeView.usersCollectionView.reloadData()
-            }
-        }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.addSubview(homeView)
-        view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
-        homeView.usersCollectionView.dataSource = self
-        homeView.usersCollectionView.delegate = self
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
-        title = "Home"
-        
-        fetchEvents()
-        homeView.delegate = self
-        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
-        homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
-        
-        
-        
-    }
-    
-    
-    
-    @objc func showCreateEditEvent() {
-        let createEditVC = CreateEditViewController()
-        let createNav = UINavigationController.init(rootViewController: createEditVC)
-        present(createNav, animated: true)
-    }
-    @objc func showJoinEvent(){
-        let joinVC = JoinViewController()
-        joinVC.modalPresentationStyle = .overFullScreen
-        present (joinVC, animated: true)
-    }
-    
-    private var listener: ListenerRegistration!
+    private var pendingEventListener: ListenerRegistration!
+    private var acceptedEventListener: ListenerRegistration!
     private var authService = AppDelegate.authservice
+    
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
         homeView.usersCollectionView.refreshControl = rc
@@ -79,79 +28,193 @@ class HomeViewController: UIViewController {
         return rc
     }()
     
+    var pendingEvents = [Event]()
+    var acceptedEvents = [Event]()
+
+    var tag = 0
+    
+    var filteredAcceptedEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    
+    var filteredPastEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    
+    
+    var filteredPendingEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    
+   
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(homeView)
+        view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
+        fetchEvents()
+
+//        homeView.usersCollectionView.dataSource = self
+//        homeView.usersCollectionView.delegate = self
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
+        title = "Home"
+        homeView.segmentedControl.selectedSegmentIndex = 0
+//        homeView.segmentedControl.isEnabledForSegment(at: 0)
+
+        homeView.delegate = self
+
+        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+        
+        homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        
+        indexChanged(homeView.segmentedControl)
+//        homeView.segmentedControl.selectedSegmentIndex = 0
+
+    }
+    
+    
+    @objc func showCreateEditEvent() {
+        
+        let optionMenu = UIAlertController(title: nil, message: "Create:", preferredStyle: .actionSheet)
+        let  eventAction = UIAlertAction(title: "Event", style: .default, handler: { (action) -> Void in
+            let createEditVC = CreateEditViewController()
+            let createNav = UINavigationController.init(rootViewController: createEditVC)
+            self.present(createNav, animated: true)
+        })
+        let  quickEventAction = UIAlertAction(title: "Quick Event", style: .default, handler: { (action) -> Void in
+            
+            let quickEditVC = QuickEventViewController()
+            let createNav = UINavigationController.init(rootViewController: quickEditVC)
+            self.present(createNav, animated: true)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        optionMenu.addAction(eventAction)
+        optionMenu.addAction(quickEventAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+
+  
+    }
+    @objc func showJoinEvent(){
+        let joinVC = JoinViewController()
+        joinVC.modalPresentationStyle = .overFullScreen
+        present (joinVC, animated: true)
+    }
+    
+    @objc func indexChanged(_ sender: UISegmentedControl){
+        switch sender.selectedSegmentIndex {
+        case 0:
+            print("Current Events")
+            tag = 0
+
+            homeView.delegate?.segmentedEventsPressed()
+
+        case 1:
+            print("Past Event")
+            tag = 1
+
+            homeView.delegate?.segmentedPastEventPressed()
+
+        case 2:
+            print("Join Event")
+            tag = 2
+
+            homeView.delegate?.pendingJoinEventPressed()
+
+    
+            
+        default:
+            break
+        }
+    }
+
     @objc func fetchEvents(){
+        
+        guard let user = authService.getCurrentUser() else {
+            print("no logged user")
+            return
+        }
+        
         refreshControl.beginRefreshing()
-        listener = DBService.firestoreDB
-            .collection(EventsCollectionKeys.CollectionKey)
+        pendingEventListener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(EventsCollectionKeys.EventPendingKey)
             .addSnapshotListener({ [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch events with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot{
-                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
+                    
+                    self?.pendingEvents = snapshot.documents.map{Event(dict: $0.data()) }
+                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                }
+                DispatchQueue.main.async {
+                //self!.homeView.delegate?.pendingJoinEventPressed()
+                    self?.refreshControl.endRefreshing()
+                }
+            })
+        acceptedEventListener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.uid)
+            .collection(EventsCollectionKeys.EventAcceptedKey)
+            .addSnapshotListener({ [weak self] (snapshot, error) in
+                if let error = error {
+                    print("failed to fetch events with error: \(error.localizedDescription)")
+                } else if let snapshot = snapshot{
+                    
+                    
+                    self?.acceptedEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                     
                 }
                 DispatchQueue.main.async {
+//                    self!.homeView.segmentedControl.selectedSegmentIndex = 0
+//                    self!.homeView.segmentedControl.isEnabledForSegment(at: 0)
+                    self!.homeView.delegate?.segmentedEventsPressed()
+
+                    
+                    self!.homeView.usersCollectionView.dataSource = self
+                    self!.homeView.usersCollectionView.delegate = self
+                    
                     self?.refreshControl.endRefreshing()
                 }
             })
     }
-    //use this for filtering
-//    @objc func fetchUserEvents(){
-//        guard let user = authService.getCurrentUser() else {
-//            print("no logged user")
-//            return
-//        }
-//        refreshControl.beginRefreshing()
-//        listener = DBService.firestoreDB
-//            .collection(UsersCollectionKeys.CollectionKey)
-//            .document(user.uid)
-//            .collection(EventsCollectionKeys.CollectionKey)
-//            .addSnapshotListener({ [weak self] (snapshot, error) in
-//                if let error = error {
-//                    print("failed to fetch events with error: \(error.localizedDescription)")
-//                } else if let snapshot = snapshot{
-//                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
-//                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
-//                }
-//                DispatchQueue.main.async {
-//                    self?.refreshControl.endRefreshing()
-//                }
-//            })
-//    }
+    
+ 
     
     
-    
-    
-    
-    //    func fetchHomeState() {
-    //        refreshControl.beginRefreshing()
-    //        listener = DBService.firestoreDB
-    //        .collection(EventsCollectionKeys.CollectionKey)
-    //            .addSnapshotListener({ [weak self] ( createEvent, error ) in
-    //                if let error = error {
-    //                    print("failed to fetch home state: \(error.localizedDescription)")
-    //                } else if let createEvent = createEvent {
-    //
-    //                }
-    //            })
-    //        if newUser == false {
-    //            guard let user = authService.getCurrentUser() else {
-    //                print("no user")
-    //                return
-    //            }
-    //        homeView.delegate = self
-    //            DBService.fetchUser(userId: user.uid) { (error, user) in
-    //
-    //            }
-    //
-    //        }
-    //    }
 }
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredEvents.count
+        
+        switch tag {
+        case 0:
+            return filteredAcceptedEvents.count
+            
+        case 1:
+            return filteredPastEvents.count
+
+        case 2:
+            return filteredPendingEvents.count
+
+        default:
+            return 0
+        }
         
     }
     
@@ -159,67 +222,103 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
         }
-        let eventToSet = filteredEvents[indexPath.row]
+        var eventToSet = Event()
+        
+        switch tag {
+        case 0:
+            eventToSet = filteredAcceptedEvents[indexPath.row]
+            collectionViewCell.joinEventButton.isHidden = true
+            
+        case 1:
+            eventToSet = filteredPastEvents[indexPath.row]
+            collectionViewCell.joinEventButton.isHidden = true
+
+            
+        case 2:
+            eventToSet = filteredPendingEvents[indexPath.row]
+            collectionViewCell.joinEventButton.isHidden = false
+            collectionViewCell.joinEventButton.isEnabled = true
+            collectionViewCell.joinEventButton.layer.cornerRadius = 50
+            
+        default:
+            print("you good fam")
+        }
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
-        //collectionViewCell.layer.cornerRadius = 14
         collectionViewCell.eventImage.alpha = 0.8
         return collectionViewCell
+        
+        
+        
+        
+        
+        
+        
+
+        //add segmented control function here
+        
     }
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventTableViewController()
-        let event = filteredEvents[indexPath.row]
+        var event = Event()
+
+        switch tag {
+        case 0:
+            event = filteredAcceptedEvents[indexPath.row]
+            
+            
+        case 1:
+            event = filteredPastEvents[indexPath.row]
+            
+            
+        case 2:
+            event = filteredPendingEvents[indexPath.row]
+            
+            
+        default:
+            print("you good fam")
+        }
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
         
         present(detailNav, animated: true)
     }
     
-    
 }
 
+
 extension HomeViewController: UserEventCollectionViewDelegate {
+    
     func segmentedEventsPressed() {
-        
-    }
-    
-    func pendingJoinEventPressed() {
-        
-    }
-    
-    func segmentedUserEventsPressed() {
         let formatter = ISO8601DateFormatter()
-        guard let pastEvent = formatter.date(from: self.currentDate) else { return }
-        filteredEvents = events.filter {
-            $0.endDate.date() > pastEvent
+        guard let currentDate = formatter.date(from: self.currentDate) else { return }
+        //this should be events that you've accepted
+        filteredAcceptedEvents =  acceptedEvents.filter {
+            $0.endDate.date() > currentDate
         }
-        
-        
     }
     
     func segmentedPastEventPressed() {
         let formatter = ISO8601DateFormatter()
         guard let currentDate = formatter.date(from: self.currentDate) else { return }
-        filteredEvents =  events.filter {
+        filteredPastEvents =  acceptedEvents.filter {
             $0.endDate.date() < currentDate
-            
         }
-        
-        
     }
     
-    func joinEventPressed(){
-        
+    func pendingJoinEventPressed() {
+        let formatter = ISO8601DateFormatter()
+        guard let currentDate = formatter.date(from: self.currentDate) else { return }
+        filteredPendingEvents =  pendingEvents.filter {
+            $0.endDate.date() > currentDate
+        }
     }
     
-    func newUserView() {
-        
-    }
     
     
     

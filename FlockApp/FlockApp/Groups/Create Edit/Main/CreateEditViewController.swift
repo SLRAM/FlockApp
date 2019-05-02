@@ -28,8 +28,6 @@ class CreateEditViewController: UIViewController {
     var trackingTime = 0
     private var selectedImage: UIImage?
     
-
-    
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
@@ -42,7 +40,7 @@ class CreateEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
-        navigationItem.title = "Create"
+        navigationItem.title = "Create Event"
 
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
@@ -225,11 +223,18 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.postEventToUser(userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                        DBService.postPendingEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
                             if let error = error {
-                                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                                self?.showAlert(title: "Posting Event To Guest Pending Error", message: error.localizedDescription)
                             } else {
-                                print("posted to user")
+                                print("posted to guest pending")
+                            }
+                        })
+                        DBService.postAcceptedEventToUser(user: user, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event To Host Accepted Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to host accepted")
                             }
                         })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in

@@ -22,25 +22,16 @@ class CreateEditView: UIView {
     
     lazy var imageButton: UIButton = {
         let button = UIButton()
-//        button.titleLabel?.numberOfLines = 0
-//        button.titleLabel?.textAlignment = .center
-//        button.setTitle("Event Image" + "\n" + "Event Time", for: .normal)
-        
-        
-
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(imagePressed), for: .touchUpInside)
         button.backgroundColor = .yellow
-//        button.setImage(UIImage(named: "pitons"), for: .normal)
         button.setBackgroundImage(UIImage(named: "pitons"), for: .normal)
         button.layer.cornerRadius = 10.0
-        
         return button
     }()
     @objc func imagePressed() {
         delegate?.imagePressed()
         print("event image pressed")
-        
     }
     
     lazy var addressButton: UIButton = {
@@ -56,7 +47,6 @@ class CreateEditView: UIView {
     @objc func addressPressed() {
         delegate?.addressPressed()
         print("event address pressed")
-        
     }
     
     lazy var dateButton: UIButton = {
@@ -72,12 +62,7 @@ class CreateEditView: UIView {
     @objc func datePressed() {
         delegate?.datePressed()
         print("event date pressed")
-        
     }
-//    lazy var trackingStepper: UIStepper = {
-//        let stepper = UIStepper()
-//        return stepper
-//    }()
     
     lazy var myLabel: UILabel = {
         let label = UILabel()
@@ -100,7 +85,6 @@ class CreateEditView: UIView {
     }()
     @objc func trackingIncreasePressed() {
         delegate?.trackingIncreasePressed()
-        
     }
     lazy var trackingDecreaseButton: UIButton = {
         let button = UIButton()
@@ -114,7 +98,6 @@ class CreateEditView: UIView {
     }()
     @objc func trackingDecreasePressed() {
         delegate?.trackingDecreasePressed()
-        
     }
     lazy var friendButton: UIButton = {
         let button = UIButton()
@@ -128,8 +111,6 @@ class CreateEditView: UIView {
     }()
     @objc func friendsPressed() {
         delegate?.friendsPressed()
-        print("event date pressed")
-        
     }
     
     lazy var myTableView: UITableView = {
@@ -148,9 +129,6 @@ class CreateEditView: UIView {
         delegate?.cancelPressed()
     }
     
-    
-    
-    
     public lazy var createButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(createPressed))
         return button
@@ -167,17 +145,13 @@ class CreateEditView: UIView {
         textView.layer.borderColor = #colorLiteral(red: 0.8529050946, green: 0.8478356004, blue: 0.8568023443, alpha: 0.4653253425).cgColor
         textView.textColor = .gray
         textView.textAlignment = .center
-//        textView.font = textView.font?.withSize(20)
-//        textView.text = "Enter the Event Title"
         textView.tag = 0
-        
         return textView
     }()
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         commonInit()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -199,7 +173,6 @@ extension CreateEditView {
         setupTracking()
         setupFriendButton()
         setupTableView()
-
     }
     func setupTitleTextField() {
         addSubview(titleTextView)
@@ -241,7 +214,6 @@ extension CreateEditView {
         myLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         myLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
-
         setupTrackingIncrease()
         setupTrackingDecrease()
     }
