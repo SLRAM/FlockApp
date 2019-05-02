@@ -87,9 +87,26 @@ class HomeViewController: UIViewController {
     
     
     @objc func showCreateEditEvent() {
-        let createEditVC = CreateEditViewController()
-        let createNav = UINavigationController.init(rootViewController: createEditVC)
-        present(createNav, animated: true)
+        
+        let optionMenu = UIAlertController(title: nil, message: "Create:", preferredStyle: .actionSheet)
+        let  eventAction = UIAlertAction(title: "Event", style: .default, handler: { (action) -> Void in
+            let createEditVC = CreateEditViewController()
+            let createNav = UINavigationController.init(rootViewController: createEditVC)
+            self.present(createNav, animated: true)
+        })
+        let  quickEventAction = UIAlertAction(title: "Quick Event", style: .default, handler: { (action) -> Void in
+            
+            let quickEditVC = QuickEventViewController()
+            let createNav = UINavigationController.init(rootViewController: quickEditVC)
+            self.present(createNav, animated: true)
+        })
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        optionMenu.addAction(eventAction)
+        optionMenu.addAction(quickEventAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+
+  
     }
     @objc func showJoinEvent(){
         let joinVC = JoinViewController()
@@ -104,25 +121,19 @@ class HomeViewController: UIViewController {
             tag = 0
 
             homeView.delegate?.segmentedEventsPressed()
-//            homeView.cellView.joinEventButton.isHidden = true
+
         case 1:
             print("Past Event")
             tag = 1
 
             homeView.delegate?.segmentedPastEventPressed()
 
-//            homeView.cellView.joinEventButton.isHidden = true
         case 2:
             print("Join Event")
             tag = 2
 
             homeView.delegate?.pendingJoinEventPressed()
 
-//            homeView.cellView.startDateLabel.isHidden = false
-//            homeView.cellView.joinEventButton.isEnabled = true
-//            homeView.cellView.joinEventButton.isHidden = false
-//            homeView.cellView.eventImage.isHidden = true
-//            homeView.cellView.eventLabel.isHidden = true
     
             
         default:
@@ -130,10 +141,6 @@ class HomeViewController: UIViewController {
         }
     }
 
-  
-    
-    
-    
     @objc func fetchEvents(){
         
         guard let user = authService.getCurrentUser() else {
@@ -155,7 +162,7 @@ class HomeViewController: UIViewController {
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
-                
+                //self!.homeView.delegate?.pendingJoinEventPressed()
                     self?.refreshControl.endRefreshing()
                 }
             })
@@ -187,56 +194,7 @@ class HomeViewController: UIViewController {
             })
     }
     
-    //use this for filtering
-    //    @objc func fetchUserEvents(){
-    //        guard let user = authService.getCurrentUser() else {
-    //            print("no logged user")
-    //            return
-    //        }
-    //        refreshControl.beginRefreshing()
-    //        listener = DBService.firestoreDB
-    //            .collection(UsersCollectionKeys.CollectionKey)
-    //            .document(user.uid)
-    //            .collection(EventsCollectionKeys.CollectionKey)
-    //            .addSnapshotListener({ [weak self] (snapshot, error) in
-    //                if let error = error {
-    //                    print("failed to fetch events with error: \(error.localizedDescription)")
-    //                } else if let snapshot = snapshot{
-    //                    self?.events = snapshot.documents.map{Event(dict: $0.data()) }
-    //                        .sorted { $0.createdDate.date() > $1.createdDate.date()}
-    //                }
-    //                DispatchQueue.main.async {
-    //                    self?.refreshControl.endRefreshing()
-    //                }
-    //            })
-    //    }
-    
-    
-    //    func fetchHomeState() {
-    //        refreshControl.beginRefreshing()
-    //        listener = DBService.firestoreDB
-    //        .collection(EventsCollectionKeys.CollectionKey)
-    //            .addSnapshotListener({ [weak self] ( createEvent, error ) in
-    //                if let error = error {
-    //                    print("failed to fetch home state: \(error.localizedDescription)")
-    //                } else if let createEvent = createEvent {
-    //
-    //                }
-    //            })
-    //        if newUser == false {
-    //            guard let user = authService.getCurrentUser() else {
-    //                print("no user")
-    //                return
-    //            }
-    //        homeView.delegate = self
-    //            DBService.fetchUser(userId: user.uid) { (error, user) in
-    //
-    //            }
-    //
-    //        }
-    //    }
-    
-    
+ 
     
     
 }
@@ -269,15 +227,18 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch tag {
         case 0:
             eventToSet = filteredAcceptedEvents[indexPath.row]
-            
+            collectionViewCell.joinEventButton.isHidden = true
             
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
+            collectionViewCell.joinEventButton.isHidden = true
 
             
         case 2:
             eventToSet = filteredPendingEvents[indexPath.row]
-
+            collectionViewCell.joinEventButton.isHidden = false
+            collectionViewCell.joinEventButton.isEnabled = true
+            collectionViewCell.joinEventButton.layer.cornerRadius = 50
             
         default:
             print("you good fam")
