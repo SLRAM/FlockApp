@@ -40,6 +40,7 @@ class DirectionsViewController: UIViewController, CLLocationManagerDelegate {
 
 
     }
+        mapView.mapView.delegate = self
     
     }
     
@@ -74,6 +75,7 @@ class DirectionsViewController: UIViewController, CLLocationManagerDelegate {
         let mapItem:MKMapItem = MKMapItem(placemark: placemark)
         mapItem.name = "\(event?.eventName)"
         
+    
         let launchOptions:NSDictionary = NSDictionary(object: MKLaunchOptionsDirectionsModeDriving, forKey: MKLaunchOptionsDirectionsModeKey as NSCopying)
         
         let currentLocationMapItem:MKMapItem = MKMapItem.forCurrentLocation()
@@ -90,5 +92,20 @@ class DirectionsViewController: UIViewController, CLLocationManagerDelegate {
         
 //        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
     }
+    
+}
+
+extension DirectionsViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let annotation = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+        annotation.markerTintColor = #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        annotation.glyphImage = UIImage(named: "icons8-bird-30")
+        return annotation
+    }
+    
+//    let annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+//    annotationView.markerTintColor = UIColor.init(displayP3Red: 247/255, green: 195/255, blue: 106/255, alpha: 1)
+//    annotationView.glyphImage =  UIImage(named: "wifi")
+//    return annotationView
     
 }

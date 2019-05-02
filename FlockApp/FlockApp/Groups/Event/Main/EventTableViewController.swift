@@ -46,6 +46,7 @@ class EventTableViewController: UITableViewController {
         fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
+        self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
         eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         
         guard let unwrappedEvent = event else {return}
@@ -76,16 +77,31 @@ class EventTableViewController: UITableViewController {
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
         let marker = GMSMarker.init()
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+        marker.icon = UIImage(named: "icons8-bird-30")
         marker.title = eventName
         marker.map = eventView.myMapView
         let position = marker.position
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 12.0)
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
-
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
     
 
+    func setTableViewBackgroundGradient(sender: UITableViewController, _ topColor:UIColor, _ bottomColor:UIColor) {
+        
+        let gradientBackgroundColors = [topColor.cgColor, bottomColor.cgColor]
+        let gradientLocations = [0.0,1.0]
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientBackgroundColors
+        gradientLayer.locations = gradientLocations as [NSNumber]
+        
+        gradientLayer.frame = sender.tableView.bounds
+        let backgroundView = UIView(frame: sender.tableView.bounds)
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        sender.tableView.backgroundView = backgroundView
+    }
     
     func fetchInvites() {
         guard let event = event else {
@@ -150,16 +166,25 @@ class EventTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+        cell.backgroundColor = UIColor.clear
         let person = invited[indexPath.row]
-        cell.textLabel?.text = person.displayName
-        cell.detailTextLabel?.text = person.task
-        cell.imageView?.kf.setImage(with: URL(string: person.photoURL!))
+        cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+        cell.nameLabel.text = person.displayName
+        cell.taskLabel.text = person.task
+        //cell borders
+        cell.layer.cornerRadius = 20
+        cell.layer.borderWidth = 1
+    
+//        cell.textLabel?.text = person.displayName
+//        cell.detailTextLabel?.text = person.task
+//        cell.imageView?.kf.setImage(with: URL(string: person.photoURL!))
+//        cell.imageView?.layer.borderWidth = 1
+//        cell.imageView?.layer.masksToBounds = false
+//        cell.imageView?.layer.cornerRadius = cell.imageView?.image.frame.height/2
+//        cell.imageView?.clipsToBounds = true
         return cell
     }
-
-
-
 
 }
  
