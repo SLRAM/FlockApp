@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0109E3FD2266228100B19E20 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0109E3FC2266228100B19E20 /* TabBarController.swift */; };
+		0149E8BF227772D3009A4B21 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0149E8BE227772D2009A4B21 /* GoogleService-Info.plist */; };
 		01FC8DB0226E5AFB00F4390B /* EventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FC8DAF226E5AFB00F4390B /* EventTableViewController.swift */; };
 		01FC8DB22271DE8300F4390B /* DirectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FC8DB12271DE8300F4390B /* DirectionsViewController.swift */; };
 		01FC8DB42271DFC200F4390B /* DirectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01FC8DB32271DFC200F4390B /* DirectionsView.swift */; };
@@ -81,6 +82,7 @@
 
 /* Begin PBXFileReference section */
 		0109E3FC2266228100B19E20 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		0149E8BE227772D2009A4B21 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		01FC8DAF226E5AFB00F4390B /* EventTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewController.swift; sourceTree = "<group>"; };
 		01FC8DB12271DE8300F4390B /* DirectionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsViewController.swift; sourceTree = "<group>"; };
 		01FC8DB32271DFC200F4390B /* DirectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsView.swift; sourceTree = "<group>"; };
@@ -168,6 +170,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01001CC822724111008525B5 /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		0149E8BD227770DB009A4B21 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				97E433442277500A00BC519C /* GoogleService-Info.plist */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		16489800E44013F2CACB43CF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +247,7 @@
 				97025F912257EA1100273C91 /* Products */,
 				16489800E44013F2CACB43CF /* Pods */,
 				BAA7EF280003BEA21B99454E /* Frameworks */,
+				0149E8BD227770DB009A4B21 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -254,7 +272,7 @@
 				97025F9A2257EA1200273C91 /* Assets.xcassets */,
 				97025F9C2257EA1200273C91 /* LaunchScreen.storyboard */,
 				97025F9F2257EA1200273C91 /* Info.plist */,
-				97E433442277500A00BC519C /* GoogleService-Info.plist */,
+				0149E8BE227772D2009A4B21 /* GoogleService-Info.plist */,
 			);
 			path = FlockApp;
 			sourceTree = "<group>";
@@ -556,8 +574,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97E433452277500A00BC519C /* GoogleService-Info.plist in Resources */,
 				97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */,
+				0149E8BF227772D3009A4B21 /* GoogleService-Info.plist in Resources */,
 				97025F9B2257EA1200273C91 /* Assets.xcassets in Resources */,
 				97025F992257EA1100273C91 /* Main.storyboard in Resources */,
 				97802CBA225CF527007D480D /* LoginView.storyboard in Resources */,
