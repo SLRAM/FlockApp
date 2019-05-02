@@ -61,6 +61,12 @@ class MapViewController: UIViewController {
 //            myMapView.showsUserLocation = true
         }
         
+        if isQuickEvent(eventType: unwrappedEvent) {
+//            quickEventMap(unwrappedEvent: unwrappedEvent)
+        } else {
+//            standardEventMap(unwrappedEvent: unwrappedEvent)
+        }
+        
         
         
         fetchEventLocation()
@@ -82,6 +88,14 @@ class MapViewController: UIViewController {
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         
     }
+    
+    func isQuickEvent(eventType: Event) -> Bool {
+        if eventType.eventName == "Quick Event" {
+            return true
+        } else {
+            return false
+        }
+    }
 
     func startTimer() {
         //make it a
@@ -91,6 +105,7 @@ class MapViewController: UIViewController {
     @objc func refresh() {
         updateUserLocation()
         fetchInvitedLocations()
+        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             //invalidate timer
             myTimer.invalidate()
@@ -104,17 +119,45 @@ class MapViewController: UIViewController {
             return
         }
         guard let event = event else {return}
-        DBService.firestoreDB
-            .collection(EventsCollectionKeys.CollectionKey)
-            .document(event.documentId)
-            .collection(InvitedCollectionKeys.CollectionKey)
-            .document(user.uid)
-            .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
-                         InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
-            ]) { [weak self] (error) in
-                if let error = error {
-                    self?.showAlert(title: "Editing Error", message: error.localizedDescription)
-                }
+        
+        if isQuickEvent(eventType: event) {
+            DBService.firestoreDB
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .collection(InvitedCollectionKeys.CollectionKey)
+                .document(user.uid)
+                .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
+                             InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                    }
+            }
+            
+        } else {
+//            DBService.firestoreDB
+//                .collection(EventsCollectionKeys.CollectionKey)
+//                .document(event.documentId)
+//                .collection(InvitedCollectionKeys.CollectionKey)
+//                .document(user.uid)
+//                .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
+//                             InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
+//                ]) { [weak self] (error) in
+//                    if let error = error {
+//                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+//                    }
+//            }
+            
+            DBService.firestoreDB
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
+                             EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                    }
+            }
         }
     }
     func fetchEventLocation() {
@@ -154,7 +197,6 @@ class MapViewController: UIViewController {
                         //                    self?.refreshControl.endRefreshing()
                     }
                 }
-
             })
     }
     func setupMarkers(activeGuests: [InvitedModel]){
@@ -188,7 +230,6 @@ class MapViewController: UIViewController {
         setupMapBounds()
     }
     func boundsNumber(guests: [GMSMarker]) -> Int? {
-        
         if guests.count >= 3 {
             return 2
         } else if guests.count > 0 {
@@ -207,7 +248,6 @@ class MapViewController: UIViewController {
             let guestCoordinate = allGuestMarkers[guestNumber].position
             mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
         }
-
     }
     func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
         guard let event = event else {
@@ -220,8 +260,6 @@ class MapViewController: UIViewController {
             let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
             return distanceOne < distanceTwo
             }
-        print(sortedMarkers)
-
         return sortedMarkers
     }
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
@@ -230,20 +268,11 @@ class MapViewController: UIViewController {
         let distanceInMiles = (coordinate0.distance(from: coordinate1))/1609.344
         return distanceInMiles
     }
-    
-
-
 }
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         //this kicks off whenever authorization is turned on or off
         print("user changed the authorization")
-        
-//        let currentLocation = myMapView.userLocation
-//        print(currentLocation)
-//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//
-//        myMapView.setRegion(myCurrentRegion, animated: true)
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //this kicks off whenever the user's location has noticeably changed
@@ -251,10 +280,7 @@ extension MapViewController: CLLocationManagerDelegate {
         guard let currentLocation = locations.last else {return}
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
         usersCurrentLocation = currentLocation
-        //once time starts, save user location to firebase every 30 seconds. once they reach destinate stop updating firebase
-//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//
-//        myMapView.setRegion(myCurrentRegion, animated: true)
+
     }
 }
 
