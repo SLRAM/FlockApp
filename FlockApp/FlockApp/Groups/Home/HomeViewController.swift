@@ -19,25 +19,20 @@ class HomeViewController: UIViewController {
     var newUser = false
     private var pendingEventListener: ListenerRegistration!
     private var acceptedEventListener: ListenerRegistration!
-
     private var authService = AppDelegate.authservice
+    
     private lazy var refreshControl: UIRefreshControl = {
         let rc = UIRefreshControl()
         homeView.usersCollectionView.refreshControl = rc
         rc.addTarget(self, action: #selector(fetchEvents), for: .valueChanged)
         return rc
     }()
+    
     var pendingEvents = [Event]()
     var acceptedEvents = [Event]()
 
     var tag = 0
-    var filteredPendingEvents  = [Event](){
-        didSet{
-            DispatchQueue.main.async {
-                self.homeView.usersCollectionView.reloadData()
-            }
-        }
-    }
+    
     var filteredAcceptedEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
@@ -45,6 +40,7 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    
     var filteredPastEvents  = [Event](){
         didSet{
             DispatchQueue.main.async {
@@ -54,17 +50,28 @@ class HomeViewController: UIViewController {
     }
     
     
+    var filteredPendingEvents  = [Event](){
+        didSet{
+            DispatchQueue.main.async {
+                self.homeView.usersCollectionView.reloadData()
+            }
+        }
+    }
+    
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
+        fetchEvents()
 
-        homeView.usersCollectionView.dataSource = self
-        homeView.usersCollectionView.delegate = self
+//        homeView.usersCollectionView.dataSource = self
+//        homeView.usersCollectionView.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
-        fetchEvents()
-        homeView.segmentedControl.selectedSegmentIndex = 0
+//        homeView.segmentedControl.selectedSegmentIndex = 0
+//        homeView.segmentedControl.isEnabledForSegment(at: 0)
 
         homeView.delegate = self
 
@@ -97,7 +104,6 @@ class HomeViewController: UIViewController {
             tag = 0
 
             homeView.delegate?.segmentedEventsPressed()
-            
             homeView.cellView.joinEventButton.isHidden = true
         case 1:
             print("Past Event")
@@ -127,13 +133,14 @@ class HomeViewController: UIViewController {
   
     
     
-//    use this for filtering
     
     @objc func fetchEvents(){
+        
         guard let user = authService.getCurrentUser() else {
             print("no logged user")
             return
         }
+        
         refreshControl.beginRefreshing()
         pendingEventListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
@@ -163,8 +170,17 @@ class HomeViewController: UIViewController {
                     
                     self?.acceptedEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                    
                 }
                 DispatchQueue.main.async {
+                    self!.homeView.segmentedControl.selectedSegmentIndex = 0
+                    self!.homeView.segmentedControl.isEnabledForSegment(at: 0)
+                    self!.homeView.delegate?.segmentedEventsPressed()
+
+                    
+                    self!.homeView.usersCollectionView.dataSource = self
+                    self!.homeView.usersCollectionView.delegate = self
+                    
                     self?.refreshControl.endRefreshing()
                 }
             })
@@ -226,10 +242,11 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        
         switch tag {
         case 0:
             return filteredAcceptedEvents.count
-
+            
         case 1:
             return filteredPastEvents.count
 
@@ -251,7 +268,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch tag {
         case 0:
             eventToSet = filteredAcceptedEvents[indexPath.row]
-
+            
             
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
