@@ -270,14 +270,17 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch tag {
         case 0:
             event = filteredAcceptedEvents[indexPath.row]
+            detailVC.tag = 0
             
             
         case 1:
             event = filteredPastEvents[indexPath.row]
+            detailVC.tag = 1
             
             
         case 2:
             event = filteredPendingEvents[indexPath.row]
+            detailVC.tag = 2
             
             
         default:
