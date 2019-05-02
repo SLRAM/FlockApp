@@ -80,6 +80,7 @@ class HomeViewController: UIViewController {
         
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
+        
         indexChanged(homeView.segmentedControl)
 //        homeView.segmentedControl.selectedSegmentIndex = 0
 
@@ -241,7 +242,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.joinEventButton.layer.cornerRadius = 50
             
         default:
-            print("you good fam")
+            print("you good fam?")
         }
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
