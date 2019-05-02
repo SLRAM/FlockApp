@@ -58,8 +58,7 @@ class ProfileViewController: BaseViewController {
                     }
                     
                     if self.friends.contains(self.user!.userId) {
-                        self.profileView.addFriend.isHidden = true
-                        self.profileView.addFriend.isEnabled = false
+                        self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
@@ -99,13 +98,22 @@ class ProfileViewController: BaseViewController {
         present(imagePickerController, animated: true)
     }
     @objc private func addFriendPressed() {
-        DBService.addFriend(friend: self.user!) { (error) in
+        DBService.requestFriend(friend: self.user!) { (error) in
             if let error = error {
-                self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
+                self.showAlert(title: "Friend Request Error", message: error.localizedDescription)
             } else {
-                self.showAlert(title: "Friend Added", message: nil)
+                self.showAlert(title: "Friend Requested", message: nil)
                 self.profileView.addFriend.isEnabled = false
                 self.profileView.addFriend.isHidden = true
+            }
+        }
+    }
+    @objc private func removeFriendPressed() {
+        DBService.removeFriend(removed: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Friend Remove Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Friend Successfully Removed", message: nil)
             }
         }
     }
