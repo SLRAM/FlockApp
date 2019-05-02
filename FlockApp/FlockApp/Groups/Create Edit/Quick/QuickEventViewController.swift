@@ -45,6 +45,8 @@ class QuickEventViewController: UIViewController {
         quickEventView.delegate = self
         quickEventView.myTableView.delegate = self
         quickEventView.myTableView.dataSource = self
+        navigationItem.title = "Create Quick Event"
+
         navigationItem.rightBarButtonItem = quickEventView.createButton
         navigationItem.leftBarButtonItem = quickEventView.cancelButton
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
@@ -174,13 +176,78 @@ extension QuickEventViewController: QuickEventViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
+                        DBService.postPendingEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event To Guest Pending Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to guest pending")
+                            }
+                        })
+                        DBService.postAcceptedEventToUser(user: user, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event To Host Accepted Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to host accepted")
+                            }
+                        })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
                             } else {
+                                //============================================================
+                                // Adding notification
+//                                let startContent = UNMutableNotificationContent()
+//                                
+//                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
+//                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
+//                                startContent.sound = UNNotificationSound.default
+//                                
+//                                let endContent = UNMutableNotificationContent()
+//                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
+//                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
+//                                endContent.sound = UNNotificationSound.default
+//                                let startDate = self?.selectedStartDate
+//                                let calendar = Calendar.current
+//                                let startHour = calendar.component(.hour, from: startDate!)
+//                                let startMinutes = calendar.component(.minute, from: startDate!)
+//                                
+//                                let endDate = self?.selectedEndDate
+//                                let endHour = calendar.component(.hour, from: endDate!)
+//                                let endMinutes = calendar.component(.minute, from: endDate!)
+//                                
+//                                var startDateComponent = DateComponents()
+//                                startDateComponent.hour = startHour
+//                                startDateComponent.minute = startMinutes
+//                                startDateComponent.timeZone = TimeZone.current
+//                                var endDateComponent = DateComponents()
+//                                endDateComponent.hour = endHour
+//                                endDateComponent.minute = endMinutes
+//                                endDateComponent.timeZone = TimeZone.current
+//                                
+//                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
+//                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
+//                                
+//                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
+//                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
+//                                
+//                                UNUserNotificationCenter.current().add(startRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added start notification")
+//                                    }
+//                                }
+//                                UNUserNotificationCenter.current().add(endRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added end notification")
+//                                    }
+//                                }
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
-                                    let detailVC = EventViewController()
+                                    //                    self?.dismiss(animated: true)//code here to segue to detail
+                                    let detailVC = EventTableViewController()
                                     detailVC.event = event
                                     //                    detailVC.delegate = self
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
