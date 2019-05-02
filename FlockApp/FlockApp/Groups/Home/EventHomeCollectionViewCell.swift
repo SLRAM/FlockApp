@@ -40,11 +40,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var joinEventButton: UIButton = {
-        let button = UIButton(type: UIButton.ButtonType.custom)
-        let image = UIImage(named: "joinButton")
-        button.frame = CGRect.init(x: 10, y: 20, width: 500, height: 500)
-        //button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
-        button.setImage(image, for: .normal)
+        let button = UIButton()
+        button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
         return button
     }()
     
