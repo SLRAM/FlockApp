@@ -70,7 +70,7 @@ class HomeViewController: UIViewController {
 //        homeView.usersCollectionView.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
-//        homeView.segmentedControl.selectedSegmentIndex = 0
+        homeView.segmentedControl.selectedSegmentIndex = 0
 //        homeView.segmentedControl.isEnabledForSegment(at: 0)
 
         homeView.delegate = self
@@ -104,25 +104,25 @@ class HomeViewController: UIViewController {
             tag = 0
 
             homeView.delegate?.segmentedEventsPressed()
-            homeView.cellView.joinEventButton.isHidden = true
+//            homeView.cellView.joinEventButton.isHidden = true
         case 1:
             print("Past Event")
             tag = 1
 
             homeView.delegate?.segmentedPastEventPressed()
 
-            homeView.cellView.joinEventButton.isHidden = true
+//            homeView.cellView.joinEventButton.isHidden = true
         case 2:
             print("Join Event")
             tag = 2
 
             homeView.delegate?.pendingJoinEventPressed()
 
-            homeView.cellView.startDateLabel.isHidden = false
-            homeView.cellView.joinEventButton.isEnabled = true
-            homeView.cellView.joinEventButton.isHidden = false
-            homeView.cellView.eventImage.isHidden = true
-            homeView.cellView.eventLabel.isHidden = true
+//            homeView.cellView.startDateLabel.isHidden = false
+//            homeView.cellView.joinEventButton.isEnabled = true
+//            homeView.cellView.joinEventButton.isHidden = false
+//            homeView.cellView.eventImage.isHidden = true
+//            homeView.cellView.eventLabel.isHidden = true
     
             
         default:
@@ -155,6 +155,7 @@ class HomeViewController: UIViewController {
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
+                
                     self?.refreshControl.endRefreshing()
                 }
             })
@@ -173,8 +174,8 @@ class HomeViewController: UIViewController {
                     
                 }
                 DispatchQueue.main.async {
-                    self!.homeView.segmentedControl.selectedSegmentIndex = 0
-                    self!.homeView.segmentedControl.isEnabledForSegment(at: 0)
+//                    self!.homeView.segmentedControl.selectedSegmentIndex = 0
+//                    self!.homeView.segmentedControl.isEnabledForSegment(at: 0)
                     self!.homeView.delegate?.segmentedEventsPressed()
 
                     
@@ -303,7 +304,24 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailVC = EventTableViewController()
-        let event = filteredPendingEvents[indexPath.row]
+        var event = Event()
+
+        switch tag {
+        case 0:
+            event = filteredAcceptedEvents[indexPath.row]
+            
+            
+        case 1:
+            event = filteredPastEvents[indexPath.row]
+            
+            
+        case 2:
+            event = filteredPendingEvents[indexPath.row]
+            
+            
+        default:
+            print("you good fam")
+        }
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
         
