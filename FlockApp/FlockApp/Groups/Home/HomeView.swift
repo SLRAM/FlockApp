@@ -11,6 +11,7 @@ protocol UserEventCollectionViewDelegate: AnyObject {
     func segmentedEventsPressed()
     func segmentedPastEventPressed()
     func pendingJoinEventPressed()
+   
     
 
 }
@@ -123,7 +124,6 @@ class HomeView: UIView {
         dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.6).isActive = true
         
     }
-    
     
     
     func setupSegmentedView(){

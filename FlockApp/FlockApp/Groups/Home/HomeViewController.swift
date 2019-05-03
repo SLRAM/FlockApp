@@ -262,7 +262,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.declineButton.isHidden = false
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
-            //collectionViewCell.eventImage.alpha = 0.9
+            
             
 
             
@@ -340,6 +340,7 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         }
     }
     
+  
     
     
     
