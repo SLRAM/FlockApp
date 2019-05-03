@@ -11,14 +11,14 @@ import GoogleMaps
 import Firebase
 import Toucan
 import UserNotifications
+
 class CreateEditViewController: UIViewController {
     
-    private let createEditView = CreateEditView()
     let titlePlaceholder = "Enter the event title"
     let trackingPlaceholder = "Event Tracking Time"
     var number = 0
 
-    
+    private let createEditView = CreateEditView()
     var friendsArray = [UserModel]()
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
@@ -26,6 +26,8 @@ class CreateEditViewController: UIViewController {
     var selectedStartDate: Date?
     var selectedEndDate: Date?
     var trackingTime = 0
+    private var authservice = AppDelegate.authservice
+
     private var selectedImage: UIImage?
     
     private lazy var imagePickerController: UIImagePickerController = {
@@ -34,23 +36,25 @@ class CreateEditViewController: UIViewController {
         return ip
     }()
     
-    private var authservice = AppDelegate.authservice
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
+        viewSetup()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        
+    }
+    func viewSetup() {
         navigationItem.title = "Create Event"
-
+        navigationItem.rightBarButtonItem = createEditView.createButton
+        navigationItem.leftBarButtonItem = createEditView.cancelButton
+        
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
         createEditView.myTableView.dataSource = self
         createEditView.myTableView.delegate = self
-        navigationItem.rightBarButtonItem = createEditView.createButton
-        navigationItem.leftBarButtonItem = createEditView.cancelButton
-    }
-    override func viewDidAppear(_ animated: Bool) {
-        
     }
 
     func editNumber(increase: Bool)-> String {
@@ -82,6 +86,14 @@ extension CreateEditViewController: UITextViewDelegate {
     func textViewDidEndEditing(_ textView: UITextView) {
         createEditView.titleTextView.resignFirstResponder()
     }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
 }
 extension CreateEditViewController: CreateViewDelegate {
     func trackingDecreasePressed() {
@@ -152,9 +164,24 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+
+        
+        
+        
+        
         
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
+        
+        
+        let eventLength = trackingTime*(-60)
+        let trackingDate = startDate.adding(minutes: eventLength)
+        
+        let isoDateFormatter = ISO8601DateFormatter()
+        let startTrackingString = isoDateFormatter.string(from: trackingDate)
+        
+        
+
         let startDateString = ISO8601DateFormatter().string(from: startDate)
         let endDateString = ISO8601DateFormatter().string(from: endDate)
         if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
@@ -213,7 +240,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: self!.trackingTime,
+                                          trackingTime: startTrackingString,
                                           quickEvent: false,
                                           proximity: 0)
                 //post event to user

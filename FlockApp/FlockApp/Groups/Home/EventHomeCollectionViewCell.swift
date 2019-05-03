@@ -41,14 +41,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var joinEventButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = #colorLiteral(red: 0.8291111588, green: 0.1364572048, blue: 1, alpha: 1)
-        return button
-    }()
-    
-    public lazy var startAnEventButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "joinButton")
-        button.frame = CGRect.init(x: -10, y: -20, width: 80, height: 55)
+        let image = UIImage(named: "notification")
+        button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
         button.setImage(image, for: .normal)
         return button
     }()
@@ -57,6 +51,23 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         return label
     }()
+    
+    public lazy var goingButton: UIButton = {
+        let button = UIButton(type:UIButton.ButtonType.custom)
+        let image = UIImage(named: "accept")
+        button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
+    public lazy var declineButton: UIButton = {
+        let button = UIButton(type:UIButton.ButtonType.custom)
+        let image = UIImage(named: "decline")
+        button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
+        button.setImage(image, for: .normal)
+        return button
+    }()
+    
     
     private let motionManager = CMMotionManager()
     private weak var shadowView: UIView?
@@ -92,34 +103,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         }
     }
     
-//    public lazy var cellSegmentedView: UISegmentedControl = {
-//        let sv = homeView.segmentedControl
-//        sv.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
-//        return sv
-//    }()
-//
-//    @objc func indexChanged(_ sender: UISegmentedControl) {
-//        switch sender.selectedSegmentIndex{
-//        case 2:
-//            print("Pending pressed")
-//            joinEventButton.isEnabled = true
-//            joinEventButton.isHidden = false
-//            eventImage.isHidden = true
-//
-//        default:
-//            break
-//        }
-//    }
+
     
-//    
-//    func setupPendingJoinEvents(){
-//        addSubview(cellSegmentedView)
-//        cellSegmentedView.translatesAutoresizingMaskIntoConstraints = false
-//        
-//    }
-    
-    
-    
+
     func setupEventLabel(){
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -134,8 +120,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         addSubview(startDateLabel)
         startDateLabel.translatesAutoresizingMaskIntoConstraints = false
         startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 150).isActive = true
-        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -37).isActive = true
+        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.7).isActive = true
         startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
     }
     
@@ -151,10 +137,28 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupJoinButton(){
         addSubview(joinEventButton)
         joinEventButton.translatesAutoresizingMaskIntoConstraints = false
-        joinEventButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor).isActive = true
-        joinEventButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        joinEventButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.3).isActive = true
-        joinEventButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.3).isActive = true
+        joinEventButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -168).isActive = true
+        joinEventButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 174).isActive = true
+        joinEventButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10).isActive = true
+        joinEventButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
+    }
+    
+    func setupAcceptButton(){
+        addSubview(goingButton)
+        goingButton.translatesAutoresizingMaskIntoConstraints = false
+        goingButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 143).isActive = true
+        goingButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 100).isActive = true
+        goingButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
+        goingButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.09).isActive = true
+    }
+    
+    func setupDeclineButton(){
+        addSubview(declineButton)
+        declineButton.translatesAutoresizingMaskIntoConstraints = false
+        declineButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 143).isActive = true
+        declineButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 150).isActive = true
+        declineButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
+        declineButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.09).isActive = true
     }
     
     
@@ -169,10 +173,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-        setupJoinButton()
         setupImage()
+        setupJoinButton()
         setupEventLabel()
         setupEventDay()
+        setupAcceptButton()
+        setupDeclineButton()
         configureShadowView()
         //setupPendingJoinEvents()
         
