@@ -65,13 +65,9 @@ class HomeViewController: UIViewController {
         view.addSubview(homeView)
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         fetchEvents()
-
-//        homeView.usersCollectionView.dataSource = self
-//        homeView.usersCollectionView.delegate = self
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
         homeView.segmentedControl.selectedSegmentIndex = 0
-//        homeView.segmentedControl.isEnabledForSegment(at: 0)
 
         homeView.delegate = self
 
@@ -80,9 +76,7 @@ class HomeViewController: UIViewController {
         
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
-        
         indexChanged(homeView.segmentedControl)
-//        homeView.segmentedControl.selectedSegmentIndex = 0
 
     }
     
@@ -109,11 +103,7 @@ class HomeViewController: UIViewController {
 
   
     }
-    @objc func showJoinEvent(){
-        let joinVC = JoinViewController()
-        joinVC.modalPresentationStyle = .overFullScreen
-        present (joinVC, animated: true)
-    }
+  
     
     @objc func indexChanged(_ sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
@@ -163,7 +153,6 @@ class HomeViewController: UIViewController {
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
                 }
                 DispatchQueue.main.async {
-                //self!.homeView.delegate?.pendingJoinEventPressed()
                     self?.refreshControl.endRefreshing()
                 }
             })
@@ -182,14 +171,9 @@ class HomeViewController: UIViewController {
                     
                 }
                 DispatchQueue.main.async {
-//                    self!.homeView.segmentedControl.selectedSegmentIndex = 0
-//                    self!.homeView.segmentedControl.isEnabledForSegment(at: 0)
                     self!.homeView.delegate?.segmentedEventsPressed()
-
-                    
                     self!.homeView.usersCollectionView.dataSource = self
                     self!.homeView.usersCollectionView.delegate = self
-                    
                     self?.refreshControl.endRefreshing()
                 }
             })
@@ -229,17 +213,35 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         case 0:
             eventToSet = filteredAcceptedEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = true
+            collectionViewCell.goingButton.isHidden = true
+            collectionViewCell.declineButton.isHidden = true
+            collectionViewCell.eventLabel.isHidden = false
+            collectionViewCell.startDateLabel.isHidden = false
+            collectionViewCell.eventImage.alpha = 0.8
             
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = true
+            collectionViewCell.goingButton.isHidden = true
+            collectionViewCell.declineButton.isHidden = true
+            collectionViewCell.eventLabel.isHidden = false
+            collectionViewCell.startDateLabel.isHidden = false
+            collectionViewCell.eventImage.alpha = 0.8
 
             
         case 2:
             eventToSet = filteredPendingEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
-            collectionViewCell.joinEventButton.layer.cornerRadius = 50
+            //collectionViewCell.joinEventButton.alpha = 1
+            //collectionViewCell.joinEventButton.layer.cornerRadius = 50
+            collectionViewCell.goingButton.isHidden = false
+            collectionViewCell.declineButton.isHidden = false
+            collectionViewCell.eventLabel.isHidden = false
+            collectionViewCell.startDateLabel.isHidden = false
+            //collectionViewCell.eventImage.alpha = 0.9
+            
+
             
         default:
             print("you good fam?")
@@ -249,17 +251,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
-        collectionViewCell.eventImage.alpha = 0.8
+        
         return collectionViewCell
         
-        
-        
-        
-        
-        
-        
-
-        //add segmented control function here
         
     }
     
