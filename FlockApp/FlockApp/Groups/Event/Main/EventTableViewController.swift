@@ -216,14 +216,17 @@ class EventTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-        cell.backgroundColor = UIColor.clear
+    
         let person = invited[indexPath.row]
         cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
         cell.nameLabel.text = person.displayName
         cell.taskLabel.text = person.task
+        
         //cell borders
-        cell.layer.cornerRadius = 20
-        cell.layer.borderWidth = 1
+        cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
+        cell.layer.cornerRadius = 50
+//        cell.layer.borderWidth = 1
+        
     
 //        cell.textLabel?.text = person.displayName
 //        cell.detailTextLabel?.text = person.task

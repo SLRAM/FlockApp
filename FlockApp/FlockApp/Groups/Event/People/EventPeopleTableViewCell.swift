@@ -40,21 +40,37 @@ class EventPeopleTableViewCell: UITableViewCell {
     
     private func commonInit(){
         setupImageView()
+        setupNameLabel()
+        setupTaskLabel()
     }
     
     func setupImageView() {
         addSubview(profilePicture)
         profilePicture.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            profilePicture.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 0.6),
-            profilePicture.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2),
-            profilePicture.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            profilePicture.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25)
+            profilePicture.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
+            profilePicture.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.2),
+            profilePicture.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            profilePicture.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10)
             ])
         
     }
     
+    func setupNameLabel() {
+        addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            nameLabel.leadingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: 20),
+            nameLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -45)
+            ])
+    }
 
-
-
+    func setupTaskLabel() {
+        addSubview(taskLabel)
+        taskLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            taskLabel.leadingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: 20),
+            taskLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25)
+            ])
+    }
 }
