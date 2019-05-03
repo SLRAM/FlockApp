@@ -78,30 +78,6 @@ class HomeView: UIView {
             return collectionView
         }()
     
-//    public lazy var newEventsCollectionView: UICollectionView = {
-//        let cellLayout = UICollectionViewFlowLayout()
-//        cellLayout.scrollDirection = .vertical
-//        cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
-//        cellLayout.itemSize = CGSize.init(width: 350, height:350)
-//        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
-//        collectionView.layer.cornerRadius = 15.0
-//        collectionView.backgroundColor = .white
-//        return collectionView
-//    }()
-    
-    
-    
-    
-//    lazy var myView: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .white
-//        return view
-//    }()
-//    lazy var myViewTwo: UIView = {
-//        let view = UIView()
-//        view.backgroundColor = .white
-//        return view
-//    }()
     
     
         override init(frame: CGRect) {
@@ -174,31 +150,7 @@ class HomeView: UIView {
         
     }
 
-    
-//       @objc func indexChanged(_ sender: UISegmentedControl){
-//        switch sender.selectedSegmentIndex {
-//        case 0:
-//            print("Current Events")
-//            delegate?.segmentedEventsPressed()
-//            cellView.joinEventButton.isHidden = true
-//        case 1:
-//            print("Past Event")
-//            delegate?.segmentedPastEventPressed()
-//            cellView.joinEventButton.isHidden = true
-//        case 2:
-//            print("Join Event")
-//            delegate?.pendingJoinEventPressed()
-//            //cellView.startDateLabel.isHidden = false
-//            cellView.joinEventButton.isEnabled = true
-//            cellView.joinEventButton.isHidden = false
-//            //cellView.eventImage.isHidden = true
-//            //cellView.eventLabel.isHidden = true
-//    
-//            
-//        default:
-//            break
-//        }
-//    }
+
     
     }
 
