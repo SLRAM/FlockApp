@@ -24,7 +24,7 @@ class CreateEditView: UIView {
         let button = UIButton()
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(imagePressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.setBackgroundImage(UIImage(named: "pitons"), for: .normal)
         button.layer.cornerRadius = 10.0
         return button
@@ -37,10 +37,10 @@ class CreateEditView: UIView {
     lazy var addressButton: UIButton = {
         let button = UIButton()
         button.setTitle("Event Address", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.purple, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(addressPressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -52,10 +52,10 @@ class CreateEditView: UIView {
     lazy var dateButton: UIButton = {
         let button = UIButton()
         button.setTitle("Event Date", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.purple, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(datePressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -66,20 +66,20 @@ class CreateEditView: UIView {
     
     lazy var myLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yellow
+        label.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         label.text = "Event Tracking Time"
         label.textAlignment = .center
-        label.textColor = .blue
+        label.textColor = .purple
         return label
     }()
     
     lazy var trackingIncreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.purple, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(trackingIncreasePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8901717663, green: 0.8789022565, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -89,10 +89,10 @@ class CreateEditView: UIView {
     lazy var trackingDecreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("-", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.purple, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(trackingDecreasePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8881237507, green: 0.8798579574, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -102,10 +102,10 @@ class CreateEditView: UIView {
     lazy var friendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add Friends", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(.purple, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(friendsPressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
