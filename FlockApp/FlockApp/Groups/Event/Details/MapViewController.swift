@@ -51,17 +51,13 @@ class MapViewController: UIViewController {
         }
         proximity = unwrappedEvent.proximity
         self.view.addSubview(mapView)
-//        myMapView.delegate = self
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-//            myMapView.showsUserLocation = true
-//            mapView.sh
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
-//            myMapView.showsUserLocation = true
         }
         
         if isQuickEvent(eventType: unwrappedEvent) {
@@ -74,22 +70,15 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
-        if let event = event, event.startDate.date() > Date() {
-            
-        }
-        let startDate = unwrappedEvent.startDate.date()
-        
-        if startDate > Date() {
+
+        if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
+
         } else {
             print("start date is < ")
             startTimer()
         }
-        print(startDate)
-        print(Date())
-//        startTimer()
-//        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
-        
+
     }
     
     func isQuickEvent(eventType: Event) -> Bool {
@@ -101,8 +90,6 @@ class MapViewController: UIViewController {
     }
 
     func startTimer() {
-        //make it a
-
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
@@ -116,7 +103,6 @@ class MapViewController: UIViewController {
         
     }
     func updateUserLocation() {
-//        usersCurrentLocation
         guard let user = authservice.getCurrentUser() else {
             print("no logged user")
             return
@@ -133,24 +119,21 @@ class MapViewController: UIViewController {
                              EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
                 ]) { [weak self] (error) in
                     if let error = error {
-                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                        self?.showAlert(title: "Editing event document Error", message: error.localizedDescription)
                     }
             }
-
-            
-            
-//            DBService.firestoreDB
-//                .collection(EventsCollectionKeys.CollectionKey)
-//                .document(event.documentId)
-//                .collection(InvitedCollectionKeys.CollectionKey)
-//                .document(user.uid)
-//                .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
-//                             InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
-//                ]) { [weak self] (error) in
-//                    if let error = error {
-//                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
-//                    }
-//            }
+            DBService.firestoreDB
+                .collection(UsersCollectionKeys.CollectionKey)
+                .document(user.uid)
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
+                             EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing event document on user Error", message: error.localizedDescription)
+                    }
+            }
             
         } else {
             DBService.firestoreDB
@@ -181,6 +164,7 @@ class MapViewController: UIViewController {
         let eventMarker = GMSMarker.init()
         eventMarker.position = eventLocation
         eventMarker.title = eventName
+        eventMarker.icon = UIImage(named: "birdhouse")
         eventMarker.map = mapView.myMapView
         hostMarker = eventMarker
     }
@@ -226,7 +210,7 @@ class MapViewController: UIViewController {
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.0208575353, green: 0.7171841264, blue: 0.6636909246, alpha: 1))
+            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {
                 marker.map = self.mapView.myMapView

@@ -112,7 +112,7 @@ class EventView: UIView {
             eventTracking.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
             eventTracking.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
             ])
-        eventTracking.isHidden = true
+//        eventTracking.isHidden = true
     }
 
     private func addMapView() {

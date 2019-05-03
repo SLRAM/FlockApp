@@ -12,56 +12,52 @@ import Firebase
 import Toucan
 
 class QuickEventViewController: UIViewController {
+    let trackingPlaceholder = "Event Tracking Time"
+    let proximityPlaceholder = "Proximity Distance"
+    let quickImage = UIImage(named: "quickEvent")
     
     let locationManager = CLLocationManager()
     var usersCurrentLocation = CLLocation()
-    
     private let quickEventView = QuickEventView()
-    let trackingPlaceholder = "Event Tracking Time"
-    let proximityPlaceholder = "Proximity Distance"
-
     var friendsArray = [UserModel]()
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedCoordinates = CLLocationCoordinate2D()
-
+    private var authservice = AppDelegate.authservice
+    var selectedImage : UIImage?
 
     var trackingTime = 0
     var hours = 0
-    
     var proximity = 0
     var distance = 0
 
-    let quickImage = UIImage(named: "quickEvent")
-    var selectedImage : UIImage?
     
-    private var authservice = AppDelegate.authservice
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
         self.view.addSubview(quickEventView)
+        viewSetup()
+    }
+    
+    func viewSetup() {
+        navigationItem.title = "Create Quick Event"
         selectedImage = Toucan.init(image: quickImage!).resize(CGSize(width: 500, height: 500)).image
+        navigationItem.rightBarButtonItem = quickEventView.createButton
+        navigationItem.leftBarButtonItem = quickEventView.cancelButton
+        locationManager.delegate = self
         quickEventView.delegate = self
         quickEventView.myTableView.delegate = self
         quickEventView.myTableView.dataSource = self
-        navigationItem.title = "Create Quick Event"
-
-        navigationItem.rightBarButtonItem = quickEventView.createButton
-        navigationItem.leftBarButtonItem = quickEventView.cancelButton
+        mapAuth()
+    }
+    func mapAuth() {
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-            //            myMapView.showsUserLocation = true
-            //            mapView.sh
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
-            //            myMapView.showsUserLocation = true
         }
-
-        
     }
     
     func editNumber(increase: Bool)-> String {
@@ -93,12 +89,6 @@ class QuickEventViewController: UIViewController {
 
 }
 extension QuickEventViewController: QuickEventViewDelegate {
-    
-    
-    
-    
-    
-    
     
     func quickTrackingDecrease() {
         let trackingLabel = editNumber(increase: false)
@@ -167,7 +157,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
                                   locationString: nil,
                                   locationLat: self!.usersCurrentLocation.coordinate.latitude,
                                   locationLong: self!.usersCurrentLocation.coordinate.longitude,
-                                  trackingTime: 0,
+                                  trackingTime: startingString,
                                   quickEvent: true,
                                   proximity: 0) //set value for proximity!
                 DBService.postEvent(event: event, completion: { [weak self] error in

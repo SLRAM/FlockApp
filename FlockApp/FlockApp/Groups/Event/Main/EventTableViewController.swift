@@ -74,15 +74,17 @@ class EventTableViewController: UITableViewController {
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
         let eventAddress = unwrappedEvent.locationString
+        let trackingTime = unwrappedEvent.trackingTime.formatISODateString(dateFormat: "MMM d, h:mm a")
         let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         eventView.eventDate.text = "\(startDate) to \(endDate)"
+        eventView.eventTracking.text = "Tracking begins: \(trackingTime)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
         let marker = GMSMarker.init()
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-        marker.icon = UIImage(named: "icons8-bird-30")
+        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
         marker.map = eventView.myMapView
         let position = marker.position
