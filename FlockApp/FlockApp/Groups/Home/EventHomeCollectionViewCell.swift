@@ -37,7 +37,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var eventImage: UIImageView = {
-        let image = UIImageView(image: UIImage(named: "pitons"))
+        let image = UIImageView(image: UIImage(named: "quickEvent"))
         image.clipsToBounds = true
         image.layer.cornerRadius = 14
         return image
