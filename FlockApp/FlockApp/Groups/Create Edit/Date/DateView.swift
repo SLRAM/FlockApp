@@ -77,53 +77,53 @@ class DateView: UIView {
     }
     
     func setupViewLabel() {
-        addSubview(viewLabel)
-        viewLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            viewLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
-            viewLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            viewLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            viewLabel.heightAnchor.constraint(equalToConstant: 50)
-            ])
+//        addSubview(viewLabel)
+//        viewLabel.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            viewLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+//            viewLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+//            viewLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
+//            viewLabel.heightAnchor.constraint(equalToConstant: 50)
+//            ])
     }
     func setupStartLabel() {
         addSubview(startLabel)
         startLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            startLabel.topAnchor.constraint(equalTo: viewLabel.bottomAnchor, constant: 15),
+            startLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             startLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             startLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            startLabel.heightAnchor.constraint(equalToConstant: 30)
+            startLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10)
             ])
     }
     func setupStartDatePicker() {
         addSubview(startDatePicker)
         startDatePicker.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            startDatePicker.topAnchor.constraint(equalTo: startLabel.bottomAnchor, constant: 8),
+            startDatePicker.topAnchor.constraint(equalTo: startLabel.bottomAnchor),
             startDatePicker.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             startDatePicker.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            startDatePicker.heightAnchor.constraint(equalToConstant: 300)
+            startDatePicker.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40)
             ])
     }
     func setupEndLabel() {
         addSubview(endLabel)
         endLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            endLabel.topAnchor.constraint(equalTo: startDatePicker.bottomAnchor, constant: 20),
+            endLabel.topAnchor.constraint(equalTo: startDatePicker.bottomAnchor),
             endLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             endLabel.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            endLabel.heightAnchor.constraint(equalToConstant: 30)
+            endLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10)
             ])
     }
     func setupEndDatePicker() {
         addSubview(endDatePicker)
         endDatePicker.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            endDatePicker.topAnchor.constraint(equalTo: endLabel.bottomAnchor, constant: 8),
+            endDatePicker.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
             endDatePicker.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             endDatePicker.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            endDatePicker.heightAnchor.constraint(equalToConstant: 300)
+            endDatePicker.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40)
             ])
     }
     

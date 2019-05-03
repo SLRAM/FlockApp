@@ -95,6 +95,13 @@ class HomeViewController: UIViewController {
                         self?.showAlert(title: "Deleting Event from Pending Error", message: error.localizedDescription)
                     } else {
                         print("Deleted Event from Pending list")
+                        
+                        let index = self?.filteredPendingEvents.firstIndex { $0.documentId == eventCell.documentId }
+                        if let foundIndex = index {
+                            self?.filteredPendingEvents.remove(at: foundIndex)
+                        }
+                        
+                        //self?.homeView.usersCollectionView.reloadData()
                     }
                 })
             }
@@ -179,6 +186,8 @@ class HomeViewController: UIViewController {
                     self?.refreshControl.endRefreshing()
                 }
             })
+        
+        
         acceptedEventListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
