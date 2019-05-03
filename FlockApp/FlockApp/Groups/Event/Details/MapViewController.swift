@@ -74,19 +74,33 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
-        if let event = event, event.startDate.date() > Date() {
-            
-        }
-        let startDate = unwrappedEvent.startDate.date()
         
-        if startDate > Date() {
+
+        
+        
+        
+//        if let event = event, event.startDate.date() > Date() {
+//
+//        }
+        
+        if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
+
         } else {
             print("start date is < ")
             startTimer()
         }
-        print(startDate)
-        print(Date())
+//
+//        let startDate = unwrappedEvent.startDate.date()
+//
+//        if startDate > Date() {
+//            print("start date is > ")
+//        } else {
+//            print("start date is < ")
+//            startTimer()
+//        }
+//        print(startDate)
+//        print(Date())
 //        startTimer()
 //        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
         
@@ -133,24 +147,21 @@ class MapViewController: UIViewController {
                              EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
                 ]) { [weak self] (error) in
                     if let error = error {
-                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                        self?.showAlert(title: "Editing event document Error", message: error.localizedDescription)
                     }
             }
-
-            
-            
-//            DBService.firestoreDB
-//                .collection(EventsCollectionKeys.CollectionKey)
-//                .document(event.documentId)
-//                .collection(InvitedCollectionKeys.CollectionKey)
-//                .document(user.uid)
-//                .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
-//                             InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
-//                ]) { [weak self] (error) in
-//                    if let error = error {
-//                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
-//                    }
-//            }
+            DBService.firestoreDB
+                .collection(UsersCollectionKeys.CollectionKey)
+                .document(user.uid)
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
+                             EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing event document on user Error", message: error.localizedDescription)
+                    }
+            }
             
         } else {
             DBService.firestoreDB
