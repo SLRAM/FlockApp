@@ -10,6 +10,7 @@ import CoreMotion
 
 protocol EventHomeCollectionViewCellDelegate: AnyObject {
     func acceptedPressed(tag: Int)
+    func declinePressed(tag: Int)
 }
 
 class EventHomeCollectionViewCell: UICollectionViewCell {
@@ -22,7 +23,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.text = "Event #1"
 //        label.backgroundColor = .white
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-
         label.textColor = .black
         return label
     }()
@@ -30,7 +30,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-//        label.backgroundColor = .white
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
 
         label.textColor = .black
@@ -73,17 +72,21 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var declineButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
         let image = UIImage(named: "decline")
+        button.addTarget(self, action: #selector(declineEventPressed), for: .touchUpInside)
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
         return button
     }()
     
+    @objc func declineEventPressed(_ sender: UIButton){
+        delegate?.declinePressed(tag: sender.tag)
+    }
     
     private let motionManager = CMMotionManager()
     private weak var shadowView: UIView?
     private static let kInnerMargin: CGFloat = 20.0
     
-    private func configureShadowView(){
+    public func configureShadowView(){
         self.shadowView?.removeFromSuperview()
         let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
         insertSubview(shadowView, at: 0)
@@ -196,7 +199,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     
+    
+    
 }
 
 
-//two buttons with custom images for two different events

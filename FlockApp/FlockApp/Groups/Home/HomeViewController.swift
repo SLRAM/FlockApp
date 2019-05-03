@@ -271,16 +271,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.declineButton.isHidden = false
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
-            //collectionViewCell.eventImage.alpha = 0.9
-            
-
             
         default:
             print("you good fam?")
         }
-        
         collectionViewCell.delegate = self
         collectionViewCell.goingButton.tag = indexPath.row
+        collectionViewCell.declineButton.tag = indexPath.row
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -352,17 +349,24 @@ extension HomeViewController: UserEventCollectionViewDelegate {
         }
     }
     
+  
     
     
     
 }
 extension HomeViewController: EventHomeCollectionViewCellDelegate {
+    func declinePressed(tag: Int) {
+        print(tag)
+        let event = filteredPendingEvents[tag]
+        acceptEventPressed(eventCell: event)
+    }
+
     func acceptedPressed(tag: Int) {
         print(tag)
         let event = filteredPendingEvents[tag]
         acceptEventPressed(eventCell: event)
     }
 
-    
-    
+
+
 }
