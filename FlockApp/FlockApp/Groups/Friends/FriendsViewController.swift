@@ -54,8 +54,6 @@ class FriendsViewController: UIViewController {
         friendsView.friendSearch.delegate = self
         friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
-        
-
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchAllUsers(keyword: "")
@@ -186,6 +184,27 @@ class FriendsViewController: UIViewController {
             }
         }
     }
+    @objc private func cancelRequest(sender: UIButton) {
+        DBService.cancelRequest(cancelRequest: request[sender.tag]) { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    @objc private func declinePending(sender: UIButton) {
+        DBService.declinePending(pendingDecline: pending[sender.tag]) { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
+    @objc private func acceptPending(sender: UIButton) {
+        DBService.addFriend(friend: pending[sender.tag]) { (error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }
+        }
+    }
 }
 
 extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UISearchBarDelegate {
@@ -227,6 +246,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             cell.backgroundColor = .clear
             cell.cancelRequest.isUserInteractionEnabled = true
             cell.cancelRequest.isHidden = false
+            cell.cancelRequest.tag = indexPath.row
+            cell.cancelRequest.addTarget(self, action: #selector(cancelRequest(sender:)), for: .touchUpInside)
             return cell
         case 2:
             guard !pending.isEmpty else {return FriendsTableViewCell() }
@@ -240,6 +261,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             cell.declineFriend.isUserInteractionEnabled = true
             cell.acceptFriend.isHidden = false
             cell.declineFriend.isHidden = false
+            cell.acceptFriend.addTarget(self, action: #selector(acceptPending(sender:)), for: .touchUpInside)
+            cell.declineFriend.addTarget(self, action: #selector(declinePending(sender:)), for: .touchUpInside)
             return cell
         case 3 :
             guard !strangers.isEmpty && indexPath.row < strangers.count else { return FriendsTableViewCell() }
