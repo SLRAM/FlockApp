@@ -269,6 +269,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         default:
             print("you good fam?")
         }
+        
+        collectionViewCell.delegate = self
+        collectionViewCell.goingButton.tag = indexPath.row
         collectionViewCell.eventLabel.text = eventToSet.eventName
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -341,6 +344,16 @@ extension HomeViewController: UserEventCollectionViewDelegate {
     }
     
     
+    
+    
+}
+extension HomeViewController: EventHomeCollectionViewCellDelegate {
+    func acceptedPressed(tag: Int) {
+        print(tag)
+        let event = filteredPendingEvents[tag]
+        acceptEventPressed(eventCell: event)
+    }
+
     
     
 }
