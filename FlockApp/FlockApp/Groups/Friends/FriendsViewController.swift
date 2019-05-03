@@ -44,7 +44,7 @@ class FriendsViewController: UIViewController {
     }
     private var listener: ListenerRegistration!
     private var authservice = AppDelegate.authservice
-    var strangerFilter = [UserModel]()
+    var allUsers = [UserModel]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,13 +58,10 @@ class FriendsViewController: UIViewController {
 
     }
     override func viewWillAppear(_ animated: Bool) {
-        setupTable(keyword: "")
-    }
-    private func setupTable(keyword: String) {
-        fetchFriends(keyword: keyword)
+        fetchAllUsers(keyword: "")
+        fetchFriends(keyword: "")
     }
     private func fetchPendingFriends(keyword: String) {
-        self.pending.removeAll()
         guard let user = authservice.getCurrentUser() else {
             print("Please log in")
             return
@@ -73,25 +70,27 @@ class FriendsViewController: UIViewController {
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
             .collection(FriendsCollectionKey.PendingKey)
-            .whereField(FriendsCollectionKey.RequestKey, isEqualTo: user.uid)
             .addSnapshotListener { [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     let test : [String] = snapshot.documents.map {
-                        let dictionary =  $0.data() as? [String:String]
-                        guard let key = dictionary?.keys.first else { return "" }
-                        return key
+                        $0.documentID
                     }
-
-                    self!.fetchUserModel(type: "pending", list: test, keyword: keyword)
-                    //self!.doFilter(keyword: keyword)
-                    
+                    self!.pending = self!.allUsers.filter {
+                        test.contains($0.userId)
+                    }
+                    if keyword != "" {
+                        self!.pending = self!.pending.filter {
+                            $0.displayName.lowercased().contains(keyword.lowercased())
+                        }
+                        self?.friendsView.myTableView.reloadData()
+                    }
+                    self!.getStrangers(keyword: keyword)
                 }
         }
     }
     private func fetchRequestedFriends(keyword: String) {
-        self.request.removeAll()
         guard let user = authservice.getCurrentUser() else {
             print("Please log in")
             return
@@ -105,19 +104,23 @@ class FriendsViewController: UIViewController {
                     print("failed to fetch friend requests with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     let test : [String] = snapshot.documents.map {
-                        let dictionary =  $0.data() as? [String:String]
-                        guard let key = dictionary?.keys.first else { return "" }
-                        return key
+                        $0.documentID
                     }
-                    
-                    self!.fetchUserModel(type: "request",list: test, keyword: keyword)
+                    self!.request = self!.allUsers.filter {
+                        test.contains($0.userId)
+                    }
+                    if keyword != "" {
+                        self!.request = self!.request.filter {
+                            $0.displayName.lowercased().contains(keyword.lowercased())
+                        }
+                        self?.friendsView.myTableView.reloadData()
+                    }
                     self!.fetchPendingFriends(keyword: keyword)
                     
                 }
         }
     }
     private func fetchFriends(keyword: String) {
-        self.friends.removeAll()
         guard let user = authservice.getCurrentUser() else {
             print("Please log in")
             return
@@ -131,23 +134,35 @@ class FriendsViewController: UIViewController {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     let test : [String] = snapshot.documents.map {
-                        let dictionary =  $0.data() as? [String:String]
-                        guard let key = dictionary?.keys.first else { return "" }
-                        return key
+                        $0.documentID
+                    }
+                    self!.friends = self!.allUsers.filter {
+                        test.contains($0.userId)
+                    }
+                    if keyword != "" {
+                        self!.friends = self!.friends.filter {
+                            $0.displayName.lowercased().contains(keyword.lowercased())
+                        }
+                        self?.friendsView.myTableView.reloadData()
                     }
                     self!.fetchRequestedFriends(keyword: keyword)
                     
-                    self!.fetchUserModel(type: "friends",list: test, keyword: keyword)
                 }
         }
     }
-    private func doFilter(keyword: UserModel) {
-        if !strangerFilter.contains(keyword) {
-            strangerFilter.append(keyword)
+    private func getStrangers(keyword: String) {
+        self.strangers = self.allUsers.filter {
+            !friends.contains($0) &&
+            !pending.contains($0) &&
+            !request.contains($0)
         }
+        if keyword != "" {
+            self.strangers = self.strangers.filter({$0.displayName.lowercased().contains(keyword.lowercased())})
+        }
+        self.friendsView.myTableView.reloadData()
     }
-    @objc private func fetchStrangers(keyword: String) {
-        let text = keyword
+    
+    @objc private func fetchAllUsers(keyword: String) {
         guard let user = authservice.getCurrentUser() else {
             print("Please log in")
             return
@@ -158,89 +173,18 @@ class FriendsViewController: UIViewController {
                 if let error = error {
                     print("failed to fetch strangers with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    if text == "" {
-                        self?.strangers.removeAll()
-                        let str = snapshot.documents.map { UserModel(dict: $0.data()) }
-                        
-                        str.forEach { userModel in
-                            
-                            if !self!.strangerFilter.contains(userModel) && userModel.userId != user.uid {
-                                
-                                self?.strangers.append(userModel)
-            
-                            }
-                            self!.strangers = (self?.strangers.sorted { $0.displayName.lowercased() < $1.displayName.lowercased() })!
-                        }
+                    if keyword == "" {
+                        self!.allUsers = snapshot.documents.map { UserModel(dict: $0.data())}
+                            .sorted { $0.displayName.lowercased() < $1.displayName.lowercased()}
+                            .filter({$0.userId != user.uid})
                 } else {
-                    self?.strangers.removeAll()
-                    let str = snapshot.documents.map { UserModel(dict: $0.data()) }
-                    str.forEach { userModel in
-                        if !self!.strangerFilter.contains(userModel) && userModel.userId != user.uid {
-                            self?.strangers.append(userModel)
-                        }
-                        self!.strangers = (self?.strangers.sorted { $0.displayName.lowercased() < $1.displayName.lowercased() })!
-                            .filter({$0.displayName.lowercased().contains(text.lowercased())})
-                    }
+                    self!.allUsers = snapshot.documents.map { UserModel(dict: $0.data())}
+                        .sorted { $0.displayName.lowercased() < $1.displayName.lowercased()}
+                        .filter({$0.userId != user.uid})
+                        .filter({$0.displayName.lowercased().contains(keyword.lowercased())})
                 }
             }
-                self?.friendsView.myTableView.reloadData()
         }
-    }
-    private func fetchUserModel(type: String, list: [String], keyword: String) {
-        
-        guard !list.isEmpty else {
-            if type == "pending" {
-                self.fetchStrangers(keyword: keyword)
-            }
-            return
-        }
-        var currentList = list
-        guard let userIDString = currentList.popLast() else {return}
-        DBService.fetchUser(userId: userIDString) { (error, user) in
-                if let error = error {
-                    print("failed to fetch info with error: \(error.localizedDescription)")
-                } else if let user = user {
-                    switch type {
-                    case "friends":
-                        if keyword == "" {
-                            self.friends.append(user)
-                            self.doFilter(keyword: user)
-                        } else if user.displayName.lowercased().contains(keyword.lowercased()) {
-                            self.friends.append(user)
-                            self.doFilter(keyword: user)
-
-                        }
-                    case "pending":
-                        if keyword == "" {
-                            self.pending.append(user)
-                            self.doFilter(keyword: user)
-
-                        } else if user.displayName.lowercased().contains(keyword.lowercased()) {
-                            self.pending.append(user)
-                            self.doFilter(keyword: user)
-
-                        }
-                    case "request":
-                        if keyword == "" {
-                            self.request.append(user)
-                            self.doFilter(keyword: user)
-
-                        } else if user.displayName.lowercased().contains(keyword.lowercased()) {
-                            self.request.append(user)
-                            self.doFilter(keyword: user)
-                        }
-                    default:
-                        if keyword == "" {
-                            self.doFilter(keyword: user)
-                        } else if user.displayName.lowercased().contains(keyword.lowercased()) {
-                            self.doFilter(keyword: user)
-                        }
-                    }
-                    self.fetchUserModel(type: type, list: currentList, keyword: keyword)
-
-                }
-        }
-        return
     }
 }
 
@@ -266,42 +210,52 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.section {
         case 0:
-            guard !friends.isEmpty else {return UITableViewCell() }
+            guard !friends.isEmpty else {return FriendsTableViewCell() }
             let userCell = friends[indexPath.row]
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-            cell.textLabel?.text = userCell.displayName
-            cell.detailTextLabel?.text = "Friend"
-            cell.backgroundColor = .clear
+            let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
+            cell.nameLabel.text = userCell.displayName
+            cell.taskLabel.text = "Friend"
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             return cell
         case 1:
-            guard !request.isEmpty else {return UITableViewCell() }
+            guard !request.isEmpty else {return FriendsTableViewCell() }
             let userCell = request[indexPath.row]
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-            cell.textLabel?.text = userCell.displayName
-            cell.detailTextLabel?.text = "Request Sent"
+            let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
+            cell.nameLabel.text = userCell.displayName
+            cell.taskLabel.text = "Request Sent"
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
+            cell.cancelRequest.isUserInteractionEnabled = true
+            cell.cancelRequest.isHidden = false
             return cell
         case 2:
-            guard !pending.isEmpty else {return UITableViewCell() }
+            guard !pending.isEmpty else {return FriendsTableViewCell() }
             let userCell = pending[indexPath.row]
-            let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-            cell.textLabel?.text = userCell.displayName
-            cell.detailTextLabel?.text = "Pending"
+            let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
+            cell.nameLabel.text = userCell.displayName
+            cell.taskLabel.text = "Friend Pending"
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
+            cell.acceptFriend.isUserInteractionEnabled = true
+            cell.declineFriend.isUserInteractionEnabled = true
+            cell.acceptFriend.isHidden = false
+            cell.declineFriend.isHidden = false
             return cell
         case 3 :
-            guard !strangers.isEmpty && indexPath.row < strangers.count else { return UITableViewCell() }
+            guard !strangers.isEmpty && indexPath.row < strangers.count else { return FriendsTableViewCell() }
             let userCell = strangers[indexPath.row]
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = userCell.displayName
+            let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
+            cell.nameLabel.text = userCell.displayName
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
             return cell
         default:
-            return UITableViewCell()
+            return FriendsTableViewCell()
         }
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-            setupTable(keyword: searchText)
+            fetchAllUsers(keyword: searchText)
+            fetchFriends(keyword: searchText)
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
