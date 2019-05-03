@@ -10,6 +10,7 @@ import CoreMotion
 
 protocol EventHomeCollectionViewCellDelegate: AnyObject {
     func acceptedPressed(tag: Int)
+    func declinePressed(tag: Int)
 }
 
 class EventHomeCollectionViewCell: UICollectionViewCell {
@@ -73,11 +74,15 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var declineButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
         let image = UIImage(named: "decline")
+        button.addTarget(self, action: #selector(declineEventPressed), for: .touchUpInside)
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
         return button
     }()
     
+    @objc func declineEventPressed(_ sender: UIButton){
+        delegate?.declinePressed(tag: sender.tag)
+    }
     
     private let motionManager = CMMotionManager()
     private weak var shadowView: UIView?
