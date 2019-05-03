@@ -79,6 +79,29 @@ class HomeViewController: UIViewController {
         indexChanged(homeView.segmentedControl)
 
     }
+    func acceptEventPressed(eventCell: Event) {
+        guard let user = authService.getCurrentUser() else {
+            print("no logged user")
+            return
+        }
+        DBService.postAcceptedEventToUser(user: user, event: eventCell, completion: { [weak self] error in
+            if let error = error {
+                self?.showAlert(title: "Posting Event To Accepted Error", message: error.localizedDescription)
+            } else {
+                print("posted to accepted list")
+                
+                DBService.deleteEventFromPending(user: user, event: eventCell, completion: { [weak self] error in
+                    if let error = error {
+                        self?.showAlert(title: "Deleting Event from Pending Error", message: error.localizedDescription)
+                    } else {
+                        print("Deleted Event from Pending list")
+                    }
+                })
+            }
+        })
+        homeView.usersCollectionView.reloadData()
+
+    }
     
     
     @objc func showCreateEditEvent() {
@@ -259,21 +282,24 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //when a user clicks on the cell's button call acceptEventPressed
         let detailVC = EventTableViewController()
         var event = Event()
 
         switch tag {
         case 0:
             event = filteredAcceptedEvents[indexPath.row]
+            detailVC.tag = 0
             
             
         case 1:
             event = filteredPastEvents[indexPath.row]
+            detailVC.tag = 1
             
             
         case 2:
             event = filteredPendingEvents[indexPath.row]
-            
+            detailVC.tag = 2
             
         default:
             print("you good fam")

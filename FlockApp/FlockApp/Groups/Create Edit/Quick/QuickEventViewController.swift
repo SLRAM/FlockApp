@@ -31,7 +31,7 @@ class QuickEventViewController: UIViewController {
     var proximity = 0
     var distance = 0
 
-    let quickImage = UIImage(named: "pitons")
+    let quickImage = UIImage(named: "quickEvent")
     var selectedImage : UIImage?
     
     private var authservice = AppDelegate.authservice
