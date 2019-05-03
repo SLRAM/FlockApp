@@ -8,7 +8,12 @@
 import UIKit
 import CoreMotion
 
+protocol EventHomeCollectionViewCellDelegate: AnyObject {
+    func acceptedPressed(tag: Int)
+}
+
 class EventHomeCollectionViewCell: UICollectionViewCell {
+    weak var delegate: EventHomeCollectionViewCellDelegate?
     
     //var homeView = HomeView()
     
@@ -54,11 +59,16 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var goingButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
+        button.addTarget(self, action: #selector(eventAcceptedPressed), for: .touchUpInside)
         let image = UIImage(named: "accept")
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
         return button
     }()
+    
+    @objc func eventAcceptedPressed(_ sender: UIButton) {
+        delegate?.acceptedPressed(tag: sender.tag)
+    }
     
     public lazy var declineButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
