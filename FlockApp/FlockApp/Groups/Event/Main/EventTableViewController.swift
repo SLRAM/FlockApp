@@ -84,7 +84,7 @@ class EventTableViewController: UITableViewController {
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
         let marker = GMSMarker.init()
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-        marker.icon = UIImage(named: "icons8-bird-30")
+        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
         marker.map = eventView.myMapView
         let position = marker.position
