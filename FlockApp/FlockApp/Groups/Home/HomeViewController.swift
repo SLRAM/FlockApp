@@ -266,7 +266,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         default:
             print("you good fam?")
         }
-        
         collectionViewCell.delegate = self
         collectionViewCell.goingButton.tag = indexPath.row
         collectionViewCell.declineButton.tag = indexPath.row
