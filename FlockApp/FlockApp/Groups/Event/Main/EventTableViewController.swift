@@ -74,9 +74,11 @@ class EventTableViewController: UITableViewController {
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
         let eventAddress = unwrappedEvent.locationString
+        let trackingTime = unwrappedEvent.trackingTime.formatISODateString(dateFormat: "MMM d, h:mm a")
         let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
         eventView.eventDate.text = "\(startDate) to \(endDate)"
+        eventView.eventTracking.text = "Tracking begins: \(trackingTime)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))

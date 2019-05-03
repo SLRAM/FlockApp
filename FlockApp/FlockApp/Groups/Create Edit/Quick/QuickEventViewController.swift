@@ -90,12 +90,6 @@ class QuickEventViewController: UIViewController {
 }
 extension QuickEventViewController: QuickEventViewDelegate {
     
-    
-    
-    
-    
-    
-    
     func quickTrackingDecrease() {
         let trackingLabel = editNumber(increase: false)
         quickEventView.myLabel.text = trackingLabel
@@ -163,7 +157,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
                                   locationString: nil,
                                   locationLat: self!.usersCurrentLocation.coordinate.latitude,
                                   locationLong: self!.usersCurrentLocation.coordinate.longitude,
-                                  trackingTime: 0,
+                                  trackingTime: startingString,
                                   quickEvent: true,
                                   proximity: 0) //set value for proximity!
                 DBService.postEvent(event: event, completion: { [weak self] error in

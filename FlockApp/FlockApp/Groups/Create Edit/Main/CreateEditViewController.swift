@@ -164,9 +164,24 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+
+        
+        
+        
+        
         
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
+        
+        
+        let eventLength = trackingTime*(-60)
+        let trackingDate = startDate.adding(minutes: eventLength)
+        
+        let isoDateFormatter = ISO8601DateFormatter()
+        let startTrackingString = isoDateFormatter.string(from: trackingDate)
+        
+        
+
         let startDateString = ISO8601DateFormatter().string(from: startDate)
         let endDateString = ISO8601DateFormatter().string(from: endDate)
         if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
@@ -225,7 +240,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: self!.trackingTime,
+                                          trackingTime: startTrackingString,
                                           quickEvent: false,
                                           proximity: 0)
                 //post event to user
