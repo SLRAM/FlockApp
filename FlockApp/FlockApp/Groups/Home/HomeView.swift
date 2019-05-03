@@ -19,7 +19,7 @@ protocol UserEventCollectionViewDelegate: AnyObject {
 class HomeView: UIView {
     
     weak var delegate: UserEventCollectionViewDelegate?
-    
+
     var homeViewController: HomeViewController?
     var cellView =  EventHomeCollectionViewCell()
 
