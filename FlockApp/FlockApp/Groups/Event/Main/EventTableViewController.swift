@@ -37,6 +37,7 @@ class EventTableViewController: UITableViewController {
     private var listener: ListenerRegistration!
     
     public var event: Event?
+    public var tag: Int?
     
     
     override func viewDidLoad() {
@@ -48,7 +49,14 @@ class EventTableViewController: UITableViewController {
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
-        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        if tag == 2 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressedPending), for: .touchUpInside)
+        } else if tag == 0 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        } else if tag == 1 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressedEnded), for: .touchUpInside)
+
+        }
         //if !quick event then add target
         guard let unwrappedEvent = event else {return}
 
@@ -61,7 +69,7 @@ class EventTableViewController: UITableViewController {
 
     }
     func standardEventMap(unwrappedEvent: Event) {
-        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+//        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         let eventLat = unwrappedEvent.locationLat
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
@@ -84,7 +92,7 @@ class EventTableViewController: UITableViewController {
         setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
     func quickEventMap(unwrappedEvent: Event){
-        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+//        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         let eventLat = unwrappedEvent.locationLat
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
@@ -153,6 +161,26 @@ class EventTableViewController: UITableViewController {
             detailVC.event = event
             navigationController?.pushViewController(detailVC, animated: true)
         }
+    @objc func mapPressedPending() {
+        print("map pressed while pending")
+        let alertController = UIAlertController(title: "This map contains event guest current locations. Please confirm attendance to obtain access.", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+        })
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    @objc func mapPressedEnded() {
+        print("map pressed while pending")
+        let alertController = UIAlertController(title: "This event has ended. Unable to view guest locations at this time.", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+        })
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
     
         @objc func getDirections() {
             guard let eventLat = self.event?.locationLat,
