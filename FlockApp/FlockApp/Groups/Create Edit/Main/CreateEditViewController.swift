@@ -164,11 +164,7 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
-
-        
-        
-        
-        
+        createEditView.createButton.isEnabled = false
         
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
@@ -267,6 +263,7 @@ extension CreateEditViewController: CreateViewDelegate {
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
+                                self.createEditView.createButton.isEnabled = true
                             } else {
                                 //============================================================
                                 // Adding notification

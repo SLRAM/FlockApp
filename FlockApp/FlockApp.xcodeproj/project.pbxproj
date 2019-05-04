@@ -75,7 +75,6 @@
 		97E4333A226822B500BC519C /* InvitedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43339226822B500BC519C /* InvitedModel.swift */; };
 		97E4333F227200A700BC519C /* QuickEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4333E227200A700BC519C /* QuickEventViewController.swift */; };
 		97E43341227200B900BC519C /* QuickEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43340227200B900BC519C /* QuickEventView.swift */; };
-		97E433452277500A00BC519C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 97E433442277500A00BC519C /* GoogleService-Info.plist */; };
 		97E4334A227B5AE100BC519C /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43349227B5AE100BC519C /* SelectionViewController.swift */; };
 		97E4334C227B5D4000BC519C /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4334B227B5D3F00BC519C /* SelectionView.swift */; };
 /* End PBXBuildFile section */
@@ -170,13 +169,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		01001CC822724111008525B5 /* Selection */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
 		0149E8BD227770DB009A4B21 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -890,14 +882,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FSUP887MQU;
+				DEVELOPMENT_TEAM = 26RHXP32FH;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.flock.pursuit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flockapp.pursuit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -910,14 +902,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FSUP887MQU;
+				DEVELOPMENT_TEAM = 26RHXP32FH;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.flock.pursuit;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flockapp.pursuit;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
