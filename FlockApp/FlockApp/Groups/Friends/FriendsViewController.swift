@@ -60,10 +60,10 @@ class FriendsViewController: UIViewController {
         fetchFriends(keyword: "")
     }
     private func fetchPendingFriends(keyword: String) {
-        guard let user = authservice.getCurrentUser() else {
-            print("Please log in")
-            return
-        }
+            guard let user = authservice.getCurrentUser() else {
+                print("Please log in")
+                return
+            }
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)

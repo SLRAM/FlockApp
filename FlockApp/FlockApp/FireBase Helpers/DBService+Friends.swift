@@ -96,7 +96,7 @@ extension DBService {
         guard let user = AppDelegate.authservice.getCurrentUser() else {return}
         firestoreDB.collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
-            .collection(FriendsCollectionKey.BlockedKey)
+            .collection(FriendsCollectionKey.CollectionKey)
             .document(removed.userId)
             .delete()
                 { (error) in
@@ -106,7 +106,7 @@ extension DBService {
                     } else {
                         firestoreDB.collection(UsersCollectionKeys.CollectionKey)
                             .document(removed.userId)
-                            .collection(FriendsCollectionKey.BlockedKey)
+                            .collection(FriendsCollectionKey.CollectionKey)
                             .document(user.uid)
                             .delete()
                                 { (error) in
@@ -242,7 +242,6 @@ extension DBService {
                                             }
                                     }
                                 print("friends added successfully to: \(user.uid)")
-                    
                                 completion(nil)
                                 }
                     }
