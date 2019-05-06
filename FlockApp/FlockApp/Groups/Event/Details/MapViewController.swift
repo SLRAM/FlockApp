@@ -12,6 +12,7 @@ import Firebase
 import FirebaseFirestore
 import CoreLocation
 import MapKit
+import Kingfisher
 
 class MapViewController: UIViewController {
 
@@ -21,6 +22,7 @@ class MapViewController: UIViewController {
     let customMarkerHeight: Int = 70
     
     public var event: Event?
+    public var guests: [InvitedModel]?
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
@@ -230,17 +232,23 @@ class MapViewController: UIViewController {
 //            marker.iconView=customMarker
             
         
-            guard let markerImage = UIImage(named: "icons8-bird-30") else {return}
-            
+//            guard let markerImage = UIImageView.
+//            markerImage.
+//                URL(string: guest.photoURL ?? "no photo") else {return}
+//            cell.profilePicture.kf.setImage(with: , placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+
+//            let markerImage = UIImageView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight))
+//            markerImage.kf.setImage(with: URL(string: guest.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
             
             let marker = GMSMarker(position: coordinate)
-            
-            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: count)
+//
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest.photoURL ?? "no photo")!, borderColor: UIColor.darkGray, tag: count)
             
             
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
+//            marker.iconView.kf.se
             marker.iconView = customMarker
 //            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)

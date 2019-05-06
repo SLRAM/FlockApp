@@ -8,20 +8,39 @@
 import Foundation
 import UIKit
 
+enum ImageType {
+    case url(URL)
+    case image(UIImage)
+}
+
 class CustomMarkerView: UIView {
-    var img: UIImage!
+    var img: ImageType
     var borderColor: UIColor!
     
-    init(frame: CGRect, image: UIImage, borderColor: UIColor, tag: Int) {
+    init(frame: CGRect, image: URL, borderColor: UIColor, tag: Int) {
+        self.img = .url(image)
         super.init(frame: frame)
-        self.img = image
+        self.borderColor = borderColor
+        self.tag = tag
+        setupViews()
+    }
+    init(frame: CGRect, image: UIImage, borderColor: UIColor, tag: Int) {
+        self.img = .image(image)
+        super.init(frame: frame)
         self.borderColor = borderColor
         self.tag = tag
         setupViews()
     }
     
     func setupViews() {
-        let imgView = UIImageView(image: img)
+        let imgView = UIImageView()
+        switch img {
+        case .url(let url):
+            imgView.kf.setImage(with: url)
+
+        case .image(let image):
+            imgView.image = image
+        }
         imgView.frame=CGRect(x: 0, y: 0, width: 50, height: 50)
         imgView.layer.cornerRadius = 25
         imgView.layer.borderColor = borderColor?.cgColor

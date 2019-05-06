@@ -161,6 +161,7 @@ class EventTableViewController: UITableViewController {
             print("map pressed")
             let detailVC = MapViewController()
             detailVC.event = event
+            detailVC.guests = self.invited
             navigationController?.pushViewController(detailVC, animated: true)
         }
     @objc func mapPressedPending() {
