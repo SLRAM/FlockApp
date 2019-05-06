@@ -44,6 +44,8 @@ class EventView: UIView {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 4
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         label.text = "47-10 Austell Pl. 11111"
         return label
@@ -51,6 +53,8 @@ class EventView: UIView {
 
     lazy var eventDate: UILabel = {
         let label = UILabel()
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
         label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
@@ -112,6 +116,7 @@ class EventView: UIView {
             eventTracking.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
             eventTracking.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
             ])
+//        eventTracking.isHidden = true
     }
 
     private func addMapView() {

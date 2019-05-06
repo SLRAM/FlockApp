@@ -7,6 +7,7 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import GoogleMaps
 import UserNotifications
 
@@ -22,6 +23,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
+        
+        // force signout
+       // try? Auth.auth().signOut()
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
@@ -47,6 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User Denied")
             }
         }
+        self.window!.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         return true
     }
 

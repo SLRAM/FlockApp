@@ -21,10 +21,12 @@ class MapViewController: UIViewController {
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
+    var hostMarker = GMSMarker()
     lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
     let locationManager = CLLocationManager()
     var usersCurrentLocation = CLLocation()
+    var proximity = Double()
 //    var placesClient: GMSPlacesClient!
     
     var invited = [InvitedModel](){
@@ -47,50 +49,53 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
+        proximity = unwrappedEvent.proximity
         self.view.addSubview(mapView)
-//        myMapView.delegate = self
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
-//            myMapView.showsUserLocation = true
-//            mapView.sh
         } else {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
-//            myMapView.showsUserLocation = true
+        }
+        
+        if isQuickEvent(eventType: unwrappedEvent) {
+//            quickEventMap(unwrappedEvent: unwrappedEvent)
+        } else {
+//            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
         
         
         
         fetchEventLocation()
         fetchInvitedLocations()
-        if let event = event, event.startDate.date() > Date() {
-            
+
+        if let event = event, event.trackingTime.date() > Date() {
+            print("start date is > ")
+
+        } else {
+            print("start date is < ")
+            startTimer()
         }
-        let startDate = unwrappedEvent.startDate.date()
-        
-//        if startDate > Date() {
-//            print("start date is > ")
-//        } else {
-//            print("start date is < ")
-//            timer()
-//        }
-        print(startDate)
-        print(Date())
-        startTimer()
-//        mapView.myMapView.animate(toLocation: CLLocationCoordinate2D(latitude: 0.0, longitude: 0.0))
-        
+
+    }
+    
+    func isQuickEvent(eventType: Event) -> Bool {
+        if eventType.eventName == "Quick Event" {
+            return true
+        } else {
+            return false
+        }
     }
 
     func startTimer() {
-        //make it a
-
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
         updateUserLocation()
         fetchInvitedLocations()
+        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             //invalidate timer
             myTimer.invalidate()
@@ -98,23 +103,51 @@ class MapViewController: UIViewController {
         
     }
     func updateUserLocation() {
-//        usersCurrentLocation
         guard let user = authservice.getCurrentUser() else {
             print("no logged user")
             return
         }
         guard let event = event else {return}
-        DBService.firestoreDB
-            .collection(EventsCollectionKeys.CollectionKey)
-            .document(event.documentId)
-            .collection(InvitedCollectionKeys.CollectionKey)
-            .document(user.uid)
-            .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
-                         InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
-            ]) { [weak self] (error) in
-                if let error = error {
-                    self?.showAlert(title: "Editing Error", message: error.localizedDescription)
-                }
+        
+        if isQuickEvent(eventType: event) {
+            
+            
+            DBService.firestoreDB
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
+                             EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing event document Error", message: error.localizedDescription)
+                    }
+            }
+            DBService.firestoreDB
+                .collection(UsersCollectionKeys.CollectionKey)
+                .document(user.uid)
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
+                             EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing event document on user Error", message: error.localizedDescription)
+                    }
+            }
+            
+        } else {
+            DBService.firestoreDB
+                .collection(EventsCollectionKeys.CollectionKey)
+                .document(event.documentId)
+                .collection(InvitedCollectionKeys.CollectionKey)
+                .document(user.uid)
+                .updateData([InvitedCollectionKeys.LatitudeKey : usersCurrentLocation.coordinate.latitude,
+                             InvitedCollectionKeys.LongitudeKey: usersCurrentLocation.coordinate.longitude
+                ]) { [weak self] (error) in
+                    if let error = error {
+                        self?.showAlert(title: "Editing Error", message: error.localizedDescription)
+                    }
+            }
         }
     }
     func fetchEventLocation() {
@@ -131,7 +164,9 @@ class MapViewController: UIViewController {
         let eventMarker = GMSMarker.init()
         eventMarker.position = eventLocation
         eventMarker.title = eventName
+        eventMarker.icon = UIImage(named: "birdhouse")
         eventMarker.map = mapView.myMapView
+        hostMarker = eventMarker
     }
     func fetchInvitedLocations() {
         guard let unwrappedEvent = event else {
@@ -154,7 +189,6 @@ class MapViewController: UIViewController {
                         //                    self?.refreshControl.endRefreshing()
                     }
                 }
-
             })
     }
     func setupMarkers(activeGuests: [InvitedModel]){
@@ -162,14 +196,13 @@ class MapViewController: UIViewController {
         let filteredGuests = activeGuests.filter {
             $0.latitude != nil
         }
-        print(filteredGuests)
         for guest in filteredGuests {
             guard let guestLat = guest.latitude,
                 let guestLon = guest.longitude else {
-                    print("unable to obtain guest coordinates")
+                    print("unable to obtain guest coordinates for \(String(describing: event?.eventName))")
                     return
             }
-            print("able to obtain guest coordinates")
+            print("able to obtain guest coordinates for \(String(describing: event?.eventName))")
 //            let guestLat = guest.latitude
 //            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
@@ -177,7 +210,7 @@ class MapViewController: UIViewController {
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
-            marker.icon = GMSMarker.markerImage(with: #colorLiteral(red: 0.0208575353, green: 0.7171841264, blue: 0.6636909246, alpha: 1))
+            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {
                 marker.map = self.mapView.myMapView
@@ -186,15 +219,25 @@ class MapViewController: UIViewController {
         }
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
         setupMapBounds()
+        
+        
     }
     func boundsNumber(guests: [GMSMarker]) -> Int? {
-        
         if guests.count >= 3 {
             return 2
         } else if guests.count > 0 {
             return guests.count - 1
         } else {
             return nil
+        }
+    }
+    func proximityAlert() {
+        //if guests are beyond prximity then alert
+        for guest in allGuestMarkers {
+            if distance(from: guest.position, to: hostMarker.position) > proximity {
+                print("\(String(describing: guest.title?.description)) is out of range!")
+            }
+
         }
     }
     func setupMapBounds() {
@@ -207,7 +250,9 @@ class MapViewController: UIViewController {
             let guestCoordinate = allGuestMarkers[guestNumber].position
             mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
         }
-
+        if isQuickEvent(eventType: event) {
+            proximityAlert()
+        }
     }
     func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
         guard let event = event else {
@@ -220,8 +265,6 @@ class MapViewController: UIViewController {
             let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
             return distanceOne < distanceTwo
             }
-        print(sortedMarkers)
-
         return sortedMarkers
     }
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
@@ -230,20 +273,11 @@ class MapViewController: UIViewController {
         let distanceInMiles = (coordinate0.distance(from: coordinate1))/1609.344
         return distanceInMiles
     }
-    
-
-
 }
 extension MapViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         //this kicks off whenever authorization is turned on or off
         print("user changed the authorization")
-        
-//        let currentLocation = myMapView.userLocation
-//        print(currentLocation)
-//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//
-//        myMapView.setRegion(myCurrentRegion, animated: true)
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         //this kicks off whenever the user's location has noticeably changed
@@ -251,10 +285,7 @@ extension MapViewController: CLLocationManagerDelegate {
         guard let currentLocation = locations.last else {return}
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
         usersCurrentLocation = currentLocation
-        //once time starts, save user location to firebase every 30 seconds. once they reach destinate stop updating firebase
-//        let myCurrentRegion = MKCoordinateRegion(center: currentLocation.coordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-//
-//        myMapView.setRegion(myCurrentRegion, animated: true)
+
     }
 }
 
