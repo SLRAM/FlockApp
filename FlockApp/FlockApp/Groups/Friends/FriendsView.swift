@@ -22,6 +22,7 @@ class FriendsView: UIView {
         tv.backgroundColor = .clear
         return tv
     }()
+
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         setupConstraints()
@@ -38,6 +39,7 @@ class FriendsView: UIView {
         setupFriendSearch()
         setupTableView()
     }
+    
     func setupFriendSearch() {
         addSubview(friendSearch)
         friendSearch.translatesAutoresizingMaskIntoConstraints = false
