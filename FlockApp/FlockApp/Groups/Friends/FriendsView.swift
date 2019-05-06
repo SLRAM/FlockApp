@@ -19,7 +19,13 @@ class FriendsView: UIView {
         let tv = UITableView()
         tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/4
-        tv.backgroundColor = .clear
+        let layer = CAGradientLayer()
+        layer.frame = tv.frame
+        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white] as? [Any]
+        layer.startPoint = CGPoint(x:0.5, y:0.0)
+        layer.endPoint = CGPoint(x:0.5, y:1.0);
+        tv.layer.addSublayer(layer)
+//        tv.backgroundColor = .clear
         return tv
     }()
 

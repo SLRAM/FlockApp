@@ -232,9 +232,10 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             guard !friends.isEmpty else {return FriendsTableViewCell() }
             let userCell = friends[indexPath.row]
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = .clear
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Friend"
-            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             return cell
         case 1:
             guard !request.isEmpty else {return FriendsTableViewCell() }
@@ -242,7 +243,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Request Sent"
-            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
             cell.cancelRequest.isUserInteractionEnabled = true
             cell.cancelRequest.isHidden = false
@@ -255,7 +256,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Friend Pending"
-            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
             cell.acceptFriend.isUserInteractionEnabled = true
             cell.declineFriend.isUserInteractionEnabled = true
@@ -269,7 +270,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let userCell = strangers[indexPath.row]
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
-            cell.profilePicture.kf.setImage(with: URL(string: userCell.coverImageURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
+            cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.backgroundColor = .clear
             return cell
         default:
