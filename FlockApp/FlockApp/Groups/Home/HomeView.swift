@@ -27,7 +27,7 @@ class HomeView: UIView {
     lazy var dateLabel: UILabel = {
         let label = UILabel()
 //        label.backgroundColor = .white
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
 
         label.text = "Thursday, 18th, 2019"
         label.textColor = #colorLiteral(red: 0.4756349325, green: 0.4756467342, blue: 0.4756404161, alpha: 1)
@@ -39,7 +39,7 @@ class HomeView: UIView {
         let label = UILabel()
         label.text = "Thursday"
 //        label.backgroundColor = .white
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
 
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 40), size: 30)
         label.font = UIFont.boldSystemFont(ofSize: 45)
@@ -63,7 +63,8 @@ class HomeView: UIView {
         segmentedControl.layer.cornerRadius = 10
         segmentedControl.tintColor =  .black
         segmentedControl.layer.backgroundColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.9568627451, alpha: 1)
-        //segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
+        //segmentedControl.contentMode.layer.masksToBounds = true
+
         return segmentedControl
     }()
     

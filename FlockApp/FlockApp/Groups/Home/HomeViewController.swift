@@ -283,7 +283,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             
         case 2:
             eventToSet = filteredPendingEvents[indexPath.row]
-            collectionViewCell.configureShadowView()
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
             //collectionViewCell.joinEventButton.alpha = 1
