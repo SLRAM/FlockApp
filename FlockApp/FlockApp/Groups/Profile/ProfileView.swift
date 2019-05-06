@@ -73,6 +73,13 @@ class ProfileView: UIView {
         button.backgroundColor = .lightGray
         return button
     }()
+    lazy var blockButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Block User", for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .lightGray
+        return button
+    }()
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         setupConstraints()
@@ -92,7 +99,8 @@ class ProfileView: UIView {
         setupFullNameTextView()
         setupEmailTextView()
         setupPhoneTextView()
-        setupBioTextView()
+        setupAddButton()
+        setupBlockButton()
     }
 
     private func setupEditButton() {
@@ -161,13 +169,22 @@ class ProfileView: UIView {
             phoneNumberTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
-    private func setupBioTextView() {
+    private func setupAddButton() {
         addSubview(addFriend)
         addFriend.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addFriend.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             addFriend.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
             addFriend.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    private func setupBlockButton() {
+        addSubview(blockButton)
+        blockButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            blockButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            blockButton.topAnchor.constraint(equalTo: addFriend.bottomAnchor, constant: 20),
+            blockButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
 }

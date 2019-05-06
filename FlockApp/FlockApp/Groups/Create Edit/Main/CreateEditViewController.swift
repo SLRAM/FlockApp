@@ -323,6 +323,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
                                     let detailVC = EventTableViewController()
                                     detailVC.event = event
+                                    detailVC.tag = 0
                                     //                    detailVC.delegate = self
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
                                 }

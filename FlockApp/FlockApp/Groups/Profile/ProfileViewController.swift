@@ -16,6 +16,7 @@ class ProfileViewController: BaseViewController {
     var editToggle = false
 
     var friends = [String]()
+    var blockedUsers = [String]()
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
@@ -31,8 +32,9 @@ class ProfileViewController: BaseViewController {
         self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
-        profileView.addFriend.addTarget(self, action: #selector(addFriendPressed), for: .touchUpInside)
         fetchFriends()
+        checkBlockedUser()
+        checkBlockedStatus()
         setupProfile()
     }
 
@@ -50,16 +52,24 @@ class ProfileViewController: BaseViewController {
                         self.profileView.editButton.isHidden = false
                         self.profileView.addFriend.isEnabled = false
                         self.profileView.addFriend.isHidden = true
+                        self.profileView.blockButton.isEnabled = false
+                        self.profileView.blockButton.isHidden = true
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
                         self.profileView.addFriend.isEnabled = true
+                        self.profileView.emailTextView.isHidden = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
-                        self.profileView.addFriend.isHidden = true
-                        self.profileView.addFriend.isEnabled = false
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+                    } else {
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.setTitle("Add friend", for: .normal)
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
@@ -72,6 +82,63 @@ class ProfileViewController: BaseViewController {
                 }
             }
         }
+    }
+    private func checkBlockedUser() {
+        guard let loggedUser = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        guard let user = user else {return}
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(loggedUser.uid)
+            .collection(FriendsCollectionKey.BlockedKey)
+            .addSnapshotListener({ (snapshot, error) in
+                if let error = error {
+                    print("failed to check blocked user: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    self.blockedUsers = snapshot.documents.map {
+                        $0.documentID
+                    }
+                    if self.blockedUsers.contains(user.userId) {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle("Unblock User", for: .normal)
+                    } else {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle("Block User", for: .normal)
+                    }
+                }
+            })
+    }
+    private func checkBlockedStatus() {
+        guard let loggedUser = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        guard let user = user else {return}
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.userId)
+            .collection(FriendsCollectionKey.BlockedKey)
+            .whereField("blocked", isEqualTo: loggedUser.uid)
+            .addSnapshotListener({ (snapshot, error) in
+                if let error = error {
+                    print("failed to check blocked status: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    let _ = snapshot.documents.map {
+                        if $0.documentID == loggedUser.uid {
+                            self.profileView.addFriend.isEnabled = false
+                            self.profileView.addFriend.isUserInteractionEnabled = false
+                            self.profileView.emailTextView.isHidden = true
+                            self.profileView.firstNameTextView.isHidden = true
+                            self.profileView.lastNameTextView.isHidden = true
+                            self.showAlert(title: "Blocked by User", message: "You are unable to view \(self.user!.displayName)'s profile.")
+                        }
+                    }
+                }
+            })
     }
     private func fetchFriends() {
         guard let user = authservice.getCurrentUser() else {
@@ -87,9 +154,7 @@ class ProfileViewController: BaseViewController {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     self?.friends = snapshot.documents.map {
-                        let dictionary =  $0.data() as? [String:String]
-                        guard let key = dictionary?.keys.first else { return "" }
-                        return key
+                        $0.documentID
                     }
                 }
         }
@@ -99,13 +164,38 @@ class ProfileViewController: BaseViewController {
         present(imagePickerController, animated: true)
     }
     @objc private func addFriendPressed() {
-        DBService.addFriend(friend: self.user!) { (error) in
+        DBService.requestFriend(friend: self.user!) { (error) in
             if let error = error {
-                self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
+                self.showAlert(title: "Friend Request Error", message: error.localizedDescription)
             } else {
-                self.showAlert(title: "Friend Added", message: nil)
-                self.profileView.addFriend.isEnabled = false
-                self.profileView.addFriend.isHidden = true
+                self.showAlert(title: "Friend Requested", message: nil)
+            }
+        }
+    }
+    @objc private func removeFriendPressed() {
+        DBService.removeFriend(removed: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Friend Remove Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Friend Successfully Removed", message: nil)
+            }
+        }
+    }
+    @objc private func blockUser() {
+        DBService.blockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Block error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Blocked \(self.user!.displayName)", message: "Successfully added \(self.user!.displayName) to your blocked list")
+            }
+        }
+    }
+    @objc private func unblockUser() {
+        DBService.unblockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Unblock Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Unblocked \(self.user!.displayName)", message: "Successfully unblocked \(self.user!.displayName)")
             }
         }
     }
