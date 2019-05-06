@@ -37,6 +37,7 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                
             }
         }
     }
@@ -58,12 +59,11 @@ class HomeViewController: UIViewController {
         }
     }
     
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)
-        view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
+//        view.addShadow()
+        view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
         title = "Home"
@@ -235,10 +235,26 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     
+   
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
+            
         }
+        
+        collectionViewCell.contentView.layer.masksToBounds = true
+        collectionViewCell.backgroundColor = .clear // very important
+        collectionViewCell.layer.masksToBounds = false
+        collectionViewCell.layer.shadowOpacity = 0.25
+        collectionViewCell.layer.shadowRadius = 10
+        collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
+        collectionViewCell.layer.shadowColor = UIColor.black.cgColor
+        
+        let radius = collectionViewCell.contentView.layer.cornerRadius
+        collectionViewCell.layer.shadowPath = UIBezierPath(roundedRect: collectionViewCell.bounds, cornerRadius: radius).cgPath
+
+        
         var eventToSet = Event()
         
         switch tag {
@@ -251,6 +267,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
             
+
+            
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = true
@@ -259,6 +277,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
+            
+        
 
             
         case 2:
@@ -272,13 +292,18 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             
+            
         default:
             print("you good fam?")
         }
+        
         collectionViewCell.delegate = self
         collectionViewCell.goingButton.tag = indexPath.row
         collectionViewCell.declineButton.tag = indexPath.row
         collectionViewCell.eventLabel.text = eventToSet.eventName
+        
+
+    
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
