@@ -57,7 +57,7 @@ extension DBService {
     static public func blockedUser(blocked: UserModel, completion: @escaping (Error?) -> Void)  {
         let user = AppDelegate.authservice.getCurrentUser()
         var blockedDictionary : Dictionary<String,Any> = [:]
-        blockedDictionary["\(blocked.userId)"] = "\(blocked.displayName)"
+        blockedDictionary["blocked"] = "\(blocked.userId)"
         firestoreDB.collection(UsersCollectionKeys.CollectionKey)
             .document(user!.uid)
             .collection(FriendsCollectionKey.BlockedKey)
@@ -76,7 +76,7 @@ extension DBService {
     static public func unblockedUser(blocked: UserModel, completion: @escaping (Error?) -> Void)  {
         let user = AppDelegate.authservice.getCurrentUser()
         var blockedDictionary : Dictionary<String,Any> = [:]
-        blockedDictionary["\(blocked.userId)"] = "\(blocked.displayName)"
+        blockedDictionary["blocked"] = "\(blocked.userId)"
         firestoreDB.collection(UsersCollectionKeys.CollectionKey)
             .document(user!.uid)
             .collection(FriendsCollectionKey.BlockedKey)

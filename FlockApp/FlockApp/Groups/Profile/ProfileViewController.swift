@@ -59,13 +59,17 @@ class ProfileViewController: BaseViewController {
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
                         self.profileView.addFriend.isEnabled = true
+                        self.profileView.emailTextView.isHidden = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.setTitle("Remove Friend", for: .normal)
                     } else {
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.setTitle("Add friend", for: .normal)
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.emailTextView.text = self.user!.email
@@ -80,13 +84,14 @@ class ProfileViewController: BaseViewController {
         }
     }
     private func checkBlockedUser() {
-        guard let user = authservice.getCurrentUser() else {
+        guard let loggedUser = authservice.getCurrentUser() else {
             print("Please log in")
             return
         }
+        guard let user = user else {return}
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
-            .document(user.uid)
+            .document(loggedUser.uid)
             .collection(FriendsCollectionKey.BlockedKey)
             .addSnapshotListener({ (snapshot, error) in
                 if let error = error {
@@ -94,6 +99,15 @@ class ProfileViewController: BaseViewController {
                 } else if let snapshot = snapshot {
                     self.blockedUsers = snapshot.documents.map {
                         $0.documentID
+                    }
+                    if self.blockedUsers.contains(user.userId) {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle("Unblock User", for: .normal)
+                    } else {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle("Block User", for: .normal)
                     }
                 }
             })
@@ -103,9 +117,10 @@ class ProfileViewController: BaseViewController {
             print("Please log in")
             return
         }
+        guard let user = user else {return}
         listener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
-            .document(user!.userId)
+            .document(user.userId)
             .collection(FriendsCollectionKey.BlockedKey)
             .whereField("blocked", isEqualTo: loggedUser.uid)
             .addSnapshotListener({ (snapshot, error) in
@@ -115,6 +130,8 @@ class ProfileViewController: BaseViewController {
                     let _ = snapshot.documents.map {
                         if $0.documentID == loggedUser.uid {
                             self.profileView.addFriend.isEnabled = false
+                            self.profileView.addFriend.isUserInteractionEnabled = false
+                            self.profileView.emailTextView.isHidden = true
                             self.profileView.firstNameTextView.isHidden = true
                             self.profileView.lastNameTextView.isHidden = true
                             self.showAlert(title: "Blocked by User", message: "You are unable to view \(self.user!.displayName)'s profile.")
@@ -161,6 +178,24 @@ class ProfileViewController: BaseViewController {
                 self.showAlert(title: "Friend Remove Error", message: error.localizedDescription)
             } else {
                 self.showAlert(title: "Friend Successfully Removed", message: nil)
+            }
+        }
+    }
+    @objc private func blockUser() {
+        DBService.blockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Block error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Blocked \(self.user!.displayName)", message: "Successfully added \(self.user!.displayName) to your blocked list")
+            }
+        }
+    }
+    @objc private func unblockUser() {
+        DBService.unblockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Unblock Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Unblocked \(self.user!.displayName)", message: "Successfully unblocked \(self.user!.displayName)")
             }
         }
     }
