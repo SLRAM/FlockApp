@@ -235,16 +235,31 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         
     }
     
+   
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let collectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "EventHomeCollectionViewCell", for: indexPath) as? EventHomeCollectionViewCell else {
             return UICollectionViewCell()
+            
         }
+        
+        collectionViewCell.contentView.layer.masksToBounds = true
+        collectionViewCell.backgroundColor = .clear // very important
+        collectionViewCell.layer.masksToBounds = false
+        collectionViewCell.layer.shadowOpacity = 0.25
+        collectionViewCell.layer.shadowRadius = 10
+        collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
+        collectionViewCell.layer.shadowColor = UIColor.black.cgColor
+        
+        let radius = collectionViewCell.contentView.layer.cornerRadius
+        collectionViewCell.layer.shadowPath = UIBezierPath(roundedRect: collectionViewCell.bounds, cornerRadius: radius).cgPath
+
+        
         var eventToSet = Event()
         
         switch tag {
         case 0:
             eventToSet = filteredAcceptedEvents[indexPath.row]
-            view.addShadow()
             collectionViewCell.joinEventButton.isHidden = true
             collectionViewCell.goingButton.isHidden = true
             collectionViewCell.declineButton.isHidden = true
@@ -256,7 +271,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
-            view.addShadow()
             collectionViewCell.joinEventButton.isHidden = true
             collectionViewCell.goingButton.isHidden = true
             collectionViewCell.declineButton.isHidden = true
@@ -269,7 +283,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             
         case 2:
             eventToSet = filteredPendingEvents[indexPath.row]
-            view.addShadow()
             collectionViewCell.configureShadowView()
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
@@ -289,6 +302,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.goingButton.tag = indexPath.row
         collectionViewCell.declineButton.tag = indexPath.row
         collectionViewCell.eventLabel.text = eventToSet.eventName
+        
+
     
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
@@ -380,14 +395,4 @@ extension HomeViewController: EventHomeCollectionViewCellDelegate {
 
 
 
-}
-
-extension UIView {
-    func addShadow(){
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowRadius = 2.0
-        self.layer.shadowOffset = CGSize.zero
-        self.layer.masksToBounds = true
-    }
 }

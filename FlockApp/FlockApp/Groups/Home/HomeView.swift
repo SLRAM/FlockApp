@@ -67,10 +67,19 @@ class HomeView: UIView {
         return segmentedControl
     }()
     
+//    let segmentedControl = TTSegmentedControl()
+//    segmentedControl.allowChangeThumbWidth = false
+//    segmentedControl.frame = CGRect(x: 50, y: 200, width: 100, height: 50)
+//    segmentedControl.didSelectItemWith = { (index, title) -> () in
+//    print("Selected item \(index)")
+//    }
+//    view.addSubview(segmentedControl
+    
         public lazy var usersCollectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
             cellLayout.scrollDirection = .vertical
-            cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
+            cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 10, right: 25)
+            cellLayout.minimumLineSpacing = 30
             cellLayout.itemSize = CGSize.init(width: 350, height:350)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
             collectionView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
