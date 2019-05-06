@@ -125,7 +125,6 @@ class HomeView: UIView {
         
     }
     
-    
     func setupSegmentedView(){
         addSubview(segmentedControl)
         

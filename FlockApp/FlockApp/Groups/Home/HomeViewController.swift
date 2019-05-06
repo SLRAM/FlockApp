@@ -37,6 +37,7 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                
             }
         }
     }
@@ -58,11 +59,10 @@ class HomeViewController: UIViewController {
         }
     }
     
-   
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(homeView)
+//        view.addShadow()
         view.backgroundColor = #colorLiteral(red: 0.995991528, green: 0.9961341023, blue: 0.9959602952, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
@@ -235,6 +235,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         switch tag {
         case 0:
             eventToSet = filteredAcceptedEvents[indexPath.row]
+            view.addShadow()
             collectionViewCell.joinEventButton.isHidden = true
             collectionViewCell.goingButton.isHidden = true
             collectionViewCell.declineButton.isHidden = true
@@ -242,18 +243,25 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
             
+
+            
         case 1:
             eventToSet = filteredPastEvents[indexPath.row]
+            view.addShadow()
             collectionViewCell.joinEventButton.isHidden = true
             collectionViewCell.goingButton.isHidden = true
             collectionViewCell.declineButton.isHidden = true
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
+            
+        
 
             
         case 2:
             eventToSet = filteredPendingEvents[indexPath.row]
+            view.addShadow()
+            collectionViewCell.configureShadowView()
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
             //collectionViewCell.joinEventButton.alpha = 1
@@ -263,13 +271,16 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             
+            
         default:
             print("you good fam?")
         }
+        
         collectionViewCell.delegate = self
         collectionViewCell.goingButton.tag = indexPath.row
         collectionViewCell.declineButton.tag = indexPath.row
         collectionViewCell.eventLabel.text = eventToSet.eventName
+    
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
@@ -360,4 +371,14 @@ extension HomeViewController: EventHomeCollectionViewCellDelegate {
 
 
 
+}
+
+extension UIView {
+    func addShadow(){
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowRadius = 2.0
+        self.layer.shadowOffset = CGSize.zero
+        self.layer.masksToBounds = true
+    }
 }
