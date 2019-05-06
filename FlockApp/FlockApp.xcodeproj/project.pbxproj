@@ -72,6 +72,7 @@
 		97802D10225E49AD007D480D /* InvitedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D0F225E49AD007D480D /* InvitedView.swift */; };
 		97802D12225E49BA007D480D /* InvitedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802D11225E49BA007D480D /* InvitedViewController.swift */; };
 		97AD142222650EA800C2E3F7 /* DBService+Invited.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97AD142122650EA700C2E3F7 /* DBService+Invited.swift */; };
+		97D6A6302280939E00E9C532 /* CustomMarkerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D6A62F2280939E00E9C532 /* CustomMarkerView.swift */; };
 		97E4333A226822B500BC519C /* InvitedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43339226822B500BC519C /* InvitedModel.swift */; };
 		97E4333F227200A700BC519C /* QuickEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4333E227200A700BC519C /* QuickEventViewController.swift */; };
 		97E43341227200B900BC519C /* QuickEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43340227200B900BC519C /* QuickEventView.swift */; };
@@ -147,6 +148,7 @@
 		97802D0F225E49AD007D480D /* InvitedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedView.swift; sourceTree = "<group>"; };
 		97802D11225E49BA007D480D /* InvitedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedViewController.swift; sourceTree = "<group>"; };
 		97AD142122650EA700C2E3F7 /* DBService+Invited.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBService+Invited.swift"; sourceTree = "<group>"; };
+		97D6A62F2280939E00E9C532 /* CustomMarkerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMarkerView.swift; sourceTree = "<group>"; };
 		97E43339226822B500BC519C /* InvitedModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitedModel.swift; sourceTree = "<group>"; };
 		97E4333E227200A700BC519C /* QuickEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEventViewController.swift; sourceTree = "<group>"; };
 		97E43340227200B900BC519C /* QuickEventView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEventView.swift; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 				97802CFC225D021A007D480D /* EventDetailsView.swift */,
 				97802CFE225D035E007D480D /* MapViewController.swift */,
 				97802D00225D0373007D480D /* MapView.swift */,
+				97D6A62F2280939E00E9C532 /* CustomMarkerView.swift */,
 			);
 			path = Details;
 			sourceTree = "<group>";
@@ -729,6 +732,7 @@
 				97E4333F227200A700BC519C /* QuickEventViewController.swift in Sources */,
 				97802CEC225CFF40007D480D /* EventView.swift in Sources */,
 				97E43341227200B900BC519C /* QuickEventView.swift in Sources */,
+				97D6A6302280939E00E9C532 /* CustomMarkerView.swift in Sources */,
 				97025F942257EA1100273C91 /* AppDelegate.swift in Sources */,
 				97802D10225E49AD007D480D /* InvitedView.swift in Sources */,
 				97802CC8225CF658007D480D /* DBService+User.swift in Sources */,

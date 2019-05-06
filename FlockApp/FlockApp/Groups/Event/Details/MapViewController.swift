@@ -17,6 +17,9 @@ class MapViewController: UIViewController {
 
 //    var mapView: GMSMapView?
 
+    let customMarkerWidth: Int = 50
+    let customMarkerHeight: Int = 70
+    
     public var event: Event?
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
@@ -28,6 +31,8 @@ class MapViewController: UIViewController {
     var usersCurrentLocation = CLLocation()
     var proximity = Double()
 //    var placesClient: GMSPlacesClient!
+    
+    var guestCount = 0
     
     var invited = [InvitedModel](){
         didSet{
@@ -70,6 +75,8 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
+        setupMapBounds()//maybe change so that it only runs when guest count changes
+        
 
         if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
@@ -95,7 +102,7 @@ class MapViewController: UIViewController {
     @objc func refresh() {
         updateUserLocation()
         fetchInvitedLocations()
-        fetchEventLocation()
+//        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             //invalidate timer
             myTimer.invalidate()
@@ -161,10 +168,22 @@ class MapViewController: UIViewController {
 //        mapView.myMapView.animate(toLocation: eventLocation)
         mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
 //        GMSCameraUpdate.zoom(to: 1)
+//        let eventMarker = GMSMarker.init()
+        
+        
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
+        
+        
         let eventMarker = GMSMarker.init()
+        
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+        
+        
+        
         eventMarker.position = eventLocation
         eventMarker.title = eventName
-        eventMarker.icon = UIImage(named: "birdhouse")
+//        eventMarker.icon = UIImage(named: "birdhouse")
+        eventMarker.iconView = customMarker
         eventMarker.map = mapView.myMapView
         hostMarker = eventMarker
     }
@@ -206,11 +225,24 @@ class MapViewController: UIViewController {
 //            let guestLat = guest.latitude
 //            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
+//            let marker=GMSMarker()
+//            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: previewDemoData[i].img, borderColor: UIColor.darkGray, tag: i)
+//            marker.iconView=customMarker
+            
+        
+            guard let markerImage = UIImage(named: "icons8-bird-30") else {return}
+            
+            
             let marker = GMSMarker(position: coordinate)
+            
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: count)
+            
+            
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
-            marker.icon = UIImage(named: "icons8-bird-30")
+            marker.iconView = customMarker
+//            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {
                 marker.map = self.mapView.myMapView
@@ -218,8 +250,10 @@ class MapViewController: UIViewController {
             count += 1
         }
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
-        setupMapBounds()
-        
+        if allGuestMarkers.count > guestCount {
+                setupMapBounds()
+            guestCount = allGuestMarkers.count
+        }
         
     }
     func boundsNumber(guests: [GMSMarker]) -> Int? {
@@ -288,4 +322,6 @@ extension MapViewController: CLLocationManagerDelegate {
 
     }
 }
+
+
 
