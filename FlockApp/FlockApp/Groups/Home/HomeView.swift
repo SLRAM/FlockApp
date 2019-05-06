@@ -53,16 +53,15 @@ class HomeView: UIView {
         return button
     }()
     
-    
-    
 
     lazy var segmentedControl: UISegmentedControl = {
         let items = ["Events", "Past Events", "Pending Events"]
         let segmentedControl = UISegmentedControl(items: items)
+        //segmentedControl.layer.borderColor = UIColor.clear.cgColor
+        segmentedControl.layer.borderWidth = 1
+        segmentedControl.layer.masksToBounds = true
+        segmentedControl.layer.cornerRadius = 10
         segmentedControl.tintColor =  .black
-        segmentedControl.backgroundColor = #colorLiteral(red: 0.9101855159, green: 0.2931141555, blue: 1, alpha: 1)
-        segmentedControl.layer.borderWidth = 0.1
-        //segmentedControl.layer.opacity = 0.3
         segmentedControl.layer.backgroundColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.9568627451, alpha: 1)
         //segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         return segmentedControl
@@ -74,7 +73,7 @@ class HomeView: UIView {
             cellLayout.sectionInset = UIEdgeInsets.init(top: 20, left: 10, bottom: 20, right: 25)
             cellLayout.itemSize = CGSize.init(width: 350, height:350)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
-            collectionView.backgroundColor = .white
+            collectionView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
             collectionView.layer.cornerRadius = 15.0
             return collectionView
         }()
@@ -109,7 +108,8 @@ class HomeView: UIView {
     func setUpDateLabel(){
        addSubview(dateLabel)
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 35).isActive = true
+        dateLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+        dateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -68).isActive = true
         dateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.02).isActive = true
         dateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.6).isActive = true
         //dateLabel.bottomAnchor.constraint(equalTo: usersCollectionView.topAnchor, constant: 0).isActive = true
@@ -119,19 +119,18 @@ class HomeView: UIView {
     func setUpDayLabel() {
         addSubview(dayLabel)
         dayLabel.translatesAutoresizingMaskIntoConstraints = false
-        dayLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 10).isActive = true
+        dayLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 5).isActive = true
+        dayLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -70).isActive = true
         dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
         dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.6).isActive = true
         
     }
     
     func setupSegmentedView(){
-        addSubview(segmentedControl)
-        
-    segmentedControl.translatesAutoresizingMaskIntoConstraints = false
+    addSubview(segmentedControl)
+        segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        segmentedControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant:
-            125).isActive = true
+        segmentedControl.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -250).isActive = true
         segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.03).isActive = true
         segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8).isActive = true
     
