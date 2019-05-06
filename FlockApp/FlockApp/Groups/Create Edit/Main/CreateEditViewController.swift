@@ -263,7 +263,7 @@ extension CreateEditViewController: CreateViewDelegate {
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
-                                self.createEditView.createButton.isEnabled = true
+                                self?.createEditView.createButton.isEnabled = true
                             } else {
                                 //============================================================
                                 // Adding notification
