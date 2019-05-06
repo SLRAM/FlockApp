@@ -53,4 +53,8 @@ class CornerImageView: UIImageView {
         layer.borderWidth = 0.5
         clipsToBounds = true
     }
+    
+
+    
+    
 }

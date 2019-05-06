@@ -20,18 +20,22 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
+        let fontSize: CGFloat = 30
         label.text = "Event #1"
-//        label.backgroundColor = .white
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         label.textColor = .black
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 30), size: 30)
+        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
+        
+        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        
         return label
     }()
     
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-
+        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
         label.textColor = .black
         return label
     }()
@@ -82,47 +86,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         delegate?.declinePressed(tag: sender.tag)
     }
     
-    private let motionManager = CMMotionManager()
-    private weak var shadowView: UIView?
-    private static let kInnerMargin: CGFloat = 20.0
-    
-    public func configureShadowView(){
-        self.shadowView?.removeFromSuperview()
-        let shadowView = UIView(frame: CGRect(x: EventHomeCollectionViewCell.kInnerMargin, y: EventHomeCollectionViewCell.kInnerMargin, width: bounds.width - (2 * EventHomeCollectionViewCell.kInnerMargin), height: bounds.height - ( 2 * EventHomeCollectionViewCell.kInnerMargin )))
-        insertSubview(shadowView, at: 0)
-        self.shadowView = shadowView
-
-        if motionManager.isDeviceMotionActive {
-            motionManager.deviceMotionUpdateInterval = 0.02
-            motionManager.startDeviceMotionUpdates(to: .main, withHandler: { (motion, error) in
-                if let motion = motion {
-                    let pitch = motion.attitude.pitch * 10
-                    let roll = motion.attitude.roll * 10
-                    self.applyShadow(width: CGFloat(roll), height: CGFloat(pitch))
-                }
-            })
-        }
-    }
-    
-    func applyShadow(width: CGFloat, height: CGFloat) {
-        if let shadowView = shadowView {
-            let shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: 14.0)
-            shadowView.layer.masksToBounds = false
-            shadowView.layer.shadowRadius = 8.0
-            shadowView.layer.shadowColor = UIColor.black.cgColor
-            shadowView.layer.shadowOffset = CGSize(width: width, height: height)
-            shadowView.layer.shadowOpacity = 0.35
-            shadowView.layer.shadowPath = shadowPath.cgPath
-        }
-    }
-    
-
-    
-
     func setupEventLabel(){
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
-        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 100).isActive = true
+        eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -130).isActive = true
         eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
@@ -132,7 +99,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupEventDay(){
         addSubview(startDateLabel)
         startDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 150).isActive = true
+        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -95).isActive = true
         startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -37).isActive = true
         startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.7).isActive = true
         startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
@@ -192,11 +159,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         setupEventDay()
         setupAcceptButton()
         setupDeclineButton()
-        configureShadowView()
-        //setupPendingJoinEvents()
         
         
     }
+    
+    
+
     
     
     
