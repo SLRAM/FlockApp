@@ -30,7 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
             window?.rootViewController = TabBarController()
-            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+//            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
             UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
             UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
             UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]

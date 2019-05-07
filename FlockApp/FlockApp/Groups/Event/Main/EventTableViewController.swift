@@ -47,6 +47,7 @@ class EventTableViewController: UITableViewController {
         navigationItem.rightBarButtonItem = eventView.directionsButton
         fetchInvites()
         self.title = event?.eventName
+        navigationController?.navigationBar.prefersLargeTitles = true
         self.tableView.sectionHeaderHeight = 400
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
         if tag == 2 {

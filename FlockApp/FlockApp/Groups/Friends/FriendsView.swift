@@ -34,6 +34,7 @@ class FriendsView: UIView {
     }
     
     private func setupConstraints() {
+        self.backgroundColor = .white
         setupFriendSearch()
         setupTableView()
     }

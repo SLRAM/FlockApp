@@ -50,7 +50,7 @@ class CreateEditViewController: UIViewController {
         navigationItem.title = "Create Event"
         navigationItem.rightBarButtonItem = createEditView.createButton
         navigationItem.leftBarButtonItem = createEditView.cancelButton
-        
+        navigationController?.navigationBar.prefersLargeTitles = true
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
         createEditView.myTableView.dataSource = self

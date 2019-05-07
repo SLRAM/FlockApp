@@ -18,11 +18,13 @@ class EventView: UIView {
 
     public lazy var cancelButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
+        button.tintColor = .white
         return button
     }()
     
     public lazy var directionsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "icons8-car-512"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
+        button.tintColor = .white
 //        let button = UIBarButtonItem(title: "Directions", style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
         return button
     }()
