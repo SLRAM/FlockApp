@@ -12,12 +12,17 @@ import Firebase
 import FirebaseFirestore
 import CoreLocation
 import MapKit
+import Kingfisher
 
 class MapViewController: UIViewController {
 
 //    var mapView: GMSMapView?
 
+    let customMarkerWidth: Int = 50
+    let customMarkerHeight: Int = 70
+    
     public var event: Event?
+    public var guests: [InvitedModel]?
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
@@ -28,6 +33,8 @@ class MapViewController: UIViewController {
     var usersCurrentLocation = CLLocation()
     var proximity = Double()
 //    var placesClient: GMSPlacesClient!
+    
+    var guestCount = 0
     
     var invited = [InvitedModel](){
         didSet{
@@ -62,6 +69,8 @@ class MapViewController: UIViewController {
         
         if isQuickEvent(eventType: unwrappedEvent) {
 //            quickEventMap(unwrappedEvent: unwrappedEvent)
+            
+            proximityAlert()
         } else {
 //            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
@@ -70,6 +79,8 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
+        setupMapBounds()//maybe change so that it only runs when guest count changes
+        
 
         if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
@@ -93,12 +104,19 @@ class MapViewController: UIViewController {
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
+        guard let unwrappedEvent = event else {
+            print("Unable to segue event")
+            return
+        }
         updateUserLocation()
         fetchInvitedLocations()
-        fetchEventLocation()
+//        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             //invalidate timer
             myTimer.invalidate()
+        }
+        if isQuickEvent(eventType: unwrappedEvent) {
+            proximityAlert()
         }
         
     }
@@ -108,8 +126,8 @@ class MapViewController: UIViewController {
             return
         }
         guard let event = event else {return}
-        
-        if isQuickEvent(eventType: event) {
+        if isQuickEvent(eventType: event) && user.uid == event.userID {
+//        if isQuickEvent(eventType: event) {
             
             
             DBService.firestoreDB
@@ -122,10 +140,11 @@ class MapViewController: UIViewController {
                         self?.showAlert(title: "Editing event document Error", message: error.localizedDescription)
                     }
             }
+            
             DBService.firestoreDB
                 .collection(UsersCollectionKeys.CollectionKey)
                 .document(user.uid)
-                .collection(EventsCollectionKeys.CollectionKey)
+                .collection(EventsCollectionKeys.EventAcceptedKey)
                 .document(event.documentId)
                 .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
                              EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
@@ -161,10 +180,22 @@ class MapViewController: UIViewController {
 //        mapView.myMapView.animate(toLocation: eventLocation)
         mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
 //        GMSCameraUpdate.zoom(to: 1)
+//        let eventMarker = GMSMarker.init()
+        
+        
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
+        
+        
         let eventMarker = GMSMarker.init()
+        
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+        
+        
+        
         eventMarker.position = eventLocation
         eventMarker.title = eventName
-        eventMarker.icon = UIImage(named: "birdhouse")
+//        eventMarker.icon = UIImage(named: "birdhouse")
+        eventMarker.iconView = customMarker
         eventMarker.map = mapView.myMapView
         hostMarker = eventMarker
     }
@@ -206,11 +237,30 @@ class MapViewController: UIViewController {
 //            let guestLat = guest.latitude
 //            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
+//            let marker=GMSMarker()
+//            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: previewDemoData[i].img, borderColor: UIColor.darkGray, tag: i)
+//            marker.iconView=customMarker
+            
+        
+//            guard let markerImage = UIImageView.
+//            markerImage.
+//                URL(string: guest.photoURL ?? "no photo") else {return}
+//            cell.profilePicture.kf.setImage(with: , placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+
+//            let markerImage = UIImageView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight))
+//            markerImage.kf.setImage(with: URL(string: guest.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+            
             let marker = GMSMarker(position: coordinate)
+//
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest.photoURL ?? "no photo")!, borderColor: UIColor.darkGray, tag: count)
+            
+            
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
-            marker.icon = UIImage(named: "icons8-bird-30")
+//            marker.iconView.kf.se
+            marker.iconView = customMarker
+//            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {
                 marker.map = self.mapView.myMapView
@@ -218,8 +268,10 @@ class MapViewController: UIViewController {
             count += 1
         }
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
-        setupMapBounds()
-        
+        if allGuestMarkers.count > guestCount {
+                setupMapBounds()
+            guestCount = allGuestMarkers.count
+        }
         
     }
     func boundsNumber(guests: [GMSMarker]) -> Int? {
@@ -232,10 +284,11 @@ class MapViewController: UIViewController {
         }
     }
     func proximityAlert() {
-        //if guests are beyond prximity then alert
+        //if guests are beyond proximity then alert
         for guest in allGuestMarkers {
-            if distance(from: guest.position, to: hostMarker.position) > proximity {
-                print("\(String(describing: guest.title?.description)) is out of range!")
+            let guestDistance = distance(from: guest.position, to: hostMarker.position)
+            if guestDistance > proximity {
+                print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance)!")
             }
 
         }
@@ -263,10 +316,12 @@ class MapViewController: UIViewController {
         let sortedMarkers = markers.sorted { markerOne, markerTwo in
             let distanceOne = distance(from: markerOne.position, to: eventCoordinates)
             let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
+            
             return distanceOne < distanceTwo
             }
         return sortedMarkers
     }
+
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
@@ -288,4 +343,6 @@ extension MapViewController: CLLocationManagerDelegate {
 
     }
 }
+
+
 
