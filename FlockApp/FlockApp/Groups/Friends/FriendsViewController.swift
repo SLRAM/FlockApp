@@ -306,19 +306,19 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 0:
             let user = friends[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         default:
             return
         }

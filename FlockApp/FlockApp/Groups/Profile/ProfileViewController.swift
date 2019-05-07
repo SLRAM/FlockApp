@@ -28,6 +28,7 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
+        self.title = "Profile"
         self.profileView.editButton.isEnabled = false
         self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
