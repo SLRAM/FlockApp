@@ -297,6 +297,9 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             fetchAllUsers(keyword: searchText)
             fetchFriends(keyword: searchText)
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
             fatalError("It broke")
@@ -306,18 +309,47 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 0:
             let user = friends[indexPath.row]
             profileVC.user = user
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            profileVC.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
             navigationController?.pushViewController(profileVC, animated: false)
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
             navigationController?.pushViewController(profileVC, animated: false)
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
             navigationController?.pushViewController(profileVC, animated: false)
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
             navigationController?.pushViewController(profileVC, animated: false)
         default:
             return
