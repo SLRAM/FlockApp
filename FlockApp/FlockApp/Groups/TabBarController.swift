@@ -16,6 +16,7 @@ class TabBarController: UITabBarController {
         firstViewController.tabBarItem = UITabBarItem(title: "Home", image: UIImage(named: "event"), tag: 0)
         
         let firstNav = UINavigationController.init(rootViewController: firstViewController)
+        firstNav.navigationBar.prefersLargeTitles = true
 //        firstNav.navigationBar.barTintColor = UIColor.black
 //        firstNav.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         
@@ -30,6 +31,7 @@ class TabBarController: UITabBarController {
         thirdViewController.tabBarItem = UITabBarItem(title: "Friends", image: UIImage(named: "friends"), tag: 2)
         
         let thirdNav = UINavigationController.init(rootViewController: thirdViewController)
+        thirdNav.navigationBar.prefersLargeTitles = true
 
         
 //        let tabBarList = [firstViewController, secondViewController, thirdViewController]
