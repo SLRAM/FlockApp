@@ -49,7 +49,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var joinEventButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "notification")
+        let image = UIImage(named: "alert")
         button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
         button.setImage(image, for: .normal)
         return button
@@ -63,7 +63,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var goingButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
         button.addTarget(self, action: #selector(eventAcceptedPressed), for: .touchUpInside)
-        let image = UIImage(named: "accept")
+        let image = UIImage(named: "check")
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
         return button
@@ -75,7 +75,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var declineButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
-        let image = UIImage(named: "decline")
+        let image = UIImage(named: "delete")
         button.addTarget(self, action: #selector(declineEventPressed), for: .touchUpInside)
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
