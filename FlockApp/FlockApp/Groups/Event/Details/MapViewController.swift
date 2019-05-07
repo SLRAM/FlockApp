@@ -69,6 +69,8 @@ class MapViewController: UIViewController {
         
         if isQuickEvent(eventType: unwrappedEvent) {
 //            quickEventMap(unwrappedEvent: unwrappedEvent)
+            
+            proximityAlert()
         } else {
 //            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
@@ -102,12 +104,19 @@ class MapViewController: UIViewController {
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
     @objc func refresh() {
+        guard let unwrappedEvent = event else {
+            print("Unable to segue event")
+            return
+        }
         updateUserLocation()
         fetchInvitedLocations()
 //        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             //invalidate timer
             myTimer.invalidate()
+        }
+        if isQuickEvent(eventType: unwrappedEvent) {
+            proximityAlert()
         }
         
     }
@@ -117,8 +126,8 @@ class MapViewController: UIViewController {
             return
         }
         guard let event = event else {return}
-        
-        if isQuickEvent(eventType: event) {
+        if isQuickEvent(eventType: event) && user.uid == event.userID {
+//        if isQuickEvent(eventType: event) {
             
             
             DBService.firestoreDB
@@ -131,10 +140,11 @@ class MapViewController: UIViewController {
                         self?.showAlert(title: "Editing event document Error", message: error.localizedDescription)
                     }
             }
+            
             DBService.firestoreDB
                 .collection(UsersCollectionKeys.CollectionKey)
                 .document(user.uid)
-                .collection(EventsCollectionKeys.CollectionKey)
+                .collection(EventsCollectionKeys.EventAcceptedKey)
                 .document(event.documentId)
                 .updateData([EventsCollectionKeys.LocationLatKey : usersCurrentLocation.coordinate.latitude,
                              EventsCollectionKeys.LocationLongKey: usersCurrentLocation.coordinate.longitude
@@ -274,10 +284,11 @@ class MapViewController: UIViewController {
         }
     }
     func proximityAlert() {
-        //if guests are beyond prximity then alert
+        //if guests are beyond proximity then alert
         for guest in allGuestMarkers {
-            if distance(from: guest.position, to: hostMarker.position) > proximity {
-                print("\(String(describing: guest.title?.description)) is out of range!")
+            let guestDistance = distance(from: guest.position, to: hostMarker.position)
+            if guestDistance > proximity {
+                print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance)!")
             }
 
         }
@@ -305,10 +316,12 @@ class MapViewController: UIViewController {
         let sortedMarkers = markers.sorted { markerOne, markerTwo in
             let distanceOne = distance(from: markerOne.position, to: eventCoordinates)
             let distanceTwo = distance(from: markerTwo.position, to: eventCoordinates)
+            
             return distanceOne < distanceTwo
             }
         return sortedMarkers
     }
+
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
