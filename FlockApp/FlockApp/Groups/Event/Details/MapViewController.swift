@@ -15,9 +15,6 @@ import MapKit
 import Kingfisher
 
 class MapViewController: UIViewController {
-
-//    var mapView: GMSMapView?
-
     let customMarkerWidth: Int = 50
     let customMarkerHeight: Int = 70
     
@@ -31,9 +28,7 @@ class MapViewController: UIViewController {
     
     let locationManager = CLLocationManager()
     var usersCurrentLocation = CLLocation()
-    var proximity = Double()
-//    var placesClient: GMSPlacesClient!
-    
+    var proximity = Double()    
     var guestCount = 0
     
     var invited = [InvitedModel](){
@@ -79,7 +74,8 @@ class MapViewController: UIViewController {
         
         fetchEventLocation()
         fetchInvitedLocations()
-        setupMapBounds()//maybe change so that it only runs when guest count changes
+//        updateUserLocation()
+        setupMapBounds()
         
 
         if let event = event, event.trackingTime.date() > Date() {
@@ -127,8 +123,6 @@ class MapViewController: UIViewController {
         }
         guard let event = event else {return}
         if isQuickEvent(eventType: event) && user.uid == event.userID {
-//        if isQuickEvent(eventType: event) {
-            
             
             DBService.firestoreDB
                 .collection(EventsCollectionKeys.CollectionKey)
@@ -177,17 +171,10 @@ class MapViewController: UIViewController {
                 return
         }
         let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-//        mapView.myMapView.animate(toLocation: eventLocation)
         mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
-//        GMSCameraUpdate.zoom(to: 1)
-//        let eventMarker = GMSMarker.init()
-        
         
         guard let markerImage = UIImage(named: "birdhouse") else {return}
-        
-        
         let eventMarker = GMSMarker.init()
-        
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
         
         
@@ -225,8 +212,13 @@ class MapViewController: UIViewController {
     func setupMarkers(activeGuests: [InvitedModel]){
         var count = 0
         let filteredGuests = activeGuests.filter {
-            $0.latitude != nil
+            $0.latitude != -1.0
         }
+        for marker in self.allGuestMarkers {
+            marker.map = nil
+        }
+        self.allGuestMarkers.removeAll()
+        
         for guest in filteredGuests {
             guard let guestLat = guest.latitude,
                 let guestLon = guest.longitude else {
@@ -234,33 +226,13 @@ class MapViewController: UIViewController {
                     return
             }
             print("able to obtain guest coordinates for \(String(describing: event?.eventName))")
-//            let guestLat = guest.latitude
-//            let guestLon = guest.longitude
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
-//            let marker=GMSMarker()
-//            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: previewDemoData[i].img, borderColor: UIColor.darkGray, tag: i)
-//            marker.iconView=customMarker
-            
-        
-//            guard let markerImage = UIImageView.
-//            markerImage.
-//                URL(string: guest.photoURL ?? "no photo") else {return}
-//            cell.profilePicture.kf.setImage(with: , placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
-
-//            let markerImage = UIImageView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight))
-//            markerImage.kf.setImage(with: URL(string: guest.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
-            
             let marker = GMSMarker(position: coordinate)
-//
             let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest.photoURL ?? "no photo")!, borderColor: UIColor.darkGray, tag: count)
-            
-            
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
-//            marker.iconView.kf.se
             marker.iconView = customMarker
-//            marker.icon = UIImage(named: "icons8-bird-30")
             allGuestMarkers.append(marker)
             DispatchQueue.main.async {
                 marker.map = self.mapView.myMapView

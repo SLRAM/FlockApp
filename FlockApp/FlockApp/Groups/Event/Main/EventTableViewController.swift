@@ -112,6 +112,8 @@ class EventTableViewController: UITableViewController {
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 18)
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+
         
     }
     func isQuickEvent(eventType: Event) -> Bool {
