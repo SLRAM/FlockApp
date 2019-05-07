@@ -70,17 +70,16 @@ class FriendsViewController: UIViewController {
     @objc func singleTap(sender: UITapGestureRecognizer) {
         self.friendsView.friendSearch.resignFirstResponder()
     }
-    override func viewDidLayoutSubviews() {
-        let layer = CAGradientLayer()
-        layer.frame = UIScreen.main.bounds
-        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
-        let myTest = UIView.init(frame: UIScreen.main.bounds)
-
-//        myTest.layer.addSublayer(layer)
-        myTest.layer.insertSublayer(layer, at: 0)
-        self.friendsView.myTableView.backgroundView = myTest
-    }
-   
+//    override func viewDidLayoutSubviews() {
+//        let layer = CAGradientLayer()
+//        layer.frame = UIScreen.main.bounds
+//        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
+//        let myTest = UIView.init(frame: UIScreen.main.bounds)
+//
+//        myTest.layer.insertSublayer(layer, at: 0)
+//        self.friendsView.myTableView.backgroundView = myTest
+//    }
+//
     private func fetchPendingFriends(keyword: String) {
             guard let user = authservice.getCurrentUser() else {
                 print("Please log in")
