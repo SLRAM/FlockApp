@@ -15,7 +15,6 @@ class ProfileView: UIView {
         textView.text = "DisplayName"
         textView.textAlignment = .center
         textView.layer.cornerRadius = 10.0
-        textView.layer.borderWidth = 1.0
         textView.backgroundColor = UIColor(white: 1, alpha: 0.5)
 
         return textView
@@ -26,39 +25,49 @@ class ProfileView: UIView {
         textView.text = "Full Name"
         return textView
     }()
+    lazy var fullNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Name :"
+        label.textColor = .black
+        return label
+    }()
+    lazy var emailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "E-mail :"
+        label.textColor = .black
+        return label
+    }()
+    lazy var phoneNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Phone :"
+        label.textColor = .black
+        return label
+    }()
     lazy var firstNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
-        textView.text = "First Name"
         return textView
     }()
     lazy var lastNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
-        textView.text = "Last Name"
         return textView
     }()
-    lazy var imageButton: UIButton = {
-        let button = UIButton()
-        button.frame = CGRect(x: 160, y: 100, width: 50, height: 50)
-        button.layer.cornerRadius = 0.5 * button.bounds.size.width
+    lazy var imageButton: CircularButton = {
+        let button = CircularButton()
         button.setImage(UIImage(named: "ProfileImage"), for: .normal)
-        button.clipsToBounds = true
-        button.backgroundColor = .gray
-        button.layer.borderWidth = 1.0
         button.isUserInteractionEnabled = false
         return button
     }()
     lazy var emailTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
-        textView.text = "E-mail: WheresMyName@missingname.com"
         return textView
     }()
     lazy var phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
-        textView.text = "Phone number: 1(555)555-5555"
+        textView.text = "Phone number: N/A"
         return textView
     }()
     lazy var editButton: UIButton = {
@@ -119,52 +128,70 @@ class ProfileView: UIView {
         NSLayoutConstraint.activate([
             imageButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             imageButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 40),
-            imageButton.heightAnchor.constraint(equalToConstant: 100),
-            imageButton.widthAnchor.constraint(equalToConstant: 100)
+            imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.4),
+            imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.4)
             ])
     }
     private func setupDisplayNameTextView() {
         addSubview(displayNameTextView)
         displayNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            displayNameTextView.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: -10),
+            displayNameTextView.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: -40),
             displayNameTextView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             displayNameTextView.widthAnchor.constraint(equalToConstant: 300),
-            displayNameTextView.heightAnchor.constraint(equalToConstant: 30)
+            displayNameTextView.heightAnchor.constraint(equalToConstant: 50)
             ])
     }
     private func setupFullNameTextView() {
+        addSubview(fullNameLabel)
         addSubview(firstNameTextView)
         addSubview(lastNameTextView)
+        fullNameLabel.translatesAutoresizingMaskIntoConstraints = false
         firstNameTextView.translatesAutoresizingMaskIntoConstraints = false
         lastNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
+            fullNameLabel.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 30),
+            fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            fullNameLabel.widthAnchor.constraint(equalToConstant: 60),
+            fullNameLabel.heightAnchor.constraint(equalToConstant: 30),
             firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 30),
-            firstNameTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
             firstNameTextView.widthAnchor.constraint(equalToConstant: 150),
             firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
             lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 30),
             lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
-            lastNameTextView.widthAnchor.constraint(equalToConstant: 150),
+            lastNameTextView.widthAnchor.constraint(equalToConstant: 75),
             lastNameTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     private func setupEmailTextView() {
+        addSubview(emailLabel)
         addSubview(emailTextView)
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
         emailTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            emailTextView.topAnchor.constraint(equalTo: firstNameTextView.bottomAnchor, constant: 30),
-            emailTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            emailLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 30),
+            emailLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            emailLabel.heightAnchor.constraint(equalToConstant: 30),
+            emailLabel.widthAnchor.constraint(equalToConstant: 60),
+            emailTextView.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 30),
+            emailTextView.leadingAnchor.constraint(equalTo: emailLabel.trailingAnchor),
             emailTextView.widthAnchor.constraint(equalToConstant: 300),
             emailTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
     private func setupPhoneTextView() {
+        addSubview(phoneNumberLabel)
         addSubview(phoneNumberTextView)
+        phoneNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         phoneNumberTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            phoneNumberTextView.topAnchor.constraint(equalTo: emailTextView.bottomAnchor, constant: 30),
-            phoneNumberTextView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            phoneNumberLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 30),
+            phoneNumberLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            phoneNumberLabel.widthAnchor.constraint(equalToConstant: 60),
+            phoneNumberLabel.heightAnchor.constraint(equalToConstant: 30),
+            phoneNumberTextView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 30),
+            phoneNumberTextView.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor),
             phoneNumberTextView.widthAnchor.constraint(equalToConstant: 300),
             phoneNumberTextView.heightAnchor.constraint(equalToConstant: 30)
             ])

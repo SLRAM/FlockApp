@@ -22,7 +22,8 @@ class EventView: UIView {
     }()
     
     public lazy var directionsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Directions", style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
+        let button = UIBarButtonItem(image: UIImage(named: "icons8-car-512"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
+//        let button = UIBarButtonItem(title: "Directions", style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
         return button
     }()
 
