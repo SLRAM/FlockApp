@@ -366,6 +366,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
             navigationController?.pushViewController(profileVC, animated: true)
+            
         default:
             return
         }
