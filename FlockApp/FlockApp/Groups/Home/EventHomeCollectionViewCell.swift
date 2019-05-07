@@ -21,7 +21,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         let fontSize: CGFloat = 30
-        label.backgroundColor = .clear
+        //label.backgroundColor = .clear
         label.text = "Event #1"
         label.textColor = .white
         label.textAlignment = NSTextAlignment.natural 
