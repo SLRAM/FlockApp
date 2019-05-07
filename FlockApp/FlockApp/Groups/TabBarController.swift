@@ -24,6 +24,7 @@ class TabBarController: UITabBarController {
         secondViewController.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(named: "profile"), tag: 1)
         
         let secondNav = UINavigationController.init(rootViewController: secondViewController)
+        secondNav.navigationBar.prefersLargeTitles = true
 
         
         

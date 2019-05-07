@@ -324,21 +324,6 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 0:
             let user = friends[indexPath.row]
             profileVC.user = user
-<<<<<<< HEAD
-            navigationController?.pushViewController(profileVC, animated: true)
-        case 1:
-            let user = request[indexPath.row]
-            profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: true)
-        case 2:
-            let user = pending[indexPath.row]
-            profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: true)
-        case 3:
-            let user = strangers[indexPath.row]
-            profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: true)
-=======
             profileVC.profileView.firstNameTextView.text = user.fullName
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
@@ -347,7 +332,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
@@ -358,7 +343,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
@@ -369,7 +354,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
@@ -380,8 +365,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
->>>>>>> QA
+            navigationController?.pushViewController(profileVC, animated: true)
         default:
             return
         }
