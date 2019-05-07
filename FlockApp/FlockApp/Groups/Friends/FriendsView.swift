@@ -12,7 +12,7 @@ class FriendsView: UIView {
     lazy var friendSearch: UISearchBar = {
         let tf = UISearchBar()
         tf.placeholder = "Search Friends"
-        tf.barTintColor = #colorLiteral(red: 0.9868895411, green: 0.7339923382, blue: 0.9123610854, alpha: 1)
+        tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return tf
     }()
     lazy var myTableView: UITableView = {
@@ -34,7 +34,6 @@ class FriendsView: UIView {
     }
     
     private func setupConstraints() {
-        backgroundColor = .clear
         setupFriendSearch()
         setupTableView()
     }
