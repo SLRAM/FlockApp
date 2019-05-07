@@ -279,18 +279,30 @@ extension CreateEditViewController: CreateViewDelegate {
                                 endContent.sound = UNNotificationSound.default
                                 let startDate = self?.selectedStartDate
                                 let calendar = Calendar.current
+                                let startYear = calendar.component(.year, from: startDate!)
+                                let startMonth = calendar.component(.month, from: startDate!)
+                                let startDay = calendar.component(.day, from: startDate!)
                                 let startHour = calendar.component(.hour, from: startDate!)
                                 let startMinutes = calendar.component(.minute, from: startDate!)
                                 
                                 let endDate = self?.selectedEndDate
+                                let endYear = calendar.component(.year, from: endDate!)
+                                let endMonth = calendar.component(.month, from: endDate!)
+                                let endDay = calendar.component(.day, from: endDate!)
                                 let endHour = calendar.component(.hour, from: endDate!)
                                 let endMinutes = calendar.component(.minute, from: endDate!)
                                 
                                 var startDateComponent = DateComponents()
+                                startDateComponent.year = startYear
+                                startDateComponent.month = startMonth
+                                startDateComponent.day = startDay
                                 startDateComponent.hour = startHour
                                 startDateComponent.minute = startMinutes
                                 startDateComponent.timeZone = TimeZone.current
                                 var endDateComponent = DateComponents()
+                                endDateComponent.year = endYear
+                                endDateComponent.month = endMonth
+                                endDateComponent.day = endDay
                                 endDateComponent.hour = endHour
                                 endDateComponent.minute = endMinutes
                                 endDateComponent.timeZone = TimeZone.current
