@@ -288,7 +288,7 @@ class MapViewController: UIViewController {
         for guest in allGuestMarkers {
             let guestDistance = distance(from: guest.position, to: hostMarker.position)
             if guestDistance > proximity {
-                print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance)!")
+                print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance) feet!")
             }
 
         }
@@ -325,8 +325,8 @@ class MapViewController: UIViewController {
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
-        let distanceInMiles = (coordinate0.distance(from: coordinate1))/1609.344
-        return distanceInMiles
+        let distanceInFeet = (coordinate0.distance(from: coordinate1))/0.3048
+        return distanceInFeet
     }
 }
 extension MapViewController: CLLocationManagerDelegate {
