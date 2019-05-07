@@ -54,12 +54,22 @@ class FriendsViewController: UIViewController {
         friendsView.friendSearch.delegate = self
         friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
+        tapGestureKeyboard()
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchAllUsers(keyword: "")
         fetchFriends(keyword: "")
     }
-    
+    private func tapGestureKeyboard(){
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(sender:)))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+    @objc func singleTap(sender: UITapGestureRecognizer) {
+        self.friendsView.friendSearch.resignFirstResponder()
+    }
     override func viewDidLayoutSubviews() {
         let layer = CAGradientLayer()
         layer.frame = UIScreen.main.bounds
@@ -70,7 +80,7 @@ class FriendsViewController: UIViewController {
         myTest.layer.insertSublayer(layer, at: 0)
         self.friendsView.myTableView.backgroundView = myTest
     }
-    
+   
     private func fetchPendingFriends(keyword: String) {
             guard let user = authservice.getCurrentUser() else {
                 print("Please log in")
@@ -299,6 +309,12 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
     }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
