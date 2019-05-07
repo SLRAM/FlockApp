@@ -8,6 +8,8 @@
 import UIKit
 
 class EventPeopleViewController: UIViewController {
+    
+    public var person: person?
 
     override func viewDidLoad() {
         super.viewDidLoad()
