@@ -21,12 +21,14 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         let fontSize: CGFloat = 30
+        label.backgroundColor = .clear
         label.text = "Event #1"
-        label.textColor = .black
-        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 30), size: 30)
-        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
-        
-        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.textColor = .white
+        label.textAlignment = NSTextAlignment.natural 
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Bold", size: 35), size: 35)
+        label.backgroundColor = UIColor(red: 0.4901960784, green: 0.2862745098, blue: 0.8980392157, alpha: 0.8)
+        label.layer.cornerRadius = 15
+        label.layer.masksToBounds = true
         
         return label
     }()
@@ -34,9 +36,13 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
-        label.textColor = .black
+        label.textAlignment = NSTextAlignment.natural
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
+         label.textColor = .white
+         label.backgroundColor = UIColor(red: 0.4901960784, green: 0.2862745098, blue: 0.8980392157, alpha: 0.8)
+        label.layer.cornerRadius = 15
+        label.layer.masksToBounds = true
+
         return label
     }()
     
@@ -90,7 +96,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
         eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -130).isActive = true
-        eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
+        eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -8).isActive = true
         eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
         
@@ -99,8 +105,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupEventDay(){
         addSubview(startDateLabel)
         startDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -95).isActive = true
-        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -37).isActive = true
+        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -85).isActive = true
+        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -40).isActive = true
         startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.7).isActive = true
         startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
     }

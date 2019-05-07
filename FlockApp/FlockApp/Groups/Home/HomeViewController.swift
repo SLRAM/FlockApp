@@ -251,8 +251,17 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
         collectionViewCell.layer.shadowColor = UIColor.black.cgColor
         
+//        collectionViewCell.eventLabel.layer.cornerRadius = 20
+//        collectionViewCell.eventLabel.layer.masksToBounds = false
+//        collectionViewCell.eventLabel.layer.shadowOpacity = 0.25
+//        collectionViewCell.eventLabel.layer.shadowRadius = 10
+//        collectionViewCell.eventLabel.layer.shadowOffset = CGSize(width: 0, height: 0)
+//        collectionViewCell.eventLabel.layer.shadowColor = UIColor.black.cgColor
+        //collectionViewCell.eventLabel.layer.cornerRadius = 15
+        
         let radius = collectionViewCell.contentView.layer.cornerRadius
         collectionViewCell.layer.shadowPath = UIBezierPath(roundedRect: collectionViewCell.bounds, cornerRadius: radius).cgPath
+        
 
         
         var eventToSet = Event()
