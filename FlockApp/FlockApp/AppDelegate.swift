@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User Denied")
             }
         }
-        self.window!.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+        self.window!.tintColor = #colorLiteral(red: 0.4901960784, green: 0.2862745098, blue: 0.8980392157, alpha: 1)
         return true
     }
 
