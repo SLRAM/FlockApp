@@ -31,6 +31,7 @@ class FriendsTableViewCell: UITableViewCell {
         button.backgroundColor = .green
         button.isHidden = true
         button.isUserInteractionEnabled = false
+        button.layer.cornerRadius = 10
         return button
     }()
     lazy var declineFriend: UIButton = {
@@ -39,6 +40,7 @@ class FriendsTableViewCell: UITableViewCell {
         button.backgroundColor = .red
         button.isHidden = true
         button.isUserInteractionEnabled = false
+        button.layer.cornerRadius = 10
         return button
     }()
     lazy var cancelRequest: UIButton = {
@@ -47,6 +49,7 @@ class FriendsTableViewCell: UITableViewCell {
         button.backgroundColor = .red
         button.isHidden = true
         button.isUserInteractionEnabled = false
+        button.layer.cornerRadius = 10
         return button
     }()
     
@@ -102,15 +105,15 @@ class FriendsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             declineFriend.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             declineFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            declineFriend.heightAnchor.constraint(equalToConstant: 20),
+            declineFriend.heightAnchor.constraint(equalToConstant: 25),
             declineFriend.widthAnchor.constraint(equalToConstant: 80),
             acceptFriend.trailingAnchor.constraint(equalTo: declineFriend.leadingAnchor, constant: -10),
             acceptFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            acceptFriend.heightAnchor.constraint(equalToConstant: 20),
+            acceptFriend.heightAnchor.constraint(equalToConstant: 25),
             acceptFriend.widthAnchor.constraint(equalToConstant: 80),
             cancelRequest.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             cancelRequest.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            cancelRequest.heightAnchor.constraint(equalToConstant: 20),
+            cancelRequest.heightAnchor.constraint(equalToConstant: 25),
             cancelRequest.widthAnchor.constraint(equalToConstant: 80)
             ])
     }

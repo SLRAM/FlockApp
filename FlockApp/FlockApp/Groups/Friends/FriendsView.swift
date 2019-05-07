@@ -12,14 +12,13 @@ class FriendsView: UIView {
     lazy var friendSearch: UISearchBar = {
         let tf = UISearchBar()
         tf.placeholder = "Search Friends"
-        tf.barTintColor = #colorLiteral(red: 0.5249566436, green: 0.8283091784, blue: 0.7542427182, alpha: 1)
+        tf.barTintColor = #colorLiteral(red: 0.9868895411, green: 0.7339923382, blue: 0.9123610854, alpha: 1)
         return tf
     }()
     lazy var myTableView: UITableView = {
         let tv = UITableView()
         tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/4
-        tv.backgroundColor = .clear
         return tv
     }()
 
@@ -35,7 +34,7 @@ class FriendsView: UIView {
     }
     
     private func setupConstraints() {
-        backgroundColor = .white
+        backgroundColor = .clear
         setupFriendSearch()
         setupTableView()
     }
