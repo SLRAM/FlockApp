@@ -26,7 +26,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.textColor = .white
         label.textAlignment = NSTextAlignment.natural 
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Bold", size: 35), size: 35)
-        label.backgroundColor = UIColor(red: 0.4901960784, green: 0.2862745098, blue: 0.8980392157, alpha: 0.8)
+        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+        label.alpha = 0.8
         label.layer.cornerRadius = 15
         label.layer.masksToBounds = true
         
@@ -39,7 +40,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.textAlignment = NSTextAlignment.natural
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
          label.textColor = .white
-         label.backgroundColor = UIColor(red: 0.4901960784, green: 0.2862745098, blue: 0.8980392157, alpha: 0.8)
+        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+        label.alpha = 0.8
         label.layer.cornerRadius = 15
         label.layer.masksToBounds = true
 
