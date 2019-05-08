@@ -31,15 +31,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let _ = AppDelegate.authservice.getCurrentUser() {
             window?.rootViewController = TabBarController()
 //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-            UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-            UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
 //            window?.makeKeyAndVisible()
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
             window?.rootViewController = UINavigationController(rootViewController: loginViewController)
         }
+        UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        UINavigationBar.appearance().tintColor = UIColor.white
+        UINavigationBar.appearance().prefersLargeTitles = true
+        UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
         window?.makeKeyAndVisible()
         
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in

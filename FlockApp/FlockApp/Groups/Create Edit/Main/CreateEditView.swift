@@ -123,7 +123,6 @@ class CreateEditView: UIView {
     }()
     public lazy var cancelButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
-        button.tintColor = .white
         return button
     }()
     @objc func cancelButtonPressed() {
@@ -132,7 +131,6 @@ class CreateEditView: UIView {
     
     public lazy var createButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(createPressed))
-        button.tintColor = .white
         return button
     }()
     @objc func createPressed() {
