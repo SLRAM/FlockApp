@@ -40,7 +40,6 @@ class EventView: UIView {
         return button
     }()
 
-    
     lazy var eventAddress: UILabel = {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping

@@ -70,23 +70,32 @@ class ProfileView: UIView {
         textView.text = "Phone number: N/A"
         return textView
     }()
-    lazy var editButton: UIButton = {
-        let button = UIButton()
+    lazy var editButton: RoundedButton = {
+        let button = RoundedButton()
         button.setTitle("Edit", for: .normal)
-        button.setTitleColor(.black, for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return button
     }()
-    lazy var addFriend: UIButton = {
-        let button = UIButton()
-        button.setTitle("Add Friend", for: .normal)
-        button.backgroundColor = .lightGray
+    lazy var signOutButton: RoundedButton = {
+        let button = RoundedButton()
+        button.setTitle(" Sign Out ", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return button
     }()
-    lazy var blockButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Block User", for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.backgroundColor = .lightGray
+    lazy var addFriend: RoundedButton = {
+        let button = RoundedButton()
+        button.setTitle(" Add Friend ", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        return button
+    }()
+    lazy var blockButton: RoundedButton = {
+        let button = RoundedButton()
+        button.setTitle(" Block User ", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return button
     }()
     override init(frame: CGRect) {
@@ -109,6 +118,7 @@ class ProfileView: UIView {
         setupEmailTextView()
         setupPhoneTextView()
         setupAddButton()
+        setupSignOutButton()
         setupBlockButton()
     }
 
@@ -212,6 +222,15 @@ class ProfileView: UIView {
             blockButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
             blockButton.topAnchor.constraint(equalTo: addFriend.bottomAnchor, constant: 20),
             blockButton.heightAnchor.constraint(equalToConstant: 30)
+            ])
+    }
+    private func setupSignOutButton() {
+        addSubview(signOutButton)
+        signOutButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            signOutButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            signOutButton.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+            signOutButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
 }
