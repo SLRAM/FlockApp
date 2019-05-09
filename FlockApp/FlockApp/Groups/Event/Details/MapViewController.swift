@@ -55,7 +55,7 @@ class MapViewController: UIViewController {
         self.view.addSubview(mapView)
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
@@ -201,11 +201,12 @@ class MapViewController: UIViewController {
     func setupMarkers(activeGuests: [InvitedModel]){
         var count = 0
         let filteredGuests = activeGuests.filter {
-            $0.latitude != -1.0
+            $0.latitude != nil
         }
         for marker in self.allGuestMarkers {
             marker.map = nil
         }
+        
         self.allGuestMarkers.removeAll()
         
         for guest in filteredGuests {
@@ -223,10 +224,15 @@ class MapViewController: UIViewController {
             marker.snippet = "task: \(task)"
             marker.iconView = customMarker
             allGuestMarkers.append(marker)
+            
+        
+            count += 1
+        }
+        for marker in allGuestMarkers {
             DispatchQueue.main.async {
+                
                 marker.map = self.mapView.myMapView
             }
-            count += 1
         }
 //        self.mapView.myMapView.reloadInputViews()
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
