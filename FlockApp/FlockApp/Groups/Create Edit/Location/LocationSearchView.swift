@@ -27,7 +27,7 @@ class LocationSearchView: UIView {
     lazy var locationSearch: UISearchBar = {
         let tf = UISearchBar()
         tf.placeholder = "Search Locations"
-//        tf.barTintColor = #colorLiteral(red: 0.5249566436, green: 0.8283091784, blue: 0.7542427182, alpha: 1)
+        tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         //        tf.layer.cornerRadius = 10
         //        tf.layer.borderWidth = 2
         //        tf.layer.borderColor = UIColor.gray.cgColor
@@ -96,7 +96,7 @@ extension LocationSearchView {
         mySearchBarView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
         mySearchBarView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         mySearchBarView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
-        mySearchBarView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.05).isActive = true
+        mySearchBarView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
         setupQueryTextField()
     }
     func setupQueryTextField() {
@@ -114,20 +114,14 @@ extension LocationSearchView {
         myTableView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         myTableView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
         myTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor).isActive = true
-        myTableView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.95).isActive = true
+        myTableView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.93).isActive = true
     }
     func setupHomeMapView() {
-        //        mapView = GMSMapView.map(withFrame: CGRect(x: 100, y: 100, width: 200, height: 200), camera: GMSCameraPosition.camera(withLatitude: 51.050657, longitude: 10.649514, zoom: 5.5))
-        //
-        //        //so the mapView is of width 200, height 200 and its center is same as center of the self.view
-        //        mapView?.center = self.view.center
-        //
-        //        self.view.addSubview(mapView!)
         addSubview(myMapView)
         myMapView.translatesAutoresizingMaskIntoConstraints = false
         myMapView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         myMapView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: 0).isActive = true
         myMapView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 0).isActive = true
-        myMapView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.95).isActive = true
+        myMapView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.93).isActive = true
     }
 }

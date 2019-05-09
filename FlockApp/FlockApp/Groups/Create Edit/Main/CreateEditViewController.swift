@@ -14,7 +14,7 @@ import UserNotifications
 
 class CreateEditViewController: UIViewController {
     
-    let titlePlaceholder = "Enter the event title"
+    let titlePlaceholder = "Enter the Event Title"
     let trackingPlaceholder = "Event Tracking Time"
     var number = 0
 
@@ -84,6 +84,10 @@ extension CreateEditViewController: UITextViewDelegate {
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = titlePlaceholder
+            textView.textColor = .gray
+        }
         createEditView.titleTextView.resignFirstResponder()
     }
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
