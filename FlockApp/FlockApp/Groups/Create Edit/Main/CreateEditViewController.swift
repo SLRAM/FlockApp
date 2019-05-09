@@ -170,7 +170,33 @@ extension CreateEditViewController: CreateViewDelegate {
     func createPressed() {
         createEditView.createButton.isEnabled = false
         
-        guard let startDate = self.selectedStartDate else { return }
+
+        if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
+            let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        if createEditView.addressButton.titleLabel?.text == "Event Address" {
+            let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        
+
+        guard let startDate = self.selectedStartDate else {
+            let alertController = UIAlertController(title: "Unable to post. Choose an event date.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
         guard let endDate = self.selectedEndDate else {return}
         
         
@@ -181,23 +207,9 @@ extension CreateEditViewController: CreateViewDelegate {
         let startTrackingString = isoDateFormatter.string(from: trackingDate)
         
         
-
+        
         let startDateString = ISO8601DateFormatter().string(from: startDate)
         let endDateString = ISO8601DateFormatter().string(from: endDate)
-        if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
-            let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            present(alertController, animated: true)
-            return}
-        if createEditView.addressButton.titleLabel?.text == "Event Address" {
-            let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-            alertController.addAction(okAction)
-            present(alertController, animated: true)
-            return}
-        
-
         
         guard let eventName = createEditView.titleTextView.text else {return}
         var friendIds = [String]()
