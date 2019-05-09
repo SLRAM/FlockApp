@@ -21,12 +21,15 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var eventLabel: UILabel = {
         let label = UILabel()
         let fontSize: CGFloat = 30
+        //label.backgroundColor = .clear
         label.text = "Event #1"
-        label.textColor = .black
-        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "Helvetica nueue", size: 30), size: 30)
-        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
-        
-        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.textColor = .white
+        label.textAlignment = NSTextAlignment.natural 
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Bold", size: 35), size: 35)
+        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+        label.alpha = 0.8
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
         
         return label
     }()
@@ -34,9 +37,14 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var startDateLabel: UILabel = {
         let label = UILabel()
         label.text = "Monday"
-        //label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
-        label.font = UIFont.boldSystemFont(ofSize: label.font.pointSize)
-        label.textColor = .black
+        label.textAlignment = NSTextAlignment.natural
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
+         label.textColor = .white
+        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+        label.alpha = 0.8
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+
         return label
     }()
     
@@ -49,7 +57,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var joinEventButton: UIButton = {
         let button = UIButton()
-        let image = UIImage(named: "notification")
+        let image = UIImage(named: "alert")
         button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
         button.setImage(image, for: .normal)
         return button
@@ -63,7 +71,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var goingButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
         button.addTarget(self, action: #selector(eventAcceptedPressed), for: .touchUpInside)
-        let image = UIImage(named: "accept")
+        let image = UIImage(named: "check")
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
         return button
@@ -75,7 +83,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var declineButton: UIButton = {
         let button = UIButton(type:UIButton.ButtonType.custom)
-        let image = UIImage(named: "decline")
+        let image = UIImage(named: "delete")
         button.addTarget(self, action: #selector(declineEventPressed), for: .touchUpInside)
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
@@ -90,19 +98,21 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
       addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
         eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -130).isActive = true
-        eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
-        eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
-        eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
+        eventLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+//        eventLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -8).isActive = true
+//        eventLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
+        eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.15).isActive = true
         
     }
     
     func setupEventDay(){
         addSubview(startDateLabel)
         startDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -95).isActive = true
-        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -37).isActive = true
-        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.7).isActive = true
-        startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.1).isActive = true
+        startDateLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -70).isActive = true
+        startDateLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
+//        startDateLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -40).isActive = true
+//        startDateLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.7).isActive = true
+        startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.15).isActive = true
     }
     
     func setupImage(){

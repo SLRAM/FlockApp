@@ -25,12 +25,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UNUserNotificationCenter.current().delegate = self
         
         // force signout
-//        try? Auth.auth().signOut()
+        //try? Auth.auth().signOut()
+
 
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
             window?.rootViewController = TabBarController()
+            //UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            //UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+           //. UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+            UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+            UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
+
 //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
+
 //            window?.makeKeyAndVisible()
         } else {
             let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
@@ -53,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print("User Denied")
             }
         }
-        self.window!.tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+        self.window!.tintColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
         return true
     }
 
