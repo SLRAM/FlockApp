@@ -124,13 +124,13 @@ class EventTableViewController: UITableViewController {
     }
     
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let detailVC = EventPeopleViewController()
-        present(detailVC, animated: true, completion: nil)
-        let person = invited[indexPath.row]
-        detailVC.personToSet = person
-    }
-    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        let detailVC = EventPeopleViewController()
+//        present(detailVC, animated: true, completion: nil)
+//        let person = invited[indexPath.row]
+//        detailVC.personToSet = person
+//    }
+//    
     
     func setTableViewBackgroundGradient(sender: UITableViewController, _ topColor:UIColor, _ bottomColor:UIColor) {
         
