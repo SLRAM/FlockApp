@@ -77,7 +77,7 @@ class HomeViewController: UIViewController {
 
         homeView.delegate = self
 
-        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, yyyy")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
         
 //        let blurEffect = UIBlurEffect(style: .light)
@@ -323,7 +323,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
-        collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         
         
