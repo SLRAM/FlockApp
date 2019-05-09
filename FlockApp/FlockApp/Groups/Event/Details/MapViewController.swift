@@ -30,6 +30,7 @@ class MapViewController: UIViewController {
     var usersCurrentLocation = CLLocation()
     var proximity = Double()    
     var guestCount = 0
+    var resetMapToEvent = false
     
     var invited = [InvitedModel](){
         didSet{
@@ -46,16 +47,21 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        locationManager.delegate = self
+        
         guard let unwrappedEvent = event else {
             print("Unable to segue event")
             return
         }
+        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
+        
+        locationManager.delegate = self
+
+        
         proximity = unwrappedEvent.proximity
         self.view.addSubview(mapView)
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
@@ -77,7 +83,7 @@ class MapViewController: UIViewController {
             print("start date is < ")
             startTimer()
         }
-
+        resetMapToEvent = true
     }
     
     func isQuickEvent(eventType: Event) -> Bool {
@@ -96,16 +102,16 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
+        mapView.myMapView.clear()
         updateUserLocation()
         fetchInvitedLocations()
-//        fetchEventLocation()
+        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
             myTimer.invalidate()
         }
         if isQuickEvent(eventType: unwrappedEvent) {
             proximityAlert()
         }
-        
     }
     func updateUserLocation() {
         guard let user = authservice.getCurrentUser() else {
@@ -162,8 +168,9 @@ class MapViewController: UIViewController {
                 return
         }
         let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-        mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
-        
+        if resetMapToEvent == false {
+            mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        }
         guard let markerImage = UIImage(named: "birdhouse") else {return}
         let eventMarker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
@@ -175,6 +182,7 @@ class MapViewController: UIViewController {
         eventMarker.map = mapView.myMapView
         hostMarker = eventMarker
     }
+
     func fetchInvitedLocations() {
         guard let unwrappedEvent = event else {
             print("Unable to segue event")
@@ -200,9 +208,11 @@ class MapViewController: UIViewController {
     }
     func setupMarkers(activeGuests: [InvitedModel]){
         var count = 0
+        
         let filteredGuests = activeGuests.filter {
             $0.latitude != nil
         }
+
         for marker in self.allGuestMarkers {
             marker.map = nil
         }
@@ -254,9 +264,14 @@ class MapViewController: UIViewController {
     func proximityAlert() {
         //if guests are beyond proximity then alert
         for guest in allGuestMarkers {
+            
             let guestDistance = distance(from: guest.position, to: hostMarker.position)
+            
+            
             if guestDistance > proximity {
                 print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance) feet!")
+            } else {
+                print("\(String(describing: guest.title?.description)) is in range by \(guestDistance) feet!")
             }
 
         }
@@ -293,7 +308,8 @@ class MapViewController: UIViewController {
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
         let coordinate1 = CLLocation(latitude: to.latitude, longitude: to.longitude)
-        let distanceInFeet = (coordinate0.distance(from: coordinate1))/0.3048
+//        let distanceInFeet = (coordinate0.distance(from: coordinate1))/0.3048
+        let distanceInFeet = coordinate0.distance(from: coordinate1)
         return distanceInFeet
     }
 }
@@ -307,7 +323,19 @@ extension MapViewController: CLLocationManagerDelegate {
         print("user has changed locations")
         guard let currentLocation = locations.last else {return}
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
-        usersCurrentLocation = currentLocation
+        
+        let distanceFromUpdate = distance(from: usersCurrentLocation.coordinate, to: currentLocation.coordinate)
+//        distance >= (horizontalAccuracy * 0.5)
+        print("distance from update \(distanceFromUpdate)")
+        if distanceFromUpdate >= (currentLocation.horizontalAccuracy * 0.5) {
+            print("Failed with : \(currentLocation.horizontalAccuracy * 0.5)")
+        } else {
+            print("passed with : \(currentLocation.horizontalAccuracy * 0.5)")
+
+            usersCurrentLocation = currentLocation
+
+        }
+//        usersCurrentLocation = currentLocation
 
     }
 }
