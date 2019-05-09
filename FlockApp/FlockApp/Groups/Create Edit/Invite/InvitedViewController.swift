@@ -50,6 +50,8 @@ class InvitedViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 //        friendsView.delegate = self
+        navigationItem.title = "Select Friends"
+
         view.addSubview(invitedView)
         
         friendListButton()
@@ -59,10 +61,6 @@ class InvitedViewController: BaseViewController {
         invitedView.myTableView.dataSource = self
         invitedView.myTableView.tableFooterView = UIView()
         fetchFriends()
-
-
-
-
     }
     
     @objc private func fetchFriends() {
@@ -148,12 +146,15 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
 //        let friend = friends[indexPath.row]
 //        cell.textLabel?.text = friend.description
 //        return cell
-        
+        guard let cell = invitedView.myTableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+        cell.taskLabel.isHidden = true
+        cell.backgroundColor = .clear
         if isSearching {
             let friend = filteredFriends[indexPath.row]
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = friend.displayName
-            cell.backgroundColor = .clear
+//            cell.textLabel?.text = friend.displayName
+            cell.profilePicture.kf.setImage(with: URL(string: friend.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+            cell.nameLabel.text = friend.displayName
+
             
 //            if savedFriends.contains(where: friend)
             if savedFriends.contains(where: { $0.displayName == friend.displayName}){
@@ -164,10 +165,8 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
             
         } else {
             let friend = friends[indexPath.row]
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.textLabel?.text = friend.displayName
-            cell.backgroundColor = .clear
-            
+            cell.profilePicture.kf.setImage(with: URL(string: friend.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+            cell.nameLabel.text = friend.displayName
             if savedFriends.contains(where: { $0.displayName == friend.displayName}) {
                 cell.accessoryType = .checkmark
             }

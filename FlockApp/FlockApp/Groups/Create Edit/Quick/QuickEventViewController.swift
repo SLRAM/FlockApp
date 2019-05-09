@@ -76,9 +76,9 @@ class QuickEventViewController: UIViewController {
     }
     func editProximity(increase: Bool)-> String {
         if distance != 0 && increase == false{
-            distance -= 10
+            distance -= 30
         } else if increase == true {
-            distance += 10
+            distance += 30
         }
         if distance == 0{
             return proximityPlaceholder
@@ -159,7 +159,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
                                   locationLong: self!.usersCurrentLocation.coordinate.longitude,
                                   trackingTime: startingString,
                                   quickEvent: true,
-                                  proximity: 0) //set value for proximity!
+                                  proximity: Double(self!.distance)) //set value for proximity!
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)

@@ -24,9 +24,33 @@ class CreateEditView: UIView {
         let button = UIButton()
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(imagePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-        button.setBackgroundImage(UIImage(named: "pitons"), for: .normal)
+        button.backgroundColor = .clear
+//        button.setBackgroundImage(UIImage(named: "quickEvent"), for: .normal)
+        button.setImage(UIImage(named: "quickEvent"), for: .normal)
+        button.layer.masksToBounds = false
+        button.layer.shadowOpacity = 0.25
+        button.layer.shadowRadius = 10
+        button.layer.shadowOffset = CGSize(width: 0, height: 0)
+        button.layer.shadowColor = UIColor.black.cgColor
         button.layer.cornerRadius = 10.0
+
+
+        
+//        collectionViewCell.contentView.layer.masksToBounds = true
+//        collectionViewCell.backgroundColor = .clear // very important
+//        collectionViewCell.layer.masksToBounds = false
+//        collectionViewCell.layer.shadowOpacity = 0.25
+//        collectionViewCell.layer.shadowRadius = 10
+//        collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
+//        collectionViewCell.layer.shadowColor = UIColor.black.cgColor
+//
+//        let radius = button.layer.cornerRadius
+//        button.layer.shadowPath = UIBezierPath(roundedRect: button.bounds, cornerRadius: radius).cgPath
+        
+        
+        
+        
+        
         return button
     }()
     @objc func imagePressed() {
@@ -37,10 +61,10 @@ class CreateEditView: UIView {
     lazy var addressButton: UIButton = {
         let button = UIButton()
         button.setTitle("Event Address", for: .normal)
-        button.setTitleColor(.purple, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(addressPressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -52,10 +76,10 @@ class CreateEditView: UIView {
     lazy var dateButton: UIButton = {
         let button = UIButton()
         button.setTitle("Event Date", for: .normal)
-        button.setTitleColor(.purple, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(datePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -66,20 +90,21 @@ class CreateEditView: UIView {
     
     lazy var myLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        label.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         label.text = "Event Tracking Time"
         label.textAlignment = .center
-        label.textColor = .purple
+        label.font = UIFont.boldSystemFont(ofSize: 15)
+        label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return label
     }()
     
     lazy var trackingIncreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
-        button.setTitleColor(.purple, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(trackingIncreasePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -89,10 +114,10 @@ class CreateEditView: UIView {
     lazy var trackingDecreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("-", for: .normal)
-        button.setTitleColor(.purple, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(trackingDecreasePressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -102,10 +127,10 @@ class CreateEditView: UIView {
     lazy var friendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add Friends", for: .normal)
-        button.setTitleColor(.purple, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(friendsPressed), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -145,7 +170,9 @@ class CreateEditView: UIView {
         textView.layer.borderColor = #colorLiteral(red: 0.8529050946, green: 0.8478356004, blue: 0.8568023443, alpha: 0.4653253425).cgColor
         textView.textColor = .gray
         textView.textAlignment = .center
+        textView.font = UIFont.boldSystemFont(ofSize: 15)
         textView.tag = 0
+        textView.text = "Enter the Event Title"
         return textView
     }()
     
@@ -186,9 +213,11 @@ extension CreateEditView {
         addSubview(imageButton)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         imageButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
-        imageButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        imageButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.30).isActive = true
+//        imageButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
+//        imageButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
+        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
+        imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
+        imageButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
     }
     func setupAddressButton() {
         addSubview(addressButton)

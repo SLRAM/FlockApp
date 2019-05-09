@@ -37,6 +37,8 @@ class LocationSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Select Location"
+
         mapListButton()
         locationSearchView.delegate = self
         homeViewSetup()

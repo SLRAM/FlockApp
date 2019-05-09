@@ -26,20 +26,20 @@ class QuickEventView: UIView {
     
     lazy var myLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yellow
+        label.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         label.text = "Event Tracking Time"
         label.textAlignment = .center
-        label.textColor = .blue
+        label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return label
     }()
 
     lazy var trackingIncreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(quickTrackingIncrease), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8901717663, green: 0.8789022565, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -50,10 +50,10 @@ class QuickEventView: UIView {
     lazy var trackingDecreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("-", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(quickTrackingDecrease), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8881237507, green: 0.8798579574, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -63,20 +63,20 @@ class QuickEventView: UIView {
     }
     lazy var myProximityLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .yellow
+        label.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         label.text = "Proximity Distance"
         label.textAlignment = .center
-        label.textColor = .blue
+        label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         return label
     }()
     
     lazy var proximityIncreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(quickProximityIncrease), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8901717663, green: 0.8789022565, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -87,10 +87,10 @@ class QuickEventView: UIView {
     lazy var proximityDecreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("-", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(quickProximityDecrease), for: .touchUpInside)
-        button.backgroundColor = #colorLiteral(red: 0.8881237507, green: 0.8798579574, blue: 0, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
@@ -102,10 +102,10 @@ class QuickEventView: UIView {
     lazy var friendButton: UIButton = {
         let button = UIButton()
         button.setTitle("Add Friends", for: .normal)
-        button.setTitleColor(.blue, for: .normal)
+        button.setTitleColor(UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1), for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(friendsQuickPressed), for: .touchUpInside)
-        button.backgroundColor = .yellow
+        button.backgroundColor = #colorLiteral(red: 0.8923556805, green: 0.9023317695, blue: 0.9020053744, alpha: 1)
         button.layer.cornerRadius = 10.0
         return button
     }()
