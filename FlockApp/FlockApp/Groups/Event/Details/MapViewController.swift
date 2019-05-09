@@ -55,7 +55,7 @@ class MapViewController: UIViewController {
         self.view.addSubview(mapView)
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
-            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
             locationManager.startUpdatingLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
@@ -63,21 +63,13 @@ class MapViewController: UIViewController {
         }
         
         if isQuickEvent(eventType: unwrappedEvent) {
-//            quickEventMap(unwrappedEvent: unwrappedEvent)
             
             proximityAlert()
         } else {
-//            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
-        
-        
-        
         fetchEventLocation()
         fetchInvitedLocations()
-//        updateUserLocation()
         setupMapBounds()
-        
-
         if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
 
@@ -108,7 +100,6 @@ class MapViewController: UIViewController {
         fetchInvitedLocations()
 //        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
-            //invalidate timer
             myTimer.invalidate()
         }
         if isQuickEvent(eventType: unwrappedEvent) {
@@ -176,9 +167,7 @@ class MapViewController: UIViewController {
         guard let markerImage = UIImage(named: "birdhouse") else {return}
         let eventMarker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
-        
-        
-        
+    
         eventMarker.position = eventLocation
         eventMarker.title = eventName
 //        eventMarker.icon = UIImage(named: "birdhouse")
@@ -212,11 +201,12 @@ class MapViewController: UIViewController {
     func setupMarkers(activeGuests: [InvitedModel]){
         var count = 0
         let filteredGuests = activeGuests.filter {
-            $0.latitude != -1.0
+            $0.latitude != nil
         }
         for marker in self.allGuestMarkers {
             marker.map = nil
         }
+        
         self.allGuestMarkers.removeAll()
         
         for guest in filteredGuests {
@@ -234,11 +224,17 @@ class MapViewController: UIViewController {
             marker.snippet = "task: \(task)"
             marker.iconView = customMarker
             allGuestMarkers.append(marker)
-            DispatchQueue.main.async {
-                marker.map = self.mapView.myMapView
-            }
+            
+        
             count += 1
         }
+        for marker in allGuestMarkers {
+            DispatchQueue.main.async {
+                
+                marker.map = self.mapView.myMapView
+            }
+        }
+//        self.mapView.myMapView.reloadInputViews()
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
         if allGuestMarkers.count > guestCount {
                 setupMapBounds()

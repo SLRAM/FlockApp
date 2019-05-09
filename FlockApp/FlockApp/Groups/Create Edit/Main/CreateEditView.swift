@@ -170,7 +170,7 @@ class CreateEditView: UIView {
         textView.layer.borderColor = #colorLiteral(red: 0.8529050946, green: 0.8478356004, blue: 0.8568023443, alpha: 0.4653253425).cgColor
         textView.textColor = .gray
         textView.textAlignment = .center
-        textView.font = UIFont.boldSystemFont(ofSize: 15)
+        textView.font = UIFont.boldSystemFont(ofSize: 25)
         textView.tag = 0
         textView.text = "Enter the Event Title"
         return textView
