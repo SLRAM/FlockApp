@@ -55,7 +55,7 @@ class MapViewController: UIViewController {
         self.view.addSubview(mapView)
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
             locationManager.startUpdatingLocation()
         } else {
             locationManager.requestWhenInUseAuthorization()
