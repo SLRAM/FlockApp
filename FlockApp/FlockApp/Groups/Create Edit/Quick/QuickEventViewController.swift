@@ -180,6 +180,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
                                 print("posted to host accepted")
                             }
                         })
+                        
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
@@ -293,10 +294,24 @@ extension QuickEventViewController: InvitedViewControllerDelegate {
         var count = 0
         for friend in friends {
             friendsDictionary[count] = "No Task"
+            count += 1
         }
         quickEventView.myTableView.reloadData()
     }
     
+    
+//    func selectedFriends(friends: [UserModel]) {
+//        print("Friends selected")
+//        friendsArray = friends
+//        var count = 0
+//        for friend in friends {
+//            friendsDictionary[count] = "No Task"
+//            count += 1
+//        }
+//        print(friendsDictionary)
+//
+//        createEditView.myTableView.reloadData()
+//    }
 }
 extension QuickEventViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {

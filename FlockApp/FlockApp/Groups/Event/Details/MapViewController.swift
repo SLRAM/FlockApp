@@ -63,18 +63,15 @@ class MapViewController: UIViewController {
         }
         
         if isQuickEvent(eventType: unwrappedEvent) {
-//            quickEventMap(unwrappedEvent: unwrappedEvent)
             
             proximityAlert()
         } else {
-//            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
         
         
         
         fetchEventLocation()
         fetchInvitedLocations()
-//        updateUserLocation()
         setupMapBounds()
         
 
@@ -239,6 +236,7 @@ class MapViewController: UIViewController {
             }
             count += 1
         }
+//        self.mapView.myMapView.reloadInputViews()
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
         if allGuestMarkers.count > guestCount {
                 setupMapBounds()
