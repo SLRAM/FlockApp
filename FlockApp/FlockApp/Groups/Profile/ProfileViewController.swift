@@ -28,14 +28,16 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
+        self.title = "Profile"
         self.profileView.editButton.isEnabled = false
         self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
+        profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
+        setupProfile()
         fetchFriends()
         checkBlockedUser()
         checkBlockedStatus()
-        setupProfile()
     }
 
     private func setupProfile(){
@@ -54,27 +56,29 @@ class ProfileViewController: BaseViewController {
                         self.profileView.addFriend.isHidden = true
                         self.profileView.blockButton.isEnabled = false
                         self.profileView.blockButton.isHidden = true
+                        self.profileView.emailTextView.text = userModel.email
+                        self.profileView.signOutButton.isEnabled = true
+                        self.profileView.signOutButton.isHidden = false
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
                         self.profileView.addFriend.isEnabled = true
-                        self.profileView.emailTextView.isHidden = true
+                        self.profileView.signOutButton.isEnabled = false
+                        self.profileView.signOutButton.isHidden = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
                         self.profileView.addFriend.removeTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
-                        self.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+                        self.profileView.addFriend.setTitle(" Remove Friend ", for: .normal)
                     } else {
                         self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
-                        self.profileView.addFriend.setTitle("Add friend", for: .normal)
+                        self.profileView.addFriend.setTitle(" Add Friend ", for: .normal)
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
-                    self.profileView.emailTextView.text = self.user!.email
-                    self.profileView.firstNameTextView.text = self.user!.firstName
-                    self.profileView.lastNameTextView.text = self.user!.lastName
+                    self.profileView.firstNameTextView.text = self.user!.fullName
                     self.profileView.phoneNumberTextView.text = self.user!.phoneNumber
                     if let image = self.user!.photoURL, !image.isEmpty {
                         self.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
@@ -103,11 +107,11 @@ class ProfileViewController: BaseViewController {
                     if self.blockedUsers.contains(user.userId) {
                         self.profileView.blockButton.removeTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
                         self.profileView.blockButton.addTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
-                        self.profileView.blockButton.setTitle("Unblock User", for: .normal)
+                        self.profileView.blockButton.setTitle(" Unblock User ", for: .normal)
                     } else {
                         self.profileView.blockButton.removeTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
                         self.profileView.blockButton.addTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
-                        self.profileView.blockButton.setTitle("Block User", for: .normal)
+                        self.profileView.blockButton.setTitle(" Block User ", for: .normal)
                     }
                 }
             })
@@ -181,6 +185,10 @@ class ProfileViewController: BaseViewController {
             }
         }
     }
+    @objc private func signOutPressed() {
+        authservice.signOutAccount()
+        showLoginView()
+    }
     @objc private func blockUser() {
         DBService.blockedUser(blocked: self.user!) { (error) in
             if let error = error {
@@ -204,10 +212,12 @@ class ProfileViewController: BaseViewController {
             profileView.imageButton.isUserInteractionEnabled = true
             profileView.displayNameTextView.isEditable = true
             profileView.displayNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            profileView.emailTextView.isEditable = true
-            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//            profileView.emailTextView.isEditable = true
+//            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            profileView.firstNameTextView.text = user!.firstName
             profileView.firstNameTextView.isEditable = true
             profileView.firstNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            profileView.lastNameTextView.text = user!.lastName
             profileView.lastNameTextView.isEditable = true
             profileView.lastNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.phoneNumberTextView.isEditable = true
@@ -219,9 +229,9 @@ class ProfileViewController: BaseViewController {
             saveProfile()
             profileView.imageButton.isUserInteractionEnabled = false
             profileView.displayNameTextView.isEditable = false
-            profileView.displayNameTextView.backgroundColor = .white
-            profileView.emailTextView.isEditable = false
-            profileView.emailTextView.backgroundColor = .white
+            profileView.displayNameTextView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+//            profileView.emailTextView.isEditable = false
+//            profileView.emailTextView.backgroundColor = .white
             profileView.firstNameTextView.isEditable = false
             profileView.firstNameTextView.backgroundColor = .white
             profileView.lastNameTextView.isEditable = false
@@ -279,6 +289,8 @@ class ProfileViewController: BaseViewController {
                 self.dismiss(animated: true)
             }
         }
+        self.profileView.lastNameTextView.text = ""
+        self.profileView.firstNameTextView.text = self.user!.fullName
     }
 }
 

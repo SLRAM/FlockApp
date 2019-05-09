@@ -19,6 +19,8 @@ class DateViewController: UIViewController {
     var event: Event?
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Select Dates"
+
         view.addSubview(dateView)
         navigationItem.rightBarButtonItem = dateView.okayButton
 //        navigationItem.leftBarButtonItem = dateView.cancelButton

@@ -13,7 +13,7 @@ import FirebaseFirestore
 
 class HomeViewController: UIViewController {
     
-    
+    let color = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
     var homeView = HomeView()
     var currentDate = Date.getISOTimestamp()
     var newUser = false
@@ -61,6 +61,11 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.navigationBar.backgroundColor = color
+        self.navigationController?.navigationBar.barTintColor = color
+
         view.addSubview(homeView)
 //        view.addShadow()
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)

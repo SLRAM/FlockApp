@@ -52,25 +52,34 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.friendSearch.delegate = self
-        friendsView.myTableView.tableFooterView = UIView()
+//        friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
+        tapGestureKeyboard()
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchAllUsers(keyword: "")
         fetchFriends(keyword: "")
     }
-    
-    override func viewDidLayoutSubviews() {
-        let layer = CAGradientLayer()
-        layer.frame = UIScreen.main.bounds
-        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
-        let myTest = UIView.init(frame: UIScreen.main.bounds)
-
-//        myTest.layer.addSublayer(layer)
-        myTest.layer.insertSublayer(layer, at: 0)
-        self.friendsView.myTableView.backgroundView = myTest
+    private func tapGestureKeyboard(){
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.singleTap(sender:)))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(singleTapGestureRecognizer)
     }
-    
+    @objc func singleTap(sender: UITapGestureRecognizer) {
+        self.friendsView.friendSearch.resignFirstResponder()
+    }
+//    override func viewDidLayoutSubviews() {
+//        let layer = CAGradientLayer()
+//        layer.frame = UIScreen.main.bounds
+//        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
+//        let myTest = UIView.init(frame: UIScreen.main.bounds)
+//
+//        myTest.layer.insertSublayer(layer, at: 0)
+//        self.friendsView.myTableView.backgroundView = myTest
+//    }
+//
     private func fetchPendingFriends(keyword: String) {
             guard let user = authservice.getCurrentUser() else {
                 print("Please log in")
@@ -297,6 +306,15 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             fetchAllUsers(keyword: searchText)
             fetchFriends(keyword: searchText)
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = true
+    }
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+    }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
             fatalError("It broke")
@@ -306,19 +324,49 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 0:
             let user = friends[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            profileVC.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
+            navigationController?.pushViewController(profileVC, animated: true)
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
+            navigationController?.pushViewController(profileVC, animated: true)
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
+            navigationController?.pushViewController(profileVC, animated: true)
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
-            navigationController?.pushViewController(profileVC, animated: false)
+            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.displayNameTextView.text = user.displayName
+            profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
+            profileVC.profileView.emailTextView.text = "Hidden"
+            if let image = user.photoURL, !image.isEmpty {
+                profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+            }
+            navigationController?.pushViewController(profileVC, animated: true)
+
         default:
             return
         }

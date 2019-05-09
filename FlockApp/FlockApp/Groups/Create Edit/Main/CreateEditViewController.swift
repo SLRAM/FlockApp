@@ -14,7 +14,7 @@ import UserNotifications
 
 class CreateEditViewController: UIViewController {
     
-    let titlePlaceholder = "Enter the event title"
+    let titlePlaceholder = "Enter the Event Title"
     let trackingPlaceholder = "Event Tracking Time"
     var number = 0
 
@@ -50,11 +50,11 @@ class CreateEditViewController: UIViewController {
         navigationItem.title = "Create Event"
         navigationItem.rightBarButtonItem = createEditView.createButton
         navigationItem.leftBarButtonItem = createEditView.cancelButton
-        
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
         createEditView.myTableView.dataSource = self
         createEditView.myTableView.delegate = self
+        
     }
 
     func editNumber(increase: Bool)-> String {
@@ -84,6 +84,10 @@ extension CreateEditViewController: UITextViewDelegate {
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = titlePlaceholder
+            textView.textColor = .gray
+        }
         createEditView.titleTextView.resignFirstResponder()
     }
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -164,11 +168,7 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
-
-        
-        
-        
-        
+        createEditView.createButton.isEnabled = false
         
         guard let startDate = self.selectedStartDate else { return }
         guard let endDate = self.selectedEndDate else {return}
@@ -267,6 +267,7 @@ extension CreateEditViewController: CreateViewDelegate {
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
+                                self?.createEditView.createButton.isEnabled = true
                             } else {
                                 //============================================================
                                 // Adding notification
@@ -282,18 +283,30 @@ extension CreateEditViewController: CreateViewDelegate {
                                 endContent.sound = UNNotificationSound.default
                                 let startDate = self?.selectedStartDate
                                 let calendar = Calendar.current
+                                let startYear = calendar.component(.year, from: startDate!)
+                                let startMonth = calendar.component(.month, from: startDate!)
+                                let startDay = calendar.component(.day, from: startDate!)
                                 let startHour = calendar.component(.hour, from: startDate!)
                                 let startMinutes = calendar.component(.minute, from: startDate!)
                                 
                                 let endDate = self?.selectedEndDate
+                                let endYear = calendar.component(.year, from: endDate!)
+                                let endMonth = calendar.component(.month, from: endDate!)
+                                let endDay = calendar.component(.day, from: endDate!)
                                 let endHour = calendar.component(.hour, from: endDate!)
                                 let endMinutes = calendar.component(.minute, from: endDate!)
                                 
                                 var startDateComponent = DateComponents()
+                                startDateComponent.year = startYear
+                                startDateComponent.month = startMonth
+                                startDateComponent.day = startDay
                                 startDateComponent.hour = startHour
                                 startDateComponent.minute = startMinutes
                                 startDateComponent.timeZone = TimeZone.current
                                 var endDateComponent = DateComponents()
+                                endDateComponent.year = endYear
+                                endDateComponent.month = endMonth
+                                endDateComponent.day = endDay
                                 endDateComponent.hour = endHour
                                 endDateComponent.minute = endMinutes
                                 endDateComponent.timeZone = TimeZone.current

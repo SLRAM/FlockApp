@@ -111,6 +111,8 @@ class EventTableViewController: UITableViewController {
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 18)
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+
         
     }
     func isQuickEvent(eventType: Event) -> Bool {
@@ -164,13 +166,13 @@ class EventTableViewController: UITableViewController {
         }
     }
     
-    
     @objc func mapPressed() {
-        print("map pressed")
-        let detailVC = MapViewController()
-        detailVC.event = event
-        navigationController?.pushViewController(detailVC, animated: true)
-    }
+            print("map pressed")
+            let detailVC = MapViewController()
+            detailVC.event = event
+            detailVC.guests = self.invited
+            navigationController?.pushViewController(detailVC, animated: true)
+        }
     @objc func mapPressedPending() {
         print("map pressed while pending")
         let alertController = UIAlertController(title: "This map contains event guest current locations. Please confirm attendance to obtain access.", message: nil, preferredStyle: .alert)
