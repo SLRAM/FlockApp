@@ -11,6 +11,7 @@ import Firebase
 import FirebaseFirestore
 
 
+
 class HomeViewController: UIViewController {
     
     
@@ -224,7 +225,8 @@ class HomeViewController: UIViewController {
     
 }
 
-extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+
+extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegate  {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         switch tag {
