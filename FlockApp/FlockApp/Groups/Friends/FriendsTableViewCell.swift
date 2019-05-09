@@ -25,28 +25,25 @@ class FriendsTableViewCell: UITableViewCell {
         label.textColor = .black
         return label
     }()
-    lazy var acceptFriend: UIButton = {
-        let button = UIButton()
-        button.setTitle("Accept", for: .normal)
-        button.backgroundColor = .green
+    lazy var acceptFriend: CircularButton = {
+        let button = CircularButton()
+        button.setBackgroundImage(UIImage(named:"friendAccept"), for: .normal)
         button.isHidden = true
         button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 10
         return button
     }()
-    lazy var declineFriend: UIButton = {
-        let button = UIButton()
-        button.setTitle("Decline", for: .normal)
-        button.backgroundColor = .red
+    lazy var declineFriend: CircularButton = {
+        let button = CircularButton()
+        button.setBackgroundImage(UIImage(named:"friendDecline"), for: .normal)
         button.isHidden = true
         button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 10
         return button
     }()
-    lazy var cancelRequest: UIButton = {
-        let button = UIButton()
-        button.setTitle("Cancel", for: .normal)
-        button.backgroundColor = .red
+    lazy var cancelRequest: CircularButton = {
+        let button = CircularButton()
+        button.setBackgroundImage(UIImage(named:"friendCancel"), for: .normal)
         button.isHidden = true
         button.isUserInteractionEnabled = false
         button.layer.cornerRadius = 10
@@ -105,16 +102,16 @@ class FriendsTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             declineFriend.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             declineFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            declineFriend.heightAnchor.constraint(equalToConstant: 25),
-            declineFriend.widthAnchor.constraint(equalToConstant: 80),
+            declineFriend.heightAnchor.constraint(equalToConstant: 55),
+            declineFriend.widthAnchor.constraint(equalToConstant: 55),
             acceptFriend.trailingAnchor.constraint(equalTo: declineFriend.leadingAnchor, constant: -10),
             acceptFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            acceptFriend.heightAnchor.constraint(equalToConstant: 25),
-            acceptFriend.widthAnchor.constraint(equalToConstant: 80),
+            acceptFriend.heightAnchor.constraint(equalToConstant: 55),
+            acceptFriend.widthAnchor.constraint(equalToConstant: 55),
             cancelRequest.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
             cancelRequest.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            cancelRequest.heightAnchor.constraint(equalToConstant: 25),
-            cancelRequest.widthAnchor.constraint(equalToConstant: 80)
+            cancelRequest.heightAnchor.constraint(equalToConstant: 55),
+            cancelRequest.widthAnchor.constraint(equalToConstant: 55)
             ])
     }
 }

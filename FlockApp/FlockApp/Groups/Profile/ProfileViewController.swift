@@ -33,6 +33,7 @@ class ProfileViewController: BaseViewController {
         self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
+        profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
         setupProfile()
         fetchFriends()
         checkBlockedUser()
@@ -56,21 +57,25 @@ class ProfileViewController: BaseViewController {
                         self.profileView.blockButton.isEnabled = false
                         self.profileView.blockButton.isHidden = true
                         self.profileView.emailTextView.text = userModel.email
+                        self.profileView.signOutButton.isEnabled = true
+                        self.profileView.signOutButton.isHidden = false
                     } else {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
                         self.profileView.addFriend.isEnabled = true
+                        self.profileView.signOutButton.isEnabled = false
+                        self.profileView.signOutButton.isHidden = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
                         self.profileView.addFriend.removeTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
-                        self.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+                        self.profileView.addFriend.setTitle(" Remove Friend ", for: .normal)
                     } else {
                         self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
-                        self.profileView.addFriend.setTitle("Add Friend", for: .normal)
+                        self.profileView.addFriend.setTitle(" Add Friend ", for: .normal)
                     }
                     self.profileView.displayNameTextView.text = self.user!.displayName
                     self.profileView.firstNameTextView.text = self.user!.fullName
@@ -102,11 +107,11 @@ class ProfileViewController: BaseViewController {
                     if self.blockedUsers.contains(user.userId) {
                         self.profileView.blockButton.removeTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
                         self.profileView.blockButton.addTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
-                        self.profileView.blockButton.setTitle("Unblock User", for: .normal)
+                        self.profileView.blockButton.setTitle(" Unblock User ", for: .normal)
                     } else {
                         self.profileView.blockButton.removeTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
                         self.profileView.blockButton.addTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
-                        self.profileView.blockButton.setTitle("Block User", for: .normal)
+                        self.profileView.blockButton.setTitle(" Block User ", for: .normal)
                     }
                 }
             })
@@ -179,6 +184,10 @@ class ProfileViewController: BaseViewController {
                 self.showAlert(title: "Friend Successfully Removed", message: nil)
             }
         }
+    }
+    @objc private func signOutPressed() {
+        authservice.signOutAccount()
+        showLoginView()
     }
     @objc private func blockUser() {
         DBService.blockedUser(blocked: self.user!) { (error) in

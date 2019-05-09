@@ -52,7 +52,7 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.friendSearch.delegate = self
-        friendsView.myTableView.tableFooterView = UIView()
+//        friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
         tapGestureKeyboard()
     }
@@ -70,17 +70,16 @@ class FriendsViewController: UIViewController {
     @objc func singleTap(sender: UITapGestureRecognizer) {
         self.friendsView.friendSearch.resignFirstResponder()
     }
-    override func viewDidLayoutSubviews() {
-        let layer = CAGradientLayer()
-        layer.frame = UIScreen.main.bounds
-        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
-        let myTest = UIView.init(frame: UIScreen.main.bounds)
-
-//        myTest.layer.addSublayer(layer)
-        myTest.layer.insertSublayer(layer, at: 0)
-        self.friendsView.myTableView.backgroundView = myTest
-    }
-   
+//    override func viewDidLayoutSubviews() {
+//        let layer = CAGradientLayer()
+//        layer.frame = UIScreen.main.bounds
+//        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
+//        let myTest = UIView.init(frame: UIScreen.main.bounds)
+//
+//        myTest.layer.insertSublayer(layer, at: 0)
+//        self.friendsView.myTableView.backgroundView = myTest
+//    }
+//
     private func fetchPendingFriends(keyword: String) {
             guard let user = authservice.getCurrentUser() else {
                 print("Please log in")
@@ -333,7 +332,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
@@ -344,7 +343,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
@@ -355,7 +354,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
@@ -366,7 +365,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
-            navigationController?.pushViewController(profileVC, animated: false)
+            navigationController?.pushViewController(profileVC, animated: true)
+
         default:
             return
         }
