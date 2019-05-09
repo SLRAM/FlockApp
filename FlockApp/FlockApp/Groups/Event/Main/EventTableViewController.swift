@@ -67,7 +67,6 @@ class EventTableViewController: UITableViewController {
         }
         
         setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
-        
     }
     func standardEventMap(unwrappedEvent: Event) {
         //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
@@ -127,8 +126,7 @@ class EventTableViewController: UITableViewController {
         let detailVC = EventPeopleViewController()
         present(detailVC, animated: true, completion: nil)
         let person = invited[indexPath.row]
-        
-        
+        detailVC.personToSet = person
     }
     
     
