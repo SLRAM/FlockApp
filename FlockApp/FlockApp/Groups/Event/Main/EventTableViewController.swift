@@ -64,11 +64,13 @@ class EventTableViewController: UITableViewController {
         guard let unwrappedEvent = event else {return}
         
         if isQuickEvent(eventType: unwrappedEvent) {
+            eventView.eventAddress.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
         } else {
             standardEventMap(unwrappedEvent: unwrappedEvent)
         }
-        
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+
 //        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
     func standardEventMap(unwrappedEvent: Event) {
