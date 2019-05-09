@@ -41,7 +41,9 @@ class CreateEditViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
+        selectedImage = createEditView.imageButton.imageView?.image
         viewSetup()
+        
     }
     override func viewDidAppear(_ animated: Bool) {
         

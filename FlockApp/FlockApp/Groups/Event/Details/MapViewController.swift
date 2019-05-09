@@ -63,21 +63,13 @@ class MapViewController: UIViewController {
         }
         
         if isQuickEvent(eventType: unwrappedEvent) {
-//            quickEventMap(unwrappedEvent: unwrappedEvent)
             
             proximityAlert()
         } else {
-//            standardEventMap(unwrappedEvent: unwrappedEvent)
         }
-        
-        
-        
         fetchEventLocation()
         fetchInvitedLocations()
-//        updateUserLocation()
         setupMapBounds()
-        
-
         if let event = event, event.trackingTime.date() > Date() {
             print("start date is > ")
 
@@ -108,7 +100,6 @@ class MapViewController: UIViewController {
         fetchInvitedLocations()
 //        fetchEventLocation()
         if let endDate = event?.endDate.date(), endDate < Date() {
-            //invalidate timer
             myTimer.invalidate()
         }
         if isQuickEvent(eventType: unwrappedEvent) {
@@ -176,9 +167,7 @@ class MapViewController: UIViewController {
         guard let markerImage = UIImage(named: "birdhouse") else {return}
         let eventMarker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
-        
-        
-        
+    
         eventMarker.position = eventLocation
         eventMarker.title = eventName
 //        eventMarker.icon = UIImage(named: "birdhouse")
@@ -239,6 +228,7 @@ class MapViewController: UIViewController {
             }
             count += 1
         }
+//        self.mapView.myMapView.reloadInputViews()
         allGuestMarkers = guestDistanceFromEvent(markers: allGuestMarkers)
         if allGuestMarkers.count > guestCount {
                 setupMapBounds()
