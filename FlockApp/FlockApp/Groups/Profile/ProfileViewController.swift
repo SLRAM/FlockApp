@@ -9,7 +9,7 @@ import UIKit
 import Toucan
 import Firebase
 
-class ProfileViewController: BaseViewController {
+class ProfileViewController: UIViewController {
     
     var user: UserModel?
     let profileView = ProfileView()
@@ -29,8 +29,6 @@ class ProfileViewController: BaseViewController {
         super.viewDidLoad()
         view.addSubview(profileView)
         self.title = "Profile"
-        self.profileView.editButton.isEnabled = false
-        self.profileView.editButton.isHidden = true
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
         profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
@@ -49,17 +47,7 @@ class ProfileViewController: BaseViewController {
                     if self.user == nil {
                         self.user = userModel
                     }
-                    if userModel.userId == self.user!.userId {
-                        self.profileView.editButton.isEnabled = true
-                        self.profileView.editButton.isHidden = false
-                        self.profileView.addFriend.isEnabled = false
-                        self.profileView.addFriend.isHidden = true
-                        self.profileView.blockButton.isEnabled = false
-                        self.profileView.blockButton.isHidden = true
-                        self.profileView.emailTextView.text = userModel.email
-                        self.profileView.signOutButton.isEnabled = true
-                        self.profileView.signOutButton.isHidden = false
-                    } else {
+                    if userModel.userId != self.user!.userId {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
@@ -76,12 +64,6 @@ class ProfileViewController: BaseViewController {
                         self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
                         self.profileView.addFriend.setTitle(" Add Friend ", for: .normal)
-                    }
-                    self.profileView.displayNameTextView.text = self.user!.displayName
-                    self.profileView.firstNameTextView.text = self.user!.fullName
-                    self.profileView.phoneNumberTextView.text = self.user!.phoneNumber
-                    if let image = self.user!.photoURL, !image.isEmpty {
-                        self.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
                     }
                 }
             }
