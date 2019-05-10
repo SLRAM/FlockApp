@@ -13,6 +13,8 @@ import Kingfisher
 import MapKit
 
 class EventTableViewController: UITableViewController {
+    let customMarkerWidth: Int = 50
+    let customMarkerHeight: Int = 70
     
     private var friends = [UserModel]() {
         didSet {
@@ -42,6 +44,7 @@ class EventTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 //        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
@@ -61,11 +64,13 @@ class EventTableViewController: UITableViewController {
         guard let unwrappedEvent = event else {return}
         
         if isQuickEvent(eventType: unwrappedEvent) {
+            eventView.eventAddress.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
         } else {
             standardEventMap(unwrappedEvent: unwrappedEvent)
         }
-        
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+
 //        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
     func standardEventMap(unwrappedEvent: Event) {
@@ -82,11 +87,18 @@ class EventTableViewController: UITableViewController {
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        
+        
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
+
         let marker = GMSMarker.init()
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-        marker.icon = UIImage(named: "birdhouse")
+//        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
         marker.map = eventView.myMapView
+        marker.iconView = customMarker
         let position = marker.position
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 12.0)
         //THIS LINE IS WHAT CENTERS THE MARKER.
@@ -103,10 +115,16 @@ class EventTableViewController: UITableViewController {
         eventView.eventAddress.text = "Starting Location"
         eventView.delegate = self
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
+
         let marker = GMSMarker.init()
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+
+        
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
         marker.title = eventName
         marker.map = eventView.myMapView
+        marker.iconView = customMarker
         let position = marker.position
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 18)
         //THIS LINE IS WHAT CENTERS THE MARKER.

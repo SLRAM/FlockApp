@@ -111,6 +111,11 @@ class ProfileView: UIView {
     
     private func setupConstraints() {
         backgroundColor = .white
+//        backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+//        let gradient = CAGradientLayer()
+//        gradient.frame = self.bounds
+//        gradient.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1),UIColor.white.cgColor]
+//        self.layer.addSublayer(gradient)
         setupEditButton()
         setupImageButton()
         setupDisplayNameTextView()

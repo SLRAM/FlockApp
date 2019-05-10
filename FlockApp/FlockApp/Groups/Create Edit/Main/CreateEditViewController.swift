@@ -26,6 +26,7 @@ class CreateEditViewController: UIViewController {
     var selectedStartDate: Date?
     var selectedEndDate: Date?
     var trackingTime = 0
+    var isTextField = false
     private var authservice = AppDelegate.authservice
 
     private var selectedImage: UIImage?
@@ -44,10 +45,59 @@ class CreateEditViewController: UIViewController {
         selectedImage = createEditView.imageButton.imageView?.image
         viewSetup()
         
+        
+//        registerKeyboardNotifications()
     }
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        registerKeyboardNotifications()
+
+//        unregisterKeyboardNotifications() //possibly the other one goes here???
+    }
+    deinit {
+        //clean up views
+        //clean up memory
+        //can also unregister for notification here
+    }
+    
+    private func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    private func unregisterKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
+    @objc private func willShowKeyboard(notification: Notification) {
+        guard let info = notification.userInfo,
+            let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
+                print("userInfo is nil")
+                return
+        }
+        //        print(info)
+        //if selector is from tableview {
+        if isTextField {
+            createEditView.myTableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
+
+        }
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        unregisterKeyboardNotifications()
+    }
+    
+    @objc private func willHideKeyboard(notification: Notification) {
+        //identity will return to original location
+        createEditView.myTableView.transform = CGAffineTransform.identity
+    }
+    
+    
+    
+    
+    
+    
     func viewSetup() {
         navigationItem.title = "Create Event"
         navigationItem.rightBarButtonItem = createEditView.createButton
@@ -80,12 +130,15 @@ class CreateEditViewController: UIViewController {
 extension CreateEditViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         createEditView.titleTextView.becomeFirstResponder()
+        print("textView")
+        isTextField = false
         if createEditView.titleTextView.text == self.titlePlaceholder {
             createEditView.titleTextView.text = ""
             createEditView.titleTextView.textColor = .black
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
+        isTextField = false
         if textView.text.isEmpty {
             textView.text = titlePlaceholder
             textView.textColor = .gray
@@ -465,6 +518,10 @@ extension CreateEditViewController: CreateEditTableViewCellDelegate {
     
 }
 extension CreateEditViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("TextField")
+        isTextField = true
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         //for id key save text
@@ -481,6 +538,7 @@ extension CreateEditViewController: UITextFieldDelegate {
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
+        isTextField = false
         //for id key save text
         guard let typedText = textField.text else {
             print("unable to obtain task")
