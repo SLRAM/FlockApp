@@ -142,7 +142,7 @@ class CreateEditView: UIView {
         let tv = UITableView()
         tv.register(CreateEditTableViewCell.self, forCellReuseIdentifier: "CreateEditTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/10
-        tv.backgroundColor = .clear
+//        tv.backgroundColor = .clear
         tv.separatorStyle = .none
         return tv
     }()
