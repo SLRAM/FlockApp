@@ -52,7 +52,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
-        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
+//        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
         
         locationManager.delegate = self
 
