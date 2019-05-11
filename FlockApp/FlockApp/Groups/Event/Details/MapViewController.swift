@@ -325,18 +325,18 @@ extension MapViewController: CLLocationManagerDelegate {
         print("The user is in lat: \(currentLocation.coordinate.latitude) and long:\(currentLocation.coordinate.longitude)")
         
         let distanceFromUpdate = distance(from: usersCurrentLocation.coordinate, to: currentLocation.coordinate)
-//        distance >= (horizontalAccuracy * 0.5)
+        //        distance >= (horizontalAccuracy * 0.5)
         print("distance from update \(distanceFromUpdate)")
-        if distanceFromUpdate >= (currentLocation.horizontalAccuracy * 0.5) {
-            print("Failed with : \(currentLocation.horizontalAccuracy * 0.5)")
-        } else {
-            print("passed with : \(currentLocation.horizontalAccuracy * 0.5)")
-
-            usersCurrentLocation = currentLocation
-
-        }
-//        usersCurrentLocation = currentLocation
-
+        //        if distanceFromUpdate >= (currentLocation.horizontalAccuracy * 0.5) {
+        //            print("Failed with : \(currentLocation.horizontalAccuracy * 0.5)")
+        //        } else {
+        //            print("passed with : \(currentLocation.horizontalAccuracy * 0.5)")
+        //
+        //            usersCurrentLocation = currentLocation
+        //
+        //        }
+        usersCurrentLocation = currentLocation
+        
     }
 }
 
