@@ -330,6 +330,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
         
         var eventToSet = Event()
+        let personToSet = InvitedModel()
+        
+        
         
         switch tag {
         case 0:
@@ -340,6 +343,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
+            collectionViewCell.invitedByLabel.isHidden = false
+            collectionViewCell.friendThumbnail.isHidden = false
             
 
             
@@ -359,8 +364,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             eventToSet = filteredPendingEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
-            //collectionViewCell.joinEventButton.alpha = 1
-            //collectionViewCell.joinEventButton.layer.cornerRadius = 50
             collectionViewCell.goingButton.isHidden = false
             collectionViewCell.declineButton.isHidden = false
             collectionViewCell.eventLabel.isHidden = false
@@ -377,12 +380,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventLabel.text = eventToSet.eventName
         
         
-
-    
+        
+        
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"))
+        collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: personToSet.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         
         
         
