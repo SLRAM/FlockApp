@@ -270,6 +270,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
         
         var eventToSet = Event()
+        let personToSet = InvitedModel()
+        
+        
         
         switch tag {
         case 0:
@@ -281,7 +284,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
             collectionViewCell.invitedByLabel.isHidden = false
-            //collectionViewCell.friendThumbnail.isHidden = false
+            collectionViewCell.friendThumbnail.isHidden = false
             
 
             
@@ -319,7 +322,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventLabel.text = eventToSet.eventName
         
         
-        let personToSet = InvitedModel()
+        
         
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate

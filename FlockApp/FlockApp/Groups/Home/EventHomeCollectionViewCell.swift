@@ -83,8 +83,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     public lazy var friendThumbnail: ThumbnailImage = {
         let image = ThumbnailImage(image: UIImage(named: "pitons"))
-        //image.clipsToBounds = true
-        return image 
+        image.backgroundColor = .white
+        return image
     }()
     
     
@@ -156,8 +156,10 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         friendThumbnail.translatesAutoresizingMaskIntoConstraints = false
 //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 30).isActive = true
 //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 10).isActive = true
-        friendThumbnail.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.02).isActive = true
-        friendThumbnail.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.02).isActive = true
+        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -30).isActive = true
+        friendThumbnail.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 130).isActive = true
+        friendThumbnail.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10).isActive = true
+        friendThumbnail.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
     }
     
     func setupEventImage(){
@@ -209,7 +211,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     
     private func commonInit(){
         setupEventImage()
-        //setupInvitedImage()
+        setupInvitedImage()
         setupJoinButton()
         setupEventLabel()
         setupInvitedBy()
