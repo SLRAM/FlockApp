@@ -24,7 +24,7 @@ class MapViewController: UIViewController {
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
     var hostMarker = GMSMarker()
-    lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+    lazy var myTimer = Timer(timeInterval: 5.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
     let locationManager = CLLocationManager()
     var usersCurrentLocation = CLLocation()
@@ -327,15 +327,15 @@ extension MapViewController: CLLocationManagerDelegate {
         let distanceFromUpdate = distance(from: usersCurrentLocation.coordinate, to: currentLocation.coordinate)
 //        distance >= (horizontalAccuracy * 0.5)
         print("distance from update \(distanceFromUpdate)")
-        if distanceFromUpdate >= (currentLocation.horizontalAccuracy * 0.5) {
-            print("Failed with : \(currentLocation.horizontalAccuracy * 0.5)")
-        } else {
-            print("passed with : \(currentLocation.horizontalAccuracy * 0.5)")
-
-            usersCurrentLocation = currentLocation
-
-        }
-//        usersCurrentLocation = currentLocation
+//        if distanceFromUpdate >= (currentLocation.horizontalAccuracy * 0.5) {
+//            print("Failed with : \(currentLocation.horizontalAccuracy * 0.5)")
+//        } else {
+//            print("passed with : \(currentLocation.horizontalAccuracy * 0.5)")
+//
+//            usersCurrentLocation = currentLocation
+//
+//        }
+        usersCurrentLocation = currentLocation
 
     }
 }
