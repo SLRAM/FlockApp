@@ -53,6 +53,12 @@ class HomeView: UIView {
         return button
     }()
     
+    lazy var notificationIndicator: UIImageView = {
+        let image = UIImageView(image: UIImage(named: "reddot"))
+        image.clipsToBounds = true
+        return image
+    }()
+    
 
     lazy var segmentedControl: UISegmentedControl = {
         let items = ["Events", "Past Events", "Pending Events"]
@@ -68,14 +74,6 @@ class HomeView: UIView {
 
         return segmentedControl
     }()
-    
-//    let segmentedControl = TTSegmentedControl()
-//    segmentedControl.allowChangeThumbWidth = false
-//    segmentedControl.frame = CGRect(x: 50, y: 200, width: 100, height: 50)
-//    segmentedControl.didSelectItemWith = { (index, title) -> () in
-//    print("Selected item \(index)")
-//    }
-//    view.addSubview(segmentedControl
     
         public lazy var usersCollectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
@@ -112,6 +110,7 @@ class HomeView: UIView {
             setUpDayLabel()
             setupUsersCollectionView()
             setupSegmentedView()
+            setupNotification()
             //cellView.setupEventLabel()
             //cellView.setupJoinButton()
         }
@@ -136,6 +135,15 @@ class HomeView: UIView {
         dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
         dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.6).isActive = true
         
+    }
+    
+    func setupNotification(){
+        addSubview(notificationIndicator)
+        notificationIndicator.translatesAutoresizingMaskIntoConstraints = false
+        notificationIndicator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 82).isActive = true
+        notificationIndicator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 360).isActive = true
+        notificationIndicator.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.03).isActive = true
+        notificationIndicator.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.04).isActive = true
     }
     
     func setupSegmentedView(){

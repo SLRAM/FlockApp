@@ -304,8 +304,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             eventToSet = filteredPendingEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
-            //collectionViewCell.joinEventButton.alpha = 1
-            //collectionViewCell.joinEventButton.layer.cornerRadius = 50
             collectionViewCell.goingButton.isHidden = false
             collectionViewCell.declineButton.isHidden = false
             collectionViewCell.eventLabel.isHidden = false
