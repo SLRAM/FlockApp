@@ -80,10 +80,7 @@ class HomeViewController: UIViewController {
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, yyyy")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
         
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let blurredEffectView = UIVisualEffectView(effect: blurEffect)
-//        blurredEffectView.frame = homeView.cellView.eventLabel.bounds
-//        homeView.cellView.eventLabel.addSubview(blurredEffectView)
+
 
         
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
@@ -91,6 +88,9 @@ class HomeViewController: UIViewController {
         indexChanged(homeView.segmentedControl)
 
     }
+    
+  
+    
     func acceptEventPressed(eventCell: Event) {
         guard let user = authService.getCurrentUser() else {
             print("no logged user")
@@ -223,9 +223,7 @@ class HomeViewController: UIViewController {
             })
     }
     
- 
-    
-    
+
 }
 
 
