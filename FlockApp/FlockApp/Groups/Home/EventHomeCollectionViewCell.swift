@@ -48,26 +48,6 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    public lazy var eventImage: UIImageView = {
-        let image = UIImageView()
-        image.clipsToBounds = true
-        image.layer.cornerRadius = 14
-        return image
-    }()
-    
-    public lazy var friendThumbnail: ThumbnailImage = {
-        let image = ThumbnailImage()
-        return image 
-    }()
-    
-    public lazy var joinEventButton: UIButton = {
-        let button = UIButton()
-        let image = UIImage(named: "alert")
-        button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
-        button.setImage(image, for: .normal)
-        return button
-    }()
-    
     public lazy var invitedByLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = NSTextAlignment.natural
@@ -79,6 +59,41 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
         return label
+    }()
+    
+    public lazy var attendingLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = NSTextAlignment.natural
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
+        label.textColor = .white
+        label.text = "Invited By: "
+        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+        label.alpha = 0.8
+        label.layer.cornerRadius = 10
+        label.layer.masksToBounds = true
+        return label
+    }()
+    
+    public lazy var eventImage: UIImageView = {
+        let image = UIImageView()
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 14
+        return image
+    }()
+    
+    public lazy var friendThumbnail: ThumbnailImage = {
+        let image = ThumbnailImage(image: UIImage(named: "pitons"))
+        //image.clipsToBounds = true
+        return image 
+    }()
+    
+    
+    public lazy var joinEventButton: UIButton = {
+        let button = UIButton()
+        let image = UIImage(named: "alert")
+        button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
+        button.setImage(image, for: .normal)
+        return button
     }()
     
     public lazy var goingButton: UIButton = {
@@ -125,16 +140,27 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         startDateLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10).isActive = true
     }
     
-    func setUpInvitedBy() {
+    func setupInvitedBy() {
         addSubview(invitedByLabel)
         invitedByLabel.translatesAutoresizingMaskIntoConstraints = false
         invitedByLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 130).isActive = true
         invitedByLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
+//        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.01).isActive = true
+        //invitedByLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
         
     }
     
-    func setupImage(){
+    func setupInvitedImage(){
+        addSubview(friendThumbnail)
+        friendThumbnail.translatesAutoresizingMaskIntoConstraints = false
+//        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 30).isActive = true
+//        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 10).isActive = true
+        friendThumbnail.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.02).isActive = true
+        friendThumbnail.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.02).isActive = true
+    }
+    
+    func setupEventImage(){
         addSubview(eventImage)
         eventImage.translatesAutoresizingMaskIntoConstraints = false
         eventImage.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 1).isActive = true
@@ -182,11 +208,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit(){
-        setupImage()
+        setupEventImage()
+        //setupInvitedImage()
         setupJoinButton()
         setupEventLabel()
+        setupInvitedBy()
         setupEventDay()
-        setUpInvitedBy()
         setupAcceptButton()
         setupDeclineButton()
         

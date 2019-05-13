@@ -60,7 +60,7 @@ class CornerImageView: UIImageView {
 class ThumbnailImage: UIImageView {
     override func layoutSubviews() {
         super.layoutSubviews()
-        contentMode = .scaleAspectFill
+        contentMode = .scaleAspectFit
         layer.cornerRadius = 12.0
         layer.borderColor = UIColor.lightGray.cgColor
         layer.borderWidth = 0.5

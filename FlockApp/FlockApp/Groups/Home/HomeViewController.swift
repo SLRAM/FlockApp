@@ -280,6 +280,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
+            collectionViewCell.invitedByLabel.isHidden = false
+            //collectionViewCell.friendThumbnail.isHidden = false
             
 
             
@@ -317,12 +319,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventLabel.text = eventToSet.eventName
         
         
-
-    
+        let personToSet = InvitedModel()
+        
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"))
+        collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: personToSet.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
         
         
         
