@@ -56,6 +56,7 @@ class HomeView: UIView {
     lazy var notificationIndicator: UIImageView = {
         let image = UIImageView(image: UIImage(named: "reddot"))
         image.clipsToBounds = true
+        image.isHidden = true
         return image
     }()
     
