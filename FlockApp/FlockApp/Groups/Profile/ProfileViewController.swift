@@ -283,7 +283,7 @@ class ProfileViewController: UIViewController {
 //                self.dismiss(animated: true)
             }
         }
-        self.profileView.fullNameTextView.text = self.user!.fullName
+        self.profileView.fullNameTextView.text = profileView.firstNameTextView.text + " " + profileView.lastNameTextView.text
     }
 }
 
