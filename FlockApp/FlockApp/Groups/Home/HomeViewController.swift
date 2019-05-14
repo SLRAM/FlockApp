@@ -395,9 +395,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
                 collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: userModel.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
             }
         }
-        collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: personToSet.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
-        
-        
         
         return collectionViewCell
         
