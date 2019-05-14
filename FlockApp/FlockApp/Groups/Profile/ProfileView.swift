@@ -255,7 +255,8 @@ class ProfileView: UIView {
         addFriend.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addFriend.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            addFriend.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+//            addFriend.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+            addFriend.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -60),
             addFriend.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
@@ -273,7 +274,8 @@ class ProfileView: UIView {
         signOutButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             signOutButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            signOutButton.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+//            signOutButton.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
+            signOutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -60),
             signOutButton.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
