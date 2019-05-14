@@ -53,8 +53,19 @@ class CornerImageView: UIImageView {
         layer.borderWidth = 0.5
         clipsToBounds = true
     }
-    
 
+}
+
+@IBDesignable
+class ThumbnailImage: UIImageView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        contentMode = .scaleAspectFit
+        layer.cornerRadius = 20.0
+        layer.borderColor = UIColor.lightGray.cgColor
+        layer.borderWidth = 0.5
+        clipsToBounds = true
+    }
     
     
 }

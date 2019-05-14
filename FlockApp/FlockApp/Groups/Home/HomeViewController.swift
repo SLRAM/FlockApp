@@ -9,7 +9,7 @@ import UIKit
 import Kingfisher
 import Firebase
 import FirebaseFirestore
-
+import UserNotifications
 
 
 class HomeViewController: UIViewController {
@@ -101,7 +101,69 @@ class HomeViewController: UIViewController {
                 self?.showAlert(title: "Posting Event To Accepted Error", message: error.localizedDescription)
             } else {
                 print("posted to accepted list")
+                // Add notification of event here
+                let startContent = UNMutableNotificationContent()
+                let dateFormatter = ISO8601DateFormatter()
+                startContent.title = NSString.localizedUserNotificationString(forKey: "\(eventCell.eventName) Beginning", arguments: nil)
+                startContent.body = NSString.localizedUserNotificationString(forKey: "\(eventCell.eventName) Starting", arguments: nil)
+                startContent.sound = UNNotificationSound.default
                 
+                let endContent = UNMutableNotificationContent()
+                endContent.title = NSString.localizedUserNotificationString(forKey: "\(eventCell.eventName) ended", arguments: nil)
+                endContent.body = NSString.localizedUserNotificationString(forKey: "\(eventCell.eventName) Ending", arguments: nil)
+                endContent.sound = UNNotificationSound.default
+                let startDate = dateFormatter.date(from: eventCell.startDate)
+                let calendar = Calendar.current
+                let startYear = calendar.component(.year, from: startDate!)
+                let startMonth = calendar.component(.month, from: startDate!)
+                let startDay = calendar.component(.day, from: startDate!)
+                let startHour = calendar.component(.hour, from: startDate!)
+                let startMinutes = calendar.component(.minute, from: startDate!)
+                
+                let endDate = dateFormatter.date(from: eventCell.endDate)
+                let endYear = calendar.component(.year, from: endDate!)
+                let endMonth = calendar.component(.month, from: endDate!)
+                let endDay = calendar.component(.day, from: endDate!)
+                let endHour = calendar.component(.hour, from: endDate!)
+                let endMinutes = calendar.component(.minute, from: endDate!)
+                
+                var startDateComponent = DateComponents()
+                startDateComponent.year = startYear
+                startDateComponent.month = startMonth
+                startDateComponent.day = startDay
+                startDateComponent.hour = startHour
+                startDateComponent.minute = startMinutes
+                startDateComponent.timeZone = TimeZone.current
+                var endDateComponent = DateComponents()
+                endDateComponent.year = endYear
+                endDateComponent.month = endMonth
+                endDateComponent.day = endDay
+                endDateComponent.hour = endHour
+                endDateComponent.minute = endMinutes
+                endDateComponent.timeZone = TimeZone.current
+                
+                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
+                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
+                
+               
+
+                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
+                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
+                
+                UNUserNotificationCenter.current().add(startRequest) { (error) in
+                    if let error = error {
+                        print("notification delivery error: \(error)")
+                    } else {
+                        print("successfully added start notification")
+                    }
+                }
+                UNUserNotificationCenter.current().add(endRequest) { (error) in
+                    if let error = error {
+                        print("notification delivery error: \(error)")
+                    } else {
+                        print("successfully added end notification")
+                    }
+                }
                 DBService.deleteEventFromPending(user: user, event: eventCell, completion: { [weak self] error in
                     if let error = error {
                         self?.showAlert(title: "Deleting Event from Pending Error", message: error.localizedDescription)
@@ -270,6 +332,9 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 
         
         var eventToSet = Event()
+        let personToSet = InvitedModel()
+        
+        
         
         switch tag {
         case 0:
@@ -280,6 +345,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             collectionViewCell.eventLabel.isHidden = false
             collectionViewCell.startDateLabel.isHidden = false
             collectionViewCell.eventImage.alpha = 0.8
+            collectionViewCell.invitedByLabel.isHidden = false
+            collectionViewCell.friendThumbnail.isHidden = false
             
 
             
@@ -299,8 +366,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             eventToSet = filteredPendingEvents[indexPath.row]
             collectionViewCell.joinEventButton.isHidden = false
             collectionViewCell.joinEventButton.isEnabled = true
-            //collectionViewCell.joinEventButton.alpha = 1
-            //collectionViewCell.joinEventButton.layer.cornerRadius = 50
             collectionViewCell.goingButton.isHidden = false
             collectionViewCell.declineButton.isHidden = false
             collectionViewCell.eventLabel.isHidden = false
@@ -317,14 +382,19 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.eventLabel.text = eventToSet.eventName
         
         
-
-    
+        
+        
         let startDate = eventToSet.startDate
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
-        
-        
+        collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"))
+        DBService.fetchUser(userId: eventToSet.userID) { (error, userModel) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let userModel = userModel {
+                collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: userModel.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+            }
+        }
         
         return collectionViewCell
         

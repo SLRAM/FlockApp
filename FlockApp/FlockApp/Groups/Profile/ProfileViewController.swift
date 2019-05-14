@@ -29,6 +29,12 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(profileView)
         self.title = "Profile"
+
+        profileView.firstNameTextView.delegate = self
+        profileView.lastNameTextView.delegate = self
+        profileView.emailTextView.delegate = self
+        profileView.phoneNumberTextView.delegate = self
+
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
         profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
@@ -37,7 +43,9 @@ class ProfileViewController: UIViewController {
         checkBlockedUser()
         checkBlockedStatus()
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        setupProfile()
+    }
     private func setupProfile(){
         if let loggedUser = AppDelegate.authservice.getCurrentUser() {
             DBService.fetchUser(userId: loggedUser.uid) { (error, userModel) in
@@ -146,8 +154,26 @@ class ProfileViewController: UIViewController {
         }
     }
     @objc private func imageButtonPressed() {
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let libraryAction = UIAlertAction(title: "Library", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true)
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(libraryAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            cameraAction.isEnabled = false
+        }
+        present(alertController, animated: true)
     }
     @objc private func addFriendPressed() {
         DBService.requestFriend(friend: self.user!) { (error) in
@@ -198,9 +224,11 @@ class ProfileViewController: UIViewController {
 //            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.firstNameTextView.text = user!.firstName
             profileView.firstNameTextView.isEditable = true
+            profileView.firstNameTextView.isHidden = false
             profileView.firstNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.lastNameTextView.text = user!.lastName
             profileView.lastNameTextView.isEditable = true
+            profileView.lastNameTextView.isHidden = false
             profileView.lastNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.phoneNumberTextView.isEditable = true
             profileView.phoneNumberTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -211,15 +239,19 @@ class ProfileViewController: UIViewController {
             saveProfile()
             profileView.imageButton.isUserInteractionEnabled = false
             profileView.displayNameTextView.isEditable = false
-            profileView.displayNameTextView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+            profileView.displayNameTextView.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+            profileView.fullNameTextView.isEditable = false
+            profileView.fullNameTextView.isHidden = false
 //            profileView.emailTextView.isEditable = false
 //            profileView.emailTextView.backgroundColor = .white
             profileView.firstNameTextView.isEditable = false
+            profileView.firstNameTextView.isHidden = true
             profileView.firstNameTextView.backgroundColor = .white
             profileView.lastNameTextView.isEditable = false
+            profileView.lastNameTextView.isHidden = true
             profileView.lastNameTextView.backgroundColor = .white
             profileView.phoneNumberTextView.isEditable = false
-            profileView.phoneNumberTextView.backgroundColor = .white
+            profileView.phoneNumberTextView.backgroundColor = .clear
             profileView.editButton.setTitle("Edit", for: .normal)
             editToggle = false
         }
@@ -268,11 +300,10 @@ class ProfileViewController: UIViewController {
                             self.showAlert(title: "Editing Error", message: error.localizedDescription)
                         }
                 }
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
-        self.profileView.lastNameTextView.text = ""
-        self.profileView.firstNameTextView.text = self.user!.fullName
+        self.profileView.fullNameTextView.text = profileView.firstNameTextView.text + " " + profileView.lastNameTextView.text
     }
 }
 
@@ -290,5 +321,15 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         profileImage = resizedImage.image
         profileView.imageButton.setImage(profileImage, for: .normal)
         dismiss(animated: true)
+    }
+}
+
+extension ProfileViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }
