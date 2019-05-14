@@ -81,11 +81,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         return image
     }()
     
-    public lazy var friendThumbnail: ThumbnailImage = {
+    public lazy var friendThumbnail:  ThumbnailImage = {
         let image = ThumbnailImage(image: UIImage(named: "pitons"))
         image.backgroundColor = .white
         return image
     }()
+    
     
     
     public lazy var joinEventButton: UIButton = {
