@@ -324,7 +324,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 0:
             let user = friends[indexPath.row]
             profileVC.user = user
-            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.fullNameTextView.text = user.fullName
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
@@ -336,7 +336,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 1:
             let user = request[indexPath.row]
             profileVC.user = user
-            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.fullNameTextView.text = user.fullName
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
@@ -347,7 +347,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 2:
             let user = pending[indexPath.row]
             profileVC.user = user
-            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.fullNameTextView.text = user.fullName
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
@@ -358,7 +358,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         case 3:
             let user = strangers[indexPath.row]
             profileVC.user = user
-            profileVC.profileView.firstNameTextView.text = user.fullName
+            profileVC.profileView.fullNameTextView.text = user.fullName
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"

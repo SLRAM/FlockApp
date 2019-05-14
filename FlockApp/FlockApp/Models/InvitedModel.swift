@@ -8,7 +8,7 @@
 import Foundation
 import CoreLocation
 
-struct InvitedModel {
+class InvitedModel {
     let userId: String
     let displayName: String
     let firstName: String?
@@ -49,6 +49,12 @@ struct InvitedModel {
         self.task = task
         self.confirmation = confirmation
     }
+    
+    convenience init() {
+        self.init(userId: "", displayName:"", firstName: "", lastName: "", photoURL: "", latitude: -1, longitude: -1, task: "", confirmation: false)
+    }
+    
+    
     
     init(dict: [String: Any]) {
         self.userId = dict[InvitedCollectionKeys.UserIdKey] as? String ?? ""
