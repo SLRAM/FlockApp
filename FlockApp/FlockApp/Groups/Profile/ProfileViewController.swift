@@ -152,8 +152,26 @@ class ProfileViewController: UIViewController {
         }
     }
     @objc private func imageButtonPressed() {
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let libraryAction = UIAlertAction(title: "Library", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true)
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(libraryAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            cameraAction.isEnabled = false
+        }
+        present(alertController, animated: true)
     }
     @objc private func addFriendPressed() {
         DBService.requestFriend(friend: self.user!) { (error) in
