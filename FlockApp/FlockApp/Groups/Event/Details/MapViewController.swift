@@ -47,7 +47,7 @@ class MapViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         guard let unwrappedEvent = event else {
             print("Unable to segue event")
             return

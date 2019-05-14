@@ -56,6 +56,11 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                if self.filteredPendingEvents.isEmpty {
+                    self.homeView.notificationIndicator.isHidden = true
+                } else {
+                    self.homeView.notificationIndicator.isHidden = false
+                }
             }
         }
     }
@@ -254,6 +259,7 @@ class HomeViewController: UIViewController {
                     
                     self?.pendingEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                    self?.pendingJoinEventPressed()
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()
