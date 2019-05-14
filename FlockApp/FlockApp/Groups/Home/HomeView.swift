@@ -140,8 +140,8 @@ class HomeView: UIView {
     func setupNotification(){
         addSubview(notificationIndicator)
         notificationIndicator.translatesAutoresizingMaskIntoConstraints = false
-        notificationIndicator.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 82).isActive = true
-        notificationIndicator.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 360).isActive = true
+        notificationIndicator.topAnchor.constraint(equalTo: segmentedControl.topAnchor, constant: -7).isActive = true
+        notificationIndicator.leadingAnchor.constraint(equalTo: segmentedControl.leadingAnchor, constant: 250).isActive = true
         notificationIndicator.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.03).isActive = true
         notificationIndicator.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.04).isActive = true
     }
