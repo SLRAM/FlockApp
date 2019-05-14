@@ -30,6 +30,19 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.alpha = 0.8
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
+        var gradientLabelView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
+        
+//        var gradient = CAGradientLayer()
+//        gradient.frame = gradientLabelView.bounds
+//        gradient.colors = [UIColor.white.cgColor, (UIColor(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)).cgColor]
+//
+//        gradientLabelView.layer.addSublayer(gradient)
+//
+//        label.frame = gradientLabelView.bounds
+//        label.backgroundColor = UIColor.clear
+//        gradientLabelView.addSubview(label)
+//
+//        addSubview(gradientLabelView)
         
         return label
     }()
@@ -54,9 +67,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue", size: 12), size: 12)
         label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         label.text = "Invited By: "
-        //label.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        //label.alpha = 0.6
-        //label.layer.cornerRadius = 4
+        label.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        label.alpha = 0.6
+        label.layer.cornerRadius = 4
         label.layer.masksToBounds = true
         return label
     }()
@@ -82,7 +95,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     public lazy var friendThumbnail: ThumbnailImage = {
-        let image = ThumbnailImage(image: UIImage(named: "pitons"))
+        let image = ThumbnailImage()
         image.backgroundColor = .white
         return image
     }()
