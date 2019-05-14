@@ -386,7 +386,13 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.startDateLabel.text = startDate
         collectionViewCell.startDateLabel.text = eventToSet.startDate.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
         collectionViewCell.eventImage.kf.setImage(with: URL(string: eventToSet.imageURL ?? "no image available"))
-        collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: personToSet.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+        DBService.fetchUser(userId: eventToSet.userID) { (error, userModel) in
+            if let error = error {
+                print(error.localizedDescription)
+            } else if let userModel = userModel {
+                collectionViewCell.friendThumbnail.kf.setImage(with: URL(string: userModel.photoURL ?? "no image available"), placeholder: #imageLiteral(resourceName: "pitons"))
+            }
+        }
         
         
         
