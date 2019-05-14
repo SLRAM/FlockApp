@@ -25,6 +25,7 @@ class CreateEditTableViewCell: UITableViewCell {
         tf.delegate = self
         return tf
     }()
+    
 
     
     override func awakeFromNib() {
@@ -49,8 +50,10 @@ class CreateEditTableViewCell: UITableViewCell {
 }
 extension CreateEditTableViewCell {
     func setConstraints() {
+        
         setNameLabel()
         setTaskField()
+        
         
     }
     func setNameLabel() {
@@ -69,6 +72,7 @@ extension CreateEditTableViewCell {
         friendTask.topAnchor.constraint(equalTo: topAnchor).isActive = true
         friendTask.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
     }
+    
     
     
 }
