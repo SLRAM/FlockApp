@@ -279,11 +279,11 @@ extension QuickEventViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = quickEventView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
+        guard let cell = quickEventView.myTableView.dequeueReusableCell(withIdentifier: "FriendsTableViewCell", for: indexPath) as? FriendsTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
         cell.selectionStyle = .none
-        cell.friendTask.alpha = 0
-        cell.friendName.text = friend.displayName
+        cell.nameLabel.text = friend.displayName
+        cell.profilePicture.kf.setImage(with: URL(string: friend.photoURL  ?? "no image available"))
         return cell
     }
     

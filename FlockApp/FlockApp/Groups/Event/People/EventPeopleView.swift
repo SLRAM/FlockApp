@@ -53,7 +53,7 @@ extension EventPeopleView {
         backgroundColor = .white
         
         //        let gradient = CAGradientLayer()
-        //        gradient.frame = self.bounds
+        //        gradient.frame    = self.bounds
         //        gradient.colors = [UIColor.magenta.cgColor,UIColor.red.cgColor,UIColor.purple.cgColor,UIColor.blue.cgColor]
         //        self.layer.addSublayer(gradient)
         setupHomeMapView()

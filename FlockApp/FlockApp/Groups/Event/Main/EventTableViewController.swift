@@ -147,9 +147,12 @@ class EventTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let detailVC = EventPeopleViewController()
-        present(detailVC, animated: true, completion: nil)
         let person = invited[indexPath.row]
+        let eventToPass = event
+        detailVC.event = eventToPass
         detailVC.personToSet = person
+        navigationController?.pushViewController(detailVC, animated: true)
+
     }
     
     

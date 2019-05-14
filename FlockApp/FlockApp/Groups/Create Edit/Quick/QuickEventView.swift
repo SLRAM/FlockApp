@@ -114,13 +114,11 @@ class QuickEventView: UIView {
         print("event date pressed")
         
     }
-    
+ // Changing tableview segue to friends table view
     lazy var myTableView: UITableView = {
         let tv = UITableView()
-        tv.register(CreateEditTableViewCell.self, forCellReuseIdentifier: "CreateEditTableViewCell")
-        tv.rowHeight = (UIScreen.main.bounds.width)/10
-        tv.backgroundColor = .clear
-        tv.separatorStyle = .none
+        tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
+        tv.rowHeight = (UIScreen.main.bounds.width)/4
         return tv
     }()
     public lazy var cancelButton: UIBarButtonItem = {
