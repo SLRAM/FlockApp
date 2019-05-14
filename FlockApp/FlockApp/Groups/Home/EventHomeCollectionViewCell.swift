@@ -51,12 +51,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     public lazy var invitedByLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = NSTextAlignment.natural
-        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
-        label.textColor = .white
+        label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue", size: 12), size: 12)
+        label.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         label.text = "Invited By: "
-        label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
-        label.alpha = 0.8
-        label.layer.cornerRadius = 10
+        //label.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        //label.alpha = 0.6
+        //label.layer.cornerRadius = 4
         label.layer.masksToBounds = true
         return label
     }()
@@ -88,16 +88,17 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }()
     
     
-    public lazy var joinEventButton: UIButton = {
-        let button = UIButton()
+    public lazy var joinEventButton: CircularButton = {
+        let button = CircularButton()
         let image = UIImage(named: "alert")
         button.frame = CGRect.init(x: 10, y: 20, width: 80, height: 80)
         button.setImage(image, for: .normal)
+        button.backgroundColor = .white
         return button
     }()
     
-    public lazy var goingButton: UIButton = {
-        let button = UIButton(type:UIButton.ButtonType.custom)
+    public lazy var goingButton: ThumbnailButton = {
+        let button = ThumbnailButton()
         button.addTarget(self, action: #selector(eventAcceptedPressed), for: .touchUpInside)
         let image = UIImage(named: "check")
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
@@ -109,12 +110,13 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         delegate?.acceptedPressed(tag: sender.tag)
     }
     
-    public lazy var declineButton: UIButton = {
-        let button = UIButton(type:UIButton.ButtonType.custom)
+    public lazy var declineButton: ThumbnailButton = {
+        let button = ThumbnailButton()
         let image = UIImage(named: "delete")
         button.addTarget(self, action: #selector(declineEventPressed), for: .touchUpInside)
         button.frame = CGRect.init(x: 10, y: 20, width: 40, height: 40)
         button.setImage(image, for: .normal)
+        button.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         return button
     }()
     
@@ -143,9 +145,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupInvitedBy() {
         addSubview(invitedByLabel)
         invitedByLabel.translatesAutoresizingMaskIntoConstraints = false
-        invitedByLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 130).isActive = true
+        invitedByLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 145).isActive = true
         invitedByLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
+        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.05).isActive = true
 //        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.01).isActive = true
         //invitedByLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
         
@@ -156,8 +158,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         friendThumbnail.translatesAutoresizingMaskIntoConstraints = false
 //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 30).isActive = true
 //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 10).isActive = true
-        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -30).isActive = true
-        friendThumbnail.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 130).isActive = true
+        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -60).isActive = true
+        friendThumbnail.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 145).isActive = true
         friendThumbnail.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10).isActive = true
         friendThumbnail.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
     }
@@ -183,7 +185,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupAcceptButton(){
         addSubview(goingButton)
         goingButton.translatesAutoresizingMaskIntoConstraints = false
-        goingButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 143).isActive = true
+        goingButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 145).isActive = true
         goingButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 100).isActive = true
         goingButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
         goingButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.09).isActive = true
@@ -192,7 +194,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupDeclineButton(){
         addSubview(declineButton)
         declineButton.translatesAutoresizingMaskIntoConstraints = false
-        declineButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 143).isActive = true
+        declineButton.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 145).isActive = true
         declineButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 150).isActive = true
         declineButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
         declineButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.09).isActive = true
@@ -212,7 +214,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     private func commonInit(){
         setupEventImage()
         setupInvitedImage()
-        setupJoinButton()
+        //setupJoinButton()
         setupEventLabel()
         setupInvitedBy()
         setupEventDay()

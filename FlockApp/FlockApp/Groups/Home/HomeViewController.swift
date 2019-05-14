@@ -68,11 +68,10 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = color
 
         view.addSubview(homeView)
-//        view.addShadow()
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
-        title = "Home"
+        title = "Flock"
         homeView.segmentedControl.selectedSegmentIndex = 0
 
         homeView.delegate = self
