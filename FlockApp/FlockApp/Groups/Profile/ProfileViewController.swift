@@ -29,10 +29,12 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.addSubview(profileView)
         self.title = "Profile"
+
         profileView.firstNameTextView.delegate = self
         profileView.lastNameTextView.delegate = self
         profileView.emailTextView.delegate = self
         profileView.phoneNumberTextView.delegate = self
+
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
         profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
