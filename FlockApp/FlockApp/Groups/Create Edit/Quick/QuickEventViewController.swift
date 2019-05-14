@@ -83,7 +83,7 @@ class QuickEventViewController: UIViewController {
         if distance == 0{
             return proximityPlaceholder
         } else {
-            return "\(distance) feet from Host"
+            return "\(distance) meters from Host"
         }
     }
 
@@ -262,13 +262,13 @@ extension QuickEventViewController: QuickEventViewDelegate {
     func quickProximityIncrease() {
         let proximityLabel = editProximity(increase: true)
         quickEventView.myProximityLabel.text = proximityLabel
-        proximity += 10
+//        proximity += 30
     }
     
     func quickProximityDecrease() {
         let trackingLabel = editProximity(increase: false)
         quickEventView.myProximityLabel.text = trackingLabel
-        proximity -= 10
+//        proximity -= 30
     }
     
 }
