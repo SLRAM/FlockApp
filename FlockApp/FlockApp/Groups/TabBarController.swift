@@ -34,7 +34,7 @@ class TabBarController: UITabBarController {
                 print("Failed to fetch user in TabBarController: \(error.localizedDescription)")
             } else if let loggedUser = loggedUser {
                 secondViewController.profileView.displayNameTextView.text = loggedUser.displayName
-                secondViewController.profileView.firstNameTextView.text = loggedUser.fullName
+                secondViewController.profileView.fullNameTextView.text = loggedUser.fullName
                 secondViewController.profileView.phoneNumberTextView.text = loggedUser.phoneNumber
                 secondViewController.profileView.emailTextView.text = loggedUser.email
                 if let image = loggedUser.photoURL {

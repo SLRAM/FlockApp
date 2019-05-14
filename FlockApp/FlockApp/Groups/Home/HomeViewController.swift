@@ -145,6 +145,8 @@ class HomeViewController: UIViewController {
                 let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
                 let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
                 
+               
+
                 let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
                 let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
                 
