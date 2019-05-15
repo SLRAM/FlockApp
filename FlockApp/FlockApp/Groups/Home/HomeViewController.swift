@@ -56,6 +56,11 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                if self.filteredPendingEvents.isEmpty {
+                    self.homeView.notificationIndicator.isHidden = true
+                } else {
+                    self.homeView.notificationIndicator.isHidden = false
+                }
             }
         }
     }
@@ -68,12 +73,12 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.barTintColor = color
 
         view.addSubview(homeView)
-//        view.addShadow()
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
-        title = "Home"
+        title = "Flock"
         homeView.segmentedControl.selectedSegmentIndex = 0
+        
 
         homeView.delegate = self
 
@@ -81,12 +86,39 @@ class HomeViewController: UIViewController {
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
         
 
-
-        
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
         indexChanged(homeView.segmentedControl)
+        
+        
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector (handleSwipe(sender: )))
+        
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender: )))
+        
+        leftSwipe.direction = .left
+        rightSwipe.direction = .right
+        
+        self.homeView.addGestureRecognizer(leftSwipe)
+        self.homeView.addGestureRecognizer(rightSwipe)
+        
 
+    }
+    
+   
+    
+    @objc func handleSwipe(sender: UISwipeGestureRecognizer){
+        if sender.direction == .left {
+            print("swipe right")
+            homeView.delegate?.segmentedPastEventPressed()
+            homeView.delegate?.segmentedEventsPressed()
+
+        }
+        
+        if sender.direction == .right {
+            print("swipe right")
+            homeView.delegate?.pendingJoinEventPressed()
+            homeView.delegate?.segmentedEventsPressed()
+        }
     }
     
   
@@ -255,6 +287,7 @@ class HomeViewController: UIViewController {
                     
                     self?.pendingEvents = snapshot.documents.map{Event(dict: $0.data()) }
                         .sorted { $0.createdDate.date() > $1.createdDate.date()}
+                    self?.pendingJoinEventPressed()
                 }
                 DispatchQueue.main.async {
                     self?.refreshControl.endRefreshing()

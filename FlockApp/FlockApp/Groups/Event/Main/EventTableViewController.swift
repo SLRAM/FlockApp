@@ -101,6 +101,7 @@ class EventTableViewController: UITableViewController {
         let marker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
 
+//        customMarker.backgroundColor = .white
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
 //        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
@@ -126,6 +127,8 @@ class EventTableViewController: UITableViewController {
 
         let marker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+
+//        customMarker.backgroundColor = .white
 
         
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
