@@ -130,7 +130,9 @@ class EventPeopleViewController: UIViewController {
                         .filter {$0.userId == person.userId }
                     DispatchQueue.main.async {
                         //call function for setting markers
-                        self!.setupMarkers(activeGuests: self!.invited)
+                        if let safeInvited = self?.invited {
+                            self?.setupMarkers(activeGuests: safeInvited)
+                        }
                         //                        self?.allGuestMarkers.removeAll() self!.invited)
                         //                    self?.refreshControl.endRefreshing()
                     }
