@@ -83,7 +83,7 @@ class QuickEventViewController: UIViewController {
         if distance == 0{
             return proximityPlaceholder
         } else {
-            return "\(distance) feet from Host"
+            return "\(distance) meters from Host"
         }
     }
 
@@ -262,13 +262,13 @@ extension QuickEventViewController: QuickEventViewDelegate {
     func quickProximityIncrease() {
         let proximityLabel = editProximity(increase: true)
         quickEventView.myProximityLabel.text = proximityLabel
-        proximity += 10
+//        proximity += 30
     }
     
     func quickProximityDecrease() {
         let trackingLabel = editProximity(increase: false)
         quickEventView.myProximityLabel.text = trackingLabel
-        proximity -= 10
+//        proximity -= 30
     }
     
 }
@@ -279,11 +279,11 @@ extension QuickEventViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        guard let cell = quickEventView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
+        guard let cell = quickEventView.myTableView.dequeueReusableCell(withIdentifier: "FriendsTableViewCell", for: indexPath) as? FriendsTableViewCell else {return UITableViewCell()}
         let friend = friendsArray[indexPath.row]
         cell.selectionStyle = .none
-        cell.friendTask.alpha = 0
-        cell.friendName.text = friend.displayName
+        cell.nameLabel.text = friend.displayName
+        cell.profilePicture.kf.setImage(with: URL(string: friend.photoURL  ?? "no image available"))
         return cell
     }
     
