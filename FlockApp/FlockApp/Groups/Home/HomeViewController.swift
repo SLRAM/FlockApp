@@ -218,13 +218,13 @@ class HomeViewController: UIViewController {
     
     @objc func showCreateEditEvent() {
         
-        let optionMenu = UIAlertController(title: nil, message: "Create:", preferredStyle: .actionSheet)
-        let  eventAction = UIAlertAction(title: "Event", style: .default, handler: { (action) -> Void in
+        let optionMenu = UIAlertController(title: nil, message: "Create an Event:", preferredStyle: .actionSheet)
+        let  eventAction = UIAlertAction(title: "Standard Event", style: .default, handler: { (action) -> Void in
             let createEditVC = CreateEditViewController()
             let createNav = UINavigationController.init(rootViewController: createEditVC)
             self.present(createNav, animated: true)
         })
-        let  quickEventAction = UIAlertAction(title: "Quick Event", style: .default, handler: { (action) -> Void in
+        let  quickEventAction = UIAlertAction(title: "On The Fly", style: .default, handler: { (action) -> Void in
             
             let quickEditVC = QuickEventViewController()
             let createNav = UINavigationController.init(rootViewController: quickEditVC)
@@ -355,8 +355,6 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         collectionViewCell.layer.shadowRadius = 10
         collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
         collectionViewCell.layer.shadowColor = UIColor.black.cgColor
-        
-       
         
         let radius = collectionViewCell.contentView.layer.cornerRadius
         collectionViewCell.layer.shadowPath = UIBezierPath(roundedRect: collectionViewCell.bounds, cornerRadius: radius).cgPath

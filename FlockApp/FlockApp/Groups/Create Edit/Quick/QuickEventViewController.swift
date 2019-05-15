@@ -41,7 +41,7 @@ class QuickEventViewController: UIViewController {
     }
     
     func viewSetup() {
-        navigationItem.title = "Create Quick Event"
+        navigationItem.title = "Create On The Fly"
         selectedImage = Toucan.init(image: quickImage!).resize(CGSize(width: 500, height: 500)).image
         navigationItem.rightBarButtonItem = quickEventView.createButton
         navigationItem.leftBarButtonItem = quickEventView.cancelButton
@@ -84,7 +84,7 @@ class QuickEventViewController: UIViewController {
         if distance == 0{
             return proximityPlaceholder
         } else {
-            return "\(distance) feet from Host"
+            return "\(distance) meters from Host"
         }
     }
 
@@ -117,7 +117,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
         let startingString = isoDateFormatter.string(from: currentDate)
         let endingString = isoDateFormatter.string(from: endingDate)
         
-        let eventName = "Quick Event"
+        let eventName = "On The Fly"
         var friendIds = [String]()
         for friends in friendsArray {
             friendIds.append(friends.userId)
@@ -263,13 +263,13 @@ extension QuickEventViewController: QuickEventViewDelegate {
     func quickProximityIncrease() {
         let proximityLabel = editProximity(increase: true)
         quickEventView.myProximityLabel.text = proximityLabel
-        proximity += 10
+//        proximity += 30
     }
     
     func quickProximityDecrease() {
         let trackingLabel = editProximity(increase: false)
         quickEventView.myProximityLabel.text = trackingLabel
-        proximity -= 10
+//        proximity -= 30
     }
     
 }

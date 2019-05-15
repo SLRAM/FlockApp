@@ -84,7 +84,7 @@ class EventPeopleViewController: UIViewController {
         
     }
     func isQuickEvent(eventType: Event) -> Bool {
-        if eventType.eventName == "Quick Event" {
+        if eventType.eventName == "On The Fly" {
             return true
         } else {
             return false
@@ -101,7 +101,22 @@ class EventPeopleViewController: UIViewController {
             return
         }
         
-        mapView.myMapView.animate(to: GMSCameraPosition(latitude: person.latitude!, longitude: person.longitude!, zoom: 15))
+//        if let pLat = person.latitude {
+//            if let pLong = person.longitude {
+//                mapView.myMapView.animate(to: GMSCameraPosition(latitude: pLat, longitude: pLong, zoom: 15))
+//            }
+//        } else {
+//            // Change this to the event location or host location that already exist 100%
+//            mapView.myMapView.animate(to: GMSCameraPosition(latitude: person.latitude!, longitude: person.longitude!, zoom: 15))
+//        }
+        
+        if let personLat = person.latitude, let personLon = person.longitude {
+            mapView.myMapView.animate(to: GMSCameraPosition(latitude: personLat, longitude: personLon, zoom: 15))
+        } else {
+            mapView.myMapView.animate(to: GMSCameraPosition(latitude: event!.locationLat, longitude: event!.locationLong, zoom: 15))
+        }
+        
+        
         
         listener = DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
@@ -115,7 +130,9 @@ class EventPeopleViewController: UIViewController {
                         .filter {$0.userId == person.userId }
                     DispatchQueue.main.async {
                         //call function for setting markers
-                        self!.setupMarkers(activeGuests: self!.invited)
+                        if let safeInvited = self?.invited {
+                            self?.setupMarkers(activeGuests: safeInvited)
+                        }
                         //                        self?.allGuestMarkers.removeAll() self!.invited)
                         //                    self?.refreshControl.endRefreshing()
                     }

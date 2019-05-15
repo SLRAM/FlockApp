@@ -24,7 +24,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         //label.backgroundColor = .clear
         label.text = "Event #1"
         label.textColor = .white
-        label.textAlignment = NSTextAlignment.natural 
+        label.textAlignment = NSTextAlignment.natural
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Bold", size: 35), size: 35)
         label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
         label.alpha = 0.8
@@ -32,17 +32,17 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.layer.masksToBounds = true
         var gradientLabelView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
         
-//        var gradient = CAGradientLayer()
-//        gradient.frame = gradientLabelView.bounds
-//        gradient.colors = [UIColor.white.cgColor, (UIColor(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)).cgColor]
-//
-//        gradientLabelView.layer.addSublayer(gradient)
-//
-//        label.frame = gradientLabelView.bounds
-//        label.backgroundColor = UIColor.clear
-//        gradientLabelView.addSubview(label)
-//
-//        addSubview(gradientLabelView)
+        //        var gradient = CAGradientLayer()
+        //        gradient.frame = gradientLabelView.bounds
+        //        gradient.colors = [UIColor.white.cgColor, (UIColor(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)).cgColor]
+        //
+        //        gradientLabelView.layer.addSublayer(gradient)
+        //
+        //        label.frame = gradientLabelView.bounds
+        //        label.backgroundColor = UIColor.clear
+        //        gradientLabelView.addSubview(label)
+        //
+        //        addSubview(gradientLabelView)
         
         return label
     }()
@@ -52,12 +52,12 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         label.text = "Monday"
         label.textAlignment = NSTextAlignment.natural
         label.font = UIFont.init(descriptor: UIFontDescriptor(name: "HelveticaNeue-Medium", size: 18), size: 18)
-         label.textColor = .white
+        label.textColor = .white
         label.backgroundColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
         label.alpha = 0.8
         label.layer.cornerRadius = 10
         label.layer.masksToBounds = true
-
+        
         return label
     }()
     
@@ -138,11 +138,11 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     func setupEventLabel(){
-      addSubview(eventLabel)
+        addSubview(eventLabel)
         eventLabel.translatesAutoresizingMaskIntoConstraints = false
         eventLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: -130).isActive = true
         eventLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
-
+        
         eventLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.12).isActive = true
         
     }
@@ -161,7 +161,7 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
         invitedByLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 145).isActive = true
         invitedByLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.05).isActive = true
-//        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.01).isActive = true
+        //        invitedByLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.01).isActive = true
         //invitedByLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.10).isActive = true
         
     }
@@ -169,8 +169,8 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     func setupInvitedImage(){
         addSubview(friendThumbnail)
         friendThumbnail.translatesAutoresizingMaskIntoConstraints = false
-//        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 30).isActive = true
-//        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 10).isActive = true
+        //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 30).isActive = true
+        //        friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: 10).isActive = true
         friendThumbnail.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -60).isActive = true
         friendThumbnail.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 145).isActive = true
         friendThumbnail.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.10).isActive = true
@@ -238,11 +238,9 @@ class EventHomeCollectionViewCell: UICollectionViewCell {
     }
     
     
-
+    
     
     
     
     
 }
-
-
