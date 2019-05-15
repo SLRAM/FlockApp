@@ -67,7 +67,6 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
@@ -91,15 +90,15 @@ class HomeViewController: UIViewController {
         indexChanged(homeView.segmentedControl)
         
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector (handleSwipe(sender: )))
+        let leftSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector (handleSwipe(sender: )))
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender: )))
+        let rightSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector(handleSwipe(sender: )))
         
-        leftSwipe.direction = .left
-        rightSwipe.direction = .right
+        leftSwipe.direction = UISwipeGestureRecognizer.Direction.left
+        rightSwipe.direction = UISwipeGestureRecognizer.Direction.right
         
-        self.homeView.addGestureRecognizer(leftSwipe)
-        self.homeView.addGestureRecognizer(rightSwipe)
+        self.homeView.segmentedControl.addGestureRecognizer(leftSwipe)
+        self.homeView.segmentedControl.addGestureRecognizer(rightSwipe)
         
 
     }
@@ -109,15 +108,15 @@ class HomeViewController: UIViewController {
     @objc func handleSwipe(sender: UISwipeGestureRecognizer){
         if sender.direction == .left {
             print("swipe right")
-            homeView.delegate?.segmentedPastEventPressed()
-            homeView.delegate?.segmentedEventsPressed()
+//            homeView.delegate?.segmentedPastEventPressed()
+//            homeView.delegate?.segmentedEventsPressed()
 
         }
         
         if sender.direction == .right {
             print("swipe right")
-            homeView.delegate?.pendingJoinEventPressed()
-            homeView.delegate?.segmentedEventsPressed()
+//            homeView.delegate?.pendingJoinEventPressed()
+//            homeView.delegate?.segmentedEventsPressed()
         }
     }
     

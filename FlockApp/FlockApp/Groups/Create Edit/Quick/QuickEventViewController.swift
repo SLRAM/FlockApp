@@ -36,6 +36,7 @@ class QuickEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(quickEventView)
+        self.quickEventView.myTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         viewSetup()
     }
     
