@@ -14,8 +14,9 @@ import MapKit
 
 class EventTableViewController: UITableViewController {
     let customMarkerWidth: Int = 50
-    let customMarkerHeight: Int = 55
-    
+    let customMarkerHeight: Int = 70
+    lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+
     private var friends = [UserModel]() {
         didSet {
             DispatchQueue.main.async {
@@ -70,7 +71,13 @@ class EventTableViewController: UITableViewController {
             standardEventMap(unwrappedEvent: unwrappedEvent)
         }
         setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
-
+        if let event = event, event.trackingTime.date() > Date() {
+            print("start date is > ")
+            
+        } else {
+            print("start date is < ")
+            startTimer()
+        }
 //        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
     func standardEventMap(unwrappedEvent: Event) {
@@ -146,13 +153,21 @@ class EventTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        selectedCell.contentView.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).withAlphaComponent(0.2)
+        tableView.deselectRow(at: indexPath, animated: false)
+        
         let detailVC = EventPeopleViewController()
         let person = invited[indexPath.row]
         let eventToPass = event
         detailVC.event = eventToPass
         detailVC.personToSet = person
-        navigationController?.pushViewController(detailVC, animated: true)
-
+        if let _ = invited[indexPath.row].latitude, let _ = invited[indexPath.row].longitude {
+            navigationController?.pushViewController(detailVC, animated: true)
+        } else {
+            showAlert(title: "Not Available", message: "User hasn't shared their location yet!")
+            return
+        }
     }
     
     
@@ -186,10 +201,26 @@ class EventTableViewController: UITableViewController {
                 } else if let snapshot = snapshot {
                     self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
+                    for i in self.invited {
+                        if i.confirmation {
+                            print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
+                        }
+                    }
                 }
         }
     }
-    
+    func startTimer() {
+        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+    }
+    @objc func refresh() {
+        fetchInvites()
+        if let endDate = event?.endDate.date(), endDate < Date() {
+            //invalidate timer
+            myTimer.invalidate()
+        }
+        
+        
+    }
     @objc func mapPressed() {
             print("map pressed")
             let detailVC = MapViewController()
@@ -250,7 +281,7 @@ class EventTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-        
+//        cell.selectionStyle = .none
         let person = invited[indexPath.row]
         cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
         cell.nameLabel.text = person.displayName
