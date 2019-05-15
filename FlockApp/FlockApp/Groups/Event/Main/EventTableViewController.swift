@@ -61,7 +61,7 @@ class EventTableViewController: UITableViewController {
             eventView.mapButton.addTarget(self, action: #selector(mapPressedEnded), for: .touchUpInside)
             
         }
-        //if !quick event then add target
+        //if !On The Fly then add target
         guard let unwrappedEvent = event else {return}
         
         if isQuickEvent(eventType: unwrappedEvent) {
@@ -144,7 +144,7 @@ class EventTableViewController: UITableViewController {
         
     }
     func isQuickEvent(eventType: Event) -> Bool {
-        if eventType.eventName == "Quick Event" {
+        if eventType.eventName == "On The Fly" {
             return true
         } else {
             return false
