@@ -109,7 +109,7 @@ class MapViewController: UIViewController {
     }
     
     func isQuickEvent(eventType: Event) -> Bool {
-        if eventType.eventName == "On The Fly" {
+        if eventType.eventName == "On The Fly" || eventType.eventName == "Quick Event"{
             return true
         } else {
             return false
