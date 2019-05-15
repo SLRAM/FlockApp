@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
     
     let color = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
     var homeView = HomeView()
+    var emptyState = EmptyStateView()
     var currentDate = Date.getISOTimestamp()
     var newUser = false
     private var pendingEventListener: ListenerRegistration!
@@ -70,8 +71,8 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
-
         view.addSubview(homeView)
+        view.addSubview(emptyState)
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
@@ -103,7 +104,6 @@ class HomeViewController: UIViewController {
 
     }
     
-   
     
     @objc func handleSwipe(sender: UISwipeGestureRecognizer){
         if sender.direction == .left {
@@ -120,8 +120,7 @@ class HomeViewController: UIViewController {
         }
     }
     
-  
-    
+
     func acceptEventPressed(eventCell: Event) {
         guard let user = authService.getCurrentUser() else {
             print("no logged user")
