@@ -35,6 +35,7 @@ class CreateAccountViewController: UIViewController {
     }
     
     @IBAction func showLoginView(_ sender: UIButton) {
+        self.dismiss(animated: true)
         navigationController?.popViewController(animated: true)
     }
 
