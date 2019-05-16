@@ -13,7 +13,10 @@ import Kingfisher
 import MapKit
 
 class EventTableViewController: UITableViewController {
-    
+    let customMarkerWidth: Int = 50
+    let customMarkerHeight: Int = 70
+    lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
+
     private var friends = [UserModel]() {
         didSet {
             DispatchQueue.main.async {
@@ -37,55 +40,151 @@ class EventTableViewController: UITableViewController {
     private var listener: ListenerRegistration!
     
     public var event: Event?
+    public var tag: Int?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
         fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
-        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
-        
-        guard let unwrappedEvent = event else {return}
-        guard let eventLat = event?.locationLat,
-            let eventLong = event?.locationLong,
-            let eventName = event?.eventName else {
-                print("unable to locate event")
-                return
+        self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
+        if tag == 2 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressedPending), for: .touchUpInside)
+        } else if tag == 0 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        } else if tag == 1 {
+            eventView.mapButton.addTarget(self, action: #selector(mapPressedEnded), for: .touchUpInside)
+            
         }
+        //if !On The Fly then add target
+        guard let unwrappedEvent = event else {return}
         
+        if isQuickEvent(eventType: unwrappedEvent) {
+            eventView.eventAddress.isHidden = true
+            quickEventMap(unwrappedEvent: unwrappedEvent)
+        } else {
+            standardEventMap(unwrappedEvent: unwrappedEvent)
+        }
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+        if let event = event, event.trackingTime.date() > Date() {
+            print("start date is > ")
+            
+        } else {
+            print("start date is < ")
+            startTimer()
+        }
+//        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+    }
+    func standardEventMap(unwrappedEvent: Event) {
+        //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        let eventLat = unwrappedEvent.locationLat
+        let eventLong = unwrappedEvent.locationLong
+        let eventName = unwrappedEvent.eventName
         let eventAddress = unwrappedEvent.locationString
-        //        let eventTracking = unwrappedEvent.startDate
-//                        let date = unwrappedEvent.startDate
-//                        let formatter = ISO8601DateFormatter()
-//                        formatter.formatOptions = [.withFullDate, .withDashSeparatorInDate, .withTime]
-//                        let str = formatter.string(from: date)
-//                        let formattedDate = str.formatISODateString(dateFormat: "EEEE, MMM d, yyyy, h:mm a")
-//                        eventView.eventDate.text = formattedDate
+        let trackingTime = unwrappedEvent.trackingTime.formatISODateString(dateFormat: "MMM d, h:mm a")
         let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
-        eventView.eventDate.text = startDate
-        
-        
-        
-        
+        let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        eventView.eventDate.text = "\(startDate) to \(endDate)"
+        eventView.eventTracking.text = "Tracking begins: \(trackingTime)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
-        
         eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        
+        
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
+
         let marker = GMSMarker.init()
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+
+//        customMarker.backgroundColor = .white
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+//        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
         marker.map = eventView.myMapView
+        marker.iconView = customMarker
         let position = marker.position
         let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 12.0)
         //THIS LINE IS WHAT CENTERS THE MARKER.
         eventView.myMapView.camera = camera
+    }
+    func quickEventMap(unwrappedEvent: Event){
+        //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
+        let eventLat = unwrappedEvent.locationLat
+        let eventLong = unwrappedEvent.locationLong
+        let eventName = unwrappedEvent.eventName
+        let startDate = unwrappedEvent.startDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        let endDate = unwrappedEvent.endDate.formatISODateString(dateFormat: "MMM d, h:mm a")
+        eventView.eventDate.text = "\(startDate) to \(endDate)"
+        eventView.eventAddress.text = "Starting Location"
+        eventView.delegate = self
+        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        guard let markerImage = UIImage(named: "birdhouse") else {return}
 
+        let marker = GMSMarker.init()
+        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+
+//        customMarker.backgroundColor = .white
+
+        
+        marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+        marker.title = eventName
+        marker.map = eventView.myMapView
+        marker.iconView = customMarker
+        let position = marker.position
+        let camera = GMSCameraPosition(latitude: position.latitude, longitude: position.longitude, zoom: 18)
+        //THIS LINE IS WHAT CENTERS THE MARKER.
+        eventView.myMapView.camera = camera
+        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
+
+        
+    }
+    func isQuickEvent(eventType: Event) -> Bool {
+        if eventType.eventName == "On The Fly" {
+            return true
+        } else {
+            return false
+        }
     }
     
-
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        selectedCell.contentView.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).withAlphaComponent(0.2)
+        tableView.deselectRow(at: indexPath, animated: false)
+        
+        let detailVC = EventPeopleViewController()
+        let person = invited[indexPath.row]
+        let eventToPass = event
+        detailVC.event = eventToPass
+        detailVC.personToSet = person
+        if let _ = invited[indexPath.row].latitude, let _ = invited[indexPath.row].longitude {
+            navigationController?.pushViewController(detailVC, animated: true)
+        } else {
+            showAlert(title: "Not Available", message: "User hasn't shared their location yet!")
+            return
+        }
+    }
+    
+    
+    func setTableViewBackgroundGradient(sender: UITableViewController, _ topColor:UIColor, _ bottomColor:UIColor) {
+        
+        let gradientBackgroundColors = [topColor.cgColor, bottomColor.cgColor]
+        let gradientLocations = [0.0,1.0]
+        
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.colors = gradientBackgroundColors
+        gradientLayer.locations = gradientLocations as [NSNumber]
+        
+        gradientLayer.frame = sender.tableView.bounds
+        let backgroundView = UIView(frame: sender.tableView.bounds)
+        backgroundView.layer.insertSublayer(gradientLayer, at: 0)
+        sender.tableView.backgroundView = backgroundView
+    }
     
     func fetchInvites() {
         guard let event = event else {
@@ -102,67 +201,110 @@ class EventTableViewController: UITableViewController {
                 } else if let snapshot = snapshot {
                     self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
+                    for i in self.invited {
+                        if i.confirmation {
+                            print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
+                        }
+                    }
                 }
-                
         }
     }
-    
-    
-        @objc func mapPressed() {
+    func startTimer() {
+        RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
+    }
+    @objc func refresh() {
+        fetchInvites()
+        if let endDate = event?.endDate.date(), endDate < Date() {
+            //invalidate timer
+            myTimer.invalidate()
+        }
+        
+        
+    }
+    @objc func mapPressed() {
             print("map pressed")
             let detailVC = MapViewController()
-    //        detailVC.delegate = self
             detailVC.event = event
+            detailVC.guests = self.invited
             navigationController?.pushViewController(detailVC, animated: true)
         }
+    @objc func mapPressedPending() {
+        print("map pressed while pending")
+        let alertController = UIAlertController(title: "This map contains event guest current locations. Please confirm attendance to obtain access.", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+        })
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    @objc func mapPressedEnded() {
+        print("map pressed while pending")
+        let alertController = UIAlertController(title: "This event has ended. Unable to view guest locations at this time.", message: nil, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
+            self.navigationController?.popViewController(animated: true)
+            
+        })
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
     
-        @objc func getDirections() {
-//            let detailVC = DirectionsViewController()
-//            detailVC.event = event
-//            navigationController?.pushViewController(detailVC, animated: true)
-            guard let eventLat = self.event?.locationLat,
-                let eventLong = self.event?.locationLong else {return}
-            let coordinate = CLLocationCoordinate2DMake(eventLat,eventLong)
-            let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
-            mapItem.name = self.event?.eventName
-            mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
-        }
-
+    @objc func getDirections() {
+        guard let eventLat = self.event?.locationLat,
+            let eventLong = self.event?.locationLong else {return}
+        let coordinate = CLLocationCoordinate2DMake(eventLat,eventLong)
+        let mapItem = MKMapItem(placemark: MKPlacemark(coordinate: coordinate, addressDictionary:nil))
+        mapItem.name = self.event?.eventName
+        mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving])
+    }
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return eventView
     }
     
-//    override func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-
+    //    override func numberOfSections(in tableView: UITableView) -> Int {
+    //        return 1
+    //    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      
+        
         return invited.count
     }
-//
-//    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-//        return "Who's Invited"
-//    }
+    //
+    //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    //        return "Who's Invited"
+    //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+//        cell.selectionStyle = .none
         let person = invited[indexPath.row]
-        cell.textLabel?.text = person.displayName
-        cell.detailTextLabel?.text = person.task
-        cell.imageView?.kf.setImage(with: URL(string: person.photoURL!))
+        cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+        cell.nameLabel.text = person.displayName
+        cell.taskLabel.text = person.task
+        
+        //cell borders
+        cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
+        cell.layer.cornerRadius = 50
+        //        cell.layer.borderWidth = 1
+        
+        
+        //        cell.textLabel?.text = person.displayName
+        //        cell.detailTextLabel?.text = person.task
+        //        cell.imageView?.kf.setImage(with: URL(string: person.photoURL!))
+        //        cell.imageView?.layer.borderWidth = 1
+        //        cell.imageView?.layer.masksToBounds = false
+        //        cell.imageView?.layer.cornerRadius = cell.imageView?.image.frame.height/2
+        //        cell.imageView?.clipsToBounds = true
         return cell
     }
-
-
-
-
+    
 }
- 
+
 extension EventTableViewController: EventViewDelegate {
     func cancelPressed() {
         dismiss(animated: true)

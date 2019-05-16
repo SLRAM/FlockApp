@@ -12,7 +12,7 @@ class InvitedView: UIView {
     lazy var friendSearch: UISearchBar = {
         let tf = UISearchBar()
         tf.placeholder = "Search Friends"
-        tf.barTintColor = #colorLiteral(red: 0.5249566436, green: 0.8283091784, blue: 0.7542427182, alpha: 1)
+        tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
         //        tf.layer.cornerRadius = 10
         //        tf.layer.borderWidth = 2
         //        tf.layer.borderColor = UIColor.gray.cgColor
@@ -22,7 +22,7 @@ class InvitedView: UIView {
     
     lazy var myTableView: UITableView = {
         let tv = UITableView()
-        tv.register(InvitedTableViewCell.self, forCellReuseIdentifier: "InvitedTableViewCell")
+        tv.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/4
         tv.backgroundColor = .clear
         return tv

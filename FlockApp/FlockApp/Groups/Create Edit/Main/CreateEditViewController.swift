@@ -11,14 +11,14 @@ import GoogleMaps
 import Firebase
 import Toucan
 import UserNotifications
+
 class CreateEditViewController: UIViewController {
     
-    private let createEditView = CreateEditView()
-    let titlePlaceholder = "Enter the event title"
+    let titlePlaceholder = "Enter the Event Title"
     let trackingPlaceholder = "Event Tracking Time"
     var number = 0
 
-    
+    private let createEditView = CreateEditView()
     var friendsArray = [UserModel]()
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
@@ -26,9 +26,10 @@ class CreateEditViewController: UIViewController {
     var selectedStartDate: Date?
     var selectedEndDate: Date?
     var trackingTime = 0
-    private var selectedImage: UIImage?
-    
+    var isTextField = false
+    private var authservice = AppDelegate.authservice
 
+    private var selectedImage: UIImage?
     
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
@@ -36,22 +37,75 @@ class CreateEditViewController: UIViewController {
         return ip
     }()
     
-    private var authservice = AppDelegate.authservice
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
-        navigationItem.title = "Create"
+        selectedImage = createEditView.imageButton.imageView?.image
+        viewSetup()
+        
+        
+//        registerKeyboardNotifications()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        registerKeyboardNotifications()
 
+//        unregisterKeyboardNotifications() //possibly the other one goes here???
+    }
+    deinit {
+        //clean up views
+        //clean up memory
+        //can also unregister for notification here
+    }
+    
+    private func registerKeyboardNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    private func unregisterKeyboardNotifications() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
+    @objc private func willShowKeyboard(notification: Notification) {
+        guard let info = notification.userInfo,
+            let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
+                print("userInfo is nil")
+                return
+        }
+        //        print(info)
+        //if selector is from tableview {
+        if isTextField {
+            createEditView.myTableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
+
+        }
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        unregisterKeyboardNotifications()
+    }
+    
+    @objc private func willHideKeyboard(notification: Notification) {
+        //identity will return to original location
+        createEditView.myTableView.transform = CGAffineTransform.identity
+    }
+    
+    
+    
+    
+    
+    
+    func viewSetup() {
+        navigationItem.title = "Create Event"
+        navigationItem.rightBarButtonItem = createEditView.createButton
+        navigationItem.leftBarButtonItem = createEditView.cancelButton
         createEditView.titleTextView.delegate = self
         createEditView.delegate = self
         createEditView.myTableView.dataSource = self
         createEditView.myTableView.delegate = self
-        navigationItem.rightBarButtonItem = createEditView.createButton
-        navigationItem.leftBarButtonItem = createEditView.cancelButton
-    }
-    override func viewDidAppear(_ animated: Bool) {
         
     }
 
@@ -76,14 +130,29 @@ class CreateEditViewController: UIViewController {
 extension CreateEditViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         createEditView.titleTextView.becomeFirstResponder()
+        print("textView")
+        isTextField = false
         if createEditView.titleTextView.text == self.titlePlaceholder {
             createEditView.titleTextView.text = ""
             createEditView.titleTextView.textColor = .black
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
+        isTextField = false
+        if textView.text.isEmpty {
+            textView.text = titlePlaceholder
+            textView.textColor = .gray
+        }
         createEditView.titleTextView.resignFirstResponder()
     }
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
+    }
+
 }
 extension CreateEditViewController: CreateViewDelegate {
     func trackingDecreasePressed() {
@@ -154,25 +223,48 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
+        createEditView.createButton.isEnabled = false
         
-        guard let startDate = self.selectedStartDate else { return }
-        guard let endDate = self.selectedEndDate else {return}
-        let startDateString = ISO8601DateFormatter().string(from: startDate)
-        let endDateString = ISO8601DateFormatter().string(from: endDate)
+
         if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
             let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
             alertController.addAction(okAction)
             present(alertController, animated: true)
             return}
         if createEditView.addressButton.titleLabel?.text == "Event Address" {
             let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
             alertController.addAction(okAction)
             present(alertController, animated: true)
             return}
         
 
+        guard let startDate = self.selectedStartDate else {
+            let alertController = UIAlertController(title: "Unable to post. Choose an event date.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        guard let endDate = self.selectedEndDate else {return}
+        
+        
+        let eventLength = trackingTime*(-60)
+        let trackingDate = startDate.adding(minutes: eventLength)
+        
+        let isoDateFormatter = ISO8601DateFormatter()
+        let startTrackingString = isoDateFormatter.string(from: trackingDate)
+        
+        
+        
+        let startDateString = ISO8601DateFormatter().string(from: startDate)
+        let endDateString = ISO8601DateFormatter().string(from: endDate)
         
         guard let eventName = createEditView.titleTextView.text else {return}
         var friendIds = [String]()
@@ -215,7 +307,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                           locationString: self!.selectedLocation,
                                           locationLat: self!.selectedCoordinates.latitude,
                                           locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: self!.trackingTime,
+                                          trackingTime: startTrackingString,
                                           quickEvent: false,
                                           proximity: 0)
                 //post event to user
@@ -225,16 +317,24 @@ extension CreateEditViewController: CreateViewDelegate {
                     } else {
                         //create function that goes through friends array
                         //function that takes array and turns to dictionary
-                        DBService.postEventToUser(userIds: self!.friendsArray, event: event, completion: { [weak self] error in
+                        DBService.postPendingEventToUser(user: user, userIds: self!.friendsArray, event: event, completion: { [weak self] error in
                             if let error = error {
-                                self?.showAlert(title: "Posting Event Error", message: error.localizedDescription)
+                                self?.showAlert(title: "Posting Event To Guest Pending Error", message: error.localizedDescription)
                             } else {
-                                print("posted to user")
+                                print("posted to guest pending")
+                            }
+                        })
+                        DBService.postAcceptedEventToUser(user: user, event: event, completion: { [weak self] error in
+                            if let error = error {
+                                self?.showAlert(title: "Posting Event To Host Accepted Error", message: error.localizedDescription)
+                            } else {
+                                print("posted to host accepted")
                             }
                         })
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
+                                self?.createEditView.createButton.isEnabled = true
                             } else {
                                 //============================================================
                                 // Adding notification
@@ -250,18 +350,30 @@ extension CreateEditViewController: CreateViewDelegate {
                                 endContent.sound = UNNotificationSound.default
                                 let startDate = self?.selectedStartDate
                                 let calendar = Calendar.current
+                                let startYear = calendar.component(.year, from: startDate!)
+                                let startMonth = calendar.component(.month, from: startDate!)
+                                let startDay = calendar.component(.day, from: startDate!)
                                 let startHour = calendar.component(.hour, from: startDate!)
                                 let startMinutes = calendar.component(.minute, from: startDate!)
                                 
                                 let endDate = self?.selectedEndDate
+                                let endYear = calendar.component(.year, from: endDate!)
+                                let endMonth = calendar.component(.month, from: endDate!)
+                                let endDay = calendar.component(.day, from: endDate!)
                                 let endHour = calendar.component(.hour, from: endDate!)
                                 let endMinutes = calendar.component(.minute, from: endDate!)
                                 
                                 var startDateComponent = DateComponents()
+                                startDateComponent.year = startYear
+                                startDateComponent.month = startMonth
+                                startDateComponent.day = startDay
                                 startDateComponent.hour = startHour
                                 startDateComponent.minute = startMinutes
                                 startDateComponent.timeZone = TimeZone.current
                                 var endDateComponent = DateComponents()
+                                endDateComponent.year = endYear
+                                endDateComponent.month = endMonth
+                                endDateComponent.day = endDay
                                 endDateComponent.hour = endHour
                                 endDateComponent.minute = endMinutes
                                 endDateComponent.timeZone = TimeZone.current
@@ -291,6 +403,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
                                     let detailVC = EventTableViewController()
                                     detailVC.event = event
+                                    detailVC.tag = 0
                                     //                    detailVC.delegate = self
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
                                 }
@@ -405,6 +518,10 @@ extension CreateEditViewController: CreateEditTableViewCellDelegate {
     
 }
 extension CreateEditViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        print("TextField")
+        isTextField = true
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         //for id key save text
@@ -421,6 +538,7 @@ extension CreateEditViewController: UITextFieldDelegate {
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
         textField.resignFirstResponder()
+        isTextField = false
         //for id key save text
         guard let typedText = textField.text else {
             print("unable to obtain task")

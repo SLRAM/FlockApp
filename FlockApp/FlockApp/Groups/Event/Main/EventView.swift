@@ -22,7 +22,8 @@ class EventView: UIView {
     }()
     
     public lazy var directionsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(title: "Directions", style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
+        let button = UIBarButtonItem(image: UIImage(named: "icons8-car-512"), style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
+//        let button = UIBarButtonItem(title: "Directions", style: UIBarButtonItem.Style.plain, target: self, action: #selector(getDirections))
         return button
     }()
 
@@ -39,26 +40,35 @@ class EventView: UIView {
         return button
     }()
 
-    
     lazy var eventAddress: UILabel = {
         let label = UILabel()
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 4
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
+        label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
+        label.textColor = .white
         label.text = "47-10 Austell Pl. 11111"
         return label
     }()
+    
 
     lazy var eventDate: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
+        label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
+        label.textColor = .white
         label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
     }()
 
     lazy var eventTracking: UILabel = {
         let label = UILabel()
-        label.backgroundColor = UIColor.white.withAlphaComponent(0.5)
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 8
+        label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
+        label.textColor = .white
         label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
         return label
     }()
@@ -90,7 +100,7 @@ class EventView: UIView {
         addSubview(eventAddress)
         eventAddress.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventAddress.bottomAnchor.constraint(equalTo: eventDate.topAnchor, constant: -30),
+            eventAddress.bottomAnchor.constraint(equalTo: eventDate.topAnchor, constant: -12),
             eventAddress.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
             eventAddress.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.5)
             ])
@@ -100,7 +110,7 @@ class EventView: UIView {
         addSubview(eventDate)
         eventDate.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventDate.bottomAnchor.constraint(equalTo: eventTracking.topAnchor, constant: -30),
+            eventDate.bottomAnchor.constraint(equalTo: eventTracking.topAnchor, constant: -12),
             eventDate.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
             ])
     }
@@ -109,10 +119,10 @@ class EventView: UIView {
         addSubview(eventTracking)
         eventTracking.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            eventTracking.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -30),
+            eventTracking.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -20),
             eventTracking.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20)
             ])
-        eventTracking.isHidden = true
+//        eventTracking.isHidden = true
     }
 
     private func addMapView() {

@@ -9,13 +9,14 @@ import UIKit
 import Toucan
 import Firebase
 
-class ProfileViewController: BaseViewController {
+class ProfileViewController: UIViewController {
     
     var user: UserModel?
     let profileView = ProfileView()
     var editToggle = false
 
     var friends = [String]()
+    var blockedUsers = [String]()
     private lazy var imagePickerController: UIImagePickerController = {
         let ip = UIImagePickerController()
         ip.delegate = self
@@ -27,15 +28,24 @@ class ProfileViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(profileView)
-        self.profileView.editButton.isEnabled = false
-        self.profileView.editButton.isHidden = true
+        self.title = "Profile"
+
+        profileView.firstNameTextView.delegate = self
+        profileView.lastNameTextView.delegate = self
+        profileView.emailTextView.delegate = self
+        profileView.phoneNumberTextView.delegate = self
+
         profileView.editButton.addTarget(self, action: #selector(editSetting), for: .touchUpInside)
         profileView.imageButton.addTarget(self, action: #selector(imageButtonPressed), for: .touchUpInside)
-        profileView.addFriend.addTarget(self, action: #selector(addFriendPressed), for: .touchUpInside)
+        profileView.signOutButton.addTarget(self, action: #selector(signOutPressed), for: .touchUpInside)
+        setupProfile()
         fetchFriends()
+        checkBlockedUser()
+        checkBlockedStatus()
+    }
+    override func viewWillAppear(_ animated: Bool) {
         setupProfile()
     }
-
     private func setupProfile(){
         if let loggedUser = AppDelegate.authservice.getCurrentUser() {
             DBService.fetchUser(userId: loggedUser.uid) { (error, userModel) in
@@ -45,33 +55,84 @@ class ProfileViewController: BaseViewController {
                     if self.user == nil {
                         self.user = userModel
                     }
-                    if userModel.userId == self.user!.userId {
-                        self.profileView.editButton.isEnabled = true
-                        self.profileView.editButton.isHidden = false
-                        self.profileView.addFriend.isEnabled = false
-                        self.profileView.addFriend.isHidden = true
-                    } else {
+                    if userModel.userId != self.user!.userId {
                         self.profileView.editButton.isEnabled = false
                         self.profileView.editButton.isHidden = true
                         self.profileView.addFriend.isHidden = false
                         self.profileView.addFriend.isEnabled = true
+                        self.profileView.signOutButton.isEnabled = false
+                        self.profileView.signOutButton.isHidden = true
                     }
                     
                     if self.friends.contains(self.user!.userId) {
-                        self.profileView.addFriend.isHidden = true
-                        self.profileView.addFriend.isEnabled = false
-                    }
-                    self.profileView.displayNameTextView.text = self.user!.displayName
-                    self.profileView.emailTextView.text = self.user!.email
-                    self.profileView.firstNameTextView.text = self.user!.firstName
-                    self.profileView.lastNameTextView.text = self.user!.lastName
-                    self.profileView.phoneNumberTextView.text = self.user!.phoneNumber
-                    if let image = self.user!.photoURL, !image.isEmpty {
-                        self.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.addTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.setTitle(" Remove Friend ", for: .normal)
+                    } else {
+                        self.profileView.addFriend.removeTarget(self, action: #selector(self.removeFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.addTarget(self, action: #selector(self.addFriendPressed), for: .touchUpInside)
+                        self.profileView.addFriend.setTitle(" Add Friend ", for: .normal)
                     }
                 }
             }
         }
+    }
+    private func checkBlockedUser() {
+        guard let loggedUser = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        guard let user = user else {return}
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(loggedUser.uid)
+            .collection(FriendsCollectionKey.BlockedKey)
+            .addSnapshotListener({ (snapshot, error) in
+                if let error = error {
+                    print("failed to check blocked user: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    self.blockedUsers = snapshot.documents.map {
+                        $0.documentID
+                    }
+                    if self.blockedUsers.contains(user.userId) {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle(" Unblock User ", for: .normal)
+                    } else {
+                        self.profileView.blockButton.removeTarget(self, action: #selector(self.unblockUser), for: .touchUpInside)
+                        self.profileView.blockButton.addTarget(self, action: #selector(self.blockUser), for: .touchUpInside)
+                        self.profileView.blockButton.setTitle(" Block User ", for: .normal)
+                    }
+                }
+            })
+    }
+    private func checkBlockedStatus() {
+        guard let loggedUser = authservice.getCurrentUser() else {
+            print("Please log in")
+            return
+        }
+        guard let user = user else {return}
+        listener = DBService.firestoreDB
+            .collection(UsersCollectionKeys.CollectionKey)
+            .document(user.userId)
+            .collection(FriendsCollectionKey.BlockedKey)
+            .whereField("blocked", isEqualTo: loggedUser.uid)
+            .addSnapshotListener({ (snapshot, error) in
+                if let error = error {
+                    print("failed to check blocked status: \(error.localizedDescription)")
+                } else if let snapshot = snapshot {
+                    let _ = snapshot.documents.map {
+                        if $0.documentID == loggedUser.uid {
+                            self.profileView.addFriend.isEnabled = false
+                            self.profileView.addFriend.isUserInteractionEnabled = false
+                            self.profileView.emailTextView.isHidden = true
+                            self.profileView.firstNameTextView.isHidden = true
+                            self.profileView.lastNameTextView.isHidden = true
+                            self.showAlert(title: "Blocked by User", message: "You are unable to view \(self.user!.displayName)'s profile.")
+                        }
+                    }
+                }
+            })
     }
     private func fetchFriends() {
         guard let user = authservice.getCurrentUser() else {
@@ -87,25 +148,70 @@ class ProfileViewController: BaseViewController {
                     print("failed to fetch friends with error: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
                     self?.friends = snapshot.documents.map {
-                        let dictionary =  $0.data() as? [String:String]
-                        guard let key = dictionary?.keys.first else { return "" }
-                        return key
+                        $0.documentID
                     }
                 }
         }
     }
     @objc private func imageButtonPressed() {
-        imagePickerController.sourceType = .photoLibrary
-        present(imagePickerController, animated: true)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let libraryAction = UIAlertAction(title: "Library", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .photoLibrary
+            self.present(self.imagePickerController, animated: true)
+        }
+        let cameraAction = UIAlertAction(title: "Camera", style: .default) { [unowned self] (action) in
+            
+            self.imagePickerController.sourceType = .camera
+            self.present(self.imagePickerController, animated: true)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addAction(libraryAction)
+        alertController.addAction(cameraAction)
+        alertController.addAction(cancelAction)
+        if !UIImagePickerController.isSourceTypeAvailable(.camera) {
+            cameraAction.isEnabled = false
+        }
+        present(alertController, animated: true)
     }
     @objc private func addFriendPressed() {
-        DBService.addFriend(friend: self.user!) { (error) in
+        DBService.requestFriend(friend: self.user!) { (error) in
             if let error = error {
-                self.showAlert(title: "Adding Friends Error", message: error.localizedDescription)
+                self.showAlert(title: "Friend Request Error", message: error.localizedDescription)
             } else {
-                self.showAlert(title: "Friend Added", message: nil)
-                self.profileView.addFriend.isEnabled = false
-                self.profileView.addFriend.isHidden = true
+                self.showAlert(title: "Friend Requested", message: nil)
+            }
+        }
+    }
+    @objc private func removeFriendPressed() {
+        DBService.removeFriend(removed: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Friend Remove Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Friend Successfully Removed", message: nil)
+            }
+        }
+    }
+    @objc private func signOutPressed() {
+        authservice.signOutAccount()
+        showLoginView()
+    }
+    @objc private func blockUser() {
+        DBService.blockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Block error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Blocked \(self.user!.displayName)", message: "Successfully added \(self.user!.displayName) to your blocked list")
+            }
+        }
+    }
+    @objc private func unblockUser() {
+        DBService.unblockedUser(blocked: self.user!) { (error) in
+            if let error = error {
+                self.showAlert(title: "Unblock Error", message: error.localizedDescription)
+            } else {
+                self.showAlert(title: "Unblocked \(self.user!.displayName)", message: "Successfully unblocked \(self.user!.displayName)")
             }
         }
     }
@@ -114,11 +220,15 @@ class ProfileViewController: BaseViewController {
             profileView.imageButton.isUserInteractionEnabled = true
             profileView.displayNameTextView.isEditable = true
             profileView.displayNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            profileView.emailTextView.isEditable = true
-            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+//            profileView.emailTextView.isEditable = true
+//            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            profileView.firstNameTextView.text = user!.firstName
             profileView.firstNameTextView.isEditable = true
+            profileView.firstNameTextView.isHidden = false
             profileView.firstNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            profileView.lastNameTextView.text = user!.lastName
             profileView.lastNameTextView.isEditable = true
+            profileView.lastNameTextView.isHidden = false
             profileView.lastNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.phoneNumberTextView.isEditable = true
             profileView.phoneNumberTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -129,15 +239,19 @@ class ProfileViewController: BaseViewController {
             saveProfile()
             profileView.imageButton.isUserInteractionEnabled = false
             profileView.displayNameTextView.isEditable = false
-            profileView.displayNameTextView.backgroundColor = .white
-            profileView.emailTextView.isEditable = false
-            profileView.emailTextView.backgroundColor = .white
+            profileView.displayNameTextView.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+            profileView.fullNameTextView.isEditable = false
+            profileView.fullNameTextView.isHidden = false
+//            profileView.emailTextView.isEditable = false
+//            profileView.emailTextView.backgroundColor = .white
             profileView.firstNameTextView.isEditable = false
+            profileView.firstNameTextView.isHidden = true
             profileView.firstNameTextView.backgroundColor = .white
             profileView.lastNameTextView.isEditable = false
+            profileView.lastNameTextView.isHidden = true
             profileView.lastNameTextView.backgroundColor = .white
             profileView.phoneNumberTextView.isEditable = false
-            profileView.phoneNumberTextView.backgroundColor = .white
+            profileView.phoneNumberTextView.backgroundColor = .clear
             profileView.editButton.setTitle("Edit", for: .normal)
             editToggle = false
         }
@@ -186,9 +300,10 @@ class ProfileViewController: BaseViewController {
                             self.showAlert(title: "Editing Error", message: error.localizedDescription)
                         }
                 }
-                self.dismiss(animated: true)
+//                self.dismiss(animated: true)
             }
         }
+        self.profileView.fullNameTextView.text = profileView.firstNameTextView.text + " " + profileView.lastNameTextView.text
     }
 }
 
@@ -206,5 +321,15 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         profileImage = resizedImage.image
         profileView.imageButton.setImage(profileImage, for: .normal)
         dismiss(animated: true)
+    }
+}
+
+extension ProfileViewController: UITextViewDelegate {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if(text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        return true
     }
 }

@@ -37,6 +37,8 @@ class LocationSearchViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Select Location"
+
         mapListButton()
         locationSearchView.delegate = self
         homeViewSetup()
@@ -57,7 +59,7 @@ class LocationSearchViewController: UIViewController {
         let backgroundImage = UIImage(named: "blueGreen")
         let imageView = UIImageView(image: backgroundImage)
         locationSearchView.myTableView.backgroundView = imageView
-        locationSearchView.backgroundColor = #colorLiteral(red: 0.5901091695, green: 0.8428633809, blue: 0.7824015021, alpha: 1)
+        locationSearchView.backgroundColor = #colorLiteral(red: 0.8442592025, green: 0.4776551127, blue: 0.9347509146, alpha: 1).withAlphaComponent(0.9)
         
         //        self.navigationController!.navigationBar.barTintColor = UIColor.black
         
