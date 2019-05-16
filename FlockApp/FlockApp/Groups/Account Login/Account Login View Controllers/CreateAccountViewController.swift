@@ -35,8 +35,11 @@ class CreateAccountViewController: UIViewController {
     }
     
     @IBAction func showLoginView(_ sender: UIButton) {
-        self.dismiss(animated: true)
-        navigationController?.popViewController(animated: true)
+        let loginView = LoginViewController()
+        present(loginView, animated: true) {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
+            appDelegate.window?.rootViewController = loginView
+        }
     }
 
 

@@ -216,16 +216,16 @@ class ProfileView: UIView {
 //            fullNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
             fullNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 20),
             fullNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            fullNameTextView.widthAnchor.constraint(equalToConstant: 250),
+            fullNameTextView.widthAnchor.constraint(equalToConstant: 200),
             fullNameTextView.heightAnchor.constraint(equalToConstant: 30),
 //            firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
             firstNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
-//            firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            firstNameTextView.widthAnchor.constraint(equalToConstant: 150),
+            firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
+            firstNameTextView.widthAnchor.constraint(equalToConstant: 100),
             firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
 //            lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
             lastNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
-//            lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
+            lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
             lastNameTextView.widthAnchor.constraint(equalToConstant: 100),
             lastNameTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
@@ -258,7 +258,7 @@ class ProfileView: UIView {
             phoneNumberLabel.heightAnchor.constraint(equalToConstant: 30),
             phoneNumberTextView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 20),
             phoneNumberTextView.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor),
-            phoneNumberTextView.widthAnchor.constraint(equalToConstant: 250),
+            phoneNumberTextView.widthAnchor.constraint(equalToConstant: 200),
             phoneNumberTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
