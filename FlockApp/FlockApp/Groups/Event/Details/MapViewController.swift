@@ -245,6 +245,7 @@ class MapViewController: UIViewController {
             let eventLong = event.locationLong
             let eventName = event.eventName
             let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+            
             if resetMapToEvent == false {
                 mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
                 self.resetMapToEvent = true

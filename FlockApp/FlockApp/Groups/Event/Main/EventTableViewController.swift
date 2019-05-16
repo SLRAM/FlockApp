@@ -66,6 +66,7 @@ class EventTableViewController: UITableViewController {
         
         if isQuickEvent(eventType: unwrappedEvent) {
             eventView.eventAddress.isHidden = true
+            eventView.eventTracking.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
         } else {
             standardEventMap(unwrappedEvent: unwrappedEvent)
@@ -145,6 +146,7 @@ class EventTableViewController: UITableViewController {
     }
     func isQuickEvent(eventType: Event) -> Bool {
         if eventType.eventName == "On The Fly" {
+            
             return true
         } else {
             return false
