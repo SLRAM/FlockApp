@@ -79,6 +79,8 @@
 		97E43341227200B900BC519C /* QuickEventView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43340227200B900BC519C /* QuickEventView.swift */; };
 		97E4334A227B5AE100BC519C /* SelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E43349227B5AE100BC519C /* SelectionViewController.swift */; };
 		97E4334C227B5D4000BC519C /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4334B227B5D3F00BC519C /* SelectionView.swift */; };
+		97F31145228D3D4C006E5B25 /* MainInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F31144228D3D4C006E5B25 /* MainInterface.swift */; };
+		97F31147228D40D3006E5B25 /* FlockIntro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 97F31146228D40D3006E5B25 /* FlockIntro.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -157,6 +159,8 @@
 		97E433442277500A00BC519C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97E43349227B5AE100BC519C /* SelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionViewController.swift; sourceTree = "<group>"; };
 		97E4334B227B5D3F00BC519C /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
+		97F31144228D3D4C006E5B25 /* MainInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInterface.swift; sourceTree = "<group>"; };
+		97F31146228D40D3006E5B25 /* FlockIntro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FlockIntro.mp4; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -239,6 +243,7 @@
 		97025F872257EA1100273C91 = {
 			isa = PBXGroup;
 			children = (
+				97F31146228D40D3006E5B25 /* FlockIntro.mp4 */,
 				97025F922257EA1100273C91 /* FlockApp */,
 				97025F912257EA1100273C91 /* Products */,
 				16489800E44013F2CACB43CF /* Pods */,
@@ -288,6 +293,7 @@
 			children = (
 				97025F952257EA1100273C91 /* ViewController.swift */,
 				0109E3FC2266228100B19E20 /* TabBarController.swift */,
+				97F31144228D3D4C006E5B25 /* MainInterface.swift */,
 				97802CB2225CEB98007D480D /* Account Login */,
 				97802CD6225CFD74007D480D /* Home */,
 				97802CD8225CFD98007D480D /* Create Edit */,
@@ -427,8 +433,8 @@
 			children = (
 				97802CE1225CFEF4007D480D /* EventViewController.swift */,
 				97802CEB225CFF40007D480D /* EventView.swift */,
-				01FC8DAF226E5AFB00F4390B /* EventTableViewController.swift */,
 				01FC8DB12271DE8300F4390B /* DirectionsViewController.swift */,
+				01FC8DAF226E5AFB00F4390B /* EventTableViewController.swift */,
 				01FC8DB32271DFC200F4390B /* DirectionsView.swift */,
 			);
 			path = Main;
@@ -489,8 +495,8 @@
 		97E4333B2272004800BC519C /* Quick */ = {
 			isa = PBXGroup;
 			children = (
-				97E4333E227200A700BC519C /* QuickEventViewController.swift */,
 				97E43340227200B900BC519C /* QuickEventView.swift */,
+				97E4333E227200A700BC519C /* QuickEventViewController.swift */,
 			);
 			path = Quick;
 			sourceTree = "<group>";
@@ -572,6 +578,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97F31147228D40D3006E5B25 /* FlockIntro.mp4 in Resources */,
 				97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */,
 				0149E8BF227772D3009A4B21 /* GoogleService-Info.plist in Resources */,
 				97025F9B2257EA1200273C91 /* Assets.xcassets in Resources */,
@@ -684,6 +691,7 @@
 				97802CEA225CFF33007D480D /* CreateEditView.swift in Sources */,
 				97802D09225D3A2B007D480D /* SecretKeys.swift in Sources */,
 				93D103FF226132840038C6AA /* JoinViewController.swift in Sources */,
+				97F31145228D3D4C006E5B25 /* MainInterface.swift in Sources */,
 				97802D0E225E4993007D480D /* InvitedTableViewCell.swift in Sources */,
 				9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */,
 				97802CD1225CF774007D480D /* UIViewController+Navigation.swift in Sources */,

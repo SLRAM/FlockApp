@@ -36,11 +36,12 @@ class QuickEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(quickEventView)
+        self.quickEventView.myTableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         viewSetup()
     }
     
     func viewSetup() {
-        navigationItem.title = "Create Quick Event"
+        navigationItem.title = "Create On The Fly"
         selectedImage = Toucan.init(image: quickImage!).resize(CGSize(width: 500, height: 500)).image
         navigationItem.rightBarButtonItem = quickEventView.createButton
         navigationItem.leftBarButtonItem = quickEventView.cancelButton
@@ -116,7 +117,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
         let startingString = isoDateFormatter.string(from: currentDate)
         let endingString = isoDateFormatter.string(from: endingDate)
         
-        let eventName = "Quick Event"
+        let eventName = "On The Fly"
         var friendIds = [String]()
         for friends in friendsArray {
             friendIds.append(friends.userId)

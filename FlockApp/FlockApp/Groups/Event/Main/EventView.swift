@@ -45,7 +45,7 @@ class EventView: UIView {
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 4
         label.layer.masksToBounds = true
-        label.layer.cornerRadius = 8
+        label.layer.cornerRadius = 6
         label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
         label.textColor = .white
         label.text = "47-10 Austell Pl. 11111"
@@ -56,7 +56,7 @@ class EventView: UIView {
     lazy var eventDate: UILabel = {
         let label = UILabel()
         label.layer.masksToBounds = true
-        label.layer.cornerRadius = 8
+        label.layer.cornerRadius = 6
         label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
         label.textColor = .white
         label.text = "June 8, 2019, 5:00 PM - 10:00 PM"
@@ -66,7 +66,7 @@ class EventView: UIView {
     lazy var eventTracking: UILabel = {
         let label = UILabel()
         label.layer.masksToBounds = true
-        label.layer.cornerRadius = 8
+        label.layer.cornerRadius = 6
         label.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.8)
         label.textColor = .white
         label.text = "June 8, 2019, 5:00 PM - 10:00 PM"

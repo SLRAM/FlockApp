@@ -76,6 +76,19 @@ class HomeView: UIView {
         return segmentedControl
     }()
     
+    @objc func respondToSwipeGesture(gesture: UIGestureRecognizer){
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizer.Direction.right:
+     self.delegate?.segmentedPastEventPressed()
+                case UISwipeGestureRecognizer.Direction.right:
+        self.delegate?.pendingJoinEventPressed()
+            default:
+                break
+            }
+        }
+    }
+    
         public lazy var usersCollectionView: UICollectionView = {
             let cellLayout = UICollectionViewFlowLayout()
             cellLayout.scrollDirection = .vertical
@@ -134,7 +147,7 @@ class HomeView: UIView {
         //dayLabel.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor, constant: -70).isActive = true
         dayLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20).isActive = true
         dayLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.09).isActive = true
-        dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.6).isActive = true
+        dayLabel.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9).isActive = true
         
     }
     
