@@ -30,6 +30,7 @@ class ProfileView: UIView {
     lazy var fullNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
+        textView.isScrollEnabled = false
         textView.textColor = .white
         textView.backgroundColor = .clear
         textView.font = UIFont.boldSystemFont(ofSize: 20)
@@ -63,6 +64,8 @@ class ProfileView: UIView {
         textView.isEditable = false
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.isHidden = true
+        textView.isScrollEnabled = false
+
         textView.textColor = .white
         return textView
     }()
@@ -71,6 +74,8 @@ class ProfileView: UIView {
         textView.isEditable = false
         textView.isHidden = true
         textView.textColor = .white
+        textView.isScrollEnabled = false
+
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         return textView
     }()
@@ -85,6 +90,8 @@ class ProfileView: UIView {
         textView.isEditable = false
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
+        textView.isScrollEnabled = false
+
         textView.backgroundColor = .clear
         return textView
     }()
@@ -94,6 +101,7 @@ class ProfileView: UIView {
         textView.text = "N/A"
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
+        textView.isScrollEnabled = false
         textView.backgroundColor = .clear
         return textView
     }()
@@ -200,19 +208,23 @@ class ProfileView: UIView {
         firstNameTextView.translatesAutoresizingMaskIntoConstraints = false
         lastNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            fullNameLabel.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 25),
-            fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 25),
+//            fullNameLabel.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 25),
+            fullNameLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
+            fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
             fullNameLabel.widthAnchor.constraint(equalToConstant: 70),
             fullNameLabel.heightAnchor.constraint(equalToConstant: 30),
-            fullNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+//            fullNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+            fullNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 20),
             fullNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            fullNameTextView.widthAnchor.constraint(equalToConstant: 250),
+            fullNameTextView.widthAnchor.constraint(equalToConstant: 200),
             fullNameTextView.heightAnchor.constraint(equalToConstant: 30),
-            firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+//            firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+            firstNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
             firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            firstNameTextView.widthAnchor.constraint(equalToConstant: 150),
+            firstNameTextView.widthAnchor.constraint(equalToConstant: 100),
             firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
-            lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+//            lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+            lastNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
             lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
             lastNameTextView.widthAnchor.constraint(equalToConstant: 100),
             lastNameTextView.heightAnchor.constraint(equalToConstant: 30)
@@ -225,7 +237,7 @@ class ProfileView: UIView {
         emailTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             emailLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 25),
-            emailLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 25),
+            emailLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
             emailLabel.heightAnchor.constraint(equalToConstant: 30),
             emailLabel.widthAnchor.constraint(equalToConstant: 70),
             emailTextView.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 20),
@@ -241,12 +253,12 @@ class ProfileView: UIView {
         phoneNumberTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             phoneNumberLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 25),
-            phoneNumberLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 25),
+            phoneNumberLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
             phoneNumberLabel.widthAnchor.constraint(equalToConstant: 70),
             phoneNumberLabel.heightAnchor.constraint(equalToConstant: 30),
             phoneNumberTextView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 20),
             phoneNumberTextView.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor),
-            phoneNumberTextView.widthAnchor.constraint(equalToConstant: 250),
+            phoneNumberTextView.widthAnchor.constraint(equalToConstant: 200),
             phoneNumberTextView.heightAnchor.constraint(equalToConstant: 30)
             ])
     }
