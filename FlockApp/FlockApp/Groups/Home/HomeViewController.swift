@@ -65,6 +65,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        if let _ = authService.getCurrentUser() {
+        
+        } else {
+            pendingEventListener = nil
+            acceptedEventListener = nil
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -319,10 +327,11 @@ class HomeViewController: UIViewController {
                     
                 }
                 DispatchQueue.main.async {
-                    self!.homeView.delegate?.segmentedEventsPressed()
-                    self!.homeView.usersCollectionView.dataSource = self
-                    self!.homeView.usersCollectionView.delegate = self
+                    self?.homeView.delegate?.segmentedEventsPressed()
+                    self?.homeView.usersCollectionView.dataSource = self
+                    self?.homeView.usersCollectionView.delegate = self
                     self?.refreshControl.endRefreshing()
+                    
                 }
             })
     }

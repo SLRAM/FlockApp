@@ -23,6 +23,8 @@ class MapViewController: UIViewController {
     private let authservice = AppDelegate.authservice
     private let mapView = MapView()
     var allGuestMarkers = [GMSMarker]()
+    var allOutOfRangeGuests = [(GuestName: String, GuestDistance: Double)]()
+    var proximityCircleMarker = GMSCircle()
     var hostMarker = GMSMarker()
     lazy var myTimer = Timer(timeInterval: 5.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
@@ -31,6 +33,7 @@ class MapViewController: UIViewController {
     var proximity = Double()    
     var guestCount = 0
     var resetMapToEvent = false
+    var proximityPassed = false
     var hostEvent: Event?
     var invited = [InvitedModel](){
         didSet{
@@ -71,10 +74,11 @@ class MapViewController: UIViewController {
             locationManager.startUpdatingLocation()
         }
         
-        if isQuickEvent(eventType: unwrappedEvent) {
-            
+        if isQuickEvent(eventType: unwrappedEvent) && proximityPassed == false {
             proximityAlert()
-        } else {
+            proximityCircle()
+        } else if isQuickEvent(eventType: unwrappedEvent) && proximityPassed == true {
+            proximityCircle()
         }
         fetchEventLocation()
         fetchInvitedLocations()
@@ -86,30 +90,31 @@ class MapViewController: UIViewController {
             print("start date is < ")
             startTimer()
         }
-        resetMapToEvent = true
     }
     
     func proximityCircle() {
+        proximityCircleMarker.map = nil
         guard let unwrappedEvent = event else {
             print("Unable to obtain event for proximity circle")
             return}
         let prox = unwrappedEvent.proximity
         print("Event Proximity is \(prox)")
         let circleCenter = CLLocationCoordinate2D(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
-        let busStop = GMSCircle(position: circleCenter, radius: prox)
+        proximityCircleMarker = GMSCircle(position: circleCenter, radius: prox)
+//        let proximityCircle = GMSCircle(position: circleCenter, radius: prox)
 //        busStop.title = stop.name
 //        #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-        busStop.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
+        proximityCircleMarker.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
 //        busStop.fillColor?.withAlphaComponent(0.8)
-        busStop.map = self.mapView.myMapView
+        proximityCircleMarker.map = self.mapView.myMapView
         let stopMarker = GMSMarker.init(position: circleCenter)
-        stopMarker.snippet = busStop.title
+        stopMarker.snippet = proximityCircleMarker.title
         stopMarker.opacity = 0
         stopMarker.map = self.mapView.myMapView
     }
     
     func isQuickEvent(eventType: Event) -> Bool {
-        if eventType.eventName == "On The Fly" {
+        if eventType.eventName == "On The Fly" || eventType.eventName == "Quick Event"{
             return true
         } else {
             return false
@@ -124,15 +129,18 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
-        mapView.myMapView.clear()
+//        mapView.myMapView.clear()
         updateUserLocation()
-        fetchInvitedLocations()
         fetchEventLocation()
+        fetchInvitedLocations()
         if let endDate = event?.endDate.date(), endDate < Date() {
             myTimer.invalidate()
         }
-        if isQuickEvent(eventType: unwrappedEvent) {
+        
+        if isQuickEvent(eventType: unwrappedEvent) && proximityPassed == false {
             proximityAlert()
+            proximityCircle()
+        } else if isQuickEvent(eventType: unwrappedEvent) && proximityPassed == true {
             proximityCircle()
         }
     }
@@ -197,8 +205,8 @@ class MapViewController: UIViewController {
                     let data = snapshot.data() {
                         self?.hostEvent = Event(dict: data)
                         DispatchQueue.main.async {
-                            self?.allGuestMarkers.removeAll()
-                            self?.setupMarkers(activeGuests: self!.invited)
+//                            self?.allGuestMarkers.removeAll()
+//                            self?.setupMarkers(activeGuests: self!.invited)
                             
                             
                             if let eventLat = self?.hostEvent?.locationLat,
@@ -206,7 +214,9 @@ class MapViewController: UIViewController {
                             let eventName = self?.hostEvent?.eventName {
                                 let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
                                 if self?.resetMapToEvent == false {
-                                    self?.mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+                                    self?.mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 16))
+                                    self?.resetMapToEvent = true
+                                    
                                 }
                                 guard let markerImage = UIImage(named: "birdhouse") else {return}
                                 let eventMarker = GMSMarker.init()
@@ -236,8 +246,10 @@ class MapViewController: UIViewController {
             let eventLong = event.locationLong
             let eventName = event.eventName
             let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+            
             if resetMapToEvent == false {
                 mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+                self.resetMapToEvent = true
             }
             guard let markerImage = UIImage(named: "birdhouse") else {return}
             let eventMarker = GMSMarker.init()
@@ -270,6 +282,11 @@ class MapViewController: UIViewController {
                     self?.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
                     DispatchQueue.main.async {
+                        if let allGuests = self?.allGuestMarkers {
+                            for marker in allGuests {
+                                marker.map = nil
+                            }
+                        }
                         self?.allGuestMarkers.removeAll()
                         self?.setupMarkers(activeGuests: self!.invited)
                         //                    self?.refreshControl.endRefreshing()
@@ -284,11 +301,11 @@ class MapViewController: UIViewController {
             $0.latitude != nil
         }
 
-        for marker in self.allGuestMarkers {
-            marker.map = nil
-        }
+//        for marker in self.allGuestMarkers {
+//            marker.map = nil
+//        }
         
-        self.allGuestMarkers.removeAll()
+//        self.allGuestMarkers.removeAll()
         
         for guest in filteredGuests {
             guard let guestLat = guest.latitude,
@@ -333,19 +350,43 @@ class MapViewController: UIViewController {
         }
     }
     func proximityAlert() {
+        allOutOfRangeGuests.removeAll()
         //if guests are beyond proximity then alert
         for guest in allGuestMarkers {
             
             let guestDistance = distance(from: guest.position, to: hostMarker.position)
-            
+            guard let guestName = guest.title else {
+                print("Unable to find guest's name!")
+                return
+            }
             
             if guestDistance > proximity {
-                print("\(String(describing: guest.title?.description)) is out of range by \(guestDistance) meters!")
+                allOutOfRangeGuests.append((GuestName: guestName, GuestDistance: guestDistance))
+                print("\((guestName)) is out of range by \(guestDistance) meters!")
             } else {
                 print("\(String(describing: guest.title?.description)) is in range by \(guestDistance) meters!")
             }
 
         }
+        if !allOutOfRangeGuests.isEmpty {
+            var count = 0
+            var alertMessage = String()
+            for guest in allOutOfRangeGuests {
+                alertMessage += "\(guest.GuestName) is \(Int(guest.GuestDistance.rounded())) meters away"
+                if count != allOutOfRangeGuests.count {
+                    alertMessage += "\n"
+                    count += 1
+                }
+            }
+            
+            let alertController = UIAlertController(title: "Oh no! Looks like some of your flock is lost!", message: alertMessage, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.proximityPassed = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+        }
+
     }
     func setupMapBounds() {
         guard let event = event else {
@@ -357,9 +398,7 @@ class MapViewController: UIViewController {
             let guestCoordinate = allGuestMarkers[guestNumber].position
             mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
         }
-        if isQuickEvent(eventType: event) {
-            proximityAlert()
-        }
+
     }
     func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
         guard let event = event else {
@@ -375,6 +414,7 @@ class MapViewController: UIViewController {
             }
         return sortedMarkers
     }
+    
 
     public func distance(from: CLLocationCoordinate2D, to: CLLocationCoordinate2D) -> Double {
         let coordinate0 = CLLocation(latitude: from.latitude, longitude: from.longitude)
