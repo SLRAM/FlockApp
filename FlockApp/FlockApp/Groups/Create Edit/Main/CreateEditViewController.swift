@@ -443,7 +443,7 @@ extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
             
         }
         for (key, value) in friendsDictionary {
-            
+        
             if textField.tag == key {
                 friendsDictionary[key] = typedText
                 
