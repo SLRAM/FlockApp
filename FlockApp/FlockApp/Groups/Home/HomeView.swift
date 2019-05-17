@@ -122,9 +122,9 @@ class HomeView: UIView {
         func setConstraints() {
             setUpDateLabel()
             setUpDayLabel()
-            //setupUsersCollectionView()
+            setupUsersCollectionView()
             setupSegmentedView()
-            //setupNotification()
+            setupNotification()
             //cellView.setupEventLabel()
             //cellView.setupJoinButton()
         }

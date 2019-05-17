@@ -72,7 +72,7 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
         view.addSubview(homeView)
-        view.addSubview(emptyState)
+//        view.addSubview(emptyState)
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
@@ -84,40 +84,50 @@ class HomeViewController: UIViewController {
 
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, yyyy")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+       
         
-
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
         indexChanged(homeView.segmentedControl)
         
+        //Swipe gesture code//
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender: )))
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector (handleSwipe(sender: )))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector (handleSwipe(sender: )))
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector(handleSwipe(sender: )))
+        rightSwipe.direction = .right
+        leftSwipe.direction = .left
         
-        leftSwipe.direction = UISwipeGestureRecognizer.Direction.left
-        rightSwipe.direction = UISwipeGestureRecognizer.Direction.right
-        
-        self.homeView.segmentedControl.addGestureRecognizer(leftSwipe)
         self.homeView.segmentedControl.addGestureRecognizer(rightSwipe)
+        self.homeView.segmentedControl.addGestureRecognizer(leftSwipe)
         
+      
 
     }
     
-    
+    //Swipe gesture code//
     @objc func handleSwipe(sender: UISwipeGestureRecognizer){
-        if sender.direction == .left {
+        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .left {
+            print("swipe left")
+            self.homeView.segmentedControl.selectedSegmentIndex = 0
+            self.homeView.segmentedControl.sendActions(for: .valueChanged)
+        }
+        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .right {
             print("swipe right")
-//            homeView.delegate?.segmentedPastEventPressed()
-//            homeView.delegate?.segmentedEventsPressed()
-
+            self.homeView.segmentedControl.selectedSegmentIndex = 0
+            self.homeView.segmentedControl.sendActions(for: .valueChanged)
         }
         
-        if sender.direction == .right {
-            print("swipe right")
-//            homeView.delegate?.pendingJoinEventPressed()
-//            homeView.delegate?.segmentedEventsPressed()
+        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .left || sender.direction == .right {
+            self.homeView.segmentedControl.selectedSegmentIndex = 1
+            self.homeView.segmentedControl.sendActions(for: .valueChanged)
         }
+        
+        if self.homeView.segmentedControl.selectedSegmentIndex == 2 && sender.direction == .left || sender.direction == .right {
+            self.homeView.segmentedControl.selectedSegmentIndex = 0
+            self.homeView.segmentedControl.sendActions(for: .valueChanged)
+        }
+        
     }
     
 

@@ -32,8 +32,8 @@ class EmptyStateView: UIView {
     }
     
     private func commonInit(){
-       setupImage()
-       setupEmptyStateMessage()
+//       setupImage()
+//       setupEmptyStateMessage()
         
     }
     
