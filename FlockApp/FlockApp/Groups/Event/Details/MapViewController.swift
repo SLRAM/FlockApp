@@ -57,6 +57,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
+        proximityCircle()
 //        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
         
         locationManager.delegate = self
@@ -108,6 +109,25 @@ class MapViewController: UIViewController {
         proximityCircleMarker.map = self.mapView.myMapView
         let stopMarker = GMSMarker.init(position: circleCenter)
         stopMarker.snippet = proximityCircleMarker.title
+        stopMarker.opacity = 0
+        stopMarker.map = self.mapView.myMapView
+    }
+    
+    func proximityCircle() {
+        guard let unwrappedEvent = event else {
+            print("Unable to obtain event for proximity circle")
+            return}
+        let prox = unwrappedEvent.proximity
+        print("Event Proximity is \(prox)")
+        let circleCenter = CLLocationCoordinate2D(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
+        let busStop = GMSCircle(position: circleCenter, radius: prox)
+//        busStop.title = stop.name
+//        #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        busStop.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
+//        busStop.fillColor?.withAlphaComponent(0.8)
+        busStop.map = self.mapView.myMapView
+        let stopMarker = GMSMarker.init(position: circleCenter)
+        stopMarker.snippet = busStop.title
         stopMarker.opacity = 0
         stopMarker.map = self.mapView.myMapView
     }
@@ -249,7 +269,6 @@ class MapViewController: UIViewController {
             if resetMapToEvent == false {
                 mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
                 self.resetMapToEvent = true
-
             }
             guard let markerImage = UIImage(named: "birdhouse") else {return}
             let eventMarker = GMSMarker.init()

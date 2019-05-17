@@ -146,7 +146,6 @@ class EventTableViewController: UITableViewController {
     }
     func isQuickEvent(eventType: Event) -> Bool {
         if eventType.eventName == "On The Fly" {
-            
             return true
         } else {
             return false

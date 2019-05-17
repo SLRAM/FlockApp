@@ -15,6 +15,7 @@
 		90855BA8CE7044DD1F1F9A01 /* Pods_FlockApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */; };
 		91191EE12280E22B00B1DE13 /* CustomSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91191EE02280E22B00B1DE13 /* CustomSegmentControl.swift */; };
 		91DF714C225E4A4700707F72 /* EventHomeCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DF714B225E4A4700707F72 /* EventHomeCollectionViewCell.swift */; };
+		91E8884A228CA435006D376C /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E88849228CA435006D376C /* EmptyStateView.swift */; };
 		936AC7BA2266247700CBD407 /* DBService+Friends.swift in Sources */ = {isa = PBXBuildFile; fileRef = 936AC7B92266247700CBD407 /* DBService+Friends.swift */; };
 		9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291A225E4D5A00E4568F /* BaseViewController.swift */; };
 		9383291D225E4D6200E4568F /* MenuLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9383291C225E4D6200E4568F /* MenuLauncher.swift */; };
@@ -92,6 +93,7 @@
 		682BF4BA13CA0D365D3D99CE /* Pods-FlockApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.debug.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.debug.xcconfig"; sourceTree = "<group>"; };
 		91191EE02280E22B00B1DE13 /* CustomSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSegmentControl.swift; sourceTree = "<group>"; };
 		91DF714B225E4A4700707F72 /* EventHomeCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHomeCollectionViewCell.swift; sourceTree = "<group>"; };
+		91E88849228CA435006D376C /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		936AC7B92266247700CBD407 /* DBService+Friends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DBService+Friends.swift"; sourceTree = "<group>"; };
 		9383291A225E4D5A00E4568F /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		9383291C225E4D6200E4568F /* MenuLauncher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuLauncher.swift; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				97802CE5225CFF16007D480D /* HomeViewController.swift */,
+				91E88849228CA435006D376C /* EmptyStateView.swift */,
 				97802CE7225CFF27007D480D /* HomeView.swift */,
 				91DF714B225E4A4700707F72 /* EventHomeCollectionViewCell.swift */,
 			);
@@ -706,6 +709,7 @@
 				9383291B225E4D5A00E4568F /* BaseViewController.swift in Sources */,
 				93D103FA225FD62F0038C6AA /* SettingsView.swift in Sources */,
 				97802CCE225CF756007D480D /* Date+Extensions.swift in Sources */,
+				91E8884A228CA435006D376C /* EmptyStateView.swift in Sources */,
 				97802CD2225CF774007D480D /* UIViewController+Alert.swift in Sources */,
 				97802CE2225CFEF4007D480D /* EventViewController.swift in Sources */,
 				97802CBF225CF5E6007D480D /* CreateAccountViewController.swift in Sources */,
@@ -898,6 +902,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 26RHXP32FH;
 				DEVELOPMENT_TEAM = VH9A32XL3Y;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
@@ -918,6 +923,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 26RHXP32FH;
 				DEVELOPMENT_TEAM = VH9A32XL3Y;
 				INFOPLIST_FILE = FlockApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
