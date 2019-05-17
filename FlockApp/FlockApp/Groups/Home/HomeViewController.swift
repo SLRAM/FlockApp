@@ -106,8 +106,8 @@ class HomeViewController: UIViewController {
         rightSwipe.direction = .right
         leftSwipe.direction = .left
         
-        self.homeView.segmentedControl.addGestureRecognizer(rightSwipe)
-        self.homeView.segmentedControl.addGestureRecognizer(leftSwipe)
+        self.homeView.addGestureRecognizer(rightSwipe)
+        self.homeView.addGestureRecognizer(leftSwipe)
         
       
 
@@ -115,27 +115,28 @@ class HomeViewController: UIViewController {
     
     //Swipe gesture code//
     @objc func handleSwipe(sender: UISwipeGestureRecognizer){
-        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .left {
-            print("swipe left")
-            self.homeView.segmentedControl.selectedSegmentIndex = 0
-            self.homeView.segmentedControl.sendActions(for: .valueChanged)
+        switch sender.direction {
+        case .left:
+            print("Left")
+            if self.homeView.segmentedControl.selectedSegmentIndex == 2 {
+                self.homeView.segmentedControl.selectedSegmentIndex = 0
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            } else {
+                self.homeView.segmentedControl.selectedSegmentIndex = self.homeView.segmentedControl.selectedSegmentIndex + 1
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            }
+        case .right:
+            print("right")
+            if self.homeView.segmentedControl.selectedSegmentIndex == 0 {
+                self.homeView.segmentedControl.selectedSegmentIndex = 2
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            } else {
+                self.homeView.segmentedControl.selectedSegmentIndex = self.homeView.segmentedControl.selectedSegmentIndex - 1
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            }
+        default:
+            print("Nothing")
         }
-        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .right {
-            print("swipe right")
-            self.homeView.segmentedControl.selectedSegmentIndex = 0
-            self.homeView.segmentedControl.sendActions(for: .valueChanged)
-        }
-        
-        if self.homeView.segmentedControl.selectedSegmentIndex == 1 && sender.direction == .left || sender.direction == .right {
-            self.homeView.segmentedControl.selectedSegmentIndex = 1
-            self.homeView.segmentedControl.sendActions(for: .valueChanged)
-        }
-        
-        if self.homeView.segmentedControl.selectedSegmentIndex == 2 && sender.direction == .left || sender.direction == .right {
-            self.homeView.segmentedControl.selectedSegmentIndex = 0
-            self.homeView.segmentedControl.sendActions(for: .valueChanged)
-        }
-        
     }
     
 
