@@ -65,14 +65,14 @@ class HomeViewController: UIViewController {
             }
         }
     }
-    override func viewWillDisappear(_ animated: Bool) {
-        if let _ = authService.getCurrentUser() {
-        
-        } else {
-            pendingEventListener = nil
-            acceptedEventListener = nil
-        }
-    }
+//    override func viewWillDisappear(_ animated: Bool) {
+//        if let _ = authService.getCurrentUser() {
+//        
+//        } else {
+//            pendingEventListener = nil
+//            acceptedEventListener = nil
+//        }
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
