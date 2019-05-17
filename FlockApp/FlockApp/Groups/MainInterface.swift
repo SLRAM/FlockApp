@@ -27,7 +27,7 @@ class MainInterface: UIViewController {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient, mode: AVAudioSession.Mode.default, options: AVAudioSession.CategoryOptions.defaultToSpeaker)
         } catch { }
         
-        let path = Bundle.main.path(forResource: "FlockIntro", ofType:"mp4")
+        let path = Bundle.main.path(forResource: "FlockIntroFinal", ofType:"mp4")
         
         let filePathURL = NSURL.fileURL(withPath: path!)
         let player = AVPlayer(url: filePathURL)
