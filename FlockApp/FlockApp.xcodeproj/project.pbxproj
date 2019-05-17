@@ -82,6 +82,7 @@
 		97E4334C227B5D4000BC519C /* SelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E4334B227B5D3F00BC519C /* SelectionView.swift */; };
 		97F31145228D3D4C006E5B25 /* MainInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F31144228D3D4C006E5B25 /* MainInterface.swift */; };
 		97F31147228D40D3006E5B25 /* FlockIntro.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 97F31146228D40D3006E5B25 /* FlockIntro.mp4 */; };
+		97F31149228DADD6006E5B25 /* FlockIntroFinal.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 97F31148228DADD6006E5B25 /* FlockIntroFinal.mp4 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -163,6 +164,7 @@
 		97E4334B227B5D3F00BC519C /* SelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionView.swift; sourceTree = "<group>"; };
 		97F31144228D3D4C006E5B25 /* MainInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainInterface.swift; sourceTree = "<group>"; };
 		97F31146228D40D3006E5B25 /* FlockIntro.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FlockIntro.mp4; sourceTree = "<group>"; };
+		97F31148228DADD6006E5B25 /* FlockIntroFinal.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = FlockIntroFinal.mp4; sourceTree = "<group>"; };
 		C5C33923AA67CF5C99C66BED /* Pods_FlockApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FlockApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC7C799A184F28588052BCD1 /* Pods-FlockApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FlockApp.release.xcconfig"; path = "Target Support Files/Pods-FlockApp/Pods-FlockApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -245,6 +247,7 @@
 		97025F872257EA1100273C91 = {
 			isa = PBXGroup;
 			children = (
+				97F31148228DADD6006E5B25 /* FlockIntroFinal.mp4 */,
 				97F31146228D40D3006E5B25 /* FlockIntro.mp4 */,
 				97025F922257EA1100273C91 /* FlockApp */,
 				97025F912257EA1100273C91 /* Products */,
@@ -581,6 +584,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				97F31149228DADD6006E5B25 /* FlockIntroFinal.mp4 in Resources */,
 				97F31147228D40D3006E5B25 /* FlockIntro.mp4 in Resources */,
 				97025F9E2257EA1200273C91 /* LaunchScreen.storyboard in Resources */,
 				0149E8BF227772D3009A4B21 /* GoogleService-Info.plist in Resources */,

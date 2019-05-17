@@ -25,7 +25,7 @@ class MapViewController: UIViewController {
     var allGuestMarkers = [GMSMarker]()
     var allOutOfRangeGuests = [(GuestName: String, GuestDistance: Double)]()
     var proximityCircleMarker = GMSCircle()
-    var hostMarker = GMSMarker()
+    var hostEventMarker = GMSMarker()
     lazy var myTimer = Timer(timeInterval: 5.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
     
     let locationManager = CLLocationManager()
@@ -193,8 +193,9 @@ class MapViewController: UIViewController {
     }
     func fetchEventLocation() {
         guard let event = event else {return}
-
+        
         if isQuickEvent(eventType: event) {
+            self.hostEventMarker.map = nil
             HostListener = DBService.firestoreDB
                 .collection(EventsCollectionKeys.CollectionKey)
                 .document(event.documentId)
@@ -205,10 +206,6 @@ class MapViewController: UIViewController {
                     let data = snapshot.data() {
                         self?.hostEvent = Event(dict: data)
                         DispatchQueue.main.async {
-//                            self?.allGuestMarkers.removeAll()
-//                            self?.setupMarkers(activeGuests: self!.invited)
-                            
-                            
                             if let eventLat = self?.hostEvent?.locationLat,
                             let eventLong = self?.hostEvent?.locationLong,
                             let eventName = self?.hostEvent?.eventName {
@@ -216,19 +213,27 @@ class MapViewController: UIViewController {
                                 if self?.resetMapToEvent == false {
                                     self?.mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 16))
                                     self?.resetMapToEvent = true
-                                    
                                 }
                                 guard let markerImage = UIImage(named: "birdhouse") else {return}
-                                let eventMarker = GMSMarker.init()
                                 let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: (self?.customMarkerWidth)!, height: (self?.customMarkerHeight)!), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+                                self?.hostEventMarker.position = eventLocation
+                                self?.hostEventMarker.title = eventName
+                                self?.hostEventMarker.iconView = customMarker
+                                self?.hostEventMarker.map = self?.mapView.myMapView
                                 
-                                //        customMarker.backgroundColor = .white
-                                eventMarker.position = eventLocation
-                                eventMarker.title = eventName
-                                //        eventMarker.icon = UIImage(named: "birdhouse")
-                                eventMarker.iconView = customMarker
-                                eventMarker.map = self?.mapView.myMapView
-                                self?.hostMarker = eventMarker
+                                
+                                
+                                
+//                                let eventMarker = GMSMarker.init()
+//                                let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: (self?.customMarkerWidth)!, height: (self?.customMarkerHeight)!), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
+//
+//                                //        customMarker.backgroundColor = .white
+//                                eventMarker.position = eventLocation
+//                                eventMarker.title = eventName
+//                                //        eventMarker.icon = UIImage(named: "birdhouse")
+//                                eventMarker.iconView = customMarker
+//                                eventMarker.map = self?.mapView.myMapView
+//                                self?.hostEventMarker = eventMarker
                             }
 
                             
@@ -261,7 +266,7 @@ class MapViewController: UIViewController {
             //        eventMarker.icon = UIImage(named: "birdhouse")
             eventMarker.iconView = customMarker
             eventMarker.map = mapView.myMapView
-            hostMarker = eventMarker
+            hostEventMarker = eventMarker
         }
 
     }
@@ -354,7 +359,7 @@ class MapViewController: UIViewController {
         //if guests are beyond proximity then alert
         for guest in allGuestMarkers {
             
-            let guestDistance = distance(from: guest.position, to: hostMarker.position)
+            let guestDistance = distance(from: guest.position, to: hostEventMarker.position)
             guard let guestName = guest.title else {
                 print("Unable to find guest's name!")
                 return
