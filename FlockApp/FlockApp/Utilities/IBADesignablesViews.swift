@@ -24,7 +24,7 @@ class RoundedButton: UIButton {
     override func layoutSubviews() {
         super.layoutSubviews()
         imageView?.contentMode = .scaleAspectFill
-        layer.cornerRadius = 12.0
+        layer.cornerRadius = 7.0
         layer.borderColor = UIColor.lightGray.cgColor
         layer.borderWidth = 0.5
         clipsToBounds = true
