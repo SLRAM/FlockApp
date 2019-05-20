@@ -57,7 +57,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
-        proximityCircle()
+        //proximityCircle()
 //        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
         
         locationManager.delegate = self
@@ -73,7 +73,7 @@ class MapViewController: UIViewController {
             locationManager.requestWhenInUseAuthorization()
             locationManager.startUpdatingLocation()
         }
-        
+//
         if isQuickEvent(eventType: unwrappedEvent) && proximityPassed == false {
             proximityAlert()
             proximityCircle()
@@ -129,7 +129,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
-//        mapView.myMapView.clear()
+        mapView.myMapView.clear()
         updateUserLocation()
         fetchEventLocation()
         fetchInvitedLocations()
@@ -306,9 +306,9 @@ class MapViewController: UIViewController {
             $0.latitude != nil
         }
 
-//        for marker in self.allGuestMarkers {
-//            marker.map = nil
-//        }
+        for marker in self.allGuestMarkers {
+            marker.map = nil
+        }
         
 //        self.allGuestMarkers.removeAll()
         
@@ -321,7 +321,9 @@ class MapViewController: UIViewController {
             print("able to obtain guest coordinates for \(String(describing: event?.eventName))")
             let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
             let marker = GMSMarker(position: coordinate)
-            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest.photoURL ?? "no photo")!, borderColor: UIColor.darkGray, tag: count)
+            
+            //Crashes if no photo available!
+            let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest.photoURL ?? "")!, borderColor: UIColor.darkGray, tag: count)
             marker.title = guest.displayName
             guard let task = guest.task else {return}
             marker.snippet = "task: \(task)"
@@ -331,6 +333,8 @@ class MapViewController: UIViewController {
         
             count += 1
         }
+        
+//        mapView.myMapView.clear()
         for marker in allGuestMarkers {
             DispatchQueue.main.async {
                 
@@ -377,7 +381,8 @@ class MapViewController: UIViewController {
             var count = 0
             var alertMessage = String()
             for guest in allOutOfRangeGuests {
-                alertMessage += "\(guest.GuestName) is \(Int(guest.GuestDistance.rounded())) meters away"
+                let dist = (guest.GuestDistance*3.28084).rounded()
+                alertMessage += "\(guest.GuestName) is \(Int(dist)) feet away"
                 if count != allOutOfRangeGuests.count {
                     alertMessage += "\n"
                     count += 1

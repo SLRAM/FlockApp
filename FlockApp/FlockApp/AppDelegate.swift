@@ -74,7 +74,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let launchScreenVC = MainInterface()
         window?.rootViewController = launchScreenVC
         window?.makeKeyAndVisible()
-        Timer.scheduledTimer(timeInterval: 12, target: self, selector: #selector(dismissSplashScreenController), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(dismissSplashScreenController), userInfo: nil, repeats: false)
     }
     @objc func dismissSplashScreenController() {
         GMSServices.provideAPIKey(SecretKeys.googleKey)
