@@ -67,6 +67,7 @@ class EventTableViewController: UITableViewController {
         
         if isQuickEvent(eventType: unwrappedEvent) {
             eventView.eventAddress.isHidden = true
+            eventView.eventTracking.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
             proximityCircle()
         } else {

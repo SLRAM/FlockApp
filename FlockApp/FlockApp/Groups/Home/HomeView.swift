@@ -69,7 +69,7 @@ class HomeView: UIView {
         segmentedControl.layer.masksToBounds = true
         segmentedControl.layer.cornerRadius = 10
         segmentedControl.tintColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
-        segmentedControl.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        segmentedControl.layer.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         segmentedControl.layer.borderColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
         //segmentedControl.contentMode.layer.masksToBounds = true
 

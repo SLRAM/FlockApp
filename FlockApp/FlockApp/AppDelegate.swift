@@ -94,7 +94,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             //. UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
             UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
             UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+//            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
             UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
             
             //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray

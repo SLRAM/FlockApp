@@ -57,6 +57,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
+        proximityCircle()
 //        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
         
         locationManager.delegate = self
@@ -250,10 +251,10 @@ class MapViewController: UIViewController {
             let eventLong = event.locationLong
             let eventName = event.eventName
             let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
+            
             if resetMapToEvent == false {
                 mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
                 self.resetMapToEvent = true
-
             }
             guard let markerImage = UIImage(named: "birdhouse") else {return}
             let eventMarker = GMSMarker.init()
