@@ -11,6 +11,7 @@ import FirebaseFirestore
 import GoogleMaps
 import Kingfisher
 import MapKit
+import UserNotifications
 
 class EventTableViewController: UITableViewController {
     var proximityCircleMarker = GMSCircle()
@@ -33,6 +34,13 @@ class EventTableViewController: UITableViewController {
         }
     }
     
+    private lazy var refreshControll: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        tableView.refreshControl = rc
+        rc.addTarget(self, action: #selector(fetchInvites), for: .valueChanged)
+        return rc
+    }()
+    
     let cellId = "EventCell"
     
     
@@ -50,6 +58,7 @@ class EventTableViewController: UITableViewController {
 //        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
+        refresh()
         fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
@@ -116,7 +125,7 @@ class EventTableViewController: UITableViewController {
         eventView.eventTracking.text = "Tracking begins: \(trackingTime)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
-        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 5))
         
         
         guard let markerImage = UIImage(named: "birdhouse") else {return}
@@ -209,29 +218,60 @@ class EventTableViewController: UITableViewController {
         sender.tableView.backgroundView = backgroundView
     }
     
-    func fetchInvites() {
+    
+    @objc func fetchInvites() {
         guard let event = event else {
             print("event is nil")
             return
         }
-        DBService.firestoreDB
+        refreshControll.beginRefreshing()
+        listener = DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document(event.documentId)
             .collection(InvitedCollectionKeys.CollectionKey)
-            .getDocuments { (snapshot, error) in
+            .addSnapshotListener({ [weak self] (snapshot, error) in
                 if let error = error {
                     print("failed to fetch invites: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
+                    self!.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
-                    for i in self.invited {
+                    for i in self!.invited {
                         if i.confirmation {
                             print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
                         }
                     }
                 }
-        }
+                DispatchQueue.main.async {
+                    self?.refreshControll.endRefreshing()
+                }
+
+            })
     }
+    
+    
+//    @objc func fetchInvites() {
+//        guard let event = event else {
+//            print("event is nil")
+//            return
+//        }
+//        DBService.firestoreDB
+//            .collection(EventsCollectionKeys.CollectionKey)
+//            .document(event.documentId)
+//            .collection(InvitedCollectionKeys.CollectionKey)
+//            .getDocuments { (snapshot, error) in
+//                if let error = error {
+//                    print("failed to fetch invites: \(error.localizedDescription)")
+//                } else if let snapshot = snapshot {
+//                    self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
+//                        .sorted { $0.displayName > $1.displayName}
+//                    for i in self.invited {
+//                        if i.confirmation {
+//                            print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
+//                        }
+//                    }
+//                }
+//        }
+//    }
     func startTimer() {
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
