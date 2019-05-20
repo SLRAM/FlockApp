@@ -46,8 +46,6 @@ class EventTableViewController: UITableViewController {
     
     let eventView = EventView()
     
-    private var listener: ListenerRegistration!
-    
     public var event: Event?
     public var tag: Int?
     
@@ -59,7 +57,7 @@ class EventTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
         refresh()
-        fetchInvites()
+        //fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
@@ -219,59 +217,34 @@ class EventTableViewController: UITableViewController {
     }
     
     
+    
     @objc func fetchInvites() {
         guard let event = event else {
             print("event is nil")
             return
         }
-        refreshControll.beginRefreshing()
-        listener = DBService.firestoreDB
+        
+        DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document(event.documentId)
             .collection(InvitedCollectionKeys.CollectionKey)
-            .addSnapshotListener({ [weak self] (snapshot, error) in
+            .getDocuments { (snapshot, error) in
                 if let error = error {
                     print("failed to fetch invites: \(error.localizedDescription)")
                 } else if let snapshot = snapshot {
-                    self!.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
+                    self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
                         .sorted { $0.displayName > $1.displayName}
-                    for i in self!.invited {
+                    for i in self.invited {
                         if i.confirmation {
                             print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
                         }
                     }
                 }
-                DispatchQueue.main.async {
-                    self?.refreshControll.endRefreshing()
-                }
-
-            })
+        }
     }
     
+
     
-//    @objc func fetchInvites() {
-//        guard let event = event else {
-//            print("event is nil")
-//            return
-//        }
-//        DBService.firestoreDB
-//            .collection(EventsCollectionKeys.CollectionKey)
-//            .document(event.documentId)
-//            .collection(InvitedCollectionKeys.CollectionKey)
-//            .getDocuments { (snapshot, error) in
-//                if let error = error {
-//                    print("failed to fetch invites: \(error.localizedDescription)")
-//                } else if let snapshot = snapshot {
-//                    self.invited = snapshot.documents.map{InvitedModel(dict: $0.data()) }
-//                        .sorted { $0.displayName > $1.displayName}
-//                    for i in self.invited {
-//                        if i.confirmation {
-//                            print("\(event.startDate)-\(i.displayName): \(i.confirmation)")
-//                        }
-//                    }
-//                }
-//        }
-//    }
     func startTimer() {
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
