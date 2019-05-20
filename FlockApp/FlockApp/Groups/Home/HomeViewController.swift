@@ -16,6 +16,7 @@ class HomeViewController: UIViewController {
     
     let color = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
     var homeView = HomeView()
+    var emptyState = EmptyStateView()
     var currentDate = Date.getISOTimestamp()
     var newUser = false
     private var pendingEventListener: ListenerRegistration!
@@ -64,14 +65,22 @@ class HomeViewController: UIViewController {
             }
         }
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        if let _ = authService.getCurrentUser() {
+        
+        } else {
+            pendingEventListener = nil
+            acceptedEventListener = nil
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
-
         view.addSubview(homeView)
+//        view.addSubview(emptyState)
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
@@ -83,45 +92,54 @@ class HomeViewController: UIViewController {
 
         homeView.dateLabel.text = currentDate.formatISODateString(dateFormat: "MMM d, yyyy")
         homeView.dayLabel.text = currentDate.formatISODateString(dateFormat: "EEEE")
+       
         
-
         homeView.segmentedControl.addTarget(self, action: #selector(indexChanged), for: .valueChanged)
         
         indexChanged(homeView.segmentedControl)
         
+        //Swipe gesture code//
+        let rightSwipe = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe(sender: )))
         
-        let leftSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector (handleSwipe(sender: )))
+        let leftSwipe = UISwipeGestureRecognizer(target: self, action: #selector (handleSwipe(sender: )))
         
-        let rightSwipe = UISwipeGestureRecognizer(target: self.homeView.segmentedControl, action: #selector(handleSwipe(sender: )))
+        rightSwipe.direction = .right
+        leftSwipe.direction = .left
         
-        leftSwipe.direction = UISwipeGestureRecognizer.Direction.left
-        rightSwipe.direction = UISwipeGestureRecognizer.Direction.right
+        self.homeView.addGestureRecognizer(rightSwipe)
+        self.homeView.addGestureRecognizer(leftSwipe)
         
-        self.homeView.segmentedControl.addGestureRecognizer(leftSwipe)
-        self.homeView.segmentedControl.addGestureRecognizer(rightSwipe)
-        
+      
 
     }
     
-   
-    
+    //Swipe gesture code//
     @objc func handleSwipe(sender: UISwipeGestureRecognizer){
-        if sender.direction == .left {
-            print("swipe right")
-//            homeView.delegate?.segmentedPastEventPressed()
-//            homeView.delegate?.segmentedEventsPressed()
-
-        }
-        
-        if sender.direction == .right {
-            print("swipe right")
-//            homeView.delegate?.pendingJoinEventPressed()
-//            homeView.delegate?.segmentedEventsPressed()
+        switch sender.direction {
+        case .left:
+            print("Left")
+            if self.homeView.segmentedControl.selectedSegmentIndex == 2 {
+                self.homeView.segmentedControl.selectedSegmentIndex = 0
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            } else {
+                self.homeView.segmentedControl.selectedSegmentIndex = self.homeView.segmentedControl.selectedSegmentIndex + 1
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            }
+        case .right:
+            print("right")
+            if self.homeView.segmentedControl.selectedSegmentIndex == 0 {
+                self.homeView.segmentedControl.selectedSegmentIndex = 2
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            } else {
+                self.homeView.segmentedControl.selectedSegmentIndex = self.homeView.segmentedControl.selectedSegmentIndex - 1
+                self.homeView.segmentedControl.sendActions(for: .valueChanged)
+            }
+        default:
+            print("Nothing")
         }
     }
     
-  
-    
+
     func acceptEventPressed(eventCell: Event) {
         guard let user = authService.getCurrentUser() else {
             print("no logged user")
@@ -309,10 +327,11 @@ class HomeViewController: UIViewController {
                     
                 }
                 DispatchQueue.main.async {
-                    self!.homeView.delegate?.segmentedEventsPressed()
-                    self!.homeView.usersCollectionView.dataSource = self
-                    self!.homeView.usersCollectionView.delegate = self
+                    self?.homeView.delegate?.segmentedEventsPressed()
+                    self?.homeView.usersCollectionView.dataSource = self
+                    self?.homeView.usersCollectionView.delegate = self
                     self?.refreshControl.endRefreshing()
+                    
                 }
             })
     }
