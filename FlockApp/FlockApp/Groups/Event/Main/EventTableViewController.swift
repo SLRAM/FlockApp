@@ -13,6 +13,7 @@ import Kingfisher
 import MapKit
 
 class EventTableViewController: UITableViewController {
+    var proximityCircleMarker = GMSCircle()
     let customMarkerWidth: Int = 50
     let customMarkerHeight: Int = 70
     lazy var myTimer = Timer(timeInterval: 10.0, target: self, selector: #selector(refresh), userInfo: nil, repeats: true)
@@ -68,6 +69,7 @@ class EventTableViewController: UITableViewController {
             eventView.eventAddress.isHidden = true
             eventView.eventTracking.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
+            proximityCircle()
         } else {
             standardEventMap(unwrappedEvent: unwrappedEvent)
         }
@@ -81,6 +83,26 @@ class EventTableViewController: UITableViewController {
         }
 //        setTableViewBackgroundGradient(sender: self, #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1), .white)
     }
+    func proximityCircle() {
+        guard let unwrappedEvent = event else {
+            print("Unable to obtain event for proximity circle")
+            return}
+        let prox = unwrappedEvent.proximity
+        print("Event Proximity is \(prox)")
+        let circleCenter = CLLocationCoordinate2D(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
+        proximityCircleMarker = GMSCircle(position: circleCenter, radius: prox)
+        //        let proximityCircle = GMSCircle(position: circleCenter, radius: prox)
+        //        busStop.title = stop.name
+        //        #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+        proximityCircleMarker.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
+        //        busStop.fillColor?.withAlphaComponent(0.8)
+        proximityCircleMarker.map = self.eventView.myMapView
+        let stopMarker = GMSMarker.init(position: circleCenter)
+        stopMarker.snippet = proximityCircleMarker.title
+        stopMarker.opacity = 0
+        stopMarker.map = self.eventView.myMapView
+    }
+
     func standardEventMap(unwrappedEvent: Event) {
         //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         let eventLat = unwrappedEvent.locationLat
@@ -145,7 +167,7 @@ class EventTableViewController: UITableViewController {
         
     }
     func isQuickEvent(eventType: Event) -> Bool {
-        if eventType.eventName == "On The Fly" {
+        if eventType.eventName == "On The Fly" || eventType.eventName == "Quick Event"{
             return true
         } else {
             return false

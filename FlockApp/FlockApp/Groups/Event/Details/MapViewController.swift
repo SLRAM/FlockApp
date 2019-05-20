@@ -377,7 +377,8 @@ class MapViewController: UIViewController {
             var count = 0
             var alertMessage = String()
             for guest in allOutOfRangeGuests {
-                alertMessage += "\(guest.GuestName) is \(Int(guest.GuestDistance.rounded())) meters away"
+                let dist = (guest.GuestDistance*3.28084).rounded()
+                alertMessage += "\(guest.GuestName) is \(Int(dist)) feet away"
                 if count != allOutOfRangeGuests.count {
                     alertMessage += "\n"
                     count += 1
