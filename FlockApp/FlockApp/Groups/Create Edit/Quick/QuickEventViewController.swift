@@ -108,7 +108,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
     }
     
     func createQuickPressed() {
-        
+        quickEventView.createButton.isEnabled = false
         var eventLength = hours*60
         var currentDate = Date()
         var endingDate = currentDate.adding(minutes: eventLength)
@@ -125,7 +125,9 @@ extension QuickEventViewController: QuickEventViewDelegate {
         
         guard let user = authservice.getCurrentUser() else {
             let alertController = UIAlertController(title: "Unable to post. Please login to post.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.quickEventView.createButton.isEnabled = true
+            }
             alertController.addAction(okAction)
             
             present(alertController, animated: true)
@@ -133,7 +135,9 @@ extension QuickEventViewController: QuickEventViewDelegate {
         
         guard let imageData = selectedImage?.jpegData(compressionQuality: 1.0) else {
             let alertController = UIAlertController(title: "Unable to post. Please fill in the required fields.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.quickEventView.createButton.isEnabled = true
+            }
             alertController.addAction(okAction)
             self.present(alertController, animated: true)
             return}
