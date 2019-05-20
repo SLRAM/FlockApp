@@ -11,6 +11,7 @@ import FirebaseFirestore
 import GoogleMaps
 import Kingfisher
 import MapKit
+import UserNotifications
 
 class EventTableViewController: UITableViewController {
     var proximityCircleMarker = GMSCircle()
@@ -33,12 +34,17 @@ class EventTableViewController: UITableViewController {
         }
     }
     
+    private lazy var refreshControll: UIRefreshControl = {
+        let rc = UIRefreshControl()
+        tableView.refreshControl = rc
+        rc.addTarget(self, action: #selector(fetchInvites), for: .valueChanged)
+        return rc
+    }()
+    
     let cellId = "EventCell"
     
     
     let eventView = EventView()
-    
-    private var listener: ListenerRegistration!
     
     public var event: Event?
     public var tag: Int?
@@ -50,7 +56,8 @@ class EventTableViewController: UITableViewController {
 //        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
-        fetchInvites()
+        refresh()
+        //fetchInvites()
         self.title = event?.eventName
         self.tableView.sectionHeaderHeight = 400
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
@@ -116,7 +123,7 @@ class EventTableViewController: UITableViewController {
         eventView.eventTracking.text = "Tracking begins: \(trackingTime)"
         eventView.eventAddress.text = eventAddress
         eventView.delegate = self
-        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
+        eventView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 5))
         
         
         guard let markerImage = UIImage(named: "birdhouse") else {return}
@@ -209,11 +216,14 @@ class EventTableViewController: UITableViewController {
         sender.tableView.backgroundView = backgroundView
     }
     
-    func fetchInvites() {
+    
+    
+    @objc func fetchInvites() {
         guard let event = event else {
             print("event is nil")
             return
         }
+        
         DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document(event.documentId)
@@ -232,6 +242,9 @@ class EventTableViewController: UITableViewController {
                 }
         }
     }
+    
+
+    
     func startTimer() {
         RunLoop.main.add(myTimer, forMode: RunLoop.Mode.default)
     }
