@@ -42,9 +42,8 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro) - Used for  ____
+* [Firebase](https://firebase.google.com/docs) - Used for ___
 
 ## Contributing
 
