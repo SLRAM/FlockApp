@@ -5,9 +5,6 @@ The user will be able to create an account and post events. The user can post tw
 
 The purpose of this app is to lessen the burden of trying to organize trips and outings with friends. Sometimes it can be nerve racking trying to make sure events go as planned and that everyone in the group is well informed. No matter how big or small the event may be, our app will allow users the opportunity to build an event that is well detailed and accessible.
 
-# Project Title
-
-One Paragraph of project description goes here
 
 ## Getting Started
 
@@ -39,26 +36,6 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
 ## Deployment
 
 Add additional notes about how to deploy this on a live system
@@ -79,9 +56,13 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+[Stephanie Ramirez](https://github.com/SLRAM) - Team Lead
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+[Biron Su](https://github.com/BironSu) - Project Lead
+
+[Nathalie Messier](https://github.com/natmess) - Tech Lead
+
+[Yaz Burrell](https://github.com/yazzy4) - Design Lead
 
 ## License
 
@@ -89,7 +70,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* [Alex Paul](https://github.com/alexpaul)
+* [Alan H](???)
+* [Cameron Spickert](https://cameronspickert.com)
+
 ![](FlockThreeTabIntro.gif)
