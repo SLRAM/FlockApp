@@ -71,7 +71,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 
 * [Alex Paul](https://github.com/alexpaul)
-* [Alan H](???)
+* [Alan H](https://github.com/lynksdomain)
 * [Cameron Spickert](https://cameronspickert.com)
 
 ![](FlockThreeTabIntro.gif)
