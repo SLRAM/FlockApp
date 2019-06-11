@@ -73,4 +73,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Alan H](https://github.com/lynksdomain)
 * [Cameron Spickert](https://cameronspickert.com)
 
-![](FlockThreeTabIntro.gif)
+![](gifs/FlockThreeTabIntro.gif)
