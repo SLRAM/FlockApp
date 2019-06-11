@@ -73,4 +73,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * [Alan H](https://github.com/lynksdomain)
 * [Cameron Spickert](https://cameronspickert.com)
 
+### HomePage
 ![](gifs/FlockThreeTabIntro.gif)
+
+### Creating Standard Event
+![](gifs/FlockCreateStandard1.gif)
+![](gifs/FlockCreateStandard2.gif)
+![](gifs/FlockCreateStandard3.gif)
+
+### Accepting OnTheFly Event
+![](gifs/FlockAcceptingPending.gif)
+
+### Accepting Standard Event
+![](gifs/FlockAcceptingStandardEvent.gif)
+
+
+
+
