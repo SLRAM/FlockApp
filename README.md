@@ -87,6 +87,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Accepting Standard Event
 ![](gifs/FlockAcceptingStandardEvent.gif)
 
+### Past Events
+![](gifs/FlockPastEvents.gif)
+
+### Friends
+![](gifs/FlockAddFriend.gif)
+
 
 
 
