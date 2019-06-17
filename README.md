@@ -68,6 +68,7 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 
 
 ### Requirements
+
 * iOS 8.0+ / Mac OS X 10.11+ / tvOS 9.0+
 * Xcode 9.0+
 * Swift 4.0+
