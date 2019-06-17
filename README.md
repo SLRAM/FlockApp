@@ -9,18 +9,15 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 What things you need to install the software and how to install them
 
 ## Built With
-* [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro) - Used for  ____
-* [Firebase](https://firebase.google.com/docs) - Used for ___
+* [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro)
+* [Firebase](https://firebase.google.com/docs) 
 
 
 ## Collaborators
 
 [Stephanie Ramirez](https://github.com/SLRAM) - Team Lead
-
 [Biron Su](https://github.com/BironSu) - Project Lead
-
 [Nathalie Messier](https://github.com/natmess) - Tech Lead
-
 [Yaz Burrell](https://github.com/yazzy4) - Design Lead
 
 ## License
