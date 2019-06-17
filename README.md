@@ -36,9 +36,6 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 
 [Yaz Burrell](https://github.com/yazzy4) - Design Lead
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
@@ -75,5 +72,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * Xcode 9.0+
 * Swift 4.0+
 
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 
