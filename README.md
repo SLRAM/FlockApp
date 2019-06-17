@@ -1,7 +1,7 @@
 # Flock App
 Flock is an event app that makes planning easy! 
 
-Find your friends and assign them tasks for any kind of get together
+Find your friends and keep tasks organized for any kind of get together.
 
 ## Overview
 
@@ -10,16 +10,18 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 ## Features
 * The user will be able to create an account and post events.
 
+* The user can search and add other users to their friend list.
+
 * The user can post two types of events:
   * Stationary events
   * On the fly events
 
 * Stationary events:
-  * Require a general location, a description, event time, tracking time frame, attendees, and tasks
+  * Require a general location, a description, event time, tracking time frame, attendees, and tasks.
   * Provide attendees the opportunity to assign themselves a task and view a map of the events radius and other attendees locations.
 
 * On the fly events:
-  * Require a general location, event time, tracking time frame, and attendees
+  * Require a general location, event time, tracking time frame, and attendees.
   * Designate a group leader and the radius will be based on their location or the location of the main cluster.
 
 * The user will be notified when an event's tracking period will begin and will be able to opt out of this feature.
