@@ -16,8 +16,11 @@ What things you need to install the software and how to install them
 ## Collaborators
 
 [Stephanie Ramirez](https://github.com/SLRAM) - Team Lead
+
 [Biron Su](https://github.com/BironSu) - Project Lead
+
 [Nathalie Messier](https://github.com/natmess) - Tech Lead
+
 [Yaz Burrell](https://github.com/yazzy4) - Design Lead
 
 ## License
