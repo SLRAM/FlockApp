@@ -24,29 +24,6 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 
 * The user will be notified when an event's tracking period will begin and will be able to opt out of this feature.
 
-
-## Built With
-* [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro)
-* [Firebase](https://firebase.google.com/docs) 
-
-
-## Collaborators
-
-[Stephanie Ramirez](https://github.com/SLRAM) - Team Lead
-
-[Biron Su](https://github.com/BironSu) - Project Lead
-
-[Nathalie Messier](https://github.com/natmess) - Tech Lead
-
-[Yaz Burrell](https://github.com/yazzy4) - Design Lead
-
-
-## Acknowledgments
-
-* [Alex Paul](https://github.com/alexpaul)
-* [Alan H](https://github.com/lynksdomain)
-* [Cameron Spickert](https://cameronspickert.com)
-
 ### HomePage - View All Events
 ![](gifs/FlockThreeTabIntro.gif)
 
@@ -69,6 +46,29 @@ The purpose of this app is to lessen the burden of trying to organize trips and 
 
 ### Friends
 ![](gifs/FlockAddFriend.gif)
+
+
+## Built With
+* [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro)
+* [Firebase](https://firebase.google.com/docs) 
+
+
+## Collaborators
+
+[Stephanie Ramirez](https://github.com/SLRAM) - Team Lead
+
+[Biron Su](https://github.com/BironSu) - Project Lead
+
+[Nathalie Messier](https://github.com/natmess) - Tech Lead
+
+[Yaz Burrell](https://github.com/yazzy4) - Design Lead
+
+
+## Acknowledgments
+
+* [Alex Paul](https://github.com/alexpaul)
+* [Alan H](https://github.com/lynksdomain)
+* [Cameron Spickert](https://cameronspickert.com)
 
 
 ### Requirements
