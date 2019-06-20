@@ -5,7 +5,7 @@ Find your friends and keep tasks organized for any kind of get together.
 
 ## Overview
 
-The purpose of this app is to lessen the burden of trying to organize trips and outings with friends. Sometimes it can be nerve racking trying to make sure events go as planned and that everyone in the group is well informed. No matter how big or small the event may be, our app will allow users the opportunity to build an event that is well detailed and accessible.
+Flock's purpose is to lessen the burden of trying to organize trips and outings with friends. Sometimes it can be nerve racking trying to make sure events go as planned and that everyone in the group is well informed. No matter how big or small the event may be, our app will allow users the opportunity to build an event that is well detailed and accessible.
 
 ## Features
 * The user will be able to create an account and post events.
