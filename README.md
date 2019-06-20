@@ -53,6 +53,7 @@ Clicking on a person in the tableView will take the user to a map that solely di
 
 ### Friends
 The user can click on the Friends tab to view their friends list. This is a tableView containing the profile pictures and names of all users in the app, with the user's friends being prioritized at the top. The user may add or reject people by clicking the buttons on the righthand side, and clicking on a person takes the user to a view containing more information on the user. Blocking users is also possible.
+
 ![](gifs/FlockAddFriend.gif)
 
 
