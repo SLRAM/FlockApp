@@ -1,3 +1,5 @@
+![](Images/banner.png)
+
 # Flock App
 Flock is an event app that makes planning easy! 
 
