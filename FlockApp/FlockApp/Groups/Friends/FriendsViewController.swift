@@ -42,7 +42,11 @@ class FriendsViewController: UIViewController {
             }
         }
     }
-    private var listener: ListenerRegistration!
+    private var fetchFriendListener: ListenerRegistration!
+    private var fetchAllListener: ListenerRegistration!
+    private var friendPendingListener: ListenerRegistration!
+    private var friendRequestListener: ListenerRegistration!
+
     private var authservice = AppDelegate.authservice
     var allUsers = [UserModel]()
 
@@ -85,7 +89,7 @@ class FriendsViewController: UIViewController {
                 print("Please log in")
                 return
             }
-        listener = DBService.firestoreDB
+        friendPendingListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
             .collection(FriendsCollectionKey.PendingKey)
@@ -114,7 +118,7 @@ class FriendsViewController: UIViewController {
             print("Please log in")
             return
         }
-        listener = DBService.firestoreDB
+        friendRequestListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
             .collection(FriendsCollectionKey.RequestKey)
@@ -144,7 +148,7 @@ class FriendsViewController: UIViewController {
             print("Please log in")
             return
         }
-        listener = DBService.firestoreDB
+        fetchFriendListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .document(user.uid)
             .collection(FriendsCollectionKey.CollectionKey)
@@ -186,7 +190,7 @@ class FriendsViewController: UIViewController {
             print("Please log in")
             return
         }
-        listener = DBService.firestoreDB
+        fetchAllListener = DBService.firestoreDB
             .collection(UsersCollectionKeys.CollectionKey)
             .addSnapshotListener { [weak self] (snapshot, error) in
                 if let error = error {
