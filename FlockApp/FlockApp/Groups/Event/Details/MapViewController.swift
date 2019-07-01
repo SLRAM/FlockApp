@@ -65,6 +65,8 @@ class MapViewController: UIViewController {
         
         proximity = unwrappedEvent.proximity
         self.view.addSubview(mapView)
+        
+        mapView.myMapView.setMinZoom(10, maxZoom: 18)
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             //we need to say how accurate the data should be
             locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
@@ -211,7 +213,7 @@ class MapViewController: UIViewController {
                             let eventName = self?.hostEvent?.eventName {
                                 let eventLocation = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
                                 if self?.resetMapToEvent == false {
-                                    self?.mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 16))
+                                    self?.mapView.myMapView.animate(to: GMSCameraPosition(latitude: eventLat, longitude: eventLong, zoom: 15))
                                     self?.resetMapToEvent = true
                                 }
                                 guard let markerImage = UIImage(named: "birdhouse") else {return}
@@ -406,7 +408,8 @@ class MapViewController: UIViewController {
         let eventCoordinates = CLLocationCoordinate2D(latitude: event.locationLat, longitude: event.locationLong)
         if let guestNumber = boundsNumber(guests: allGuestMarkers) {
             let guestCoordinate = allGuestMarkers[guestNumber].position
-            mapView.myMapView.moveCamera(GMSCameraUpdate.fit(GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)))
+            let bounds = GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)
+            mapView.myMapView.moveCamera(GMSCameraUpdate.fit(bounds, withPadding: 25))
         }
 
     }
