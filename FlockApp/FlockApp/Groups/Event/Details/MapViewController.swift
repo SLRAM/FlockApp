@@ -45,6 +45,7 @@ class MapViewController: UIViewController {
 
     private var listener: ListenerRegistration!
     private var HostListener: ListenerRegistration!
+    
     private var authService = AppDelegate.authservice
 
     
@@ -99,20 +100,32 @@ class MapViewController: UIViewController {
         guard let unwrappedEvent = event else {
             print("Unable to obtain event for proximity circle")
             return}
+        var updatedEvent = unwrappedEvent
         let prox = unwrappedEvent.proximity
         print("Event Proximity is \(prox)")
-        let circleCenter = CLLocationCoordinate2D(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
-        proximityCircleMarker = GMSCircle(position: circleCenter, radius: prox)
+        // BIRON: Add the host lat and long instead.
+        DBService.firestoreDB
+            .collection(EventsCollectionKeys.CollectionKey)
+            .document(unwrappedEvent.documentId)
+            .getDocument { (snapshot, error) in
+                if let error = error {
+                    self.showAlert(title: "Updating Event Location Error", message: error.localizedDescription)
+                } else if let snapshot = snapshot {
+                    updatedEvent = Event(dict: snapshot.data()!)
+                    let circleCenter = CLLocationCoordinate2D(latitude: updatedEvent.locationLat, longitude: updatedEvent.locationLong)
+                    self.proximityCircleMarker = GMSCircle(position: circleCenter, radius: prox)
+                    self.proximityCircleMarker.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
+                    //        busStop.fillColor?.withAlphaComponent(0.8)
+                    self.proximityCircleMarker.map = self.mapView.myMapView
+                    let stopMarker = GMSMarker.init(position: circleCenter)
+                    stopMarker.snippet = self.proximityCircleMarker.title
+                    stopMarker.opacity = 0
+                    stopMarker.map = self.mapView.myMapView
+                }
+        }
 //        let proximityCircle = GMSCircle(position: circleCenter, radius: prox)
 //        busStop.title = stop.name
 //        #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
-        proximityCircleMarker.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
-//        busStop.fillColor?.withAlphaComponent(0.8)
-        proximityCircleMarker.map = self.mapView.myMapView
-        let stopMarker = GMSMarker.init(position: circleCenter)
-        stopMarker.snippet = proximityCircleMarker.title
-        stopMarker.opacity = 0
-        stopMarker.map = self.mapView.myMapView
     }
     
     func isQuickEvent(eventType: Event) -> Bool {
