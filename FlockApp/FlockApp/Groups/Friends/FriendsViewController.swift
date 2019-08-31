@@ -56,7 +56,6 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.friendSearch.delegate = self
-//        friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
         tapGestureKeyboard()
     }
@@ -323,6 +322,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
             fatalError("It broke")
         }
+        friendsView.friendSearch.resignFirstResponder()
+
         let profileVC = ProfileViewController()
         switch indexPath.section {
         case 0:

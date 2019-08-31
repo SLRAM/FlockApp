@@ -28,18 +28,14 @@ class MainInterface: UIViewController {
         } catch { }
         
         let path = Bundle.main.path(forResource: "FlockIntroFinal", ofType:"mp4")
-        
         let filePathURL = NSURL.fileURL(withPath: path!)
         let player = AVPlayer(url: filePathURL)
         let playerLayer = AVPlayerLayer(player: player)
         playerLayer.backgroundColor = UIColor.white.cgColor
-        
         playerLayer.frame = self.view.frame
         playerLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         playerLayer.zPosition = -1
-        
         self.view.layer.addSublayer(playerLayer)
-        
         player.seek(to: CMTime.zero)
         player.play()
     }

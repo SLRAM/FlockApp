@@ -36,28 +36,20 @@ class CreateEditViewController: UIViewController {
         ip.delegate = self
         return ip
     }()
-    
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(createEditView)
         selectedImage = createEditView.imageButton.imageView?.image
         viewSetup()
         
-        
-//        registerKeyboardNotifications()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         registerKeyboardNotifications()
 
-//        unregisterKeyboardNotifications() //possibly the other one goes here???
     }
     deinit {
-        //clean up views
-        //clean up memory
-        //can also unregister for notification here
     }
     
     private func registerKeyboardNotifications() {
@@ -75,13 +67,9 @@ class CreateEditViewController: UIViewController {
                 print("userInfo is nil")
                 return
         }
-        //        print(info)
-        //if selector is from tableview {
         if isTextField {
             createEditView.myTableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
-
         }
-        
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(true)
@@ -92,11 +80,6 @@ class CreateEditViewController: UIViewController {
         //identity will return to original location
         createEditView.myTableView.transform = CGAffineTransform.identity
     }
-    
-    
-    
-    
-    
     
     func viewSetup() {
         navigationItem.title = "Create Event"
@@ -117,12 +100,12 @@ class CreateEditViewController: UIViewController {
             number += 1
         }
         if number == 1{
-            return "Start \(number) hour before event"
+            return "\(number) hour before event"
             
         } else if number == 0{
             return trackingPlaceholder
         } else {
-            return "Start \(number) hours before event"
+            return "\(number) hours before event"
         }
         
     }

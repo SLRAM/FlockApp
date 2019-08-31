@@ -178,6 +178,8 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        invitedView.friendSearch.resignFirstResponder()
+
         if isSearching {
             let friend = filteredFriends[indexPath.row]
             if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
@@ -228,5 +230,8 @@ extension InvitedViewController: UISearchBarDelegate {
             filteredFriends = friends.filter({$0.displayName.lowercased().contains(searchText.lowercased())})
         }
         invitedView.myTableView.reloadData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

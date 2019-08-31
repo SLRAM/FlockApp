@@ -8,12 +8,7 @@
 import UIKit
 
 class SelectionView: UIViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
-    
-
-
 }

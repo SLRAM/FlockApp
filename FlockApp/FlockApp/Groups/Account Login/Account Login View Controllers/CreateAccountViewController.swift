@@ -43,8 +43,6 @@ class CreateAccountViewController: UIViewController {
             appDelegate.window?.rootViewController = loginView
         }
     }
-
-
 }
 
 extension CreateAccountViewController: AuthServiceCreateNewAccountDelegate {
@@ -54,19 +52,12 @@ extension CreateAccountViewController: AuthServiceCreateNewAccountDelegate {
     
     func didCreateNewAccount(_ authservice: AuthService, user userModel: UserModel) {
         let mainTabBarController = TabBarController()
-//        mainTabBarController.modalTransitionStyle = .crossDissolve
-//        mainTabBarController.modalPresentationStyle = .overFullScreen
-        UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-//        UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-//        UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-        UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         present(mainTabBarController, animated: true)
     }
 }
 extension CreateAccountViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
         return true
     }
 }

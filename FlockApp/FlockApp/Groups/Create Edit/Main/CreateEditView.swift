@@ -213,8 +213,6 @@ extension CreateEditView {
         addSubview(imageButton)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         imageButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
-//        imageButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-//        imageButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
         imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
         imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
         imageButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
