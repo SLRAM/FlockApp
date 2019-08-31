@@ -16,7 +16,6 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.isNavigationBarHidden = true
         authservice.authserviceExistingAccountDelegate = self
         emailTextField.delegate = self
         passwordTextField.delegate = self
@@ -48,7 +47,7 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
 //        mainTabBarController.modalTransitionStyle = .crossDissolve
 //        mainTabBarController.modalPresentationStyle = .overFullScreen
         UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
+//        UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
 //        UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
         UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         present(mainTabBarController, animated: true)
