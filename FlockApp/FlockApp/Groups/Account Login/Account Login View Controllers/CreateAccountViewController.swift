@@ -18,7 +18,9 @@ class CreateAccountViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         authservice.authserviceCreateNewAccountDelegate = self
-        
+        usernameTextField.delegate = self
+        emailTextField.delegate = self
+        passwordTextField.delegate = self
     }
     @IBAction func createAccountButtonPressed(_ sender: UIButton) {
         guard let username = usernameTextField.text,
@@ -59,5 +61,12 @@ extension CreateAccountViewController: AuthServiceCreateNewAccountDelegate {
 //        UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
         UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
         present(mainTabBarController, animated: true)
+    }
+}
+extension CreateAccountViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        
+        return true
     }
 }
