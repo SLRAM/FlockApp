@@ -142,7 +142,7 @@ class CreateEditView: UIView {
         let tv = UITableView()
         tv.register(CreateEditTableViewCell.self, forCellReuseIdentifier: "CreateEditTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/10
-//        tv.backgroundColor = .clear
+        tv.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         tv.separatorStyle = .none
         return tv
     }()
@@ -186,7 +186,7 @@ class CreateEditView: UIView {
         commonInit()
     }
     private func commonInit() {
-        backgroundColor = .white
+        backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupView()
     }
     

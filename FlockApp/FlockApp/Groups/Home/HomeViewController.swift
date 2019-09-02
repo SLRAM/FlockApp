@@ -289,7 +289,7 @@ class HomeViewController: UIViewController {
             homeView.delegate?.segmentedPastEventPressed()
             if filteredPastEvents.isEmpty {
                 homeView.usersCollectionView.backgroundView = emptyState
-                emptyState.emptyStateLabel.text = "No past events available. Once an accepted even expires it will show up here."
+                emptyState.emptyStateLabel.text = "No past events available. Once an accepted even expires, it will show up here."
             } else {
                 homeView.usersCollectionView.backgroundView = UIView()
             }

@@ -49,12 +49,7 @@ class InvitedView: UIView {
 }
 extension InvitedView {
     func setupViews() {
-        backgroundColor = .white
-        
-        //        let gradient = CAGradientLayer()
-        //        gradient.frame = self.bounds
-        //        gradient.colors = [UIColor.magenta.cgColor,UIColor.red.cgColor,UIColor.purple.cgColor,UIColor.blue.cgColor]
-        //        self.layer.addSublayer(gradient)
+        backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupFriendSearch()
         setupTableView()
     }
@@ -63,7 +58,6 @@ extension InvitedView {
         addSubview(friendSearch)
         friendSearch.translatesAutoresizingMaskIntoConstraints = false
         friendSearch.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor).isActive = true
-//        friendSearch.bottomAnchor.constraint(equalTo: mySearchBarView.bottomAnchor).isActive = true
         friendSearch.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor).isActive = true
         friendSearch.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor).isActive = true
     }

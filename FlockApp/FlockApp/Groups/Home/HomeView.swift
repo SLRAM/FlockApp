@@ -14,7 +14,6 @@ protocol UserEventCollectionViewDelegate: AnyObject {
 }
 
 class HomeView: UIView {
-    
     weak var delegate: UserEventCollectionViewDelegate?
     var homeViewController: HomeViewController?
     var cellView =  EventHomeCollectionViewCell()
@@ -51,7 +50,7 @@ class HomeView: UIView {
     }()
     
     lazy var segmentedControl: UISegmentedControl = {
-        let items = ["Events", "Past Events", "Pending Events"]
+        let items = ["Events", "Past", "Pending"]
         let segmentedControl = UISegmentedControl(items: items)
         segmentedControl.layer.borderWidth = 1
         segmentedControl.layer.masksToBounds = true
@@ -82,7 +81,7 @@ class HomeView: UIView {
             cellLayout.minimumLineSpacing = 30
             cellLayout.itemSize = CGSize.init(width: 350, height:350)
             let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: cellLayout)
-            collectionView.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
+            collectionView.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
             collectionView.layer.cornerRadius = 15.0
             return collectionView
         }()
@@ -98,6 +97,7 @@ class HomeView: UIView {
         }
     
         private func commonInit() {
+
             setConstraints()
         }
     
@@ -128,6 +128,7 @@ class HomeView: UIView {
     }
     
     func setupNotification(){
+        // need to fix location last
         addSubview(notificationIndicator)
         notificationIndicator.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -142,7 +143,7 @@ class HomeView: UIView {
     addSubview(segmentedControl)
         segmentedControl.translatesAutoresizingMaskIntoConstraints = false
         segmentedControl.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 88).isActive = true
-        segmentedControl.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 40).isActive = true
+        segmentedControl.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
         segmentedControl.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.04).isActive = true
         segmentedControl.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8).isActive = true
     }

@@ -114,11 +114,11 @@ class QuickEventView: UIView {
         print("event date pressed")
         
     }
- // Changing tableview segue to friends table view
     lazy var myTableView: UITableView = {
         let tv = UITableView()
         tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
         tv.rowHeight = (UIScreen.main.bounds.width)/4
+        tv.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         return tv
     }()
     public lazy var cancelButton: UIBarButtonItem = {
@@ -128,9 +128,6 @@ class QuickEventView: UIView {
     @objc func cancelButtonPressed() {
         delegate?.cancelQuickPressed()
     }
-    
-    
-    
     
     public lazy var createButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Create", style: UIBarButtonItem.Style.plain, target: self, action: #selector(createQuickPressed))
@@ -152,7 +149,7 @@ class QuickEventView: UIView {
         commonInit()
     }
     private func commonInit() {
-        backgroundColor = .white
+        backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupView()
     }
     

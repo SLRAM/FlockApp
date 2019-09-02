@@ -16,14 +16,14 @@ class ProfileView: UIView {
         textView.textAlignment = .center
         textView.layer.cornerRadius = 10.0
         textView.font = UIFont.boldSystemFont(ofSize: 20)
-        textView.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        textView.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         textView.textColor = .white
 
         return textView
     }()
     lazy var miniView: UIView = {
         let miniView = UIView()
-        miniView.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 0.3)
+        miniView.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         miniView.layer.cornerRadius = 10.0
         return miniView
     }()
@@ -65,7 +65,6 @@ class ProfileView: UIView {
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.isHidden = true
         textView.isScrollEnabled = false
-
         textView.textColor = .white
         return textView
     }()
@@ -109,28 +108,28 @@ class ProfileView: UIView {
         let button = RoundedButton()
         button.setTitle("Edit", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         return button
     }()
     lazy var signOutButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle(" Sign Out ", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         return button
     }()
     lazy var addFriend: RoundedButton = {
         let button = RoundedButton()
         button.setTitle(" Add Friend ", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         return button
     }()
     lazy var blockButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle(" Block User ", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        button.backgroundColor = #colorLiteral(red: 0.5913429856, green: 0.1131442711, blue: 0.7193526626, alpha: 1)
         return button
     }()
     override init(frame: CGRect) {
@@ -145,7 +144,7 @@ class ProfileView: UIView {
     }
     
     private func setupConstraints() {
-        backgroundColor = .white
+        backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupEditButton()
         setupImageButton()
         setupDisplayNameTextView()
@@ -182,10 +181,10 @@ class ProfileView: UIView {
         addSubview(displayNameTextView)
         displayNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            displayNameTextView.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 0),
+            displayNameTextView.topAnchor.constraint(equalTo: imageButton.bottomAnchor),
             displayNameTextView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-            displayNameTextView.widthAnchor.constraint(equalToConstant: 300),
-            displayNameTextView.heightAnchor.constraint(equalToConstant: 40)
+            displayNameTextView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.8),
+            displayNameTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08)
             ])
     }
     private func setupMiniView() {
@@ -208,22 +207,25 @@ class ProfileView: UIView {
         firstNameTextView.translatesAutoresizingMaskIntoConstraints = false
         lastNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-//            fullNameLabel.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 25),
+            
             fullNameLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
             fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
             fullNameLabel.widthAnchor.constraint(equalToConstant: 70),
             fullNameLabel.heightAnchor.constraint(equalToConstant: 30),
-//            fullNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
+            
+            
+            
+            
+            
+            
             fullNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 20),
             fullNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
             fullNameTextView.widthAnchor.constraint(equalToConstant: 200),
             fullNameTextView.heightAnchor.constraint(equalToConstant: 30),
-//            firstNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
             firstNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
             firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
             firstNameTextView.widthAnchor.constraint(equalToConstant: 100),
             firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
-//            lastNameTextView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 20),
             lastNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
             lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
             lastNameTextView.widthAnchor.constraint(equalToConstant: 100),
@@ -267,7 +269,6 @@ class ProfileView: UIView {
         addFriend.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             addFriend.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-//            addFriend.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
             addFriend.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -60),
             addFriend.heightAnchor.constraint(equalToConstant: 30)
             ])
@@ -286,7 +287,6 @@ class ProfileView: UIView {
         signOutButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             signOutButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
-//            signOutButton.topAnchor.constraint(equalTo: phoneNumberTextView.bottomAnchor, constant: 20),
             signOutButton.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -60),
             signOutButton.heightAnchor.constraint(equalToConstant: 30)
             ])
