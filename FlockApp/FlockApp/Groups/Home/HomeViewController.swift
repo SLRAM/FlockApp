@@ -250,20 +250,26 @@ class HomeViewController: UIViewController {
     @objc func showCreateEditEvent() {
         
         let optionMenu = UIAlertController(title: nil, message: "Create an Event:", preferredStyle: .actionSheet)
-        let  eventAction = UIAlertAction(title: "Standard Event", style: .default, handler: { (action) -> Void in
+        let eventAction = UIAlertAction(title: "Standard Event", style: .default, handler: { (action) -> Void in
             let createEditVC = CreateEditViewController()
             let createNav = UINavigationController.init(rootViewController: createEditVC)
             self.present(createNav, animated: true)
         })
-        let  quickEventAction = UIAlertAction(title: "On The Fly", style: .default, handler: { (action) -> Void in
+        let quickEventAction = UIAlertAction(title: "On The Fly", style: .default, handler: { (action) -> Void in
             
             let quickEditVC = QuickEventViewController()
             let createNav = UINavigationController.init(rootViewController: quickEditVC)
             self.present(createNav, animated: true)
         })
+        let eventTryAction = UIAlertAction(title: "Trial Event", style: .default, handler: { (action) -> Void in
+            let createEditTrialVC = CreateEditTableViewController()
+            let createTrialNav = UINavigationController.init(rootViewController: createEditTrialVC)
+            self.present(createTrialNav, animated: true)
+        })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         optionMenu.addAction(eventAction)
         optionMenu.addAction(quickEventAction)
+        optionMenu.addAction(eventTryAction)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
 
