@@ -80,6 +80,7 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
         view.addSubview(homeView)
+        setupView()
 //        view.addSubview(emptyState)
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
@@ -110,6 +111,16 @@ class HomeViewController: UIViewController {
         self.homeView.addGestureRecognizer(leftSwipe)
         
       
+
+    }
+    func setupView() {
+        if filteredAcceptedEvents.isEmpty {
+
+//            homeView.usersCollectionView.backgroundView = emptyState
+            //make empty state visible
+        } else {
+            
+        }
 
     }
     
@@ -265,18 +276,35 @@ class HomeViewController: UIViewController {
             tag = 0
 
             homeView.delegate?.segmentedEventsPressed()
-
+            if filteredAcceptedEvents.isEmpty {
+                homeView.usersCollectionView.backgroundView = emptyState
+                emptyState.emptyStateLabel.text = "No current events available. Click the + to create your own!"
+            } else {
+                homeView.usersCollectionView.backgroundView = UIView()
+            }
         case 1:
             print("Past Event")
             tag = 1
 
             homeView.delegate?.segmentedPastEventPressed()
+            if filteredPastEvents.isEmpty {
+                homeView.usersCollectionView.backgroundView = emptyState
+                emptyState.emptyStateLabel.text = "No past events available. Once an accepted even expires it will show up here."
+            } else {
+                homeView.usersCollectionView.backgroundView = UIView()
+            }
 
         case 2:
             print("Join Event")
             tag = 2
 
             homeView.delegate?.pendingJoinEventPressed()
+            if filteredPendingEvents.isEmpty {
+                homeView.usersCollectionView.backgroundView = emptyState
+                emptyState.emptyStateLabel.text = "No pending events available. Once a friend invites you to their event, it will show up here."
+            } else {
+                homeView.usersCollectionView.backgroundView = UIView()
+            }
 
     
             
@@ -422,7 +450,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             
             
         default:
-            print("you good fam?")
+            print("tag's did not process correctly")
         }
         
         collectionViewCell.delegate = self
