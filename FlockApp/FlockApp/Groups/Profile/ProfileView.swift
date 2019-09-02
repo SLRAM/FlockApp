@@ -27,6 +27,15 @@ class ProfileView: UIView {
         miniView.layer.cornerRadius = 10.0
         return miniView
     }()
+
+    lazy var fullNameLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Name  :"
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.backgroundColor = .green
+        return label
+    }()
     lazy var fullNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
@@ -34,31 +43,11 @@ class ProfileView: UIView {
         textView.textColor = .white
         textView.backgroundColor = .clear
         textView.font = UIFont.boldSystemFont(ofSize: 20)
+        textView.backgroundColor = .blue
+        
         return textView
     }()
-    lazy var fullNameLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Name :"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        return label
-    }()
-    lazy var emailLabel: UILabel = {
-        let label = UILabel()
-        label.text = "E-mail :"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-
-        return label
-    }()
-    lazy var phoneNumberLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Phone :"
-        label.textColor = .white
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-
-        return label
-    }()
+    
     lazy var firstNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
@@ -66,34 +55,56 @@ class ProfileView: UIView {
         textView.isHidden = true
         textView.isScrollEnabled = false
         textView.textColor = .white
+        
         return textView
     }()
+    
     lazy var lastNameTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
         textView.isHidden = true
         textView.textColor = .white
         textView.isScrollEnabled = false
-
+        
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         return textView
     }()
-    lazy var imageButton: CircularButton = {
-        let button = CircularButton()
-        button.setImage(UIImage(named: "ProfileImage"), for: .normal)
-        button.isUserInteractionEnabled = false
-        return button
+    
+    lazy var emailLabel: UILabel = {
+        let label = UILabel()
+        label.text = "E-mail :"
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.backgroundColor = .green
+
+
+        return label
     }()
+    
     lazy var emailTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
         textView.isScrollEnabled = false
-
-        textView.backgroundColor = .clear
+        
+        //        textView.backgroundColor = .clear
+        textView.backgroundColor = .blue
+        
         return textView
     }()
+    
+    lazy var phoneNumberLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Phone :"
+        label.textColor = .white
+        label.font = UIFont.boldSystemFont(ofSize: 20)
+        label.backgroundColor = .green
+
+
+        return label
+    }()
+    
     lazy var phoneNumberTextView: UITextView = {
         let textView = UITextView()
         textView.isEditable = false
@@ -101,9 +112,18 @@ class ProfileView: UIView {
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
         textView.isScrollEnabled = false
-        textView.backgroundColor = .clear
+        //        textView.backgroundColor = .clear
+        textView.backgroundColor = .blue
         return textView
     }()
+
+    lazy var imageButton: CircularButton = {
+        let button = CircularButton()
+        button.setImage(UIImage(named: "ProfileImage"), for: .normal)
+        button.isUserInteractionEnabled = false
+        return button
+    }()
+
     lazy var editButton: RoundedButton = {
         let button = RoundedButton()
         button.setTitle("Edit", for: .normal)
@@ -192,9 +212,9 @@ class ProfileView: UIView {
         miniView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             miniView.topAnchor.constraint(equalTo: displayNameTextView.bottomAnchor, constant: 15),
-            miniView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            miniView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            miniView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -100)
+            miniView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.3),
+            miniView.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor),
+            miniView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor, multiplier: 0.9)
             ])
     }
     private func setupFullNameTextView() {
@@ -207,11 +227,10 @@ class ProfileView: UIView {
         firstNameTextView.translatesAutoresizingMaskIntoConstraints = false
         lastNameTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            
-            fullNameLabel.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
-            fullNameLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
-            fullNameLabel.widthAnchor.constraint(equalToConstant: 70),
-            fullNameLabel.heightAnchor.constraint(equalToConstant: 30),
+            fullNameLabel.topAnchor.constraint(equalTo: miniView.topAnchor, constant: 15),
+            fullNameLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
+            fullNameLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
+            fullNameLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
             
             
             
@@ -238,14 +257,19 @@ class ProfileView: UIView {
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         emailTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            emailLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 25),
-            emailLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
-            emailLabel.heightAnchor.constraint(equalToConstant: 30),
-            emailLabel.widthAnchor.constraint(equalToConstant: 70),
-            emailTextView.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 20),
+//            emailLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 20),
+            emailLabel.centerYAnchor.constraint(equalTo: miniView.centerYAnchor),
+            emailLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
+            emailLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
+            emailLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
+            
+            
+            
+            
+            emailTextView.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 15),
             emailTextView.leadingAnchor.constraint(equalTo: emailLabel.trailingAnchor),
             emailTextView.widthAnchor.constraint(equalToConstant: 250),
-            emailTextView.heightAnchor.constraint(equalToConstant: 30)
+            emailTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2)
             ])
     }
     private func setupPhoneTextView() {
@@ -254,14 +278,19 @@ class ProfileView: UIView {
         phoneNumberLabel.translatesAutoresizingMaskIntoConstraints = false
         phoneNumberTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            phoneNumberLabel.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 25),
-            phoneNumberLabel.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor, constant: 75),
-            phoneNumberLabel.widthAnchor.constraint(equalToConstant: 70),
-            phoneNumberLabel.heightAnchor.constraint(equalToConstant: 30),
+            phoneNumberLabel.bottomAnchor.constraint(equalTo: miniView.bottomAnchor, constant: -15),
+            phoneNumberLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
+            phoneNumberLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
+            phoneNumberLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
+            
+            
+            
+            
+            
             phoneNumberTextView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 20),
             phoneNumberTextView.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor),
             phoneNumberTextView.widthAnchor.constraint(equalToConstant: 200),
-            phoneNumberTextView.heightAnchor.constraint(equalToConstant: 30)
+            phoneNumberTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2)
             ])
     }
     private func setupAddButton() {
