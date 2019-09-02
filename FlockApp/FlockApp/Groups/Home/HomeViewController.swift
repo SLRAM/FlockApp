@@ -39,6 +39,7 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                self.setupView(tag: 0, events: self.filteredAcceptedEvents)
                 
             }
         }
@@ -48,6 +49,7 @@ class HomeViewController: UIViewController {
         didSet{
             DispatchQueue.main.async {
                 self.homeView.usersCollectionView.reloadData()
+                self.setupView(tag: 1, events: self.filteredPastEvents)
             }
         }
     }
@@ -62,17 +64,11 @@ class HomeViewController: UIViewController {
                 } else {
                     self.homeView.notificationIndicator.isHidden = false
                 }
+                self.setupView(tag: 2, events: self.filteredPendingEvents)
             }
         }
     }
-//    override func viewWillDisappear(_ animated: Bool) {
-//        if let _ = authService.getCurrentUser() {
-//        
-//        } else {
-//            pendingEventListener = nil
-//            acceptedEventListener = nil
-//        }
-//    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -80,8 +76,6 @@ class HomeViewController: UIViewController {
         self.navigationController?.navigationBar.backgroundColor = color
         self.navigationController?.navigationBar.barTintColor = color
         view.addSubview(homeView)
-        setupView()
-//        view.addSubview(emptyState)
         view.backgroundColor = #colorLiteral(red: 0.9647058824, green: 0.9568627451, blue: 0.9764705882, alpha: 1)
         fetchEvents()
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(showCreateEditEvent))
@@ -113,13 +107,21 @@ class HomeViewController: UIViewController {
       
 
     }
-    func setupView() {
-        if filteredAcceptedEvents.isEmpty {
-
-//            homeView.usersCollectionView.backgroundView = emptyState
-            //make empty state visible
+    func setupView(tag: Int, events: [Event]) {
+        if events.isEmpty {
+            self.homeView.usersCollectionView.backgroundView = self.emptyState
+            switch tag {
+            case 0:
+                self.emptyState.emptyStateLabel.text = "No current events available. Click the + to create your own!"
+            case 1:
+                self.emptyState.emptyStateLabel.text = "No past events available. Once an accepted even expires, it will show up here."
+            case 2:
+                self.emptyState.emptyStateLabel.text = "No pending events available. Once a friend invites you to their event, it will show up here."
+            default:
+                self.emptyState.emptyStateLabel.text = ""
+            }
         } else {
-            
+            self.homeView.usersCollectionView.backgroundView = UIView()
         }
 
     }
@@ -276,38 +278,19 @@ class HomeViewController: UIViewController {
             tag = 0
 
             homeView.delegate?.segmentedEventsPressed()
-            if filteredAcceptedEvents.isEmpty {
-                homeView.usersCollectionView.backgroundView = emptyState
-                emptyState.emptyStateLabel.text = "No current events available. Click the + to create your own!"
-            } else {
-                homeView.usersCollectionView.backgroundView = UIView()
-            }
+            setupView(tag: 0, events: filteredAcceptedEvents)
         case 1:
             print("Past Event")
             tag = 1
 
             homeView.delegate?.segmentedPastEventPressed()
-            if filteredPastEvents.isEmpty {
-                homeView.usersCollectionView.backgroundView = emptyState
-                emptyState.emptyStateLabel.text = "No past events available. Once an accepted even expires, it will show up here."
-            } else {
-                homeView.usersCollectionView.backgroundView = UIView()
-            }
-
+            setupView(tag: 1, events: filteredPastEvents)
         case 2:
             print("Join Event")
             tag = 2
 
             homeView.delegate?.pendingJoinEventPressed()
-            if filteredPendingEvents.isEmpty {
-                homeView.usersCollectionView.backgroundView = emptyState
-                emptyState.emptyStateLabel.text = "No pending events available. Once a friend invites you to their event, it will show up here."
-            } else {
-                homeView.usersCollectionView.backgroundView = UIView()
-            }
-
-    
-            
+            setupView(tag: 2, events: filteredPendingEvents)
         default:
             break
         }

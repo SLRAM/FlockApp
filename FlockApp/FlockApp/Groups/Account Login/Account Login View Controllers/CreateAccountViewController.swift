@@ -30,7 +30,7 @@ class CreateAccountViewController: UIViewController {
             let password = passwordTextField.text,
             !password.isEmpty
             else {
-                print("missing fields") // TODO: add alert
+                showAlert(title: "Account Creation Error", message: "Please fill in all required fields.")
                 return
         }
         authservice.createNewAccount(username: username, email: email, password: password)

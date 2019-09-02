@@ -101,23 +101,12 @@ class EventPeopleViewController: UIViewController {
             return
         }
         
-//        if let pLat = person.latitude {
-//            if let pLong = person.longitude {
-//                mapView.myMapView.animate(to: GMSCameraPosition(latitude: pLat, longitude: pLong, zoom: 15))
-//            }
-//        } else {
-//            // Change this to the event location or host location that already exist 100%
-//            mapView.myMapView.animate(to: GMSCameraPosition(latitude: person.latitude!, longitude: person.longitude!, zoom: 15))
-//        }
-        
         if let personLat = person.latitude, let personLon = person.longitude {
             mapView.myMapView.animate(to: GMSCameraPosition(latitude: personLat, longitude: personLon, zoom: 15))
         } else {
             mapView.myMapView.animate(to: GMSCameraPosition(latitude: event!.locationLat, longitude: event!.locationLong, zoom: 15))
         }
-        
-        
-        
+    
         listener = DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document(unwrappedEvent.documentId)
@@ -133,8 +122,6 @@ class EventPeopleViewController: UIViewController {
                         if let safeInvited = self?.invited {
                             self?.setupMarkers(activeGuests: safeInvited)
                         }
-                        //                        self?.allGuestMarkers.removeAll() self!.invited)
-                        //                    self?.refreshControl.endRefreshing()
                     }
                 }
             })
@@ -163,24 +150,6 @@ class EventPeopleViewController: UIViewController {
             marker.iconView = customMarker
             marker.map = self.mapView.myMapView
         }
-        
-//        hostMarker.map = nil
-//
-//        if guest.count == 1 {
-//
-//        guard let guestLat = guest[0].latitude,
-//            let guestLon = guest[0].longitude else {
-//                print("unable to obtain guest coordinates for \(String(describing: event?.eventName))")
-//                return
-//        }
-//
-//        let coordinate = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
-//        let marker = GMSMarker(position: coordinate)
-//        let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: URL(string: guest[0].photoURL ?? "no photo")!, borderColor: UIColor.darkGray, tag: 0)
-//        marker.title = guest[0].displayName
-//        guard let task = guest[0].task else {return}
-//        marker.snippet = "task: \(task)"
-//        marker.iconView = customMarker
     }
     
     func boundsNumber(guests: [GMSMarker]) -> Int? {

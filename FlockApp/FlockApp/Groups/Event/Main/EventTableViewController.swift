@@ -53,7 +53,6 @@ class EventTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        self.tableView.separatorStyle = UITableViewCell.SeparatorStyle.none
         navigationItem.leftBarButtonItem = eventView.cancelButton
         navigationItem.rightBarButtonItem = eventView.directionsButton
         refresh()
@@ -98,11 +97,8 @@ class EventTableViewController: UITableViewController {
         print("Event Proximity is \(prox)")
         let circleCenter = CLLocationCoordinate2D(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
         proximityCircleMarker = GMSCircle(position: circleCenter, radius: prox)
-        //        let proximityCircle = GMSCircle(position: circleCenter, radius: prox)
-        //        busStop.title = stop.name
-        //        #colorLiteral(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 1)
+
         proximityCircleMarker.fillColor = UIColor.init(red: 0.5568627715, green: 0.3529411852, blue: 0.9686274529, alpha: 0.5)
-        //        busStop.fillColor?.withAlphaComponent(0.8)
         proximityCircleMarker.map = self.eventView.myMapView
         let stopMarker = GMSMarker.init(position: circleCenter)
         stopMarker.snippet = proximityCircleMarker.title
@@ -111,7 +107,6 @@ class EventTableViewController: UITableViewController {
     }
 
     func standardEventMap(unwrappedEvent: Event) {
-        //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         let eventLat = unwrappedEvent.locationLat
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
@@ -131,9 +126,7 @@ class EventTableViewController: UITableViewController {
         let marker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
 
-//        customMarker.backgroundColor = .white
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
-//        marker.icon = UIImage(named: "birdhouse")
         marker.title = eventName
         marker.map = eventView.myMapView
         marker.iconView = customMarker
@@ -143,7 +136,6 @@ class EventTableViewController: UITableViewController {
         eventView.myMapView.camera = camera
     }
     func quickEventMap(unwrappedEvent: Event){
-        //        eventView.mapButton.addTarget(self, action: #selector(mapPressed), for: .touchUpInside)
         let eventLat = unwrappedEvent.locationLat
         let eventLong = unwrappedEvent.locationLong
         let eventName = unwrappedEvent.eventName
@@ -157,9 +149,6 @@ class EventTableViewController: UITableViewController {
 
         let marker = GMSMarker.init()
         let customMarker = CustomMarkerView(frame: CGRect(x: 0, y: 0, width: customMarkerWidth, height: customMarkerHeight), image: markerImage, borderColor: UIColor.darkGray, tag: 0)
-
-//        customMarker.backgroundColor = .white
-
         
         marker.position = CLLocationCoordinate2D(latitude: eventLat, longitude: eventLong)
         marker.title = eventName
@@ -297,19 +286,12 @@ class EventTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return eventView
     }
-    
-    //    override func numberOfSections(in tableView: UITableView) -> Int {
-    //        return 1
-    //    }
+
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return invited.count
     }
-    //
-    //    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    //        return "Who's Invited"
-    //    }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
@@ -317,25 +299,13 @@ class EventTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-//        cell.selectionStyle = .none
         let person = invited[indexPath.row]
         cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
         cell.nameLabel.text = person.displayName
-        cell.taskLabel.text = person.task
-        
-        //cell borders
+        cell.taskLabel.text = person.task        
         cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
         cell.layer.cornerRadius = 50
-        //        cell.layer.borderWidth = 1
-        
-        
-        //        cell.textLabel?.text = person.displayName
-        //        cell.detailTextLabel?.text = person.task
-        //        cell.imageView?.kf.setImage(with: URL(string: person.photoURL!))
-        //        cell.imageView?.layer.borderWidth = 1
-        //        cell.imageView?.layer.masksToBounds = false
-        //        cell.imageView?.layer.cornerRadius = cell.imageView?.image.frame.height/2
-        //        cell.imageView?.clipsToBounds = true
+
         return cell
     }
     

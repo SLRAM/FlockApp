@@ -49,7 +49,9 @@ class LocationSearchViewController: UIViewController {
         let backgroundImage = UIImage(named: "blueGreen")
         let imageView = UIImageView(image: backgroundImage)
         locationSearchView.myTableView.backgroundView = imageView
-        locationSearchView.backgroundColor = #colorLiteral(red: 0.8442592025, green: 0.4776551127, blue: 0.9347509146, alpha: 1).withAlphaComponent(0.9)
+//        locationSearchView.backgroundColor = #colorLiteral(red: 0.8442592025, green: 0.4776551127, blue: 0.9347509146, alpha: 1).withAlphaComponent(0.9)
+        locationSearchView.backgroundColor = #colorLiteral(red: 0.5872428417, green: 0.1077810898, blue: 0.7153506875, alpha: 1)
+
     }
     
     func mapListButton() {

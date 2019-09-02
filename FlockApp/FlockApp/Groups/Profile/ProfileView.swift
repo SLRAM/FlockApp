@@ -33,7 +33,6 @@ class ProfileView: UIView {
         label.text = "Name  :"
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.backgroundColor = .green
         return label
     }()
     lazy var fullNameTextView: UITextView = {
@@ -43,7 +42,6 @@ class ProfileView: UIView {
         textView.textColor = .white
         textView.backgroundColor = .clear
         textView.font = UIFont.boldSystemFont(ofSize: 20)
-        textView.backgroundColor = .blue
         
         return textView
     }()
@@ -75,8 +73,6 @@ class ProfileView: UIView {
         label.text = "E-mail :"
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.backgroundColor = .green
-
 
         return label
     }()
@@ -87,9 +83,7 @@ class ProfileView: UIView {
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
         textView.isScrollEnabled = false
-        
-        //        textView.backgroundColor = .clear
-        textView.backgroundColor = .blue
+        textView.backgroundColor = .clear
         
         return textView
     }()
@@ -99,8 +93,6 @@ class ProfileView: UIView {
         label.text = "Phone :"
         label.textColor = .white
         label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.backgroundColor = .green
-
 
         return label
     }()
@@ -112,8 +104,7 @@ class ProfileView: UIView {
         textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.textColor = .white
         textView.isScrollEnabled = false
-        //        textView.backgroundColor = .clear
-        textView.backgroundColor = .blue
+        textView.backgroundColor = .clear
         return textView
     }()
 
@@ -231,24 +222,18 @@ class ProfileView: UIView {
             fullNameLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
             fullNameLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
             fullNameLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
-            
-            
-            
-            
-            
-            
-            fullNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 20),
+            fullNameTextView.topAnchor.constraint(equalTo: miniView.topAnchor, constant: 10),
             fullNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            fullNameTextView.widthAnchor.constraint(equalToConstant: 200),
-            fullNameTextView.heightAnchor.constraint(equalToConstant: 30),
-            firstNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
+            fullNameTextView.trailingAnchor.constraint(equalTo: miniView.trailingAnchor),
+            fullNameTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
+            firstNameTextView.topAnchor.constraint(equalTo: miniView.topAnchor, constant: 10),
             firstNameTextView.leadingAnchor.constraint(equalTo: fullNameLabel.trailingAnchor),
-            firstNameTextView.widthAnchor.constraint(equalToConstant: 100),
-            firstNameTextView.heightAnchor.constraint(equalToConstant: 30),
-            lastNameTextView.centerYAnchor.constraint(equalTo: safeAreaLayoutGuide.centerYAnchor, constant: 25),
-            lastNameTextView.leadingAnchor.constraint(equalTo: firstNameTextView.trailingAnchor),
-            lastNameTextView.widthAnchor.constraint(equalToConstant: 100),
-            lastNameTextView.heightAnchor.constraint(equalToConstant: 30)
+            firstNameTextView.widthAnchor.constraint(equalTo: fullNameTextView.widthAnchor, multiplier: 0.5),
+            firstNameTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
+            lastNameTextView.topAnchor.constraint(equalTo: miniView.topAnchor, constant: 10),
+            lastNameTextView.trailingAnchor.constraint(equalTo: miniView.trailingAnchor),
+            lastNameTextView.widthAnchor.constraint(equalTo: fullNameTextView.widthAnchor, multiplier: 0.5),
+            lastNameTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2)
             ])
     }
     private func setupEmailTextView() {
@@ -257,18 +242,13 @@ class ProfileView: UIView {
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         emailTextView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-//            emailLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 20),
             emailLabel.centerYAnchor.constraint(equalTo: miniView.centerYAnchor),
             emailLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
             emailLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
             emailLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
-            
-            
-            
-            
-            emailTextView.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 15),
             emailTextView.leadingAnchor.constraint(equalTo: emailLabel.trailingAnchor),
-            emailTextView.widthAnchor.constraint(equalToConstant: 250),
+            emailTextView.trailingAnchor.constraint(equalTo: miniView.trailingAnchor),
+            emailTextView.centerYAnchor.constraint(equalTo: miniView.centerYAnchor, constant: -5),
             emailTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2)
             ])
     }
@@ -282,14 +262,9 @@ class ProfileView: UIView {
             phoneNumberLabel.leadingAnchor.constraint(equalTo: miniView.leadingAnchor, constant: 10),
             phoneNumberLabel.widthAnchor.constraint(equalTo: miniView.widthAnchor, multiplier: 0.22),
             phoneNumberLabel.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2),
-            
-            
-            
-            
-            
-            phoneNumberTextView.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 20),
+            phoneNumberTextView.bottomAnchor.constraint(equalTo: miniView.bottomAnchor, constant: -20),
             phoneNumberTextView.leadingAnchor.constraint(equalTo: phoneNumberLabel.trailingAnchor),
-            phoneNumberTextView.widthAnchor.constraint(equalToConstant: 200),
+            phoneNumberTextView.trailingAnchor.constraint(equalTo: miniView.trailingAnchor),
             phoneNumberTextView.heightAnchor.constraint(equalTo: miniView.heightAnchor, multiplier: 0.2)
             ])
     }
