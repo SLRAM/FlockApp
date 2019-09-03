@@ -42,7 +42,7 @@ class EventTableViewController: UITableViewController {
     }()
     
     let cellId = "EventCell"
-    
+    var quickEvent = false
     
     let eventView = EventView()
     
@@ -76,6 +76,7 @@ class EventTableViewController: UITableViewController {
             eventView.eventTracking.isHidden = true
             quickEventMap(unwrappedEvent: unwrappedEvent)
             proximityCircle()
+            quickEvent = true
         } else {
             standardEventMap(unwrappedEvent: unwrappedEvent)
         }
@@ -306,6 +307,15 @@ class EventTableViewController: UITableViewController {
         cell.taskField.isEnabled = false
         cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
         cell.layer.cornerRadius = 50
+        if quickEvent {
+            if cell.taskField.text != "Host" {
+                cell.taskField.isHidden = true
+
+            } else {
+                cell.taskField.isHidden = false
+
+            }
+        }
 
         return cell
     }

@@ -39,6 +39,8 @@
 		97025FA92257F16E00273C91 /* IBADesignablesViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97025FA82257F16E00273C91 /* IBADesignablesViews.swift */; };
 		970D3E58231D22AF0013A507 /* CreateEditTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970D3E57231D22AF0013A507 /* CreateEditTableViewController.swift */; };
 		970D3E5A231D25DD0013A507 /* CreateEditTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970D3E59231D25DD0013A507 /* CreateEditTableView.swift */; };
+		970D3E5C231E7F430013A507 /* QuickEventTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970D3E5B231E7F430013A507 /* QuickEventTableViewController.swift */; };
+		970D3E5E231E7F980013A507 /* QuickEventTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970D3E5D231E7F980013A507 /* QuickEventTableView.swift */; };
 		97802CBA225CF527007D480D /* LoginView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97802CB9225CF527007D480D /* LoginView.storyboard */; };
 		97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802CBC225CF5D3007D480D /* LoginViewController.swift */; };
 		97802CBF225CF5E6007D480D /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97802CBE225CF5E6007D480D /* CreateAccountViewController.swift */; };
@@ -122,6 +124,8 @@
 		97025FA82257F16E00273C91 /* IBADesignablesViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IBADesignablesViews.swift; sourceTree = "<group>"; };
 		970D3E57231D22AF0013A507 /* CreateEditTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTableViewController.swift; sourceTree = "<group>"; };
 		970D3E59231D25DD0013A507 /* CreateEditTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTableView.swift; sourceTree = "<group>"; };
+		970D3E5B231E7F430013A507 /* QuickEventTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEventTableViewController.swift; sourceTree = "<group>"; };
+		970D3E5D231E7F980013A507 /* QuickEventTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickEventTableView.swift; sourceTree = "<group>"; };
 		97802CB9225CF527007D480D /* LoginView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LoginView.storyboard; sourceTree = "<group>"; };
 		97802CBC225CF5D3007D480D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		97802CBE225CF5E6007D480D /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
@@ -508,7 +512,9 @@
 			isa = PBXGroup;
 			children = (
 				97E43340227200B900BC519C /* QuickEventView.swift */,
+				970D3E5D231E7F980013A507 /* QuickEventTableView.swift */,
 				97E4333E227200A700BC519C /* QuickEventViewController.swift */,
+				970D3E5B231E7F430013A507 /* QuickEventTableViewController.swift */,
 			);
 			path = Quick;
 			sourceTree = "<group>";
@@ -727,6 +733,7 @@
 				97802CDE225CFE99007D480D /* FriendsView.swift in Sources */,
 				97E4333A226822B500BC519C /* InvitedModel.swift in Sources */,
 				97802CF9225D01F9007D480D /* EventPeopleViewController.swift in Sources */,
+				970D3E5E231E7F980013A507 /* QuickEventTableView.swift in Sources */,
 				97E4334A227B5AE100BC519C /* SelectionViewController.swift in Sources */,
 				97802D03225D3010007D480D /* LocationSearchViewController.swift in Sources */,
 				97802CBD225CF5D3007D480D /* LoginViewController.swift in Sources */,
@@ -764,6 +771,7 @@
 				97802D10225E49AD007D480D /* InvitedView.swift in Sources */,
 				97802CC8225CF658007D480D /* DBService+User.swift in Sources */,
 				970D3E5A231D25DD0013A507 /* CreateEditTableView.swift in Sources */,
+				970D3E5C231E7F430013A507 /* QuickEventTableViewController.swift in Sources */,
 				97802CFD225D021A007D480D /* EventDetailsView.swift in Sources */,
 				97802CCA225CF658007D480D /* DBService.swift in Sources */,
 				936AC7BA2266247700CBD407 /* DBService+Friends.swift in Sources */,

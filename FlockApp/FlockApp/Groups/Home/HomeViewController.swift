@@ -266,10 +266,17 @@ class HomeViewController: UIViewController {
             let createTrialNav = UINavigationController.init(rootViewController: createEditTrialVC)
             self.present(createTrialNav, animated: true)
         })
+        let quickEventTryAction = UIAlertAction(title: "Trial On The Fly", style: .default, handler: { (action) -> Void in
+            
+            let quickEditVC = QuickEventTableViewController()
+            let createNav = UINavigationController.init(rootViewController: quickEditVC)
+            self.present(createNav, animated: true)
+        })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         optionMenu.addAction(eventAction)
         optionMenu.addAction(quickEventAction)
         optionMenu.addAction(eventTryAction)
+        optionMenu.addAction(quickEventTryAction)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
 

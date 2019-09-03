@@ -299,6 +299,17 @@ extension CreateEditTableViewController: CreateEditTableViewDelegate {
             alertController.addAction(okAction)
             present(alertController, animated: true)
             return}
+        
+        if createEditTableView.titleTextView.text == "On The Fly"{
+            let alertController = UIAlertController(title: "Unable to post. Please choose a different title for your event.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditTableView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        
+        
         if createEditTableView.addressButton.titleLabel?.text == "Event Address" {
             let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
@@ -403,66 +414,66 @@ extension CreateEditTableViewController: CreateEditTableViewDelegate {
                             } else {
                                 //============================================================
                                 // Adding notification
-                                let startContent = UNMutableNotificationContent()
-                                
-                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
-                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
-                                startContent.sound = UNNotificationSound.default
-                                
-                                let endContent = UNMutableNotificationContent()
-                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
-                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
-                                endContent.sound = UNNotificationSound.default
-                                let startDate = self?.selectedStartDate
-                                let calendar = Calendar.current
-                                let startYear = calendar.component(.year, from: startDate!)
-                                let startMonth = calendar.component(.month, from: startDate!)
-                                let startDay = calendar.component(.day, from: startDate!)
-                                let startHour = calendar.component(.hour, from: startDate!)
-                                let startMinutes = calendar.component(.minute, from: startDate!)
-                                
-                                let endDate = self?.selectedEndDate
-                                let endYear = calendar.component(.year, from: endDate!)
-                                let endMonth = calendar.component(.month, from: endDate!)
-                                let endDay = calendar.component(.day, from: endDate!)
-                                let endHour = calendar.component(.hour, from: endDate!)
-                                let endMinutes = calendar.component(.minute, from: endDate!)
-                                
-                                var startDateComponent = DateComponents()
-                                startDateComponent.year = startYear
-                                startDateComponent.month = startMonth
-                                startDateComponent.day = startDay
-                                startDateComponent.hour = startHour
-                                startDateComponent.minute = startMinutes
-                                startDateComponent.timeZone = TimeZone.current
-                                var endDateComponent = DateComponents()
-                                endDateComponent.year = endYear
-                                endDateComponent.month = endMonth
-                                endDateComponent.day = endDay
-                                endDateComponent.hour = endHour
-                                endDateComponent.minute = endMinutes
-                                endDateComponent.timeZone = TimeZone.current
-                                
-                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
-                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
-                                
-                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
-                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
-                                
-                                UNUserNotificationCenter.current().add(startRequest) { (error) in
-                                    if let error = error {
-                                        print("notification delivery error: \(error)")
-                                    } else {
-                                        print("successfully added start notification")
-                                    }
-                                }
-                                UNUserNotificationCenter.current().add(endRequest) { (error) in
-                                    if let error = error {
-                                        print("notification delivery error: \(error)")
-                                    } else {
-                                        print("successfully added end notification")
-                                    }
-                                }
+//                                let startContent = UNMutableNotificationContent()
+//
+//                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
+//                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
+//                                startContent.sound = UNNotificationSound.default
+//
+//                                let endContent = UNMutableNotificationContent()
+//                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
+//                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
+//                                endContent.sound = UNNotificationSound.default
+//                                let startDate = self?.selectedStartDate
+//                                let calendar = Calendar.current
+//                                let startYear = calendar.component(.year, from: startDate!)
+//                                let startMonth = calendar.component(.month, from: startDate!)
+//                                let startDay = calendar.component(.day, from: startDate!)
+//                                let startHour = calendar.component(.hour, from: startDate!)
+//                                let startMinutes = calendar.component(.minute, from: startDate!)
+//
+//                                let endDate = self?.selectedEndDate
+//                                let endYear = calendar.component(.year, from: endDate!)
+//                                let endMonth = calendar.component(.month, from: endDate!)
+//                                let endDay = calendar.component(.day, from: endDate!)
+//                                let endHour = calendar.component(.hour, from: endDate!)
+//                                let endMinutes = calendar.component(.minute, from: endDate!)
+//
+//                                var startDateComponent = DateComponents()
+//                                startDateComponent.year = startYear
+//                                startDateComponent.month = startMonth
+//                                startDateComponent.day = startDay
+//                                startDateComponent.hour = startHour
+//                                startDateComponent.minute = startMinutes
+//                                startDateComponent.timeZone = TimeZone.current
+//                                var endDateComponent = DateComponents()
+//                                endDateComponent.year = endYear
+//                                endDateComponent.month = endMonth
+//                                endDateComponent.day = endDay
+//                                endDateComponent.hour = endHour
+//                                endDateComponent.minute = endMinutes
+//                                endDateComponent.timeZone = TimeZone.current
+//
+//                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
+//                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
+//
+//                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
+//                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
+//
+//                                UNUserNotificationCenter.current().add(startRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added start notification")
+//                                    }
+//                                }
+//                                UNUserNotificationCenter.current().add(endRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added end notification")
+//                                    }
+//                                }
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
