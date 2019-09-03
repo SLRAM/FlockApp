@@ -302,7 +302,8 @@ class EventTableViewController: UITableViewController {
         let person = invited[indexPath.row]
         cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
         cell.nameLabel.text = person.displayName
-        cell.taskLabel.text = person.task
+        cell.taskField.text = person.task
+        cell.taskField.isEnabled = false
         cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
         cell.layer.cornerRadius = 50
 

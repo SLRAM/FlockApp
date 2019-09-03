@@ -36,23 +36,6 @@ class CreateEditTableView: UIView {
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.cornerRadius = 10.0
         
-        
-        
-        //        collectionViewCell.contentView.layer.masksToBounds = true
-        //        collectionViewCell.backgroundColor = .clear // very important
-        //        collectionViewCell.layer.masksToBounds = false
-        //        collectionViewCell.layer.shadowOpacity = 0.25
-        //        collectionViewCell.layer.shadowRadius = 10
-        //        collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
-        //        collectionViewCell.layer.shadowColor = UIColor.black.cgColor
-        //
-        //        let radius = button.layer.cornerRadius
-        //        button.layer.shadowPath = UIBezierPath(roundedRect: button.bounds, cornerRadius: radius).cgPath
-        
-        
-        
-        
-        
         return button
     }()
     @objc func imagePressed() {
@@ -97,6 +80,8 @@ class CreateEditTableView: UIView {
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        label.layer.cornerRadius = 10.0
+        label.layer.masksToBounds = true
         return label
     }()
     
@@ -208,14 +193,14 @@ extension CreateEditTableView {
         titleTextView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
     func setupImageButton() {
         addSubview(imageButton)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         imageButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
-        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
-        imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
+        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.45).isActive = true
+        imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.45).isActive = true
         imageButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
     }
     func setupAddressButton() {
@@ -224,7 +209,7 @@ extension CreateEditTableView {
         addressButton.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 10).isActive = true
         addressButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         addressButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
     
     func setupDateButton() {
@@ -233,7 +218,7 @@ extension CreateEditTableView {
         dateButton.topAnchor.constraint(equalTo: addressButton.bottomAnchor, constant: 10).isActive = true
         dateButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         dateButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        dateButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        dateButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
     func setupTracking() {
         addSubview(myLabel)
@@ -241,7 +226,7 @@ extension CreateEditTableView {
         myLabel.topAnchor.constraint(equalTo: dateButton.bottomAnchor, constant: 10).isActive = true
         myLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         myLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
         setupTrackingIncrease()
         setupTrackingDecrease()
     }
@@ -267,7 +252,7 @@ extension CreateEditTableView {
         friendButton.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 10).isActive = true
         friendButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         friendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
 
 }

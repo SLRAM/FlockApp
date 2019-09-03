@@ -27,6 +27,8 @@ class InvitedViewController: BaseViewController {
             DispatchQueue.main.async {
                 self.invitedView.myTableView.reloadData()
             }
+            self.setupEmptyState()
+
         }
     }
     private var filteredFriends = [UserModel]() {
@@ -55,7 +57,7 @@ class InvitedViewController: BaseViewController {
         invitedView.myTableView.dataSource = self
         invitedView.myTableView.tableFooterView = UIView()
         fetchFriends()
-        setupEmptyState()
+//        setupEmptyState()
     }
     func setupEmptyState() {
         if friends.isEmpty {
@@ -124,7 +126,7 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = invitedView.myTableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-        cell.taskLabel.isHidden = true
+        cell.taskField.isHidden = true
         cell.backgroundColor = .clear
         if isSearching {
             let friend = filteredFriends[indexPath.row]
