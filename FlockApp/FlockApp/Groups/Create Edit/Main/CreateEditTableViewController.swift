@@ -52,16 +52,15 @@ class CreateEditTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let newTableView = UITableView.init(frame: tableView.frame, style: UITableView.Style.grouped)
+        self.tableView = newTableView;
         tableView.separatorStyle = .none
         tableView.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         navigationItem.leftBarButtonItem = createEditTableView.cancelButton
-//        self.title = event?.eventName
         let frameHeight = view.frame.height
         let frameSection = view.frame.height/3
         self.tableView.sectionHeaderHeight = frameHeight - frameSection
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
-        
-        
         selectedImage = createEditTableView.imageButton.imageView?.image
         viewSetup()
         
@@ -84,12 +83,17 @@ class CreateEditTableViewController: UITableViewController {
         
     }
     @objc private func willShowKeyboard(notification: Notification) {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         guard let info = notification.userInfo,
             let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
                 print("userInfo is nil")
                 return
         }
+        
+        
         if isTextField {
+            
+            
             // this needs to change for tableview ***
             tableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
         }
@@ -102,6 +106,7 @@ class CreateEditTableViewController: UITableViewController {
     @objc private func willHideKeyboard(notification: Notification) {
         //identity will return to original location
         // this needs to change for tableview ***
+        self.navigationController?.navigationBar.prefersLargeTitles = true
 
         tableView.transform = CGAffineTransform.identity
     }
@@ -141,9 +146,6 @@ class CreateEditTableViewController: UITableViewController {
         tableView.deselectRow(at: indexPath, animated: false)
     }
 
-
-    
-
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return createEditTableView
@@ -170,6 +172,7 @@ class CreateEditTableViewController: UITableViewController {
         cell.nameLabel.text = person.displayName
         cell.taskField.tag = indexPath.row
         cell.taskField.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
+        cell.taskField.delegate = self
             return cell
         }
         @objc func didChangeText(textField:UITextField) {
@@ -552,6 +555,8 @@ extension CreateEditTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("TextField")
         isTextField = true
+//        tableView.tableHeaderView = nil
+//                tableView.reloadData()
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()

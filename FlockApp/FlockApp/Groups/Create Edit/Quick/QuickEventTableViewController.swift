@@ -42,8 +42,6 @@ class QuickEventTableViewController: UITableViewController {
         tableView.separatorStyle = .none
         tableView.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         navigationItem.leftBarButtonItem = quickEventTableView.cancelButton
-        //        self.title = event?.eventName
-        let frameHeight = view.frame.height
         let frameSection = view.frame.height/4.5
         self.tableView.sectionHeaderHeight = frameSection
         self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
@@ -57,8 +55,6 @@ class QuickEventTableViewController: UITableViewController {
         navigationItem.leftBarButtonItem = quickEventTableView.cancelButton
         locationManager.delegate = self
         quickEventTableView.delegate = self
-//        quickEventView.myTableView.delegate = self
-//        quickEventView.myTableView.dataSource = self
         mapAuth()
     }
     func mapAuth() {
@@ -97,65 +93,16 @@ class QuickEventTableViewController: UITableViewController {
             return "\(distance) feet from Host"
         }
     }
-    
-    
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
-        registerKeyboardNotifications()
-    }
-    deinit {
-    }
-    
-    private func registerKeyboardNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    private func unregisterKeyboardNotifications() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    @objc private func willShowKeyboard(notification: Notification) {
-        guard let info = notification.userInfo,
-            let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
-                print("userInfo is nil")
-                return
-        }
-        if isTextField {
-            // this needs to change for tableview ***
-            tableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
-        }
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        unregisterKeyboardNotifications()
-    }
-    
-    @objc private func willHideKeyboard(notification: Notification) {
-        //identity will return to original location
-        // this needs to change for tableview ***
-        
-        tableView.transform = CGAffineTransform.identity
-    }
-    
-    
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath)!
         selectedCell.contentView.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).withAlphaComponent(0.2)
         tableView.deselectRow(at: indexPath, animated: false)
     }
     
-    
-    
-    
-    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         return quickEventTableView
     }
-    
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -176,54 +123,8 @@ class QuickEventTableViewController: UITableViewController {
         cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
         cell.nameLabel.text = person.displayName
         cell.taskField.tag = indexPath.row
-        cell.taskField.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
         cell.taskField.isHidden = true
         return cell
-    }
-    @objc func didChangeText(textField:UITextField) {
-        //        print(textField.tag)
-        //        print(textField.text)
-        //for id key save text
-        guard let typedText = textField.text else {
-            print("unable to obtain task")
-            return
-            
-        }
-        for (key, value) in friendsDictionary {
-            
-            if textField.tag == key {
-                friendsDictionary[key] = typedText
-                
-            }
-        }
-        
-    }
-    
-}
-extension QuickEventTableViewController: UITextViewDelegate {
-//    func textViewDidBeginEditing(_ textView: UITextView) {
-//        quickEventTableView.titleTextView.becomeFirstResponder()
-//        print("textView")
-//        isTextField = false
-//        if quickEventTableView.titleTextView.text == self.titlePlaceholder {
-//            quickEventTableView.titleTextView.text = ""
-//            quickEventTableView.titleTextView.textColor = .black
-//        }
-//    }
-//    func textViewDidEndEditing(_ textView: UITextView) {
-//        isTextField = false
-//        if textView.text.isEmpty {
-//            textView.text = titlePlaceholder
-//            textView.textColor = .gray
-//        }
-//        quickEventTableView.titleTextView.resignFirstResponder()
-//    }
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if(text == "\n") {
-            textView.resignFirstResponder()
-            return false
-        }
-        return true
     }
     
 }
@@ -247,9 +148,9 @@ extension QuickEventTableViewController: QuickEventTableViewDelegate {
     
     func createQuickPressed() {
         quickEventTableView.createButton.isEnabled = false
-        var eventLength = hours*60
-        var currentDate = Date()
-        var endingDate = currentDate.adding(minutes: eventLength)
+        let eventLength = hours*60
+        let currentDate = Date()
+        let endingDate = currentDate.adding(minutes: eventLength)
         
         let isoDateFormatter = ISO8601DateFormatter()
         let startingString = isoDateFormatter.string(from: currentDate)
@@ -411,7 +312,6 @@ extension QuickEventTableViewController: QuickEventTableViewDelegate {
     func quickProximityDecrease() {
         let trackingLabel = editProximity(increase: false)
         quickEventTableView.myProximityLabel.text = trackingLabel
-        //        proximity -= 30
     }
     
 }
@@ -421,18 +321,13 @@ extension QuickEventTableViewController: InvitedViewControllerDelegate {
         print("Friends selected")
         friendsArray = friends
         var count = 0
-        for friend in friends {
+        for _ in friends {
             if friendsDictionary[count] == nil {
                 friendsDictionary[count] = "No Task"
             }
             count += 1
         }
         tableView.reloadData()
-    }
-}
-extension QuickEventTableViewController: CreateEditTableViewCellDelegate {
-    func textDelegate() {
-        //        print("Okay")
     }
 }
 extension QuickEventTableViewController: UITextFieldDelegate {
@@ -444,7 +339,7 @@ extension QuickEventTableViewController: UITextFieldDelegate {
         textField.resignFirstResponder()
         //for id key save text
         guard let typedText = textField.text else {return false}
-        for (key, value) in friendsDictionary {
+        for (key, _) in friendsDictionary {
             
             if textField.tag == key {
                 friendsDictionary[key] = typedText
@@ -460,7 +355,7 @@ extension QuickEventTableViewController: UITextFieldDelegate {
             print("unable to obtain task")
             return
         }
-        for (key, value) in friendsDictionary {
+        for (key, _) in friendsDictionary {
             
             if textField.tag == key {
                 friendsDictionary[key] = typedText

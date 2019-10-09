@@ -251,22 +251,11 @@ class HomeViewController: UIViewController {
         
         let optionMenu = UIAlertController(title: nil, message: "Create an Event:", preferredStyle: .actionSheet)
         let eventAction = UIAlertAction(title: "Standard Event", style: .default, handler: { (action) -> Void in
-            let createEditVC = CreateEditViewController()
+            let createEditVC = CreateEditTableViewController()
             let createNav = UINavigationController.init(rootViewController: createEditVC)
             self.present(createNav, animated: true)
         })
         let quickEventAction = UIAlertAction(title: "On The Fly", style: .default, handler: { (action) -> Void in
-            
-            let quickEditVC = QuickEventViewController()
-            let createNav = UINavigationController.init(rootViewController: quickEditVC)
-            self.present(createNav, animated: true)
-        })
-        let eventTryAction = UIAlertAction(title: "Trial Event", style: .default, handler: { (action) -> Void in
-            let createEditTrialVC = CreateEditTableViewController()
-            let createTrialNav = UINavigationController.init(rootViewController: createEditTrialVC)
-            self.present(createTrialNav, animated: true)
-        })
-        let quickEventTryAction = UIAlertAction(title: "Trial On The Fly", style: .default, handler: { (action) -> Void in
             
             let quickEditVC = QuickEventTableViewController()
             let createNav = UINavigationController.init(rootViewController: quickEditVC)
@@ -275,33 +264,25 @@ class HomeViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
         optionMenu.addAction(eventAction)
         optionMenu.addAction(quickEventAction)
-        optionMenu.addAction(eventTryAction)
-        optionMenu.addAction(quickEventTryAction)
         optionMenu.addAction(cancelAction)
         self.present(optionMenu, animated: true, completion: nil)
-
-  
     }
   
-    
     @objc func indexChanged(_ sender: UISegmentedControl){
         switch sender.selectedSegmentIndex {
         case 0:
             print("Current Events")
             tag = 0
-
             homeView.delegate?.segmentedEventsPressed()
             setupView(tag: 0, events: filteredAcceptedEvents)
         case 1:
             print("Past Event")
             tag = 1
-
             homeView.delegate?.segmentedPastEventPressed()
             setupView(tag: 1, events: filteredPastEvents)
         case 2:
             print("Join Event")
             tag = 2
-
             homeView.delegate?.pendingJoinEventPressed()
             setupView(tag: 2, events: filteredPendingEvents)
         default:
