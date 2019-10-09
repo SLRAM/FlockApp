@@ -1,12 +1,14 @@
 //
-//  CreateEditView.swift
+//  CreateEditTableView.swift
 //  FlockApp
 //
-//  Created by Stephanie Ramirez on 4/9/19.
+//  Created by Stephanie Ramirez on 9/2/19.
 //
 
 import UIKit
-protocol CreateViewDelegate: AnyObject {
+
+
+protocol CreateEditTableViewDelegate: AnyObject {
     func createPressed()
     func addressPressed()
     func datePressed()
@@ -16,16 +18,16 @@ protocol CreateViewDelegate: AnyObject {
     func trackingIncreasePressed()
     func trackingDecreasePressed()
 }
-class CreateEditView: UIView {
+class CreateEditTableView: UIView {
     
-    weak var delegate: CreateViewDelegate?
+    weak var delegate: CreateEditTableViewDelegate?
     
     lazy var imageButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 15)
         button.addTarget(self, action: #selector(imagePressed), for: .touchUpInside)
         button.backgroundColor = .clear
-//        button.setBackgroundImage(UIImage(named: "quickEvent"), for: .normal)
+        //        button.setBackgroundImage(UIImage(named: "quickEvent"), for: .normal)
         button.setImage(UIImage(named: "quickEvent"), for: .normal)
         button.layer.masksToBounds = false
         button.layer.shadowOpacity = 0.25
@@ -33,23 +35,6 @@ class CreateEditView: UIView {
         button.layer.shadowOffset = CGSize(width: 0, height: 0)
         button.layer.shadowColor = UIColor.black.cgColor
         button.layer.cornerRadius = 10.0
-
-
-        
-//        collectionViewCell.contentView.layer.masksToBounds = true
-//        collectionViewCell.backgroundColor = .clear // very important
-//        collectionViewCell.layer.masksToBounds = false
-//        collectionViewCell.layer.shadowOpacity = 0.25
-//        collectionViewCell.layer.shadowRadius = 10
-//        collectionViewCell.layer.shadowOffset = CGSize(width: 0, height: 0)
-//        collectionViewCell.layer.shadowColor = UIColor.black.cgColor
-//
-//        let radius = button.layer.cornerRadius
-//        button.layer.shadowPath = UIBezierPath(roundedRect: button.bounds, cornerRadius: radius).cgPath
-        
-        
-        
-        
         
         return button
     }()
@@ -95,6 +80,8 @@ class CreateEditView: UIView {
         label.textAlignment = .center
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        label.layer.cornerRadius = 10.0
+        label.layer.masksToBounds = true
         return label
     }()
     
@@ -170,7 +157,7 @@ class CreateEditView: UIView {
         textView.layer.borderColor = #colorLiteral(red: 0.8529050946, green: 0.8478356004, blue: 0.8568023443, alpha: 0.4653253425).cgColor
         textView.textColor = .gray
         textView.textAlignment = .center
-        textView.font = UIFont.boldSystemFont(ofSize: 25)
+        textView.font = UIFont.boldSystemFont(ofSize: 20)
         textView.tag = 0
         textView.text = "Enter the Event Title"
         return textView
@@ -191,7 +178,7 @@ class CreateEditView: UIView {
     }
     
 }
-extension CreateEditView {
+extension CreateEditTableView {
     func setupView() {
         setupTitleTextField()
         setupImageButton()
@@ -199,7 +186,6 @@ extension CreateEditView {
         setupDateButton()
         setupTracking()
         setupFriendButton()
-        setupTableView()
     }
     func setupTitleTextField() {
         addSubview(titleTextView)
@@ -207,14 +193,14 @@ extension CreateEditView {
         titleTextView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         titleTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         titleTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        titleTextView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
     func setupImageButton() {
         addSubview(imageButton)
         imageButton.translatesAutoresizingMaskIntoConstraints = false
         imageButton.topAnchor.constraint(equalTo: titleTextView.bottomAnchor, constant: 10).isActive = true
-        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
-        imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.40).isActive = true
+        imageButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.45).isActive = true
+        imageButton.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.45).isActive = true
         imageButton.centerXAnchor.constraint(equalTo: safeAreaLayoutGuide.centerXAnchor).isActive = true
     }
     func setupAddressButton() {
@@ -223,16 +209,16 @@ extension CreateEditView {
         addressButton.topAnchor.constraint(equalTo: imageButton.bottomAnchor, constant: 10).isActive = true
         addressButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         addressButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        addressButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
-
+    
     func setupDateButton() {
         addSubview(dateButton)
         dateButton.translatesAutoresizingMaskIntoConstraints = false
         dateButton.topAnchor.constraint(equalTo: addressButton.bottomAnchor, constant: 10).isActive = true
         dateButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         dateButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        dateButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        dateButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
     func setupTracking() {
         addSubview(myLabel)
@@ -240,7 +226,7 @@ extension CreateEditView {
         myLabel.topAnchor.constraint(equalTo: dateButton.bottomAnchor, constant: 10).isActive = true
         myLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         myLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
         setupTrackingIncrease()
         setupTrackingDecrease()
     }
@@ -266,16 +252,7 @@ extension CreateEditView {
         friendButton.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 10).isActive = true
         friendButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         friendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.08).isActive = true
     }
-    
-    func setupTableView() {
-        addSubview(myTableView)
-        myTableView.translatesAutoresizingMaskIntoConstraints = false
-        myTableView.topAnchor.constraint(equalTo: friendButton.bottomAnchor, constant: 10).isActive = true
-        myTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        myTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-//        myTableView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
-        myTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
-    }
+
 }

@@ -12,23 +12,23 @@ import FirebaseFirestore
 
 protocol InvitedViewControllerDelegate: AnyObject {
     func selectedFriends(friends: [UserModel])
-//    func selectedFriends(friends: [UserModel])
 }
 
 class InvitedViewController: BaseViewController {
 
     weak var delegate: InvitedViewControllerDelegate?
     private let invitedView = InvitedView()
+    var emptyState = EmptyStateView()
     var isSearching = false
-
     var savedFriends = [UserModel]()
 
-    
     private var friends = [UserModel]() {
         didSet {
             DispatchQueue.main.async {
                 self.invitedView.myTableView.reloadData()
             }
+            self.setupEmptyState()
+
         }
     }
     private var filteredFriends = [UserModel]() {
@@ -49,18 +49,23 @@ class InvitedViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        friendsView.delegate = self
         navigationItem.title = "Select Friends"
-
         view.addSubview(invitedView)
-        
         friendListButton()
         invitedView.friendSearch.delegate = self
-
         invitedView.myTableView.delegate = self
         invitedView.myTableView.dataSource = self
         invitedView.myTableView.tableFooterView = UIView()
         fetchFriends()
+//        setupEmptyState()
+    }
+    func setupEmptyState() {
+        if friends.isEmpty {
+            invitedView.myTableView.backgroundView = emptyState
+            emptyState.emptyStateLabel.text = "No friends available. You can request some in the friends tab."
+        } else {
+            invitedView.myTableView.backgroundView = UIView()
+        }
     }
     
     @objc private func fetchFriends() {
@@ -106,30 +111,9 @@ class InvitedViewController: BaseViewController {
     }
     
     @objc func addButton() {
-//        guard let noLocation = locationSearchView.locationSearch.text?.isEmpty else {return}
-        // if no checkmarks do this
-//        if noSelections {
-//            let alertController = UIAlertController(title: "Please provide a selections of friends to add to your event.", message: nil, preferredStyle: .alert)
-//            let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-//            alertController.addAction(okAction)
-//            present(alertController, animated: true)
-//        } else {
-////            delegate?.getLocation(locationTuple: locationTuple)
-//            print("saved")
-//            let alertController = UIAlertController(title: "These friends have been added to your event.", message: nil, preferredStyle: .alert)
-//            let okAction = UIAlertAction(title: "OK", style: .default, handler: { (action) -> Void in
-//                self.navigationController?.popViewController(animated: true)
-//
-//            })
-//            alertController.addAction(okAction)
-//            present(alertController, animated: true)
-//        }
-        //convert to a list of check off users userIDs
         delegate?.selectedFriends(friends: savedFriends)
         self.navigationController?.popViewController(animated: true)
     }
-    
-
 }
 extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -138,29 +122,19 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
         } else {
             return friends.count
         }
-        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-//        let friend = friends[indexPath.row]
-//        cell.textLabel?.text = friend.description
-//        return cell
         guard let cell = invitedView.myTableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
-        cell.taskLabel.isHidden = true
+        cell.taskField.isHidden = true
         cell.backgroundColor = .clear
         if isSearching {
             let friend = filteredFriends[indexPath.row]
-//            cell.textLabel?.text = friend.displayName
             cell.profilePicture.kf.setImage(with: URL(string: friend.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
             cell.nameLabel.text = friend.displayName
-
-            
-//            if savedFriends.contains(where: friend)
             if savedFriends.contains(where: { $0.displayName == friend.displayName}){
                 cell.accessoryType = .checkmark
             }
-            
             return cell
             
         } else {
@@ -170,14 +144,13 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
             if savedFriends.contains(where: { $0.displayName == friend.displayName}) {
                 cell.accessoryType = .checkmark
             }
-            
             return cell
-            
         }
-
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        invitedView.friendSearch.resignFirstResponder()
+
         if isSearching {
             let friend = filteredFriends[indexPath.row]
             if tableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
@@ -187,7 +160,6 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
                     if savedFriend.userId != friend.userId {
                         counter += 1
                     } else {
-                        //                    print(counter)
                         savedFriends.remove(at: counter)
                     }
                 }
@@ -205,7 +177,6 @@ extension InvitedViewController: UITableViewDelegate, UITableViewDataSource {
                     if savedFriend.userId != friend.userId {
                         counter += 1
                     } else {
-                        //                    print(counter)
                         savedFriends.remove(at: counter)
                     }
                 }
@@ -228,5 +199,8 @@ extension InvitedViewController: UISearchBarDelegate {
             filteredFriends = friends.filter({$0.displayName.lowercased().contains(searchText.lowercased())})
         }
         invitedView.myTableView.reloadData()
+    }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
     }
 }

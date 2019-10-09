@@ -1,8 +1,8 @@
 //
-//  CreateEditViewController.swift
+//  CreateEditTableViewController.swift
 //  FlockApp
 //
-//  Created by Stephanie Ramirez on 4/9/19.
+//  Created by Stephanie Ramirez on 9/2/19.
 //
 
 import UIKit
@@ -11,14 +11,27 @@ import GoogleMaps
 import Firebase
 import Toucan
 import UserNotifications
+import Kingfisher
 
-class CreateEditViewController: UIViewController {
+
+class CreateEditTableViewController: UITableViewController {
+
+    
+    let cellId = "EventCell"
+    
+    
+    let createEditTableView = CreateEditTableView()
+    
+    public var event: Event?
+    public var tag: Int?
+    
+    
+    
     
     let titlePlaceholder = "Enter the Event Title"
     let trackingPlaceholder = "Event Tracking Time"
     var number = 0
-
-    private let createEditView = CreateEditView()
+    
     var friendsArray = [UserModel]()
     var friendsDictionary : Dictionary<Int,String> = [:]
     var selectedLocation = String()
@@ -28,7 +41,7 @@ class CreateEditViewController: UIViewController {
     var trackingTime = 0
     var isTextField = false
     private var authservice = AppDelegate.authservice
-
+    
     private var selectedImage: UIImage?
     
     private lazy var imagePickerController: UIImagePickerController = {
@@ -36,18 +49,26 @@ class CreateEditViewController: UIViewController {
         ip.delegate = self
         return ip
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.addSubview(createEditView)
-        selectedImage = createEditView.imageButton.imageView?.image
+        let newTableView = UITableView.init(frame: tableView.frame, style: UITableView.Style.grouped)
+        self.tableView = newTableView;
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
+        navigationItem.leftBarButtonItem = createEditTableView.cancelButton
+        let frameHeight = view.frame.height
+        let frameSection = view.frame.height/3
+        self.tableView.sectionHeaderHeight = frameHeight - frameSection
+        self.tableView.register(EventPeopleTableViewCell.self, forCellReuseIdentifier: "personCell")
+        selectedImage = createEditTableView.imageButton.imageView?.image
         viewSetup()
         
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         registerKeyboardNotifications()
-
+        
     }
     deinit {
     }
@@ -62,13 +83,19 @@ class CreateEditViewController: UIViewController {
         
     }
     @objc private func willShowKeyboard(notification: Notification) {
+        self.navigationController?.navigationBar.prefersLargeTitles = false
         guard let info = notification.userInfo,
             let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
                 print("userInfo is nil")
                 return
         }
+        
+        
         if isTextField {
-            createEditView.myTableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
+            
+            
+            // this needs to change for tableview ***
+            tableView.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
         }
     }
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,20 +105,23 @@ class CreateEditViewController: UIViewController {
     
     @objc private func willHideKeyboard(notification: Notification) {
         //identity will return to original location
-        createEditView.myTableView.transform = CGAffineTransform.identity
+        // this needs to change for tableview ***
+        self.navigationController?.navigationBar.prefersLargeTitles = true
+
+        tableView.transform = CGAffineTransform.identity
     }
     
     func viewSetup() {
         navigationItem.title = "Create Event"
-        navigationItem.rightBarButtonItem = createEditView.createButton
-        navigationItem.leftBarButtonItem = createEditView.cancelButton
-        createEditView.titleTextView.delegate = self
-        createEditView.delegate = self
-        createEditView.myTableView.dataSource = self
-        createEditView.myTableView.delegate = self
+        navigationItem.rightBarButtonItem = createEditTableView.createButton
+        navigationItem.leftBarButtonItem = createEditTableView.cancelButton
+        createEditTableView.titleTextView.delegate = self
+        createEditTableView.delegate = self
+//        createEditView.myTableView.dataSource = self
+//        createEditView.myTableView.delegate = self
         
     }
-
+    
     func editNumber(increase: Bool)-> String {
         if number != 0 && increase == false{
             number -= 1
@@ -109,15 +139,70 @@ class CreateEditViewController: UIViewController {
         }
         
     }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedCell: UITableViewCell = tableView.cellForRow(at: indexPath)!
+        selectedCell.contentView.backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).withAlphaComponent(0.2)
+        tableView.deselectRow(at: indexPath, animated: false)
+    }
+
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return createEditTableView
+    }
+    
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return friendsArray.count
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 100
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "personCell", for: indexPath) as? EventPeopleTableViewCell else {return UITableViewCell()}
+        let person = friendsArray[indexPath.row]
+        cell.layer.cornerRadius = 50
+        cell.selectionStyle = .none
+        cell.backgroundColor = .white
+        cell.profilePicture.kf.setImage(with: URL(string: person.photoURL ?? "no photo"), placeholder: #imageLiteral(resourceName: "ProfileImage.png"))
+        cell.nameLabel.text = person.displayName
+        cell.taskField.tag = indexPath.row
+        cell.taskField.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
+        cell.taskField.delegate = self
+            return cell
+        }
+        @objc func didChangeText(textField:UITextField) {
+            //        print(textField.tag)
+            //        print(textField.text)
+            //for id key save text
+            guard let typedText = textField.text else {
+                print("unable to obtain task")
+                return
+                
+            }
+            for (key, value) in friendsDictionary {
+                
+                if textField.tag == key {
+                    friendsDictionary[key] = typedText
+                    
+                }
+            }
+            
+        }
+    
 }
-extension CreateEditViewController: UITextViewDelegate {
+extension CreateEditTableViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
-        createEditView.titleTextView.becomeFirstResponder()
+        createEditTableView.titleTextView.becomeFirstResponder()
         print("textView")
         isTextField = false
-        if createEditView.titleTextView.text == self.titlePlaceholder {
-            createEditView.titleTextView.text = ""
-            createEditView.titleTextView.textColor = .black
+        if createEditTableView.titleTextView.text == self.titlePlaceholder {
+            createEditTableView.titleTextView.text = ""
+            createEditTableView.titleTextView.textColor = .black
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
@@ -126,7 +211,7 @@ extension CreateEditViewController: UITextViewDelegate {
             textView.text = titlePlaceholder
             textView.textColor = .gray
         }
-        createEditView.titleTextView.resignFirstResponder()
+        createEditTableView.titleTextView.resignFirstResponder()
     }
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if(text == "\n") {
@@ -135,21 +220,21 @@ extension CreateEditViewController: UITextViewDelegate {
         }
         return true
     }
-
+    
 }
-extension CreateEditViewController: CreateViewDelegate {
+extension CreateEditTableViewController: CreateEditTableViewDelegate {
     func trackingDecreasePressed() {
         let trackingLabel = editNumber(increase: false)
-        createEditView.myLabel.text = trackingLabel
+        createEditTableView.myLabel.text = trackingLabel
         trackingTime -= 1
-
+        
     }
     
     func trackingIncreasePressed() {
         print("tracking increase pressed")
- 
+        
         let trackingLabel = editNumber(increase: true)
-        createEditView.myLabel.text = trackingLabel
+        createEditTableView.myLabel.text = trackingLabel
         trackingTime += 1
     }
     
@@ -189,11 +274,11 @@ extension CreateEditViewController: CreateViewDelegate {
         navigationController?.pushViewController(detailVC, animated: true)
     }
     
-
+    
     
     func datePressed() {
         print("date pressed")
-
+        
         let detailVC = DateViewController()
         detailVC.delegate = self
         navigationController?.pushViewController(detailVC, animated: true)
@@ -206,31 +291,42 @@ extension CreateEditViewController: CreateViewDelegate {
     }
     
     func createPressed() {
-        createEditView.createButton.isEnabled = false
+        createEditTableView.createButton.isEnabled = false
         
-
-        if createEditView.titleTextView.text == titlePlaceholder || createEditView.titleTextView.text.isEmpty {
+        
+        if createEditTableView.titleTextView.text == titlePlaceholder || createEditTableView.titleTextView.text.isEmpty {
             let alertController = UIAlertController(title: "Unable to post. Please title your event.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                self.createEditView.createButton.isEnabled = true
-            }
-            alertController.addAction(okAction)
-            present(alertController, animated: true)
-            return}
-        if createEditView.addressButton.titleLabel?.text == "Event Address" {
-            let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
-            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                self.createEditView.createButton.isEnabled = true
+                self.createEditTableView.createButton.isEnabled = true
             }
             alertController.addAction(okAction)
             present(alertController, animated: true)
             return}
         
-
+        if createEditTableView.titleTextView.text == "On The Fly"{
+            let alertController = UIAlertController(title: "Unable to post. Please choose a different title for your event.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditTableView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        
+        
+        if createEditTableView.addressButton.titleLabel?.text == "Event Address" {
+            let alertController = UIAlertController(title: "Unable to post. Choose a location.", message: nil, preferredStyle: .alert)
+            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+                self.createEditTableView.createButton.isEnabled = true
+            }
+            alertController.addAction(okAction)
+            present(alertController, animated: true)
+            return}
+        
+        
         guard let startDate = self.selectedStartDate else {
             let alertController = UIAlertController(title: "Unable to post. Choose an event date.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                self.createEditView.createButton.isEnabled = true
+                self.createEditTableView.createButton.isEnabled = true
             }
             alertController.addAction(okAction)
             present(alertController, animated: true)
@@ -249,7 +345,7 @@ extension CreateEditViewController: CreateViewDelegate {
         let startDateString = ISO8601DateFormatter().string(from: startDate)
         let endDateString = ISO8601DateFormatter().string(from: endDate)
         
-        guard let eventName = createEditView.titleTextView.text else {return}
+        guard let eventName = createEditTableView.titleTextView.text else {return}
         var friendIds = [String]()
         for friends in friendsArray {
             friendIds.append(friends.userId)
@@ -270,7 +366,7 @@ extension CreateEditViewController: CreateViewDelegate {
             self.present(alertController, animated: true)
             return}
         
-
+        
         let docRef = DBService.firestoreDB
             .collection(EventsCollectionKeys.CollectionKey)
             .document()
@@ -279,20 +375,20 @@ extension CreateEditViewController: CreateViewDelegate {
                 print("failed to post image with error: \(error.localizedDescription)")
             } else if let imageURL = imageURL {
                 print("image posted and recieved imageURL - post blog to database: \(imageURL)")
-                        let event = Event(eventName: eventName,
-                                          createdDate: Date.getISOTimestamp(),
-                                          userID: user.uid,
-                                          imageURL: imageURL.absoluteString,
-                                          eventDescription: "Event Description",
-                                          documentId: docRef.documentID,
-                                          startDate: startDateString,
-                                          endDate: endDateString,
-                                          locationString: self!.selectedLocation,
-                                          locationLat: self!.selectedCoordinates.latitude,
-                                          locationLong: self!.selectedCoordinates.longitude,
-                                          trackingTime: startTrackingString,
-                                          quickEvent: false,
-                                          proximity: 0)
+                let event = Event(eventName: eventName,
+                                  createdDate: Date.getISOTimestamp(),
+                                  userID: user.uid,
+                                  imageURL: imageURL.absoluteString,
+                                  eventDescription: "Event Description",
+                                  documentId: docRef.documentID,
+                                  startDate: startDateString,
+                                  endDate: endDateString,
+                                  locationString: self!.selectedLocation,
+                                  locationLat: self!.selectedCoordinates.latitude,
+                                  locationLong: self!.selectedCoordinates.longitude,
+                                  trackingTime: startTrackingString,
+                                  quickEvent: false,
+                                  proximity: 0)
                 //post event to user
                 DBService.postEvent(event: event, completion: { [weak self] error in
                     if let error = error {
@@ -317,70 +413,70 @@ extension CreateEditViewController: CreateViewDelegate {
                         DBService.addInvited(user: user, docRef: docRef.documentID, friends: self!.friendsArray, tasks: self!.friendsDictionary, completion: { [weak self] error in
                             if let error = error {
                                 self?.showAlert(title: "Inviting Friends Error", message: error.localizedDescription)
-                                self?.createEditView.createButton.isEnabled = true
+                                self?.createEditTableView.createButton.isEnabled = true
                             } else {
                                 //============================================================
                                 // Adding notification
-                                let startContent = UNMutableNotificationContent()
-                                
-                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
-                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
-                                startContent.sound = UNNotificationSound.default
-                                
-                                let endContent = UNMutableNotificationContent()
-                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
-                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
-                                endContent.sound = UNNotificationSound.default
-                                let startDate = self?.selectedStartDate
-                                let calendar = Calendar.current
-                                let startYear = calendar.component(.year, from: startDate!)
-                                let startMonth = calendar.component(.month, from: startDate!)
-                                let startDay = calendar.component(.day, from: startDate!)
-                                let startHour = calendar.component(.hour, from: startDate!)
-                                let startMinutes = calendar.component(.minute, from: startDate!)
-                                
-                                let endDate = self?.selectedEndDate
-                                let endYear = calendar.component(.year, from: endDate!)
-                                let endMonth = calendar.component(.month, from: endDate!)
-                                let endDay = calendar.component(.day, from: endDate!)
-                                let endHour = calendar.component(.hour, from: endDate!)
-                                let endMinutes = calendar.component(.minute, from: endDate!)
-                                
-                                var startDateComponent = DateComponents()
-                                startDateComponent.year = startYear
-                                startDateComponent.month = startMonth
-                                startDateComponent.day = startDay
-                                startDateComponent.hour = startHour
-                                startDateComponent.minute = startMinutes
-                                startDateComponent.timeZone = TimeZone.current
-                                var endDateComponent = DateComponents()
-                                endDateComponent.year = endYear
-                                endDateComponent.month = endMonth
-                                endDateComponent.day = endDay
-                                endDateComponent.hour = endHour
-                                endDateComponent.minute = endMinutes
-                                endDateComponent.timeZone = TimeZone.current
-                                
-                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
-                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
-                                
-                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
-                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
-                                
-                                UNUserNotificationCenter.current().add(startRequest) { (error) in
-                                    if let error = error {
-                                        print("notification delivery error: \(error)")
-                                    } else {
-                                        print("successfully added start notification")
-                                    }
-                                }
-                                UNUserNotificationCenter.current().add(endRequest) { (error) in
-                                    if let error = error {
-                                        print("notification delivery error: \(error)")
-                                    } else {
-                                        print("successfully added end notification")
-                                    }
-                                }
+//                                let startContent = UNMutableNotificationContent()
+//
+//                                startContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Beginning", arguments: nil)
+//                                startContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Starting", arguments: nil)
+//                                startContent.sound = UNNotificationSound.default
+//
+//                                let endContent = UNMutableNotificationContent()
+//                                endContent.title = NSString.localizedUserNotificationString(forKey: "\(event.eventName) ended", arguments: nil)
+//                                endContent.body = NSString.localizedUserNotificationString(forKey: "\(event.eventName) Ending", arguments: nil)
+//                                endContent.sound = UNNotificationSound.default
+//                                let startDate = self?.selectedStartDate
+//                                let calendar = Calendar.current
+//                                let startYear = calendar.component(.year, from: startDate!)
+//                                let startMonth = calendar.component(.month, from: startDate!)
+//                                let startDay = calendar.component(.day, from: startDate!)
+//                                let startHour = calendar.component(.hour, from: startDate!)
+//                                let startMinutes = calendar.component(.minute, from: startDate!)
+//
+//                                let endDate = self?.selectedEndDate
+//                                let endYear = calendar.component(.year, from: endDate!)
+//                                let endMonth = calendar.component(.month, from: endDate!)
+//                                let endDay = calendar.component(.day, from: endDate!)
+//                                let endHour = calendar.component(.hour, from: endDate!)
+//                                let endMinutes = calendar.component(.minute, from: endDate!)
+//
+//                                var startDateComponent = DateComponents()
+//                                startDateComponent.year = startYear
+//                                startDateComponent.month = startMonth
+//                                startDateComponent.day = startDay
+//                                startDateComponent.hour = startHour
+//                                startDateComponent.minute = startMinutes
+//                                startDateComponent.timeZone = TimeZone.current
+//                                var endDateComponent = DateComponents()
+//                                endDateComponent.year = endYear
+//                                endDateComponent.month = endMonth
+//                                endDateComponent.day = endDay
+//                                endDateComponent.hour = endHour
+//                                endDateComponent.minute = endMinutes
+//                                endDateComponent.timeZone = TimeZone.current
+//
+//                                let startTrigger = UNCalendarNotificationTrigger(dateMatching: startDateComponent, repeats: false)
+//                                let endTrigger = UNCalendarNotificationTrigger(dateMatching: endDateComponent, repeats: false)
+//
+//                                let startRequest = UNNotificationRequest(identifier: "Event Start", content: startContent, trigger: startTrigger)
+//                                let endRequest = UNNotificationRequest(identifier: "Event End", content: endContent, trigger: endTrigger)
+//
+//                                UNUserNotificationCenter.current().add(startRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added start notification")
+//                                    }
+//                                }
+//                                UNUserNotificationCenter.current().add(endRequest) { (error) in
+//                                    if let error = error {
+//                                        print("notification delivery error: \(error)")
+//                                    } else {
+//                                        print("successfully added end notification")
+//                                    }
+//                                }
                                 self?.showAlert(title: "Event Posted", message: nil) { action in
                                     print(docRef.documentID)
                                     //                    self?.dismiss(animated: true)//code here to segue to detail
@@ -396,88 +492,45 @@ extension CreateEditViewController: CreateViewDelegate {
                 })
             }
         }
-        
     }
 }
-
-extension CreateEditViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return friendsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = createEditView.myTableView.dequeueReusableCell(withIdentifier: "CreateEditTableViewCell", for: indexPath) as? CreateEditTableViewCell else {return UITableViewCell()}
-        let friend = friendsArray[indexPath.row]
-        cell.selectionStyle = .none
-        cell.friendName.text = friend.displayName
-        cell.friendTask.tag = indexPath.row
-        cell.friendTask.delegate = self
-        cell.friendTask.addTarget(self, action: #selector(didChangeText), for: .editingChanged)
-
-        return cell
-    }
-    @objc func didChangeText(textField:UITextField) {
-//        print(textField.tag)
-//        print(textField.text)
-        //for id key save text
-        guard let typedText = textField.text else {
-            print("unable to obtain task")
-            return
-            
-        }
-        for (key, value) in friendsDictionary {
-            
-            if textField.tag == key {
-                friendsDictionary[key] = typedText
-                
-            }
-        }
-        
-    }
-    
-    
-}
-
-extension CreateEditViewController: LocationSearchViewControllerDelegate {
+extension CreateEditTableViewController: LocationSearchViewControllerDelegate {
     func getLocation(locationTuple: (String, CLLocationCoordinate2D)) {
-            print("tuple printout of string: \(locationTuple.0)")
-            print("tuple printout of coordinates: \(locationTuple.1)")
-            createEditView.addressButton.setTitle(locationTuple.0, for: .normal)
-            createEditView.addressButton.titleLabel?.text = locationTuple.0
+        print("tuple printout of string: \(locationTuple.0)")
+        print("tuple printout of coordinates: \(locationTuple.1)")
+        createEditTableView.addressButton.setTitle(locationTuple.0, for: .normal)
+        createEditTableView.addressButton.titleLabel?.text = locationTuple.0
         selectedLocation = locationTuple.0
         selectedCoordinates = locationTuple.1
     }
 }
-extension CreateEditViewController: InvitedViewControllerDelegate {
+
+extension CreateEditTableViewController: InvitedViewControllerDelegate {
     func selectedFriends(friends: [UserModel]) {
         print("Friends selected")
         friendsArray = friends
         var count = 0
         for friend in friends {
-            friendsDictionary[count] = "No Task"
+            if friendsDictionary[count] == nil {
+                friendsDictionary[count] = "No Task"
+            }
             count += 1
         }
-        print(friendsDictionary)
-        
-        createEditView.myTableView.reloadData()
+        tableView.reloadData()
     }
-    
-    
 }
-extension CreateEditViewController: DateViewControllerDelegate {
+extension CreateEditTableViewController: DateViewControllerDelegate {
     func selectedDate(startDate: Date, endDate: Date) {
         
         selectedStartDate = startDate
         selectedEndDate = endDate
         
         let startDisplayString = startDate.toString(dateFormat: "MMMM dd hh:mm a")
-        createEditView.dateButton.setTitle(startDisplayString, for: .normal)
-
+        createEditTableView.dateButton.setTitle(startDisplayString, for: .normal)
     }
-
 }
 
-extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension CreateEditTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true)
     }
@@ -489,21 +542,21 @@ extension CreateEditViewController: UIImagePickerControllerDelegate, UINavigatio
         }
         let resizedImage = Toucan.init(image: originalImage).resize(CGSize(width: 500, height: 500))
         selectedImage = resizedImage.image
-        createEditView.imageButton.setImage(selectedImage, for: .normal)
+        createEditTableView.imageButton.setImage(selectedImage, for: .normal)
         dismiss(animated: true)
     }
 }
-extension CreateEditViewController: CreateEditTableViewCellDelegate {
+extension CreateEditTableViewController: CreateEditTableViewCellDelegate {
     func textDelegate() {
-        print("Okay")
+//        print("Okay")
     }
-    
-    
 }
-extension CreateEditViewController: UITextFieldDelegate {
+extension CreateEditTableViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         print("TextField")
         isTextField = true
+//        tableView.tableHeaderView = nil
+//                tableView.reloadData()
     }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
@@ -513,10 +566,8 @@ extension CreateEditViewController: UITextFieldDelegate {
             
             if textField.tag == key {
                 friendsDictionary[key] = typedText
-                
             }
         }
-        
         return true
     }
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -526,17 +577,12 @@ extension CreateEditViewController: UITextFieldDelegate {
         guard let typedText = textField.text else {
             print("unable to obtain task")
             return
-            
         }
         for (key, value) in friendsDictionary {
             
             if textField.tag == key {
                 friendsDictionary[key] = typedText
-                
             }
         }
-        
     }
-
-
 }

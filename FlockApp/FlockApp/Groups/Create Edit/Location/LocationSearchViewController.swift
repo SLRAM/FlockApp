@@ -11,9 +11,7 @@ import CoreLocation
 import GoogleMaps
 
 protocol LocationSearchViewControllerDelegate: AnyObject {
-    //    func getLocation(location: Dictionary<String,CLLocationCoordinate2D>)
     func getLocation(locationTuple: (String, CLLocationCoordinate2D))
-    
 }
 class LocationSearchViewController: UIViewController {
     
@@ -44,34 +42,27 @@ class LocationSearchViewController: UIViewController {
         homeViewSetup()
         searchCompleter.delegate = self
         designSetup()
-        //        centerOnMap(location: initialLocation)
-        //        homeView.mapView.delegate = self
-        //        homeView.locationTextField.delegate = self
         locationSearchView.locationSearch.delegate = self
-        // setupAnnotations()
-        
-        
-        
     }
     func designSetup() {
-        //        tableView.backgroundColor = .blue
         locationSearchView.myTableView.tableFooterView = UIView()
         let backgroundImage = UIImage(named: "blueGreen")
         let imageView = UIImageView(image: backgroundImage)
         locationSearchView.myTableView.backgroundView = imageView
-        locationSearchView.backgroundColor = #colorLiteral(red: 0.8442592025, green: 0.4776551127, blue: 0.9347509146, alpha: 1).withAlphaComponent(0.9)
-        
-        //        self.navigationController!.navigationBar.barTintColor = UIColor.black
-        
+//        locationSearchView.backgroundColor = #colorLiteral(red: 0.8442592025, green: 0.4776551127, blue: 0.9347509146, alpha: 1).withAlphaComponent(0.9)
+        locationSearchView.backgroundColor = #colorLiteral(red: 0.5872428417, green: 0.1077810898, blue: 0.7153506875, alpha: 1)
+
     }
     
     func mapListButton() {
         navigationItem.rightBarButtonItem = UIBarButtonItem.init(title: "Add", style: .plain, target: self, action: #selector(addButton))
+        navigationItem.rightBarButtonItem?.isEnabled = false
     }
     
     @objc func addButton() {
         guard let noLocation = locationSearchView.locationSearch.text?.isEmpty else {return}
-        if noLocation {
+        let inactiveMarker = allMarkers.isEmpty
+        if noLocation || inactiveMarker {
             let alertController = UIAlertController(title: "Please provide a location to add to your event.", message: nil, preferredStyle: .alert)
             let okAction = UIAlertAction(title: "OK", style: .default, handler: nil)
             alertController.addAction(okAction)
@@ -92,6 +83,7 @@ class LocationSearchViewController: UIViewController {
         view.addSubview(locationSearchView)
         locationSearchView.myTableView.delegate = self
         locationSearchView.myTableView.dataSource = self
+        locationSearchView.locationSearch.delegate = self
     }
 }
 extension LocationSearchViewController: UITableViewDataSource, UITableViewDelegate{
@@ -100,10 +92,8 @@ extension LocationSearchViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //        guard let cell = homeView.myTableView.dequeueReusableCell(withIdentifier: "LocationSearchTableViewCell", for: indexPath) as? LocationSearchTableViewCell else {return UITableViewCell()}
         let searchResult = searchResults[indexPath.row]
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
-//        let cell = LocationSearchTableViewCell(style: .default, reuseIdentifier: nil)
         cell.textLabel?.text = searchResult.title
         cell.detailTextLabel?.text = searchResult.subtitle
         cell.backgroundColor = .clear
@@ -112,7 +102,8 @@ extension LocationSearchViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //do code here to make sure coordinates are obtained from location. possible alert saying sorry the location you entered could not be found try again.
         tableView.deselectRow(at: indexPath, animated: true)
-        
+        navigationItem.rightBarButtonItem?.isEnabled = true
+        locationSearchView.locationSearch.resignFirstResponder()
         let completion = searchResults[indexPath.row]
         let completionFull = "\(completion.title) \(completion.subtitle)"
         locationSearchView.locationSearch.text = completionFull
@@ -136,7 +127,7 @@ extension LocationSearchViewController: UITableViewDataSource, UITableViewDelega
                 self.allMarkers.removeAll()
                 let locationMarker = GMSMarker.init()
                 locationMarker.position = inputLocation
-                locationMarker.title = "Starting"
+                locationMarker.title = "Event Location"
                 locationMarker.map = self.locationSearchView.myMapView
                 self.allMarkers.append(locationMarker)
             }
@@ -145,30 +136,16 @@ extension LocationSearchViewController: UITableViewDataSource, UITableViewDelega
         }
         UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
             self.locationSearchView.myMapView.alpha = 1.0
-            
-            
         })
-        
-        //add map code here
         self.view.addSubview(locationSearchView)
         locationSearchView.reloadInputViews()
     }
 }
 
 extension LocationSearchViewController: GMSMapViewDelegate {
-    //    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition) {
-    //        print("camera changed")
-    //    }
-    //    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
-    //        print("updating")
-    //    }
-    
-    
 }
 extension LocationSearchViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("typing")
-        
         if searchText.count > 0 {
             UIView.animate(withDuration: 0.5, delay: 0.0, options: [], animations: {
                 self.locationSearchView.myMapView.alpha = 0.0
@@ -183,6 +160,9 @@ extension LocationSearchViewController: UISearchBarDelegate {
         searchCompleter.queryFragment = searchText
         
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
 }
 extension LocationSearchViewController: MKLocalSearchCompleterDelegate {
     
@@ -192,12 +172,10 @@ extension LocationSearchViewController: MKLocalSearchCompleterDelegate {
     }
     
     func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
-        // handle error
     }
 }
 
 extension LocationSearchViewController: LocationSearchViewDelegate {
     func userLocationButton() {
-        print("pushed")
     }
 }

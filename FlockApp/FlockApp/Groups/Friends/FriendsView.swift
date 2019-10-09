@@ -34,11 +34,7 @@ class FriendsView: UIView {
     }
     
     private func setupConstraints() {
-        self.backgroundColor = .white
-//        let gradient = CAGradientLayer()
-//        gradient.frame = self.bounds
-//        gradient.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1),UIColor.white.cgColor]
-//        self.layer.addSublayer(gradient)
+        self.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupFriendSearch()
         setupTableView()
     }

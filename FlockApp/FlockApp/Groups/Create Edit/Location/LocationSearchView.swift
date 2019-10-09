@@ -14,11 +14,7 @@ protocol LocationSearchViewDelegate: AnyObject {
 }
 
 class LocationSearchView: UIView {
-    //    var mapView: GMSMapView?
-    
     weak var delegate: LocationSearchViewDelegate?
-    
-    
     lazy var mySearchBarView: UIView = {
         let myv = UIView()
         myv.backgroundColor = #colorLiteral(red: 0.2660466433, green: 0.2644712925, blue: 0.2672616839, alpha: 1)
@@ -28,10 +24,7 @@ class LocationSearchView: UIView {
         let tf = UISearchBar()
         tf.placeholder = "Search Locations"
         tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //        tf.layer.cornerRadius = 10
-        //        tf.layer.borderWidth = 2
-        //        tf.layer.borderColor = UIColor.gray.cgColor
-        //        tf.backgroundColor = #colorLiteral(red: 0.6924440265, green: 0.6956507564, blue: 0.7034814358, alpha: 1)
+
         return tf
     }()
     
@@ -48,18 +41,8 @@ class LocationSearchView: UIView {
         
         let camera = GMSCameraPosition.camera(withLatitude: 40.793840, longitude: -73.886012, zoom: 11)
         view = GMSMapView.init(frame: CGRect.zero, camera: camera)
-        //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6)
-        //        myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
-        //        view = myMapView
-        //        view.mapType = MKMapType.standard
-        //        view.isZoomEnabled = true
-        //        view.isScrollEnabled = true
-        //        view.center = self.center
         return view
     }()
-    
-    
-    
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
         commonInit()
@@ -76,16 +59,10 @@ class LocationSearchView: UIView {
     private func commonInit() {
         setupViews()
     }
-    
 }
 extension LocationSearchView {
     func setupViews() {
         backgroundColor = .white
-        
-        //        let gradient = CAGradientLayer()
-        //        gradient.frame = self.bounds
-        //        gradient.colors = [UIColor.magenta.cgColor,UIColor.red.cgColor,UIColor.purple.cgColor,UIColor.blue.cgColor]
-        //        self.layer.addSublayer(gradient)
         setupSearchBarView()
         setupHomeListView()
         setupHomeMapView()
