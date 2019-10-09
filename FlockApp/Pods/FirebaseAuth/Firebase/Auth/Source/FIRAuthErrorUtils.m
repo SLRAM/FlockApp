@@ -171,7 +171,7 @@ static NSString *const kFIRAuthErrorMessageUserTokenExpired = @"The user's crede
     @brief Message for @c FIRAuthErrorCodeUserNotFound error code.
  */
 static NSString *const kFIRAuthErrorMessageUserNotFound = @"There is no user record corresponding "
-    "to this identifier. The user may have been deleted.";
+    "to this identifier. The user may have been deleted or does not exist.";
 
 /** @var kFIRAuthErrorMessageInvalidAPIKey
     @brief Message for @c FIRAuthErrorCodeInvalidAPIKey error code.

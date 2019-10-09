@@ -45,9 +45,9 @@ final class AuthService {
                         return
                     }
                 })
-                
+                let defaultPhoto = "https://firebasestorage.googleapis.com/v0/b/flock-ca5ff.appspot.com/o/images%2FprofileImages%2FHlO5MPnNLoZjK5UIwarSNA9qYK03?alt=media&token=812f76ed-9433-4daa-a6c6-298dc24f3655"
                 // create user (user) on firestore database
-                let user = UserModel.init(userId: authDataResult.user.uid, displayName: username, email: authDataResult.user.email!, photoURL: nil, coverImageURL: nil, joinedDate: Date.getISOTimestamp(), firstName: nil, lastName: nil, bio: nil, phoneNumber: nil, fullnameIsVisible: false, emailIsVisible: false, phoneIsVisible: false)
+                let user = UserModel.init(userId: authDataResult.user.uid, displayName: username, email: authDataResult.user.email!, photoURL: defaultPhoto, coverImageURL: nil, joinedDate: Date.getISOTimestamp(), firstName: nil, lastName: nil, bio: nil, phoneNumber: nil, fullnameIsVisible: false, emailIsVisible: false, phoneIsVisible: false)
                 print(user)
                 DBService.createUser(user: user, completion: { (error) in
                     if let error = error {

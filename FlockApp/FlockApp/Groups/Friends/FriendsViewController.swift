@@ -56,9 +56,9 @@ class FriendsViewController: UIViewController {
         friendsView.myTableView.delegate = self
         friendsView.myTableView.dataSource = self
         friendsView.friendSearch.delegate = self
-//        friendsView.myTableView.tableFooterView = UIView()
         navigationController?.navigationBar.topItem?.title = "Flockers"
         tapGestureKeyboard()
+        friendsView.myTableView.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
     }
     override func viewWillAppear(_ animated: Bool) {
         fetchAllUsers(keyword: "")
@@ -74,16 +74,7 @@ class FriendsViewController: UIViewController {
     @objc func singleTap(sender: UITapGestureRecognizer) {
         self.friendsView.friendSearch.resignFirstResponder()
     }
-//    override func viewDidLayoutSubviews() {
-//        let layer = CAGradientLayer()
-//        layer.frame = UIScreen.main.bounds
-//        layer.colors = [#colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1).cgColor, UIColor.white.cgColor]
-//        let myTest = UIView.init(frame: UIScreen.main.bounds)
-//
-//        myTest.layer.insertSublayer(layer, at: 0)
-//        self.friendsView.myTableView.backgroundView = myTest
-//    }
-//
+
     private func fetchPendingFriends(keyword: String) {
             guard let user = authservice.getCurrentUser() else {
                 print("Please log in")
@@ -252,6 +243,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         }
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         switch indexPath.section {
         case 0:
             guard !friends.isEmpty else {return FriendsTableViewCell() }
@@ -259,7 +251,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Friend"
-            cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
+            cell.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
             cell.layer.cornerRadius = 50
             cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             return cell
@@ -269,8 +261,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Request Sent"
-            cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
             cell.layer.cornerRadius = 50
+            cell.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
             cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             cell.cancelRequest.isUserInteractionEnabled = true
             cell.cancelRequest.isHidden = false
@@ -283,8 +275,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
             cell.taskLabel.text = "Friend Pending"
+            cell.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
             cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
-            cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
             cell.layer.cornerRadius = 50
             cell.acceptFriend.isUserInteractionEnabled = true
             cell.declineFriend.isUserInteractionEnabled = true
@@ -298,8 +290,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             let userCell = strangers[indexPath.row]
             let cell = FriendsTableViewCell(style: .default, reuseIdentifier: nil)
             cell.nameLabel.text = userCell.displayName
-            cell.backgroundColor = UIColor.white.withAlphaComponent(0.35)
             cell.layer.cornerRadius = 50
+            cell.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
             cell.profilePicture.kf.setImage(with: URL(string: userCell.photoURL ?? "No Image Available"), placeholder: UIImage(named: "ProfileImage"))
             return cell
         default:
@@ -323,6 +315,8 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
         guard let indexPath = friendsView.myTableView.indexPathForSelectedRow else {
             fatalError("It broke")
         }
+        friendsView.friendSearch.resignFirstResponder()
+
         let profileVC = ProfileViewController()
         switch indexPath.section {
         case 0:

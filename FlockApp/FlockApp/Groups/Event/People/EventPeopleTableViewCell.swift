@@ -21,11 +21,18 @@ class EventPeopleTableViewCell: UITableViewCell {
         return label
     }()
 
-    public lazy var taskLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Task here"
-        label.textColor = .black
-        return label
+//    public lazy var taskLabel: UILabel = {
+//        let label = UILabel()
+//        label.text = "Task here"
+//        label.textColor = .black
+//        return label
+//    }()
+    
+    public lazy var taskField: UITextField = {
+        let tf = UITextField()
+        tf.placeholder = "No Task"
+//        tf.delegate = self
+        return tf
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -66,11 +73,11 @@ class EventPeopleTableViewCell: UITableViewCell {
     }
 
     func setupTaskLabel() {
-        addSubview(taskLabel)
-        taskLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(taskField)
+        taskField.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            taskLabel.leadingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: 20),
-            taskLabel.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25)
+            taskField.leadingAnchor.constraint(equalTo: profilePicture.trailingAnchor, constant: 20),
+            taskField.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -25)
             ])
     }
 }

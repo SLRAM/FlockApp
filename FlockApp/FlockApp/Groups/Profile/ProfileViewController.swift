@@ -220,8 +220,6 @@ class ProfileViewController: UIViewController {
             profileView.imageButton.isUserInteractionEnabled = true
             profileView.displayNameTextView.isEditable = true
             profileView.displayNameTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-//            profileView.emailTextView.isEditable = true
-//            profileView.emailTextView.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
             profileView.firstNameTextView.text = user!.firstName
             profileView.firstNameTextView.isEditable = true
             profileView.firstNameTextView.isHidden = false
@@ -242,8 +240,7 @@ class ProfileViewController: UIViewController {
             profileView.displayNameTextView.backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
             profileView.fullNameTextView.isEditable = false
             profileView.fullNameTextView.isHidden = false
-//            profileView.emailTextView.isEditable = false
-//            profileView.emailTextView.backgroundColor = .white
+
             profileView.firstNameTextView.isEditable = false
             profileView.firstNameTextView.isHidden = true
             profileView.firstNameTextView.backgroundColor = .white
@@ -300,7 +297,6 @@ class ProfileViewController: UIViewController {
                             self.showAlert(title: "Editing Error", message: error.localizedDescription)
                         }
                 }
-//                self.dismiss(animated: true)
             }
         }
         self.profileView.fullNameTextView.text = profileView.firstNameTextView.text + " " + profileView.lastNameTextView.text

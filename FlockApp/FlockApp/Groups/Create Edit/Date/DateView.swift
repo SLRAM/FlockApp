@@ -65,7 +65,7 @@ class DateView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
-        backgroundColor = .white
+        backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
         setupViewLabel()
         setupStartLabel()
         setupStartDatePicker()

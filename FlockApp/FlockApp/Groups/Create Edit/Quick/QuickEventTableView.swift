@@ -1,12 +1,13 @@
 //
-//  QuickEventView.swift
+//  QuickEventTableView.swift
 //  FlockApp
 //
-//  Created by Stephanie Ramirez on 4/25/19.
+//  Created by Stephanie Ramirez on 9/3/19.
 //
 
 import UIKit
-protocol QuickEventViewDelegate: AnyObject {
+
+protocol QuickEventTableViewDelegate: AnyObject {
     func createQuickPressed()
     func friendsQuickPressed()
     func cancelQuickPressed()
@@ -15,14 +16,9 @@ protocol QuickEventViewDelegate: AnyObject {
     func quickProximityIncrease()
     func quickProximityDecrease()
 }
-class QuickEventView: UIView {
+class QuickEventTableView: UIView {
     
-    weak var delegate: QuickEventViewDelegate?
-    
-    //    lazy var trackingStepper: UIStepper = {
-    //        let stepper = UIStepper()
-    //        return stepper
-    //    }()
+    weak var delegate: QuickEventTableViewDelegate?
     
     lazy var myLabel: UILabel = {
         let label = UILabel()
@@ -30,9 +26,13 @@ class QuickEventView: UIView {
         label.text = "Event Tracking Time"
         label.textAlignment = .center
         label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        label.layer.cornerRadius = 10.0
+
+        label.layer.masksToBounds = true
+
         return label
     }()
-
+    
     lazy var trackingIncreaseButton: UIButton = {
         let button = UIButton()
         button.setTitle("+", for: .normal)
@@ -45,7 +45,7 @@ class QuickEventView: UIView {
     }()
     @objc func quickTrackingIncrease() {
         delegate?.quickTrackingIncrease()
-
+        
     }
     lazy var trackingDecreaseButton: UIButton = {
         let button = UIButton()
@@ -59,7 +59,7 @@ class QuickEventView: UIView {
     }()
     @objc func quickTrackingDecrease() {
         delegate?.quickTrackingDecrease()
-
+        
     }
     lazy var myProximityLabel: UILabel = {
         let label = UILabel()
@@ -67,6 +67,9 @@ class QuickEventView: UIView {
         label.text = "Proximity Distance"
         label.textAlignment = .center
         label.textColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
+        label.layer.cornerRadius = 10.0
+        label.layer.masksToBounds = true
+
         return label
     }()
     
@@ -114,13 +117,6 @@ class QuickEventView: UIView {
         print("event date pressed")
         
     }
-    lazy var myTableView: UITableView = {
-        let tv = UITableView()
-        tv.register(FriendsTableViewCell.self, forCellReuseIdentifier: "FriendsTableViewCell")
-        tv.rowHeight = (UIScreen.main.bounds.width)/4
-        tv.backgroundColor = #colorLiteral(red: 0.9665842652, green: 0.9562553763, blue: 0.9781278968, alpha: 1)
-        return tv
-    }()
     public lazy var cancelButton: UIBarButtonItem = {
         let button = UIBarButtonItem(title: "Cancel", style: UIBarButtonItem.Style.plain, target: self, action: #selector(cancelButtonPressed))
         return button
@@ -136,7 +132,7 @@ class QuickEventView: UIView {
     @objc func createQuickPressed() {
         delegate?.createQuickPressed()
     }
-
+    
     
     override init(frame: CGRect) {
         super.init(frame: UIScreen.main.bounds)
@@ -154,13 +150,11 @@ class QuickEventView: UIView {
     }
     
 }
-extension QuickEventView {
+extension QuickEventTableView {
     func setupView() {
         setupTracking()
         setupProximity()
-        setupFriendButton()
-        setupTableView()
-        
+        setupFriendButton()        
     }
     func setupTracking() {
         addSubview(myLabel)
@@ -168,8 +162,8 @@ extension QuickEventView {
         myLabel.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         myLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         myLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
-
+        myLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.26).isActive = true
+        
         setupTrackingIncrease()
         setupTrackingDecrease()
     }
@@ -197,7 +191,7 @@ extension QuickEventView {
         myProximityLabel.topAnchor.constraint(equalTo: myLabel.bottomAnchor, constant: 10).isActive = true
         myProximityLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         myProximityLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        myProximityLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        myProximityLabel.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.26).isActive = true
         
         setupProximityIncrease()
         setupProximityDecrease()
@@ -226,16 +220,7 @@ extension QuickEventView {
         friendButton.topAnchor.constraint(equalTo: myProximityLabel.bottomAnchor, constant: 10).isActive = true
         friendButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
         friendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
+        friendButton.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.26).isActive = true
     }
-    
-    func setupTableView() {
-        addSubview(myTableView)
-        myTableView.translatesAutoresizingMaskIntoConstraints = false
-        myTableView.topAnchor.constraint(equalTo: friendButton.bottomAnchor, constant: 10).isActive = true
-        myTableView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15).isActive = true
-        myTableView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15).isActive = true
-        //        myTableView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor, multiplier: 0.07).isActive = true
-        myTableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 10).isActive = true
-    }
+
 }
