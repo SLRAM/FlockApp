@@ -61,6 +61,7 @@ The user can click on the Friends tab to view their friends list. This is a tabl
 
 
 ## Capstone Presentation
+[![Flock Demo](https://img.youtube.com/vi/J0plmD9GKbY/0.jpg)](https://www.youtube.com/watch?v=J0plmD9GKbY "Flock Demo")
 
 
 ## Built With
