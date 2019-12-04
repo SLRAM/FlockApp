@@ -61,11 +61,14 @@ The user can click on the Friends tab to view their friends list. This is a tabl
 
 
 ## Capstone Presentation
+
 Please click the image if you would like to see Flock's presentation at Pursuit's 5.3 Capstone Demo day.
+
 [![Flock Demo](https://img.youtube.com/vi/J0plmD9GKbY/0.jpg)](https://www.youtube.com/watch?v=J0plmD9GKbY "Flock Demo")
 
 
 ## Built With
+
 * [Google Maps SDK](https://developers.google.com/maps/documentation/ios-sdk/intro)
 * [Firebase](https://firebase.google.com/docs) 
 
@@ -98,5 +101,3 @@ Please click the image if you would like to see Flock's presentation at Pursuit'
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
-
-
