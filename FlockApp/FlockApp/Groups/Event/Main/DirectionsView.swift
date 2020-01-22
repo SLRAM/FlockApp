@@ -39,25 +39,4 @@ class DirectionsView: UIView {
         mapView.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
-//    lazy var myMapView: MKMapView = {
-//        var view = MKMapView()
-//
-//        let camera = MKMapCamera(lookingAtCenter: <#T##CLLocationCoordinate2D#>, fromDistance: <#T##CLLocationDistance#>, pitch: <#T##CGFloat#>, heading: <#T##CLLocationDirection#>)
-//
-//        let camera = GMSCameraPosition.camera(withLatitude: 40.793840, longitude: -73.886012, zoom: 11)
-//        view = GMSMapView.init(frame: CGRect.zero, camera: camera)
-//        //        let camera = GMSCameraPosition.camera(withLatitude: -33.86, longitude: 151.20, zoom: 6)
-//        //        myMapView = GMSMapView.init(frame: CGRect.zero, camera: camera)
-//        //        view = myMapView
-//        //        view.mapType = MKMapType.standard
-//        //        view.isZoomEnabled = true
-//        //        view.isScrollEnabled = true
-//        //        view.center = self.center
-//        return view
-//    }()
-
 }
-
-
-

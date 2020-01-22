@@ -387,6 +387,7 @@ extension CreateEditViewController: CreateViewDelegate {
                                     let detailVC = EventTableViewController()
                                     detailVC.event = event
                                     detailVC.tag = 0
+									detailVC.modalPresentationStyle = .fullScreen
                                     //                    detailVC.delegate = self
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
                                 }

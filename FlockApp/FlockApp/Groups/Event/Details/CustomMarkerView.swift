@@ -31,30 +31,44 @@ class CustomMarkerView: UIView {
         self.tag = tag
         setupViews()
     }
+//    init(frame: CGRect, images: [URL], borderColor: UIColor, tag: Int) {
+//        self.img = .url(image)
+//        super.init(frame: frame)
+//        self.borderColor = borderColor
+//        self.tag = tag
+//        setupViews()
+//    }
+//    init(frame: CGRect, images: [UIImage], borderColor: UIColor, tag: Int) {
+//        self.img = .image(image)
+//        super.init(frame: frame)
+//        self.borderColor = borderColor
+//        self.tag = tag
+//        setupViews()
+//    }
     
     func setupViews() {
-        let imgView = UIImageView()
+        let markerImage = UIImageView()
         switch img {
         case .url(let url):
-            imgView.kf.setImage(with: url)
+            markerImage.kf.setImage(with: url)
 
         case .image(let image):
-            imgView.image = image
+            markerImage.image = image
         }
-        imgView.frame=CGRect(x: 0, y: 0, width: 50, height: 50)
-        imgView.layer.cornerRadius = 25
-        imgView.layer.borderColor = borderColor?.cgColor
-        imgView.layer.borderWidth = 4
-        imgView.backgroundColor = .white //remove to make image transparent
-        imgView.clipsToBounds = true
-        let lbl=UILabel(frame: CGRect(x: 0, y: 45, width: 50, height: 10))
-        lbl.text = "▾"
-        lbl.font=UIFont.systemFont(ofSize: 24)
-        lbl.textColor = borderColor
-        lbl.textAlignment = .center
+        markerImage.frame=CGRect(x: 0, y: 0, width: 50, height: 50)
+        markerImage.layer.cornerRadius = 25
+        markerImage.layer.borderColor = borderColor?.cgColor
+        markerImage.layer.borderWidth = 4
+        markerImage.backgroundColor = .white //remove to make image transparent
+        markerImage.clipsToBounds = true
+        let markerLabel = UILabel(frame: CGRect(x: 0, y: 45, width: 50, height: 10))
+        markerLabel.text = "▾"
+        markerLabel.font = UIFont.systemFont(ofSize: 24)
+        markerLabel.textColor = borderColor
+        markerLabel.textAlignment = .center
         
-        self.addSubview(imgView)
-        self.addSubview(lbl)
+        self.addSubview(markerImage)
+        self.addSubview(markerLabel)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -253,12 +253,14 @@ class HomeViewController: UIViewController {
         let eventAction = UIAlertAction(title: "Standard Event", style: .default, handler: { (action) -> Void in
             let createEditVC = CreateEditTableViewController()
             let createNav = UINavigationController.init(rootViewController: createEditVC)
+			createNav.modalPresentationStyle = .fullScreen
             self.present(createNav, animated: true)
         })
         let quickEventAction = UIAlertAction(title: "On The Fly", style: .default, handler: { (action) -> Void in
             
             let quickEditVC = QuickEventTableViewController()
             let createNav = UINavigationController.init(rootViewController: quickEditVC)
+			createNav.modalPresentationStyle = .fullScreen
             self.present(createNav, animated: true)
         })
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
@@ -477,11 +479,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
             detailVC.tag = 2
             
         default:
-            print("you good fam")
+            print("unable to find tag")
         }
         detailVC.event = event
         let detailNav = UINavigationController.init(rootViewController: detailVC)
-        
+        detailNav.modalPresentationStyle = .fullScreen
         present(detailNav, animated: true)
     }
     

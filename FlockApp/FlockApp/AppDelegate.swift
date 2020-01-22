@@ -19,109 +19,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     static var authservice = AuthService()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        splashScreen()
-        // Override point for customization after application launch.
-        //        GMSServices.provideAPIKey(SecretKeys.googleKey)
-        //        FirebaseApp.configure()
-        //        UNUserNotificationCenter.current().delegate = self
-        //
-        //        // force signout
-        //        //try? Auth.auth().signOut()
-        //
-        //
-        //        window = UIWindow(frame: UIScreen.main.bounds)
-        //        if let _ = AppDelegate.authservice.getCurrentUser() {
-        //            window?.rootViewController = TabBarController()
-        //            //UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        //            //UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-        //           //. UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-        //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-        //            UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //            UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        //
-        ////            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-        //
-        ////            window?.makeKeyAndVisible()
-        //        } else {
-        //            let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
-        //            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        //            window?.rootViewController = UINavigationController(rootViewController: loginViewController)
-        //        }
-        //        UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //        UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //        UINavigationBar.appearance().tintColor = UIColor.white
-        //        UINavigationBar.appearance().prefersLargeTitles = true
-        //        UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        //        window?.makeKeyAndVisible()
-        //
-        //        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
-        //            if let error = error {
-        //                print("Request Authorization Error: \(error)")
-        //            } else if granted{
-        //                print("Authorization Granted")
-        //            } else{
-        //                print("User Denied")
-        //            }
-        //        }
-        //        self.window!.tintColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
-        return true
-    }
-    private func splashScreen() {
-        //        window?.rootViewController = MainInterface()
-        
-        let launchScreenVC = MainInterface()
-        window?.rootViewController = launchScreenVC
-        window?.makeKeyAndVisible()
-        Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(dismissSplashScreenController), userInfo: nil, repeats: false)
-    }
-    @objc func dismissSplashScreenController() {
         GMSServices.provideAPIKey(SecretKeys.googleKey)
         FirebaseApp.configure()
         UNUserNotificationCenter.current().delegate = self
-        
-        // force signout
-        //try? Auth.auth().signOut()
-        
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         if let _ = AppDelegate.authservice.getCurrentUser() {
             window?.rootViewController = TabBarController()
-            //UITabBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
-            //UITabBar.appearance().tintColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
             UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-            //. UINavigationBar.appearance().backgroundColor = #colorLiteral(red: 0.6968343854, green: 0.1091536954, blue: 0.9438109994, alpha: 1)
             UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-            
-//            UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-            
-            
-            
-            
-            //            UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
             UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
-            
-            //            UITabBar.appearance().unselectedItemTintColor = UIColor.darkGray
-            
-            //            window?.makeKeyAndVisible()
         } else {
-            let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
-            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-            window?.rootViewController = UINavigationController(rootViewController: loginViewController)
-        }
+			splashScreen()
+		}
         UINavigationBar.appearance().backgroundColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        
-        
-        
         UINavigationBar.appearance().barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        
         UINavigationBar.appearance().tintColor = UIColor.white
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationBar.appearance().titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
         UINavigationBar.appearance().largeTitleTextAttributes  = [NSAttributedString.Key.foregroundColor: UIColor.white]
         window?.makeKeyAndVisible()
-        
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { (granted, error) in
             if let error = error {
                 print("Request Authorization Error: \(error)")
@@ -132,6 +48,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         self.window!.tintColor = #colorLiteral(red: 0.5921568627, green: 0.02352941176, blue: 0.737254902, alpha: 1)
+			return true
+    }
+    private func splashScreen() {
+        let launchScreenVC = MainInterface()
+        window?.rootViewController = launchScreenVC
+        window?.makeKeyAndVisible()
+        Timer.scheduledTimer(timeInterval: 6, target: self, selector: #selector(dismissSplashScreenController), userInfo: nil, repeats: false)
+    }
+    @objc func dismissSplashScreenController() {
+		let storyboard = UIStoryboard(name: "LoginView", bundle: nil)
+		let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+		window?.rootViewController = UINavigationController(rootViewController: loginViewController)
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

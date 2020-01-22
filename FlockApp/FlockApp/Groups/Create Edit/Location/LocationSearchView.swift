@@ -24,7 +24,11 @@ class LocationSearchView: UIView {
         let tf = UISearchBar()
         tf.placeholder = "Search Locations"
         tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-
+		if let textfield = tf.value(forKey: "searchField") as? UITextField {
+			textfield.backgroundColor = UIColor.white
+		}
+		let cancelButtonAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes , for: .normal)
         return tf
     }()
     
