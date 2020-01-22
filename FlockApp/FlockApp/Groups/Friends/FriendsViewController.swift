@@ -327,6 +327,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
             profileVC.profileView.addFriend.setTitle("Remove Friend", for: .normal)
+			profileVC.modalPresentationStyle = .fullScreen
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
@@ -338,6 +339,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
+			profileVC.modalPresentationStyle = .fullScreen
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
@@ -349,6 +351,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
+			profileVC.modalPresentationStyle = .fullScreen
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }
@@ -360,6 +363,7 @@ extension FriendsViewController: UITableViewDelegate, UITableViewDataSource, UIS
             profileVC.profileView.displayNameTextView.text = user.displayName
             profileVC.profileView.phoneNumberTextView.text = user.phoneNumber
             profileVC.profileView.emailTextView.text = "Hidden"
+			profileVC.modalPresentationStyle = .fullScreen
             if let image = user.photoURL, !image.isEmpty {
                 profileVC.profileView.imageButton.kf.setImage(with: URL(string: image), for: .normal)
             }

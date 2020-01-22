@@ -182,6 +182,7 @@ class EventTableViewController: UITableViewController {
         let eventToPass = event
         detailVC.event = eventToPass
         detailVC.personToSet = person
+		detailVC.modalPresentationStyle = .fullScreen
         if let _ = invited[indexPath.row].latitude, let _ = invited[indexPath.row].longitude {
             navigationController?.pushViewController(detailVC, animated: true)
         } else {
@@ -248,11 +249,12 @@ class EventTableViewController: UITableViewController {
         
     }
     @objc func mapPressed() {
-            print("map pressed")
-            let detailVC = MapViewController()
-            detailVC.event = event
-            detailVC.guests = self.invited
-            navigationController?.pushViewController(detailVC, animated: true)
+		print("map pressed")
+		let detailVC = MapViewController()
+		detailVC.event = event
+		detailVC.guests = self.invited
+		detailVC.modalPresentationStyle = .fullScreen
+		navigationController?.pushViewController(detailVC, animated: true)
         }
     @objc func mapPressedPending() {
         print("map pressed while pending")

@@ -58,12 +58,7 @@ class MapViewController: UIViewController {
             print("Unable to segue event")
             return
         }
-        //proximityCircle()
-//        usersCurrentLocation = CLLocation(latitude: unwrappedEvent.locationLat, longitude: unwrappedEvent.locationLong)
-        
         locationManager.delegate = self
-
-        
         proximity = unwrappedEvent.proximity
         self.view.addSubview(mapView)
         
@@ -319,8 +314,8 @@ class MapViewController: UIViewController {
         
         let filteredGuests = activeGuests.filter {
             $0.latitude != nil
-        }
-
+			}.sorted(by: {Unicode.CanonicalCombiningClass(rawValue: Unicode.CanonicalCombiningClass.RawValue($0.latitude!)) < Unicode.CanonicalCombiningClass(rawValue: Unicode.CanonicalCombiningClass.RawValue($1.latitude!))}).sorted(by: {Unicode.CanonicalCombiningClass(rawValue: Unicode.CanonicalCombiningClass.RawValue($0.longitude!)) < Unicode.CanonicalCombiningClass(rawValue: Unicode.CanonicalCombiningClass.RawValue($1.longitude!))})
+		print("the guests are: \(filteredGuests)")
         for marker in self.allGuestMarkers {
             marker.map = nil
         }
@@ -328,6 +323,7 @@ class MapViewController: UIViewController {
 //        self.allGuestMarkers.removeAll()
         
         for guest in filteredGuests {
+			//if lat and long are <100 difference then group
             guard let guestLat = guest.latitude,
                 let guestLon = guest.longitude else {
                     print("unable to obtain guest coordinates for \(String(describing: event?.eventName))")

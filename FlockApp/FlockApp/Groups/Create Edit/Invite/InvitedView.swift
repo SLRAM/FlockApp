@@ -13,10 +13,11 @@ class InvitedView: UIView {
         let tf = UISearchBar()
         tf.placeholder = "Search Friends"
         tf.barTintColor = UIColor.init(red: 151/255, green: 6/255, blue: 188/255, alpha: 1)
-        //        tf.layer.cornerRadius = 10
-        //        tf.layer.borderWidth = 2
-        //        tf.layer.borderColor = UIColor.gray.cgColor
-        //        tf.backgroundColor = #colorLiteral(red: 0.6924440265, green: 0.6956507564, blue: 0.7034814358, alpha: 1)
+		if let textfield = tf.value(forKey: "searchField") as? UITextField {
+			textfield.backgroundColor = UIColor.white
+		}
+		let cancelButtonAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+		UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes , for: .normal)
         return tf
     }()
     

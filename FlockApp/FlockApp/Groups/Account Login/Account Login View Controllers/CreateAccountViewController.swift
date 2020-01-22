@@ -38,6 +38,7 @@ class CreateAccountViewController: UIViewController {
     
     @IBAction func showLoginView(_ sender: UIButton) {
         let loginView = LoginViewController()
+		loginView.modalPresentationStyle = .fullScreen
         present(loginView, animated: true) {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {return}
             appDelegate.window?.rootViewController = loginView

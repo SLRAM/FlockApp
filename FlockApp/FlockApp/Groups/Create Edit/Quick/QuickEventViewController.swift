@@ -247,6 +247,7 @@ extension QuickEventViewController: QuickEventViewDelegate {
                                     detailVC.event = event
                                     detailVC.tag = 0
                                     //                    detailVC.delegate = self
+									detailVC.modalPresentationStyle = .fullScreen
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
                                 }
                             }

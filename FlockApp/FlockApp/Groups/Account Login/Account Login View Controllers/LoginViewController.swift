@@ -20,66 +20,6 @@ class LoginViewController: UIViewController {
         emailTextField.delegate = self
         passwordTextField.delegate = self
     }
-//
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(true)
-//        registerKeyboardNotifications()
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(true)
-//        unregisterKeyboardNofications()
-//    }
-//
-//    deinit {
-//    }
-//
-//    private func registerKeyboardNotifications() {
-//        NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//    private func unregisterKeyboardNofications() {
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-//        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-//    }
-//
-//
-//    @objc private func willShowKeyboard(notification: Notification) {
-//
-//        guard let info = notification.userInfo,
-//            let keyboardFrame = info["UIKeyboardFrameEndUserInfoKey"] as? CGRect else {
-//                print("userinfo is nil")
-//                return
-//        }
-//
-//        emailTextField.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
-//        passwordTextField.transform = CGAffineTransform(translationX: 0, y: -keyboardFrame.height)
-//
-//
-//
-//    }
-//
-//    @objc private func willHideKeyboard(notification: Notification) {
-//        emailTextField.transform = CGAffineTransform.identity
-//        passwordTextField.transform = CGAffineTransform.identity
-//
-//
-//    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @IBAction func loginButtonPressed(_ sender: UIButton) {
         guard let email = emailTextField.text,
             !email.isEmpty,
@@ -99,7 +39,8 @@ extension LoginViewController: AuthServiceExistingAccountDelegate {
     
     func didSignInToExistingAccount(_ authservice: AuthService, user: User) {
         let mainTabBarController = TabBarController()
-        present(mainTabBarController, animated: true)
+		mainTabBarController.modalPresentationStyle = .fullScreen
+		present(mainTabBarController, animated: true)
     }
 }
 extension LoginViewController: UITextFieldDelegate {

@@ -286,6 +286,7 @@ extension QuickEventTableViewController: QuickEventTableViewDelegate {
                                     detailVC.event = event
                                     detailVC.tag = 0
                                     //                    detailVC.delegate = self
+									detailVC.modalPresentationStyle = .fullScreen
                                     self?.navigationController?.pushViewController(detailVC, animated: true)
                                 }
                             }
