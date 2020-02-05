@@ -352,28 +352,60 @@ class MapViewController: UIViewController {
 		}
 		
 	}
-	func grouping() {
-		var groupMarkers = [GMSMarker]()//or a dictionary of markers by grouping
-		var markerGroupings = [GMSMarker:[InvitedModel]]()
-		//if a guest is a certain distance from another guest group them, if guests are a certain distance from event group them
-		
-		for guest in allGuestMarkers {
-			
-			let guestDistance = distance(from: guest.position, to: hostEventMarker.position)
-			guard let guestName = guest.title else {
-				print("Unable to find guest's name!")
-				return
-			}
-			
-			if guestDistance > proximity {
-				allOutOfRangeGuests.append((GuestName: guestName, GuestDistance: guestDistance))
-				print("\((guestName)) is out of range by \(guestDistance) meters!")
-			} else {
-				print("\(String(describing: guest.title?.description)) is in range by \(guestDistance) meters!")
-			}
-			
-		}
-	}
+//	func grouping(guests: [InvitedModel]) {
+//		var groupMarkers = [GMSMarker]()//or a dictionary of markers by grouping
+//		var markerGroupings = [GMSMarker:[InvitedModel]]()
+//		var group = [String:[InvitedModel]]()
+//		var checking = guests
+//		
+//		for number in 0...checking.count - 1 {
+//			guard let currentLat = checking[number].latitude,
+//				let currentLon = checking[number].longitude else {
+//					print("unable to obtain guest coordinates for \(String(describing: event?.eventName))")
+//					return
+//			}
+//			let currentPosition = CLLocationCoordinate2D.init(latitude: currentLat, longitude: currentLon)
+//			for guest in checking {
+//				if checking[number].userId != guest.userId {
+//					guard let guestLat = checking[number].latitude,
+//						let guestLon = checking[number].longitude else {
+//							print("unable to obtain guest coordinates for \(String(describing: event?.eventName))")
+//							return
+//					}
+//					let guestPosition = CLLocationCoordinate2D.init(latitude: guestLat, longitude: guestLon)
+//					let distanceBetweenGuests = distance(from: currentPosition, to: guestPosition)
+//					if distanceBetweenGuests <= 100 {
+//						print("these guests are near each other")
+//						var midLat = currentLat - guestLat
+//						var midLon = currentLon - guestLon
+//						var midCoord = CLLocationCoordinate2D(latitude: midLat, longitude: midLon)
+//						var marker = GMSMarker(position: midCoord)
+//						
+//					}
+//
+//				}
+//				
+//			}
+//		}
+//		//if a guest is a certain distance from another guest group them, if guests are a certain distance from event group them
+//		
+//		for guest in allGuestMarkers {
+//			
+//			let guestDistance = distance(from: guest.position, to: hostEventMarker.position)
+//			guard let guestName = guest.title else {
+//				print("Unable to find guest's name!")
+//				return
+//			}
+//			
+//			if guestDistance > proximity {
+//				allOutOfRangeGuests.append((GuestName: guestName, GuestDistance: guestDistance))
+//				print("\((guestName)) is out of range by \(guestDistance) meters!")
+//			} else {
+//				print("\(String(describing: guest.title?.description)) is in range by \(guestDistance) meters!")
+//			}
+//			
+//		}
+//	}
 	func setupMapBounds() {
 		guard let event = event else {
 			print("Unable to segue event")
@@ -383,7 +415,7 @@ class MapViewController: UIViewController {
 		if let guestNumber = boundsNumber(guests: allGuestMarkers) {
 			let guestCoordinate = allGuestMarkers[guestNumber].position
 			let bounds = GMSCoordinateBounds(coordinate: eventCoordinates, coordinate: guestCoordinate)
-			mapView.myMapView.moveCamera(GMSCameraUpdate.fit(bounds, withPadding: 25))
+			mapView.myMapView.moveCamera(GMSCameraUpdate.fit(bounds, withPadding: 55))
 		}
 	}
 	func guestDistanceFromEvent(markers: [GMSMarker]) -> [GMSMarker] {
