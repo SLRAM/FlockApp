@@ -40,9 +40,11 @@ Flock's purpose is to lessen the burden of trying to organize trips and outings 
 After creating the event, the user can view the details of the event they just made in a new page. This page contains a small map view with the event location displayed on it, as well as the event's address, the date of the event, and the time in which the app will begin tracking attendees' locations throughout the course of the event. Beneath this map, the user can also see a tableView which contains the profile picture, name, and task of all guests.
 
 If the user clicks on the map, they will get taken to a full-sized map displaying the event location as well as the locations of all attendees, which update live. The user can also see each person's task. 
+
 ![](gifs/FlockCreateStandard3.gif)
 
 Clicking on a person in the tableView will take the user to a map that solely displays the location of that guest.
+
 ![](gifs/FlockAcceptingStandardEvent.gif)
 
 ### Creating OnTheFly Event
